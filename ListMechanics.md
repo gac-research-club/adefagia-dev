@@ -20,6 +20,7 @@
 - Sword
 - Lance
 - Long sword
+- Tembakan Roket
 
 ## Additional Mechanic
 - In-game console
