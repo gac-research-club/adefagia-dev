@@ -8,6 +8,8 @@
 - Basic attack
 - Skill
 - Move
+- Ultimate Skill
+
 ### Pengaruh dunia
 - Item yang spawn random untuk buff
 
