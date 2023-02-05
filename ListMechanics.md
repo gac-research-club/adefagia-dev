@@ -9,6 +9,7 @@
 - Skill
 - Move
 - Ultimate Skill
+- Repair Skill (hanya untuk robot class healer)
 
 ### Pengaruh dunia
 - Item yang spawn random untuk buff
