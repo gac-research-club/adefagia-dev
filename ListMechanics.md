@@ -12,6 +12,8 @@
 
 ### Pengaruh dunia
 - Item yang spawn random untuk buff
+- Item repair (heal)
+- Item weapon yang jatuh dari helicopter
 
 **Terrain :**
 - Rock - jika nabrak maka robot akan tumbang selama skip 1 gerakan
