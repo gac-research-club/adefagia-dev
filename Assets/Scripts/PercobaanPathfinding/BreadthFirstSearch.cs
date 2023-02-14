@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using Collections;
-using Grid;
+using adefagia.Collections;
+using adefagia.Graph;
 using Unity.VisualScripting;
 using UnityEngine;
+using Grid = adefagia.Graph.Grid;
 
-namespace PercobaanPathfinding
+namespace adefagia.PercobaanPathfinding
 {
     public class BreadthFirstSearch : MonoBehaviour
     {
@@ -19,10 +20,10 @@ namespace PercobaanPathfinding
         private PriorityQueueMin _frontierQueue;
 
         // Reached
-        private List<Grid.Grid> _reached;
-        private Dictionary<Grid.Grid, Grid.Grid> _cameFrom;
+        private List<Grid> _reached;
+        private Dictionary<Grid, Grid> _cameFrom;
 
-        private List<Grid.Grid> _path;
+        private List<Grid> _path;
 
         private bool hasPathfindingTimelapse;
 
@@ -30,10 +31,10 @@ namespace PercobaanPathfinding
         {
             _frontierQueue = new PriorityQueueMin();
 
-            _reached = new List<Grid.Grid>();
-            _cameFrom = new Dictionary<Grid.Grid, Grid.Grid>();
+            _reached = new List<Graph.Grid>();
+            _cameFrom = new Dictionary<Graph.Grid, Graph.Grid>();
 
-            _path = new List<Grid.Grid>();
+            _path = new List<Graph.Grid>();
         }
 
 
@@ -56,7 +57,7 @@ namespace PercobaanPathfinding
         void BFS()
         {
             // Starting point
-            Grid.Grid current = GridManager.instance.GetGridByLocation(startLocation);
+            Graph.Grid current = GridManager.instance.GetGridByLocation(startLocation);
             _frontierQueue.Insert(current);
 
             while (_frontierQueue.size > 0)
@@ -101,8 +102,8 @@ namespace PercobaanPathfinding
             WaitForSeconds wait = new WaitForSeconds(0.1f);
 
             // Starting point
-            Grid.Grid current = GridManager.instance.GetGridByLocation(startLocation);
-            Grid.Grid goal = GridManager.instance.GetGridByLocation(goalLocation);
+            Graph.Grid current = GridManager.instance.GetGridByLocation(startLocation);
+            Graph.Grid goal = GridManager.instance.GetGridByLocation(goalLocation);
             
             if(goal.IsUnityNull() || current.IsUnityNull()) yield break;
             
@@ -155,7 +156,7 @@ namespace PercobaanPathfinding
             }
         }
 
-        void HasReached(Grid.Grid grid)
+        void HasReached(Grid grid)
         {
             _reached.Add(grid);
 
@@ -225,7 +226,7 @@ namespace PercobaanPathfinding
             hasPathfindingTimelapse = false;
         }
 
-        private void DebugListGrid(List<Grid.Grid> grids)
+        private void DebugListGrid(List<Grid> grids)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("[ ");

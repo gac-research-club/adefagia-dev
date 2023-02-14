@@ -1,19 +1,20 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using Grid = adefagia.Graph.Grid;
 
-namespace Collections
+namespace adefagia.Collections
 {
     public class PriorityQueueMin
     {
 
         public int size;
-        protected List<Grid.Grid> heap;
+        protected List<Graph.Grid> heap;
 
         public PriorityQueueMin()
         {
             size = 0;
-            heap = new List<Grid.Grid>();
+            heap = new List<Graph.Grid>();
         }
 
         void SwapValue(int indexA, int indexB)
@@ -104,14 +105,14 @@ namespace Collections
             }
         }
 
-        public void Insert(Grid.Grid value)
+        public void Insert(Graph.Grid value)
         {
             heap.Add(value);
             size++;
             ShiftUp(size-1);
         }
 
-        public Grid.Grid DeleteMin()
+        public Graph.Grid DeleteMin()
         {
             if (!IsEmpty())
             {
@@ -127,7 +128,7 @@ namespace Collections
             return null;
         }
 
-        public bool Contains(Grid.Grid grid)
+        public bool Contains(Grid grid)
         {
             return heap.Contains(grid);
         }

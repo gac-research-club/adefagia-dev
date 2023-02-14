@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Grid
+namespace adefagia.Graph
 {
     public class Grid
     {

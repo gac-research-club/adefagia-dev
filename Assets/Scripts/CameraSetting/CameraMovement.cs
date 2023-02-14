@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CameraSetting
+namespace adefagia.CameraSetting
 {
     public class CameraMovement : MonoBehaviour
     {

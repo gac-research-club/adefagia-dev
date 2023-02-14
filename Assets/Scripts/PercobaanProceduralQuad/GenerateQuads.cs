@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace PercobaanProceduralQuad
+namespace adefagia.PercobaanProceduralQuad
 {
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
     public class GenerateQuads : MonoBehaviour

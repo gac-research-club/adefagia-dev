@@ -1,10 +1,13 @@
 using UnityEngine;
 
-namespace Playground
+namespace adefagia
 {
-    public string robotName;
-    public int robotLevel;
-    public int damage;
-    public int maxHP;
-    public int currentHP;
+    public class PlayerRobot : MonoBehaviour
+    {
+        public string robotName;
+        public int robotLevel;
+        public int damage;
+        public int maxHP;
+        public int currentHP;
+    }
 }

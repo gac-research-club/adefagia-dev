@@ -1,8 +1,8 @@
 using System.Collections;
-using Grid;
+using adefagia.Graph;
 using UnityEngine;
 
-namespace Robot
+namespace adefagia.Robot
 {
     public class Spawner : MonoBehaviour
     {

@@ -1,4 +1,4 @@
-﻿namespace Collections
+﻿namespace adefagia.Collections
 {
     public class PriorityQueueMax : PriorityQueueMin
     {

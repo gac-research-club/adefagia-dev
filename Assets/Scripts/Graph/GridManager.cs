@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Grid
+namespace adefagia.Graph
 {
     public class GridManager : MonoBehaviour
     {

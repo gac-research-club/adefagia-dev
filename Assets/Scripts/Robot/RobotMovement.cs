@@ -1,15 +1,16 @@
 using System;
 using System.Text;
-using Grid;
+using adefagia.Graph;
 using Unity.VisualScripting;
 using UnityEngine;
+using Grid = adefagia.Graph.Grid;
 
-namespace Robot
+namespace adefagia.Robot
 {
     public class RobotMovement : MonoBehaviour
     {
         
-        public Grid.Grid gridBerdiri;
+        public Grid gridBerdiri;
 
         // Update is called once per frame
         void Update()
@@ -36,14 +37,14 @@ namespace Robot
             MoveToGrid(gridBerdiri);
         }
 
-        void ChangeGridBerdiri(Grid.Grid grid)
+        void ChangeGridBerdiri(Grid grid)
         {
             if (GridManager.IsGridEmpty(grid)) return;
         
             gridBerdiri = grid;
         }
 
-        void MoveToGrid(Grid.Grid grid)
+        void MoveToGrid(Grid grid)
         {
             transform.position = grid.GetLocation(y: 0.5f);
         }
@@ -74,7 +75,7 @@ namespace Robot
         
         }
 
-        private void DebugNeighborPosition(StringBuilder sb, string position, Grid.Grid grid)
+        private void DebugNeighborPosition(StringBuilder sb, string position, Graph.Grid grid)
         {
             try
             {

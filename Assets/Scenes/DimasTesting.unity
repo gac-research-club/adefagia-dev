@@ -1093,7 +1093,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 561860011}
-  - component: {fileID: 561860010}
+  - component: {fileID: 561860012}
   m_Layer: 0
   m_Name: SpawnRobot
   m_TagString: Untagged
@@ -1101,20 +1101,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &561860010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 561860009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2799c3a50cab55e4784b5ae5ff764ae2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  robotPrefab: {fileID: 2174158225539249935, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
-  spawnCoord: {x: 0, y: 0}
 --- !u!4 &561860011
 Transform:
   m_ObjectHideFlags: 0
@@ -1130,6 +1116,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &561860012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561860009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b5adab0775ae934a9cda46d3cbe1074, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  robotPrefab: {fileID: 2174158225539249935, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
+  spawnCoord: {x: 0, y: 0}
 --- !u!1 &567864685
 GameObject:
   m_ObjectHideFlags: 0
@@ -3262,7 +3262,7 @@ GameObject:
   - component: {fileID: 1649863549}
   - component: {fileID: 1649863548}
   - component: {fileID: 1649863550}
-  - component: {fileID: 1649863546}
+  - component: {fileID: 1649863551}
   m_Layer: 6
   m_Name: GenerateQuads
   m_TagString: Untagged
@@ -3270,21 +3270,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &1649863546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1649863545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f278e9f8306be94087ef9c1f6663e6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xSize: 10
-  ySize: 10
-  tileSize: 1
 --- !u!4 &1649863547
 Transform:
   m_ObjectHideFlags: 0
@@ -3364,6 +3349,21 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &1649863551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649863545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7a919320c44bed4387873c4d056b811, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xSize: 10
+  ySize: 10
+  tileSize: 1
 --- !u!1 &1719606152
 GameObject:
   m_ObjectHideFlags: 0
@@ -4152,7 +4152,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2146607924}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9e0b05b58c6cbc478ea69d5f78c62b8, type: 3}
+  m_Script: {fileID: 11500000, guid: f342fd2faa5602b479fb6a474b6c5b03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 30

@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Grid
+namespace adefagia.Graph
 {
     public class GridSelect : MonoBehaviour
     {
