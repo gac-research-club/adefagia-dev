@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerRobot : MonoBehaviour
+namespace Playground
 {
     public string robotName;
     public int robotLevel;

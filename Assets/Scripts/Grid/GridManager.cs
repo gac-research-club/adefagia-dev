@@ -75,6 +75,7 @@ namespace Grid
             // WaitForSeconds wait = new WaitForSeconds(0.01f);
 
             // Set of nodes
+
             for (int i = 0, y = 0; y < ySize; y++)
             {
                 for (int x = 0; x < xSize; x++, i++)
