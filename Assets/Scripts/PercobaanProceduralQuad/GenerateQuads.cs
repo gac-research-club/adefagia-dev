@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Playground
+namespace PercobaanProceduralQuad
 {
     [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
     public class GenerateQuads : MonoBehaviour

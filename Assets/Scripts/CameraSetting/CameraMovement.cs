@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Playground
+namespace CameraSetting
 {
     public class CameraMovement : MonoBehaviour
     {
