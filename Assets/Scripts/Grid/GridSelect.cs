@@ -1,72 +1,65 @@
-using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Playground.Grid
+namespace Grid
 {
     public class GridSelect : MonoBehaviour
     {
         public Camera mainCamera;
         public float zoomSpeed;
+        public GameObject highlightPrefab;
 
-        public LayerMask quadLayer;
-        public GameObject selectedQuad;
+        public LayerMask layerMask;
+        public GameObject gameObjectHitByRay;
 
         public float tileSize = 1;
-        public Vector3 tilling;
 
         public int gridIndex;
+        private Grid _gridSelected;
     
         private Transform _hitObject;
-        private float timeElapsed;
+        private float _timeElapsed;
 
         // Update is called once per frame
         void Update()
         {
-            timeElapsed += Time.deltaTime;
-            CameraRay();
+            if (RayHitObject(CameraRay()))
+            {
+                CameraZoom(mainCamera, CameraRay(), zoomSpeed);
+                HighlightSelected();
+
+                if (!Input.GetMouseButtonDown(0)) return;
+                
+                _gridSelected = SelectGrid();
+                // gridIndex = _gridSelected.index;
+
+            }
         }
 
     
 
-        void CameraRay()
+        Ray CameraRay()
         {
-            try
-            {
-                Ray rayCamera = mainCamera.ScreenPointToRay(Input.mousePosition);
+            return mainCamera.ScreenPointToRay(Input.mousePosition);
+        }
+
+        bool RayHitObject(Ray ray)
+        {
+            if (!Physics.Raycast(ray, out var hit, mainCamera.farClipPlane, layerMask)) return false;
             
-                SelectQuad(rayCamera);
-                CameraZoom(mainCamera, rayCamera, zoomSpeed);
-            }
-            catch (UnassignedReferenceException)
-            {
-                WaitForIt(3, () => Debug.LogWarning("! Camera belum diset di inspector " + gameObject.name));
-            }
+            _hitObject = hit.transform;
+            // Debug.Log(hit.point);
+
+            // SelectGrid(hit.point);
+            // WaitForIt(1, () => Debug.Log("Hit point : " + hit.point));
+            return true;
 
         }
 
-        void SelectQuad(Ray ray)
+        Grid SelectGrid()
         {
-            RaycastHit hit;
-        
-            if (Physics.Raycast(ray, out hit, mainCamera.farClipPlane, quadLayer))
-            {
-                _hitObject = hit.transform;
-                // MoveSelected(hit.point + tilling);
-                selectedQuad = _hitObject.gameObject;
-                // Debug.Log(hit.point);
-            
-                SelectGrid(hit.point);
-                // WaitForIt(1, () => Debug.Log("Hit point : " + hit.point));
-            }
-        }
-
-        void SelectGrid(Vector3 point)
-        {
-            int x = (int)(point.x + 0.5f);
-            int y = (int)(point.z + 0.5f);
-
-            Grid grid = GridManager.GetNode(new Vector2(x, y));
-            gridIndex = grid.index;
+            var grid = GridManager.instance.GetGridByTransform(_hitObject);
+            return grid.IsUnityNull() ? null : grid;
         }
 
         void CameraZoom(Camera cam, Ray ray, float speed)
@@ -95,6 +88,14 @@ namespace Playground.Grid
             cam.orthographicSize -= speed;
         }
 
+        void HighlightSelected()
+        {
+            var highlight = SelectGrid();
+            
+            if (highlight.IsUnityNull()) return;
+            highlightPrefab.transform.position = highlight.GetLocation();
+        }
+
         void MoveSelected(Vector3 point)
         {
             int x = (int) point.x;
@@ -102,15 +103,19 @@ namespace Playground.Grid
             int z = (int) point.z;
         
             var location = new Vector3(x, y+0.01f, z) * tileSize;
-            selectedQuad.transform.position = location;
+            gameObjectHitByRay.transform.position = location;
         }
 
-        void WaitForIt(float second, Action action)
+        void IncrementTimeElapsed()
         {
-            if (timeElapsed > second)
+            _timeElapsed += Time.deltaTime;
+        }
+
+        void ResetTimeElapsed(float second)
+        {
+            if (_timeElapsed > second)
             {
-                action();
-                timeElapsed = 0f;
+                _timeElapsed = 0f;
             }
         }
     
