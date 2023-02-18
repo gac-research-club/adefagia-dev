@@ -20,18 +20,23 @@ namespace adefagia.Graph
         private Transform _hitObject;
         private float _timeElapsed;
 
-        // Update is called once per frame
+        private GridManager _gridManager;
+
+        private void Start()
+        {
+            _gridManager = GameManager.instance.gridManager;
+        }
+
         void Update()
         {
             if (RayHitObject(CameraRay()))
             {
                 CameraZoom(mainCamera, CameraRay(), zoomSpeed);
-                HighlightSelected();
+                var gridHighlight = HighlightSelected();
 
                 if (!Input.GetMouseButtonDown(0)) return;
-                
-                _gridSelected = SelectGrid();
-                // gridIndex = _gridSelected.index;
+
+                StoreSelectedGrid(gridHighlight);
 
             }
         }
@@ -56,9 +61,17 @@ namespace adefagia.Graph
 
         }
 
+        void StoreSelectedGrid(Grid grid)
+        {
+            if (grid.IsUnityNull()) return;
+            
+            _gridSelected = grid;
+            gridIndex = grid.index;
+        }
+
         Grid SelectGrid()
         {
-            var grid = GridManager.instance.GetGridByTransform(_hitObject);
+            var grid = _gridManager.GetGridByTransform(_hitObject);
             return grid.IsUnityNull() ? null : grid;
         }
 
@@ -88,12 +101,14 @@ namespace adefagia.Graph
             cam.orthographicSize -= speed;
         }
 
-        void HighlightSelected()
+        Grid HighlightSelected()
         {
             var highlight = SelectGrid();
             
-            if (highlight.IsUnityNull()) return;
-            highlightPrefab.transform.position = highlight.GetLocation();
+            if (highlight.IsUnityNull()) return null;
+            highlightPrefab.transform.position = highlight.GetLocation(y: 0.01f);
+
+            return highlight;
         }
 
         void MoveSelected(Vector3 point)

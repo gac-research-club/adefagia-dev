@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 namespace adefagia.Graph
 {
@@ -7,7 +8,7 @@ namespace adefagia.Graph
         public int index;
         public float priority;
         public int weight;
-        
+
         public Vector2 location;
         public State state;
         public Grid[] neighbors;
@@ -15,6 +16,7 @@ namespace adefagia.Graph
 
         private GameObject _gameObject;
         private Material _material;
+        private Material _defaultMaterial;
 
         public Grid(int index, Vector2 location, int weight = 1, float priority = 0)
         {
@@ -40,14 +42,15 @@ namespace adefagia.Graph
         public void SetGameObject(GameObject gameObject)
         {
             _gameObject = gameObject;
+            _material = _gameObject.GetComponent<MeshRenderer>().material;
         }
 
-        public void SetMaterial(Material material)
+        public void ChangeMaterial(Material material)
         {
-            _material = material;
+            _gameObject.GetComponent<MeshRenderer>().material = material;
         }
-
-        public void ChangeMaterial()
+        
+        public void ResetMaterial()
         {
             _gameObject.GetComponent<MeshRenderer>().material = _material;
         }

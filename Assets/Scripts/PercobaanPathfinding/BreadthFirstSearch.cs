@@ -27,14 +27,18 @@ namespace adefagia.PercobaanPathfinding
 
         private bool hasPathfindingTimelapse;
 
+        private GridManager _gridManager;
+
         void Start()
         {
             _frontierQueue = new PriorityQueueMin();
 
-            _reached = new List<Graph.Grid>();
-            _cameFrom = new Dictionary<Graph.Grid, Graph.Grid>();
+            _reached = new List<Grid>();
+            _cameFrom = new Dictionary<Grid, Grid>();
 
-            _path = new List<Graph.Grid>();
+            _path = new List<Grid>();
+
+            _gridManager = GameManager.instance.gridManager;
         }
 
 
@@ -57,7 +61,7 @@ namespace adefagia.PercobaanPathfinding
         void BFS()
         {
             // Starting point
-            Graph.Grid current = GridManager.instance.GetGridByLocation(startLocation);
+            Graph.Grid current = _gridManager.GetGridByLocation(startLocation);
             _frontierQueue.Insert(current);
 
             while (_frontierQueue.size > 0)
@@ -84,14 +88,12 @@ namespace adefagia.PercobaanPathfinding
                     _frontierQueue.Insert(next);
                     _cameFrom.Add(next, current);
                     
-                    next.SetMaterial(neighborMaterial);
-                    next.ChangeMaterial();
+                    next.ChangeMaterial(neighborMaterial);
                 }
                 
                 // _frontierQueue.DebugListIndex();
 
-                current.SetMaterial(reachedMaterial);
-                current.ChangeMaterial();
+                current.ChangeMaterial(reachedMaterial);
             }
             
             Debug.Log("Done");
@@ -102,8 +104,8 @@ namespace adefagia.PercobaanPathfinding
             WaitForSeconds wait = new WaitForSeconds(0.1f);
 
             // Starting point
-            Graph.Grid current = GridManager.instance.GetGridByLocation(startLocation);
-            Graph.Grid goal = GridManager.instance.GetGridByLocation(goalLocation);
+            Graph.Grid current = _gridManager.GetGridByLocation(startLocation);
+            Graph.Grid goal = _gridManager.GetGridByLocation(goalLocation);
             
             if(goal.IsUnityNull() || current.IsUnityNull()) yield break;
             
@@ -141,16 +143,14 @@ namespace adefagia.PercobaanPathfinding
 
                     _cameFrom.Add(next, current);
                     
-                    next.SetMaterial(neighborMaterial);
-                    next.ChangeMaterial();
+                    next.ChangeMaterial(neighborMaterial);
 
                     yield return wait;
                 }
                 
                 // _frontierQueue.DebugListIndex();
 
-                current.SetMaterial(reachedMaterial);
-                current.ChangeMaterial();
+                current.ChangeMaterial(reachedMaterial);
                 
                 yield return wait;
             }
@@ -161,23 +161,20 @@ namespace adefagia.PercobaanPathfinding
             _reached.Add(grid);
 
             // Set material
-            grid.SetMaterial(frontierMaterial);
-            grid.ChangeMaterial();
+            grid.ChangeMaterial(frontierMaterial);
         }
 
         void ClearBFS()
         {
             foreach (var grid in _cameFrom)
             {
-                grid.Value.SetMaterial(groundMaterial);
-                grid.Value.ChangeMaterial();
+                grid.Value.ChangeMaterial(groundMaterial);
             }
 
             while (_frontierQueue.size > 0)
             {
                 var grid = _frontierQueue.DeleteMin();
-                grid.SetMaterial(groundMaterial);
-                grid.ChangeMaterial();
+                grid.ChangeMaterial(groundMaterial);
             }
 
             _frontierQueue.Clear();
@@ -189,8 +186,7 @@ namespace adefagia.PercobaanPathfinding
         {
             foreach (var grid in _path)
             {
-                grid.SetMaterial(groundMaterial);
-                grid.ChangeMaterial();
+                grid.ChangeMaterial(groundMaterial);
             }
             _path.Clear();
         }
@@ -199,8 +195,8 @@ namespace adefagia.PercobaanPathfinding
         {
             WaitForSeconds wait = new WaitForSeconds(0.1f);
 
-            var start = GridManager.instance.GetGridByLocation(startLoc);
-            var current = GridManager.instance.GetGridByLocation(goalLoc);
+            var start = _gridManager.GetGridByLocation(startLoc);
+            var current = _gridManager.GetGridByLocation(goalLoc);
             
             if(start.IsUnityNull() || current.IsUnityNull()) yield break;
 
@@ -216,8 +212,7 @@ namespace adefagia.PercobaanPathfinding
             
             foreach (var grid in _path)
             {
-                grid.SetMaterial(reachedMaterial);
-                grid.ChangeMaterial();
+                grid.ChangeMaterial(frontierMaterial);
                 
                 yield return wait;
             }
