@@ -9,9 +9,7 @@ namespace adefagia.Graph
 {
     public class GridManager : MonoBehaviour
     {
-        // Singleton
-        public static GridManager instance;
-        
+
         public int xSize, ySize;
         
         // For Debugging
@@ -20,6 +18,8 @@ namespace adefagia.Graph
         // ---
 
         public GameObject emptyPrefab, borderPrefab;
+
+        public string mapName = "Map";
     
         public static bool doneGenerateGrids;
 
@@ -31,105 +31,83 @@ namespace adefagia.Graph
         {
             _allGrid = new Dictionary<Vector2, Grid>();
             _allGridTransform = new Dictionary<Transform, Grid>();
-            
-            // StartCoroutine(Generate());
-            
+
             GenerateGrids();
             
             SetNeighbors();
             
             doneGenerateGrids = true;
-            
-            Singleton();
-        
+
             SetGridStatesByMap();
             // SetGridStatesAllGround();
         
             InstantiateGameObjects();
             
             GenerateBorder();
-            
-            // Debug.Log(all_nodes.Length);
-        }
-
-        void Singleton()
-        {
-            if (instance.IsUnityNull())
-            {
-                instance = this;
-            }
-            else
-            {
-                Destroy(this);
-            }
-            
-            // DontDestroyOnLoad(instance);
-        }
-
-        private void Update()
-        {
         }
 
         void GenerateGrids()
         {
-            // WaitForSeconds wait = new WaitForSeconds(0.01f);
-
-            // Set of nodes
-
+            // Set all Grid by (x,y)
             for (int i = 0, y = 0; y < ySize; y++)
             {
                 for (int x = 0; x < xSize; x++, i++)
                 {
-                    var location = new Vector2(x, y);
-
-                    // Add node
-                    Grid grid = new Grid(i, location);
+                    // Add every node
+                    Grid grid = new Grid(i, new Vector2(x, y));
                 
-                    _allGrid.Add(location, grid);
-                    
-                    // yield return wait;
+                    // Add into Dictionary
+                    _allGrid[grid.location] = grid;
                 }
             }
         }
 
         void SetNeighbors()
         {
-            for (int  y = 0; y < ySize; y++)
+            // Set all grid neighbors
+            foreach (var grid in _allGrid.Values)
             {
-                for (int x = 0; x < xSize; x++)
+                // Add neighbor
+                // Add 4 : right, up, left, down
+                Vector2[] dirs = { Vector2.right, Vector2.up, Vector2.left, Vector2.down };
+                grid.neighbors = new Grid[dirs.Length];
+                
+                for (var i=0; i<dirs.Length; i++)
                 {
-                    var location = new Vector2(x, y);
-
-                    // Add neighbor
-                    var grid = GetGridByLocation(location);
-
-                    // Add 4 : right, up, left, down
-                    Vector2[] dirs = { Vector2.right, Vector2.up, Vector2.left, Vector2.down };
-                    grid.neighbors = new Grid[dirs.Length];
-
-                    for (var i=0; i<dirs.Length; i++)
-                    {
-                        grid.neighbors[i] = GetGridByLocation(location + dirs[i]);
-                    }
+                    grid.neighbors[i] = GetGridByLocation(grid.location + dirs[i]);
                 }
             }
+            
         }
 
         void SetGridStatesByMap()
         {
-            var map = ReadFile("Assets/Resources/Map2.txt");
+            var map = ReadFile("Assets/Resources/"+ mapName +".txt");
+            
+            // If Map Empty generate all ground
+            if (map.Length == 0)
+            {
+                SetGridStatesAllGround();
+                return;
+            }
 
-            // Set state of grid
+            // State of grid:
             // [-] empty
             // [o] ground
+            
+            // From yUp -> yDown
             for (int i = 0, y = ySize-1; y >= 0; y--)
             {
+                // From xLeft -> xRight
                 for (int x = 0; x < xSize; x++, i++)
                 {
                     try
                     {
-                        SetStateByChar(map[i], new Vector2(x,y));
+                        // Set State each grid
+                        var grid = GetGridByLocation(new Vector2(x, y));
+                        SetStateByChar(map[i], grid);
                     }
+                    // catch error if Map char have not same size as AllGrid
                     catch (IndexOutOfRangeException)
                     {
                         break;
@@ -140,15 +118,16 @@ namespace adefagia.Graph
         
         void SetGridStatesAllGround()
         {
-            foreach (var grid in _allGrid)
+            // Default State
+            foreach (var grid in _allGrid.Values)
             {
-                grid.Value.state = State.Ground;
+                grid.state = State.Ground;
             }
         }
 
-        private void SetStateByChar(char character, Vector2 location)
+        private void SetStateByChar(char character, Grid grid)
         {
-            var grid = GetGridByLocation(location);
+            // Set State by char
             switch (character)
             {
                 case '-':
@@ -161,19 +140,21 @@ namespace adefagia.Graph
             }
         }
 
-        void InstantiateGameObjects()
+        private void InstantiateGameObjects()
         {
-            foreach (var grid in _allGrid)
+            foreach (var grid in _allGrid.Values)
             {
-                switch (grid.Value.state)
+                // Instantiate gameObject according to State
+                switch (grid.state)
                 {
                     case State.Ground:
-                        var cube = Instantiate(emptyPrefab, grid.Value.GetLocation(), emptyPrefab.transform.rotation, transform);
-                        cube.name = "Cube " + grid.Value.index;
+                        var ground = Instantiate(emptyPrefab, grid.GetLocation(), emptyPrefab.transform.rotation, transform);
+                        ground.name = "Ground " + grid.index;
                         
-                        grid.Value.SetGameObject(cube);
+                        grid.SetGameObject(ground);
                         
-                        _allGridTransform.Add(cube.transform, grid.Value);
+                        // Add to Dictionary
+                        _allGridTransform[ground.transform] = grid;
                         
                         break;
                 }
@@ -237,11 +218,22 @@ namespace adefagia.Graph
 
         string ReadFile(string pathFile)
         {
-            // read from file
-            StreamReader reader = new StreamReader(pathFile);
-            string map = reader.ReadToEnd();
+            var map = string.Empty;
+            
+            try
+            {
+                // read from file
+                StreamReader reader = new StreamReader(pathFile);
+                map = reader.ReadToEnd();
+
+            }
+            catch (FileNotFoundException)
+            {
+                Debug.LogWarning("File Map not found", this);
+            }
 
             // Serialize string
+            // Debug.Log(map.Length);
             return CleanInput(map);
         }
         

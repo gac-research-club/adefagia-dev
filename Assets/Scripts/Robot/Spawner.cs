@@ -13,8 +13,11 @@ namespace adefagia.Robot
         public Vector2 spawnCoord;
 
         private GameObject _robot;
-        private void Awake()
+
+        private GridManager _gridManager;
+        private void Start()
         {
+            _gridManager = GameManager.instance.gridManager;
             StartCoroutine(SpawnRobot(spawnCoord));
         }
 
@@ -27,9 +30,14 @@ namespace adefagia.Robot
 
             yield return new WaitForSeconds(1);
             _robot = Instantiate(robotPrefab, transform);
-            _robot.GetComponent<RobotMovement>().gridBerdiri = GridManager.instance.GetGridByLocation(loc);
+            _robot.GetComponent<RobotMovement>().ChangeGridBerdiri(_gridManager.GetGridByLocation(loc));
 
             doneSpawn = true;
+        }
+
+        public RobotMovement GetRobot()
+        {
+            return _robot.GetComponent<RobotMovement>();
         }
     }
 }
