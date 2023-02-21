@@ -11,15 +11,8 @@ namespace adefagia.Robot
     public class Spawner
     {
         public GameObject SpawnerGameObject { get; }
-        
         private RobotTeam RobotTeam { get; }
         public RobotManager RobotManager { get; }
-
-        public int totalTurn;
-        
-        public int turnId;
-
-        public bool active;
 
         [Space(5f)]
         

@@ -22,7 +22,7 @@ namespace adefagia.Graph
 
         void Update()
         {
-            if (Grid.Occupied)
+            if (Grid.IsOccupied)
             {
                 ChangeMaterial(occupiedMaterial);
             }

@@ -12,13 +12,9 @@ namespace adefagia.Robot
 {
     public class RobotMovement : MonoBehaviour
     {
-        public Vector2 endLocation;
-        
-        private Grid _grid;
-        private Grid _robotLastGrid;
-        private GridManager _gridManager;
+        public Robot Robot { private get; set; }
 
-        private Robot _robot;
+        private GridManager _gridManager;
 
         // public bool teamActive;
 
@@ -29,144 +25,62 @@ namespace adefagia.Robot
         
         void Update()
         {
-            
-            // if (active)
-            // {
-            //     if (teamActive)
-            //     {
-            //         // GameManager.instance.spawnManager.SelectRobot(_robot);
-            //     }
-            // }
-            
-            if (Input.GetKeyDown(KeyCode.L))
+            // Testing
+            if (Input.GetKeyDown(KeyCode.P) && Robot.IsSelect)
             {
-                ChangeGridIdle(_grid.Right);
-                MovePositionToGrid(_grid);
-            }
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                ChangeGridIdle(_grid.Up);
-                MovePositionToGrid(_grid);
-            }
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                ChangeGridIdle(_grid.Left);
-                MovePositionToGrid(_grid);
-            }
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                ChangeGridIdle(_grid.Down);
-                MovePositionToGrid(_grid);
-            }
-
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                Move(endLocation);
+                Move();
             }
         }
 
-        public void SetRobot(Robot robot)
-        {
-            _robot = robot;
-        }
-
-        public bool Move(Vector2 location)
+        private bool Move()
         {
             var aStar = new AStar();
-            var end = _gridManager.GetGridByLocation(location);
+            var end = _gridManager.GetGridSelect();
+
+            // Make sure grid is selected and on ground grid
+            if (!end.IsUnityNull() && GridManager.CheckGround(end))
+            {
+                // If path finding success
+                if (aStar.Pathfinding(Robot.Grid, end))
+                {
+                    // get path
+                    var path = aStar.Traversal(Robot.Grid, end);
                     
-            if(GridManager.IsGridEmpty(end))
-            {
-                Debug.LogWarning("Grid not found", this);
-                return false;
-            }
+                    // Robot move to destination path
+                    StartCoroutine(MoveToPath(path));
+                    
+                    // clear occupied start grid
+                    Robot.Grid.Free();
+                    
+                    // Change robot grid to end, then Occupy it
+                    Robot.Move(end);
+                    Robot.Grid.Occupy();
 
-            // if (end.IsOccupied())
-            // {
-            //     Debug.LogWarning("Grid is occupied", this);
-            //     return false;
-            // }
-
-            if (aStar.Pathfinding(_grid, end))
-            {
-                
-                var path = aStar.Traversal(_grid, end);
-                StartCoroutine(MoveToPath(path));
-
-                aStar.DebugListGrid(path);
-                _robotLastGrid = path[^1];
-
-                return true; 
-            }
-
-            _robotLastGrid = aStar.GetFirstOccupied();
-            
-            if (_robotLastGrid.IsUnityNull())
-            {
-                Debug.LogWarning("Jalan Buntu");
-                return false;
+                    return true;
+                }
             }
             
-            var blocked = aStar.Traversal(_grid, _robotLastGrid);
-            StartCoroutine(MoveToPath(blocked));
+            Debug.LogWarning("Pathfinding failed");
 
-            Debug.LogWarning("Blocked by other");
-            return true;
+            // If end is missing or pathfinding failed
+            return false;
         }
-
-        public void ChangeGridIdle(Grid grid)
-        {
-            if (GridManager.IsGridEmpty(grid)) return;
         
-            _grid = grid;
-        }
 
-        public Grid GetLast()
+        // Only move transform position
+        private void MovePositionToGrid(Grid grid)
         {
-            return _robotLastGrid;
-        }
-
-        public void MovePositionToGrid(Grid grid)
-        {
-            transform.position = grid.GetLocation(y:1);
+            transform.position = grid.GetLocation();
         }
 
         IEnumerator MoveToPath(List<Grid> path)
         {
             foreach (var grid in path)
             {
-                ChangeGridIdle(grid);
                 MovePositionToGrid(grid);
 
                 yield return new WaitForSeconds(0.1f);
             }
-        }
-        
-        private void OnGUI()
-        {
-            // if(!teamActive) return;
-            // if(!active) return;
-            // if (!GridManager.doneGenerateGrids) return;
-            if (_grid.IsUnityNull()) return;
-        
-            // var textLeft = $"Berdiri {_grid.location.x}, {_grid.location.y}"; 
-            // GUI.Box (new Rect (10,Screen.height-10-50,100,50), textLeft);
-        
-            var text = "";
-        
-            StringBuilder textTopRight = new StringBuilder();
-            textTopRight.Append("Neighboors: ");
-            DebugNeighborPosition(textTopRight, "Kanan", _grid.Right);
-            DebugNeighborPosition(textTopRight, "Atas", _grid.Up);
-            DebugNeighborPosition(textTopRight, "Kiri", _grid.Left);
-            DebugNeighborPosition(textTopRight, "Bawah", _grid.Down);
-        
-            // text = $"Node {_grid.id} = ({_grid.location.x},{_grid.location.y})";
-
-            // Make a background box
-            GUI.Box(new Rect(10, 10, 100, 50), text);
-            GUI.Box (new Rect (Screen.width - 10 - 100,10,100,100), textTopRight.ToString());
-        
         }
 
         private void DebugNeighborPosition(StringBuilder sb, string position, Graph.Grid grid)

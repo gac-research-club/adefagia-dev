@@ -10,33 +10,17 @@ namespace adefagia.Graph
         public Camera mainCamera;
         public LayerMask layerMask;
         
-        // public float zoomSpeed;
         public GameObject highlightGameObject;
 
         public UnityGameObjectEvent mouseHover;
+        public UnityEvent mouseHoverNotHit;
         public UnityGameObjectEvent mouseRightClick;
-
-        // public float tileSize = 1;
-
-        // public int gridIndex;
-        private Grid _gridSelected;
-    
-        // private Transform _hitObject;
-        private float _timeElapsed;
-
-        private GridManager _gridManager;
-
-        private void Start()
-        {
-            _gridManager = GameManager.instance.gridManager;
-        }
 
         void Update()
         {
             if (RayHitObject(CameraRay()))
             {
-                // CameraZoom(mainCamera, CameraRay(), zoomSpeed);
-                // var gridHighlight = HighlightSelected();
+                // Hover Event
                 mouseHover.Invoke(highlightGameObject);
 
                 if (Input.GetMouseButtonDown(0))
@@ -44,10 +28,13 @@ namespace adefagia.Graph
                     StoreSelectedGrid(highlightGameObject);
                 }
             }
+            else
+            {
+                // Ray not hit object
+                mouseHoverNotHit.Invoke();
+            }
         }
-
-    
-
+        
         Ray CameraRay()
         {
             return mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -56,12 +43,13 @@ namespace adefagia.Graph
         bool RayHitObject(Ray ray)
         {
             // If ray hit gameObject, set to Highlight
-            if (!Physics.Raycast(ray, out var hit, mainCamera.farClipPlane, layerMask)) return false;
+            if (Physics.Raycast(ray, out var hit, mainCamera.farClipPlane, layerMask))
+            {
+                highlightGameObject = hit.transform.gameObject;
+                return true;
+            }
             
-            highlightGameObject = hit.transform.gameObject;
-            
-            return true;
-
+            return false;
         }
 
         void StoreSelectedGrid(GameObject selected)
@@ -97,29 +85,6 @@ namespace adefagia.Graph
             cam.orthographicSize -= speed;
         }
 
-        void MoveSelected(Vector3 point)
-        {
-            int x = (int) point.x;
-            int y = (int) point.y;
-            int z = (int) point.z;
-        
-            // var location = new Vector3(x, y+0.01f, z) * tileSize;
-            // gameObjectHitByRay.transform.position = location;
-        }
-
-        void IncrementTimeElapsed()
-        {
-            _timeElapsed += Time.deltaTime;
-        }
-
-        void ResetTimeElapsed(float second)
-        {
-            if (_timeElapsed > second)
-            {
-                _timeElapsed = 0f;
-            }
-        }
-    
         void LocalAndWorld()
         {
             Debug.Log("Local Space : " + Vector3.forward);
@@ -130,4 +95,5 @@ namespace adefagia.Graph
     
     [System.Serializable]
     public class UnityGameObjectEvent : UnityEvent<GameObject> {}
+
 }

@@ -1,4 +1,5 @@
-﻿using adefagia.Graph;
+﻿using adefagia.Collections;
+using adefagia.Graph;
 using Unity.VisualScripting;
 using UnityEngine;
 using Grid = adefagia.Graph.Grid;
@@ -6,17 +7,11 @@ using Grid = adefagia.Graph.Grid;
 namespace adefagia.Robot
 {
     
-    public class Robot
+    public class Robot : ISelectableObject
     {
         public int Id { get; }
         public GameObject RobotGameObject { get; }
-        public Vector2 location;
-        
-        private Grid _gridIdle;
-
-        private RobotMovement _robotMovement;
-
-        private bool _active;
+        public Grid Grid { get; private set; }
 
         private readonly Spawner _spawner;
         private RobotManager _robotManager;
@@ -26,31 +21,30 @@ namespace adefagia.Robot
         
         public Robot(Spawner spawner, RobotPrefab prefab)
         {
-            Id = prefab.id;
-            location = prefab.location;
             _spawner = spawner;
 
+            Id = prefab.id;
+            Grid = GameManager.instance.gridManager.GetGridByLocation(prefab.location);
             RobotGameObject = Instantiate(prefab.gameObject);
         }
 
         private GameObject Instantiate(GameObject prefab)
         {
             if (prefab.IsUnityNull()) return null;
-            
-            var grid = GameManager.instance.gridManager.GetGridByLocation(location);
-            
-            if (grid != null)
+
+            if (Grid != null)
             {
-                if (GridManager.CheckGround(grid) && !grid.Occupied)
+                if (GridManager.CheckGround(Grid) && !Grid.IsOccupied)
                 {
                     Debug.Log("Instantiate Robot");
-                    var robot = Object.Instantiate(prefab, grid.GetLocation(), prefab.transform.rotation, _spawner.SpawnerGameObject.transform);
+                    var robot = Object.Instantiate(prefab, Grid.GetLocation(), prefab.transform.rotation, _spawner.SpawnerGameObject.transform);
                     robot.name = "Robot " + Id;
 
                     robot.GetComponent<RobotStatus>().Robot = this;
+                    robot.GetComponent<RobotMovement>().Robot = this;
                     
                     // Grid Occupied
-                    grid.Occupy();
+                    Grid.Occupy();
 
                     return robot;
                 }
@@ -68,6 +62,11 @@ namespace adefagia.Robot
         public void Hover(bool value)
         {
             IsHover = value;
+        }
+
+        public void Move(Grid grid)
+        {
+            Grid = grid;
         }
 
     }

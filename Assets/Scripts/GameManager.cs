@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using adefagia.Collections;
 using adefagia.Graph;
 using adefagia.Robot;
 using Unity.VisualScripting;
@@ -12,8 +13,9 @@ namespace adefagia
     {
         // Singleton
         public static GameManager instance;
-        
+
         // All Manager
+        public BattleManager battleManager;
         public GridManager gridManager;
         public RobotManager robotManager;
         public UIManager uiManager;
@@ -41,5 +43,7 @@ namespace adefagia
             // Can access from any scene
             DontDestroyOnLoad(instance);
         }
+        
+        
     }
 }

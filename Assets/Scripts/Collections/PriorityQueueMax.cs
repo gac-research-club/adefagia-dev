@@ -4,7 +4,7 @@
     {
         protected override bool Equation(int indexA, int indexB)
         {
-            return heap[indexA].priority > heap[indexB].priority;
+            return heap[indexA].Priority > heap[indexB].Priority;
         }
     }
 }
