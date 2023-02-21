@@ -44,11 +44,11 @@ namespace adefagia.PercobaanPathfinding
 
         void Update()
         {
-            if (!GridManager.doneGenerateGrids) return;
+            // if (!GridManager.doneGenerateGrids) return;
             
             if (Input.GetKeyDown(startKey) && !hasPathfindingTimelapse)
             {
-                if (!GridManager.doneGenerateGrids) return;
+                // if (!GridManager.doneGenerateGrids) return;
                 hasPathfindingTimelapse = true;
                 
                 ClearBFS();
@@ -80,20 +80,18 @@ namespace adefagia.PercobaanPathfinding
                     if (_frontierQueue.Contains(next)) continue;
 
         
-                    var heuristic = Heuristic(next.location, startLocation);
-                    next.priority = heuristic;
+                    // var heuristic = Heuristic(next.location, startLocation);
+                    // next.priority = heuristic;
                     
                     // Debug.Log($"Grid {next.location.x},{next.location.y} heuristic : {heuristic}");
                     
                     _frontierQueue.Insert(next);
                     _cameFrom.Add(next, current);
-                    
-                    next.ChangeMaterial(neighborMaterial);
                 }
                 
                 // _frontierQueue.DebugListIndex();
 
-                current.ChangeMaterial(reachedMaterial);
+                // current.ChangeMaterial(reachedMaterial);
             }
             
             Debug.Log("Done");
@@ -134,8 +132,8 @@ namespace adefagia.PercobaanPathfinding
                     if (_reached.Contains(next)) continue;
                     if (_frontierQueue.Contains(next)) continue;
 
-                    var heuristic = Heuristic(next.location, goalLocation);
-                    next.priority = heuristic;
+                    // var heuristic = Heuristic(next.location, goalLocation);
+                    // next.priority = heuristic;
                     
                     // Debug.Log($"Grid {next.location.x},{next.location.y} heuristic : {heuristic}");
                     
@@ -143,14 +141,14 @@ namespace adefagia.PercobaanPathfinding
 
                     _cameFrom.Add(next, current);
                     
-                    next.ChangeMaterial(neighborMaterial);
+                    // next.ChangeMaterial(neighborMaterial);
 
                     yield return wait;
                 }
                 
                 // _frontierQueue.DebugListIndex();
 
-                current.ChangeMaterial(reachedMaterial);
+                // current.ChangeMaterial(reachedMaterial);
                 
                 yield return wait;
             }
@@ -161,20 +159,20 @@ namespace adefagia.PercobaanPathfinding
             _reached.Add(grid);
 
             // Set material
-            grid.ChangeMaterial(frontierMaterial);
+            // grid.ChangeMaterial(frontierMaterial);
         }
 
         void ClearBFS()
         {
             foreach (var grid in _cameFrom)
             {
-                grid.Value.ChangeMaterial(groundMaterial);
+                // grid.Value.ChangeMaterial(groundMaterial);
             }
 
             while (_frontierQueue.size > 0)
             {
                 var grid = _frontierQueue.DeleteMin();
-                grid.ChangeMaterial(groundMaterial);
+                // grid.ChangeMaterial(groundMaterial);
             }
 
             _frontierQueue.Clear();
@@ -186,7 +184,7 @@ namespace adefagia.PercobaanPathfinding
         {
             foreach (var grid in _path)
             {
-                grid.ChangeMaterial(groundMaterial);
+                // grid.ChangeMaterial(groundMaterial);
             }
             _path.Clear();
         }
@@ -212,7 +210,7 @@ namespace adefagia.PercobaanPathfinding
             
             foreach (var grid in _path)
             {
-                grid.ChangeMaterial(frontierMaterial);
+                // grid.ChangeMaterial(frontierMaterial);
                 
                 yield return wait;
             }
@@ -227,7 +225,7 @@ namespace adefagia.PercobaanPathfinding
             sb.Append("[ ");
             foreach (var grid in grids)
             {
-                sb.Append(grid.index + " ");
+                // sb.Append(grid.id + " ");
             }
             sb.Append("]");
                 

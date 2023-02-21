@@ -1,71 +1,171 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace adefagia.Graph
 {
     public class GridManager : MonoBehaviour
     {
-
         public int xSize, ySize;
+        public bool border;
         
         // For Debugging
-        public int index;
-        public Vector2 nodeLoc;
+        // public int index;
+        // public Vector2 nodeLoc;
         // ---
 
-        public GameObject emptyPrefab, borderPrefab;
+        public List<GridPrefab> listGridPrefab;
 
         public string mapName = "Map";
     
-        public static bool doneGenerateGrids;
-
-        // Set of nodes
-        private Dictionary<Vector2, Grid> _allGrid;
-        private Dictionary<Transform, Grid> _allGridTransform;
+        private bool _doneGenerateGrids;
+        
+        // List All Grid
+        private Grid[,] _listGrid;
+        // private List<GameObject> _listGridGameObject;
+        private Grid _gridHover, _gridSelect;
 
         private void Awake()
         {
-            _allGrid = new Dictionary<Vector2, Grid>();
-            _allGridTransform = new Dictionary<Transform, Grid>();
-
             GenerateGrids();
-            
             SetNeighbors();
             
-            doneGenerateGrids = true;
-
-            SetGridStatesByMap();
-            // SetGridStatesAllGround();
-        
-            InstantiateGameObjects();
+            // _doneGenerateGrids = true;
             
-            GenerateBorder();
+            // GenerateBorder();
         }
 
-        void GenerateGrids()
+        private void Start()
         {
+            // Debug.Log(GameManager.instance.gridManager.GetPrefab(GridType.Ground)?.name);
+            // Debug.Log(GetGridByLocation(new Vector2(4, 0)));
+            // Debug.Log(GetGridByLocation(new Vector2(3, 0))?.neighbors[0].GridGameObject.name);
+        }
+
+        private void GenerateGrids()
+        {
+            _listGrid = new Grid[xSize, ySize];
+            
+            // Map String
+            var map = ReadFile("Assets/Resources/"+ mapName +".txt");
+            
+            // If map empty break generate grid
+            if(map == string.Empty || map.Length != xSize*ySize) return;
+
             // Set all Grid by (x,y)
-            for (int i = 0, y = 0; y < ySize; y++)
+            for (int i = 0, y = ySize-1; y >= 0 ; y--)
             {
-                for (int x = 0; x < xSize; x++, i++)
+                for (var x = 0; x < xSize; x++, i++)
                 {
                     // Add every node
-                    Grid grid = new Grid(i, new Vector2(x, y));
-                
-                    // Add into Dictionary
-                    _allGrid[grid.location] = grid;
+                    // Set location (x,y)
+                    // Set type of grid (by map)
+                    var grid = new Grid(this, new Vector2(x, y), GetGridTypeByChar(map[i]));
+
+                    // Add into List grid Object
+                    _listGrid[x, y] = grid;
                 }
             }
+        }
+
+        
+        [CanBeNull]
+        public GameObject GetPrefab(GridType gridType)
+        {
+            // Check if gridType is equal in each ListGridPrefab
+            foreach (var data in listGridPrefab.Where(data => data.dataPrefab.gridType == gridType))
+            {
+                return data.dataPrefab.prefab;
+            }
+
+            Debug.LogWarning(gridType + " must be listed in GridManager", transform);
+            return null;
+        }
+
+        [CanBeNull]
+        public Grid GetGridByLocation(Vector2 location)
+        {
+            var x = (int) location.x;
+            var y = (int) location.y;
+            
+            // Make sure (x,y) in range of grid Size
+            if (x < 0 || x > xSize - 1 || y < 0 || y > ySize - 1)
+            {
+                // Debug.LogWarning($"({x},{y}) Index is out of range");
+                return null;
+            }
+            
+            return _listGrid[x, y];
+        }
+
+        public static bool CheckGround(Grid grid)
+        {
+            return grid.GridType == GridType.Ground;
+        }
+
+        private void ChangeHover(Grid grid)
+        {
+            // First time initialize
+            if (_gridHover.IsUnityNull())
+            {
+                _gridHover = grid;
+                _gridHover.Hover(true);
+            }
+            else
+            {
+                // different grid disable old grid hover
+                if (grid.Equals(_gridHover)) return;
+                
+                _gridHover.Hover(false);
+                _gridHover = grid;
+                _gridHover.Hover(true);
+            }
+        }
+        
+        private void ChangeSelect(Grid grid)
+        {
+            // First time initialize
+            if (_gridSelect.IsUnityNull())
+            {
+                _gridSelect = grid;
+                _gridSelect.Selected(true);
+            }
+            else
+            {
+                // different grid disable old grid hover
+                if (grid.Equals(_gridSelect)) return;
+                
+                _gridSelect.Selected(false);
+                _gridSelect = grid;
+                _gridSelect.Selected(true);
+            }
+        }
+
+        public void Hover(GameObject gridGameObject)
+        {
+            // Debug.Log("Hover");
+            var grid = gridGameObject.GetComponent<GridStatus>().Grid;
+            ChangeHover(grid);
+        }
+
+        public void GridClick(GameObject gridGameObject)
+        {
+            // Debug.Log("click");
+            var grid = gridGameObject.GetComponent<GridStatus>().Grid;
+            // grid.Selected();
+            ChangeSelect(grid);
         }
 
         void SetNeighbors()
         {
             // Set all grid neighbors
-            foreach (var grid in _allGrid.Values)
+            foreach (var grid in _listGrid)
             {
                 // Add neighbor
                 // Add 4 : right, up, left, down
@@ -74,147 +174,70 @@ namespace adefagia.Graph
                 
                 for (var i=0; i<dirs.Length; i++)
                 {
-                    grid.neighbors[i] = GetGridByLocation(grid.location + dirs[i]);
+                    var location = grid.location + dirs[i];
+                    var neighbor = GetGridByLocation(location);
+                    grid.neighbors[i] = neighbor;
+                    
+                    // If neighbor is null make it border game object
+                    if(grid.neighbors[i].IsUnityNull() && border) InstantiateBorder(location);
                 }
             }
             
+            if(border) InstantiateBorderCorner();
         }
 
-        void SetGridStatesByMap()
-        {
-            var map = ReadFile("Assets/Resources/"+ mapName +".txt");
-            
-            // If Map Empty generate all ground
-            if (map.Length == 0)
-            {
-                SetGridStatesAllGround();
-                return;
-            }
-
-            // State of grid:
-            // [-] empty
-            // [o] ground
-            
-            // From yUp -> yDown
-            for (int i = 0, y = ySize-1; y >= 0; y--)
-            {
-                // From xLeft -> xRight
-                for (int x = 0; x < xSize; x++, i++)
-                {
-                    try
-                    {
-                        // Set State each grid
-                        var grid = GetGridByLocation(new Vector2(x, y));
-                        SetStateByChar(map[i], grid);
-                    }
-                    // catch error if Map char have not same size as AllGrid
-                    catch (IndexOutOfRangeException)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-        
-        void SetGridStatesAllGround()
-        {
-            // Default State
-            foreach (var grid in _allGrid.Values)
-            {
-                grid.state = State.Ground;
-            }
-        }
-
-        private void SetStateByChar(char character, Grid grid)
+        private GridType GetGridTypeByChar(char character)
         {
             // Set State by char
             switch (character)
             {
                 case '-':
-                    grid.state = State.Empty;
-                    break;
+                    return GridType.Empty;
                     
                 case 'o':
-                    grid.state = State.Ground;
-                    break;
+                    return GridType.Ground;
+                
+                default:
+                    return GridType.Empty;
             }
+
         }
 
-        private void InstantiateGameObjects()
+        void InstantiateBorder(Vector2 location)
         {
-            foreach (var grid in _allGrid.Values)
-            {
-                // Instantiate gameObject according to State
-                switch (grid.state)
-                {
-                    case State.Ground:
-                        var ground = Instantiate(emptyPrefab, grid.GetLocation(), emptyPrefab.transform.rotation, transform);
-                        ground.name = "Ground " + grid.index;
-                        
-                        grid.SetGameObject(ground);
-                        
-                        // Add to Dictionary
-                        _allGridTransform[ground.transform] = grid;
-                        
-                        break;
-                }
-            }
+            var loc3 = new Vector3(location.x, 0, location.y);
+            var borderPrefab = GetPrefab(GridType.Border);
+            if(borderPrefab.IsUnityNull()) return;
+            Instantiate(borderPrefab, loc3, Quaternion.identity);
         }
 
-        void GenerateBorder()
+        void InstantiateBorderCorner()
         {
-            for (int y = -1; y < ySize+1; y++)
-            {
-                for (int x = -1; x < xSize+1; x++)
-                {
-                    if ((x < 0 || y < 0 ) || (x > xSize-1 || y > xSize-1))
-                    {
-                        Instantiate(borderPrefab, new Vector3(x,0,y), Quaternion.identity, transform);
-                    }
-                }
-            }
+            InstantiateBorder(new Vector2(-1,-1));
+            InstantiateBorder(new Vector2(xSize,-1));
+            InstantiateBorder(new Vector2(-1,ySize));
+            InstantiateBorder(new Vector2(xSize,ySize));
         }
         
         public static bool IsGridEmpty(Grid grid)
         {
-            if (grid.IsUnityNull()) return true;
-            return grid.IsEmpty();
+            // return grid.IsUnityNull() || grid.IsEmpty();
+            throw new NotImplementedException();
         }
 
-        public Grid GetGridByLocation(Vector2 loc)
-        {
-            return _allGrid.TryGetValue(loc, out Grid node) ? node : null;
-        }
-
-        public Grid GetGridByTransform(Transform iTransform)
-        {
-            return _allGridTransform.TryGetValue(iTransform, out Grid node) ? node : null;
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (_allGrid.IsUnityNull()) return;
-            if (!doneGenerateGrids) return;
-    
-            foreach (var grid in _allGrid)
-            {
-                if (!grid.Value.IsUnityNull())
-                {
-                    Gizmos.color = Color.black;
-                    Gizmos.DrawSphere(grid.Value.GetLocation(), 0.1f);
-                
-                    Gizmos.color = Color.blue;
-                    foreach (var neighbor in grid.Value.neighbors)
-                    {
-                        if (!neighbor.IsUnityNull())
-                        {
-                            Gizmos.DrawLine(neighbor.GetLocation(), grid.Value.GetLocation());
-                        }
-                    }
-                
-                }
-            }
-        }
+        /// <summary>
+        /// For Debugging in Edit Mode
+        /// </summary>
+        // private void OnDrawGizmos()
+        // {
+        //     if (!_doneGenerateGrids) return;
+        //
+        //     foreach (var grid in _listGrid)
+        //     {
+        //         Gizmos.color = Color.black;
+        //         Gizmos.DrawSphere(grid.GetLocation(), 0.1f);
+        //     }
+        // }
 
         string ReadFile(string pathFile)
         {
@@ -241,7 +264,7 @@ namespace adefagia.Graph
         {
             // Replace invalid characters with empty strings.
             try {
-                return Regex.Replace(strIn, @"[^\w\.@-]", "",
+                return Regex.Replace(strIn, @"[^\w-]", "",
                     RegexOptions.None, TimeSpan.FromSeconds(1.5));
             }
             // If we timeout when replacing invalid characters,

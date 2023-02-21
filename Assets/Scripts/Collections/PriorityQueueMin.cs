@@ -145,7 +145,7 @@ namespace adefagia.Collections
             sb.Append("[ ");
             foreach (var grid in heap)
             {
-                sb.Append(grid.index + ", ");
+                // sb.Append(grid.id + ", ");
             }
             sb.Append("]");
         

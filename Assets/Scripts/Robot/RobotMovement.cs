@@ -12,11 +12,15 @@ namespace adefagia.Robot
 {
     public class RobotMovement : MonoBehaviour
     {
-        
         public Vector2 endLocation;
         
         private Grid _grid;
+        private Grid _robotLastGrid;
         private GridManager _gridManager;
+
+        private Robot _robot;
+
+        // public bool teamActive;
 
         private void Start()
         {
@@ -25,36 +29,48 @@ namespace adefagia.Robot
         
         void Update()
         {
-            if (!Spawner.doneSpawn) return;
-
+            
+            // if (active)
+            // {
+            //     if (teamActive)
+            //     {
+            //         // GameManager.instance.spawnManager.SelectRobot(_robot);
+            //     }
+            // }
+            
             if (Input.GetKeyDown(KeyCode.L))
             {
-                ChangeGridBerdiri(_grid.Right);
-                MoveToGrid(_grid);
+                ChangeGridIdle(_grid.Right);
+                MovePositionToGrid(_grid);
             }
             if (Input.GetKeyDown(KeyCode.I))
             {
-                ChangeGridBerdiri(_grid.Up);
-                MoveToGrid(_grid);
+                ChangeGridIdle(_grid.Up);
+                MovePositionToGrid(_grid);
             }
             if (Input.GetKeyDown(KeyCode.J))
             {
-                ChangeGridBerdiri(_grid.Left);
-                MoveToGrid(_grid);
+                ChangeGridIdle(_grid.Left);
+                MovePositionToGrid(_grid);
             }
             if (Input.GetKeyDown(KeyCode.K))
             {
-                ChangeGridBerdiri(_grid.Down);
-                MoveToGrid(_grid);
+                ChangeGridIdle(_grid.Down);
+                MovePositionToGrid(_grid);
             }
-            
+
             if (Input.GetKeyDown(KeyCode.P))
             {
                 Move(endLocation);
             }
         }
 
-        public void Move(Vector2 location)
+        public void SetRobot(Robot robot)
+        {
+            _robot = robot;
+        }
+
+        public bool Move(Vector2 location)
         {
             var aStar = new AStar();
             var end = _gridManager.GetGridByLocation(location);
@@ -62,33 +78,65 @@ namespace adefagia.Robot
             if(GridManager.IsGridEmpty(end))
             {
                 Debug.LogWarning("Grid not found", this);
-                return;
+                return false;
             }
 
-            aStar.Pathfinding(_grid, end);
+            // if (end.IsOccupied())
+            // {
+            //     Debug.LogWarning("Grid is occupied", this);
+            //     return false;
+            // }
+
+            if (aStar.Pathfinding(_grid, end))
+            {
                 
-            var path = aStar.Traversal(_grid, end);
-            StartCoroutine(MoveToPath(path));
+                var path = aStar.Traversal(_grid, end);
+                StartCoroutine(MoveToPath(path));
+
+                aStar.DebugListGrid(path);
+                _robotLastGrid = path[^1];
+
+                return true; 
+            }
+
+            _robotLastGrid = aStar.GetFirstOccupied();
+            
+            if (_robotLastGrid.IsUnityNull())
+            {
+                Debug.LogWarning("Jalan Buntu");
+                return false;
+            }
+            
+            var blocked = aStar.Traversal(_grid, _robotLastGrid);
+            StartCoroutine(MoveToPath(blocked));
+
+            Debug.LogWarning("Blocked by other");
+            return true;
         }
 
-        public void ChangeGridBerdiri(Grid grid)
+        public void ChangeGridIdle(Grid grid)
         {
             if (GridManager.IsGridEmpty(grid)) return;
         
             _grid = grid;
         }
 
-        void MoveToGrid(Grid grid)
+        public Grid GetLast()
         {
-            transform.position = grid.GetLocation( );
+            return _robotLastGrid;
+        }
+
+        public void MovePositionToGrid(Grid grid)
+        {
+            transform.position = grid.GetLocation(y:1);
         }
 
         IEnumerator MoveToPath(List<Grid> path)
         {
             foreach (var grid in path)
             {
-                ChangeGridBerdiri(grid);
-                MoveToGrid(grid);
+                ChangeGridIdle(grid);
+                MovePositionToGrid(grid);
 
                 yield return new WaitForSeconds(0.1f);
             }
@@ -96,12 +144,13 @@ namespace adefagia.Robot
         
         private void OnGUI()
         {
-        
-            if (!GridManager.doneGenerateGrids) return;
+            // if(!teamActive) return;
+            // if(!active) return;
+            // if (!GridManager.doneGenerateGrids) return;
             if (_grid.IsUnityNull()) return;
         
-            var textLeft = $"Berdiri {_grid.location.x}, {_grid.location.y}"; 
-            GUI.Box (new Rect (10,Screen.height-10-50,100,50), textLeft);
+            // var textLeft = $"Berdiri {_grid.location.x}, {_grid.location.y}"; 
+            // GUI.Box (new Rect (10,Screen.height-10-50,100,50), textLeft);
         
             var text = "";
         
@@ -112,7 +161,7 @@ namespace adefagia.Robot
             DebugNeighborPosition(textTopRight, "Kiri", _grid.Left);
             DebugNeighborPosition(textTopRight, "Bawah", _grid.Down);
         
-            text = $"Node {_grid.index} = ({_grid.location.x},{_grid.location.y})";
+            // text = $"Node {_grid.id} = ({_grid.location.x},{_grid.location.y})";
 
             // Make a background box
             GUI.Box(new Rect(10, 10, 100, 50), text);
@@ -124,7 +173,7 @@ namespace adefagia.Robot
         {
             try
             {
-                sb.Append($"\n{position}: {grid.state}");
+                // sb.Append($"\n{position}: {grid.gridType}");
             }
             catch (NullReferenceException)
             {

@@ -1,58 +1,74 @@
-﻿using Unity.VisualScripting;
+﻿using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace adefagia.Graph
 {
     public class Grid
     {
-        public int index;
-        public float priority;
-        public int weight;
+        private readonly GridManager _gridManager;
+        public readonly Vector2 location;
+        public GridType GridType { get; }
+        public GameObject GridGameObject { get; }
 
-        public Vector2 location;
-        public State state;
         public Grid[] neighbors;
-        public bool occupied;
+        
+        public float priority;
 
-        private GameObject _gameObject;
-        private Material _material;
-        private Material _defaultMaterial;
+        public bool Occupied { get; private set; }
+        public bool IsHover { get; private set; }
+        public bool IsSelect { get; private set; }
 
-        public Grid(int index, Vector2 location, int weight = 1, float priority = 0)
+        public Grid(GridManager gridManager, Vector2 location, GridType gridType)
         {
-            this.index = index;
+            _gridManager = gridManager;
             this.location = location;
-            this.priority = priority;
-            this.weight = weight;
+            GridType = gridType;
+
+            neighbors = new Grid[4];
+
+            GridGameObject = Instantiate();
+        }
+
+        private GameObject Instantiate()
+        {
+            var prefab = _gridManager.GetPrefab(GridType);
+            if (prefab.IsUnityNull()) return null;
             
-            state = State.Empty;
-            occupied = false;
+            var gridGameObject = Object.Instantiate(prefab, GetLocation(), prefab!.transform.rotation, _gridManager.transform);
+            gridGameObject.name = $"Grid ({location.x},{location.y})";
+            
+            // Set reference to GridStatus
+            gridGameObject.GetComponent<GridStatus>().Grid = this;
+
+            return gridGameObject;
         }
 
         public Vector3 GetLocation(float x = 0, float y = 0, float z = 0)
         {
-            return new Vector3(location.x+x, 0f+y, location.y+z);
+            return Vec2ToVec3(location) + new Vector3(x,y,z);
         }
 
-        public bool IsEmpty()
+        public static Vector3 Vec2ToVec3(Vector2 loc)
         {
-            return state == State.Empty;
+            return new Vector3(loc.x, 0f, loc.y);
         }
 
-        public void SetGameObject(GameObject gameObject)
+        public void Occupy()
         {
-            _gameObject = gameObject;
-            _material = _gameObject.GetComponent<MeshRenderer>().material;
-        }
-
-        public void ChangeMaterial(Material material)
-        {
-            _gameObject.GetComponent<MeshRenderer>().material = material;
+            Occupied = true;
         }
         
-        public void ResetMaterial()
+        public void Selected(bool value)
         {
-            _gameObject.GetComponent<MeshRenderer>().material = _material;
+            IsSelect = value;
+        }
+
+        public void Hover(bool value)
+        {
+            IsHover = value;
         }
 
         public Grid Right => neighbors[0];
@@ -61,8 +77,9 @@ namespace adefagia.Graph
         public Grid Down => neighbors[3];
     }
 
-    public enum State {
+    public enum GridType {
         Empty,
-        Ground
+        Ground,
+        Border
     }
 }

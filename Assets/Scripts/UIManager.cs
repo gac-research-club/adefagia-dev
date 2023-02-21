@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace adefagia
@@ -8,6 +9,8 @@ namespace adefagia
         private GameManager _gameManager;
 
         public TMP_InputField inputFieldLocation;
+
+        public int robotId;
         
         void Start()
         {
@@ -22,8 +25,12 @@ namespace adefagia
             var endLocation = new Vector2();
             endLocation.x = float.Parse(s[0]);
             endLocation.y = float.Parse(s[1]);
+
+            // var robot = _gameManager.spawnManager.GetRobot();
+            // var robot = _gameManager.robotManager.spawner.GetRobotById(robotId);
+            // if (robot.IsUnityNull()) return;
             
-            _gameManager.robotManager.spawner.GetRobot().Move(endLocation);
+            // robot.Move(endLocation);
         }
     }
 }

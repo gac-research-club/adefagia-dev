@@ -1,43 +1,100 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using adefagia.Graph;
+using Unity.VisualScripting;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace adefagia.Robot
 {
-    public class Spawner : MonoBehaviour
+    public class Spawner
     {
-        public static bool doneSpawn;
+        public GameObject SpawnerGameObject { get; }
         
-        public GameObject robotPrefab;
+        private RobotTeam RobotTeam { get; }
+        public RobotManager RobotManager { get; }
 
-        public Vector2 spawnCoord;
+        public int totalTurn;
+        
+        public int turnId;
 
-        private GameObject _robot;
+        public bool active;
+
+        [Space(5f)]
+        
+        private int _turn;
+
+        // private List<int> _robotsId;
+        private Dictionary<int, Robot> _robots;
 
         private GridManager _gridManager;
-        private void Start()
-        {
-            _gridManager = GameManager.instance.gridManager;
-            StartCoroutine(SpawnRobot(spawnCoord));
-        }
 
-        IEnumerator SpawnRobot(Vector2 loc)
+        public Spawner(RobotManager robotManager, RobotTeam team)
         {
-            while (!GridManager.doneGenerateGrids)
+            RobotTeam = team;
+            RobotManager = robotManager;
+            
+            SpawnerGameObject = Instantiate();
+            
+            SpawnRobot();
+        }
+        
+        private GameObject Instantiate()
+        {
+            var spawner = new GameObject
             {
-                yield return null;
-            }
+                transform =
+                {
+                    parent = RobotManager.transform
+                },
+                name = "Spawner " + RobotTeam.name 
+            };
 
-            yield return new WaitForSeconds(1);
-            _robot = Instantiate(robotPrefab, transform);
-            _robot.GetComponent<RobotMovement>().ChangeGridBerdiri(_gridManager.GetGridByLocation(loc));
-
-            doneSpawn = true;
+            return spawner;
         }
 
-        public RobotMovement GetRobot()
+        private void SpawnRobot()
         {
-            return _robot.GetComponent<RobotMovement>();
+            _robots = new Dictionary<int, Robot>();
+            
+            foreach (var robotPrefab in RobotTeam.dataRobot)
+            {
+                try
+                {
+                    var robot = new Robot(this, robotPrefab);
+                    _robots.Add(robotPrefab.id, robot);
+                }
+                catch (ArgumentException)
+                {
+                    Debug.LogWarning($"Robot ID:{robotPrefab.id} Already Available");
+                }
+                
+            }
         }
+
+        public Robot GetRobotById(int id)
+        {
+            return _robots[id];
+        }
+        
+        // public Robot GetRobotByTurn()
+        // {
+        //     if (totalTurn < 1) return null;
+        //     
+        //     turnId = _robotsId[_turn];
+        //     return GetRobotById(_robotsId[_turn]);
+        // }
+
+        // public void FinishTurn()
+        // {
+        //     GetRobotByTurn().Deactivate();
+        //     _turn++;
+        //     if (_turn > totalTurn-1)
+        //     {
+        //         _turn = 0;
+        //     }
+        //     GetRobotByTurn().Activate();
+        // }
     }
 }

@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 7630436462596070248}
   - component: {fileID: 642915780631610011}
   - component: {fileID: 5381004629573015637}
+  - component: {fileID: 9010212623947557528}
   m_Layer: 7
-  m_Name: Quad
+  m_Name: Quad 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,3 +99,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &9010212623947557528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5304201679646220878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2d59179ff801864caace6df411d095c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  occupiedMaterial: {fileID: 2100000, guid: d13fc0172e8d95645b37cbbc29a0d83d, type: 2}
+  selectMaterial: {fileID: 2100000, guid: b517c1fa2da222f40a84f186cde6626f, type: 2}
+  hoverMaterial: {fileID: 2100000, guid: c0c694a4af55fba419239819c8224694, type: 2}

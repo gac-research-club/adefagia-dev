@@ -2,6 +2,7 @@
 using System.Text;
 using adefagia.Collections;
 using adefagia.Graph;
+using Unity.VisualScripting;
 using UnityEngine;
 using Grid = adefagia.Graph.Grid;
 
@@ -18,6 +19,9 @@ namespace adefagia.PercobaanPathfinding
         // CameFrom
         private Dictionary<Grid, Grid> _cameFrom;
 
+        // if Blocked by occupied grid
+        private Grid _firstOccupied;
+
         public AStar()
         {
             _frontierQueue = new PriorityQueueMin();
@@ -25,7 +29,7 @@ namespace adefagia.PercobaanPathfinding
             _cameFrom = new Dictionary<Grid, Grid>();
         }
 
-        public void Pathfinding(Grid start, Grid end)
+        public bool Pathfinding(Grid start, Grid end)
         {
             var costSoFar = new Dictionary<Grid, float>();
             
@@ -37,13 +41,22 @@ namespace adefagia.PercobaanPathfinding
             {
                 var current = _frontierQueue.DeleteMin();
                 
-                if (current.Equals(end)) return;
+                if (current.Equals(end)) return true;
 
                 // Looking Neighbor
                 foreach (var neighbor in current.neighbors)
                 {
                     // Set neighbor came from
                     if (GridManager.IsGridEmpty(neighbor)) continue;
+                    // if (neighbor.IsOccupied())
+                    // {
+                    //     if (_firstOccupied.IsUnityNull())
+                    //     {
+                    //         _firstOccupied = current;
+                    //     }
+                    //     continue;
+                    // }
+                    
                     if (reached.Contains(neighbor)) continue;
 
                     var newCost = costSoFar[current] + 1;
@@ -52,7 +65,7 @@ namespace adefagia.PercobaanPathfinding
                     costSoFar[neighbor] = newCost;
 
                     if (newCost > costSoFar[neighbor]) continue;
-                    neighbor.priority = newCost + Heuristic(end.location, neighbor.location);
+                    // neighbor.priority = newCost + Heuristic(end.location, neighbor.location);
                     
                     _cameFrom[neighbor] = current;
                     _frontierQueue.Insert(neighbor);
@@ -61,12 +74,15 @@ namespace adefagia.PercobaanPathfinding
                 // Has reached
                 reached.Add(current);
             }
+
+            // Debug.Log(_firstOccupied.index);
+            return false;
         }
 
         public List<Grid> Traversal(Grid start, Grid end)
         {
             var path = new List<Grid>();
-
+            
             var current = end;
             
             while (!current.Equals(start))
@@ -79,6 +95,11 @@ namespace adefagia.PercobaanPathfinding
 
             return path;
         }
+
+        public Grid GetFirstOccupied()
+        {
+            return _firstOccupied;
+        }
         
         public void DebugListGrid(List<Grid> grids)
         {
@@ -86,7 +107,7 @@ namespace adefagia.PercobaanPathfinding
             sb.Append("[ ");
             foreach (var grid in grids)
             {
-                sb.Append(grid.index + " ");
+                // sb.Append(grid.id + " ");
             }
             sb.Append("]");
                 

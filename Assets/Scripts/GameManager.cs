@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using adefagia.Graph;
+using adefagia.Robot;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace adefagia
         // All Manager
         public GridManager gridManager;
         public RobotManager robotManager;
+        public UIManager uiManager;
 
         private void Awake()
         {
