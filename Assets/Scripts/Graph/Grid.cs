@@ -12,9 +12,10 @@ namespace adefagia.Graph
         public Vector2 location;
         public State state;
         public Grid[] neighbors;
+        public Grid[] movementGrid;
         public bool occupied;
 
-        private GameObject _gameObject;
+        public GameObject _gameObject;
         private Material _material;
         private Material _defaultMaterial;
 

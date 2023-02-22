@@ -9,6 +9,7 @@ namespace adefagia.Graph
 {
     public class GridManager : MonoBehaviour
     {
+        public GameObject ground;
 
         public int xSize, ySize;
         
@@ -25,7 +26,7 @@ namespace adefagia.Graph
 
         // Set of nodes
         private Dictionary<Vector2, Grid> _allGrid;
-        private Dictionary<Transform, Grid> _allGridTransform;
+        public Dictionary<Transform, Grid> _allGridTransform;
 
         private void Awake()
         {
@@ -148,7 +149,7 @@ namespace adefagia.Graph
                 switch (grid.state)
                 {
                     case State.Ground:
-                        var ground = Instantiate(emptyPrefab, grid.GetLocation(), emptyPrefab.transform.rotation, transform);
+                        ground = Instantiate(emptyPrefab, grid.GetLocation(), emptyPrefab.transform.rotation, transform);
                         ground.name = "Ground " + grid.index;
                         
                         grid.SetGameObject(ground);

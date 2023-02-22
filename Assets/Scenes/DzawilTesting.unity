@@ -643,9 +643,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 721393618b39173448a8b5bcad77fbaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lastLoc: {x: 0, y: 0}
   gameInput: {fileID: 920596102}
+  gridManager: {fileID: 1139746140}
   actionButton: {fileID: 670216712}
   color: {r: 0.37254903, g: 0.80784315, b: 1, a: 1}
+  robotMovement: {fileID: 1442447536221466460, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
 --- !u!4 &473358060
 Transform:
   m_ObjectHideFlags: 0
@@ -1387,6 +1390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0dc1c4b40d68c4fb08ac7f6ffe4b62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ground: {fileID: 0}
   xSize: 10
   ySize: 10
   index: 0
