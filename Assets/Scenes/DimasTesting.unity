@@ -1781,19 +1781,31 @@ MonoBehaviour:
   - name: TeamA
     dataRobot:
     - id: 100
-      location: {x: 0, y: 0}
+      location: {x: 0, y: 2}
       gameObject: {fileID: 8125765562878820399, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
+      status:
+        healthPoint: 0
+        attackDamage: 0
     - id: 101
       location: {x: 8, y: 0}
       gameObject: {fileID: 8125765562878820399, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
+      status:
+        healthPoint: 0
+        attackDamage: 0
   - name: TeamB
     dataRobot:
     - id: 200
-      location: {x: 2, y: 9}
+      location: {x: 2, y: 5}
       gameObject: {fileID: 8125765562878820399, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
+      status:
+        healthPoint: 0
+        attackDamage: 0
     - id: 201
-      location: {x: 7, y: 9}
+      location: {x: 7, y: 5}
       gameObject: {fileID: 8125765562878820399, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
+      status:
+        healthPoint: 0
+        attackDamage: 0
 --- !u!114 &2073969577
 MonoBehaviour:
   m_ObjectHideFlags: 0

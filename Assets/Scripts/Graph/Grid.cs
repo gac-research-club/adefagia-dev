@@ -20,7 +20,10 @@ namespace adefagia.Graph
 
         public bool IsOccupied { get; private set; }
         public bool IsHover { get; private set; }
-        public bool IsSelect { get; private set; }
+        public bool IsHighlight { get; set; }
+        public bool IsSelect { get; set; }
+
+        public Robot.Robot Robot { get; set; }
 
         public Grid(GridManager gridManager, Vector2 location, GridType gridType)
         {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using adefagia.Collections;
 using adefagia.Graph;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace adefagia
@@ -9,6 +10,8 @@ namespace adefagia
     {
         public BattlePhase battlePhase;
         private Dictionary<SelectType, Select> SelectManager { get; set; }
+
+        private Robot.Robot _robot;
 
         private void Start()
         {
@@ -25,24 +28,42 @@ namespace adefagia
         // Update is called once per frame
         void Update()
         {
-            Battle();
+            Selecting();
+
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                // Skip
+                _robot.ResetDefaultGrid();
+                _robot = null;
+                GameManager.instance.robotManager.DeleteRobotSelect();
+            }
         }
 
-        private void Battle()
+        private void Selecting()
         {
             if (GameManager.instance.robotManager.IsRobotSelect())
             {
-                battlePhase = BattlePhase.SelectingGrid;
+                battlePhase = BattlePhase.Move;
+                if (_robot.IsUnityNull())
+                {
+                    _robot = GameManager.instance.robotManager.GetRobotSelect();
+                    _robot.ClearGridRange();
+                    _robot.SetGridRange();
+                }
+            }
+            else
+            {
+                battlePhase = BattlePhase.Select;
             }
             
             switch (battlePhase)
             {
-                case BattlePhase.SelectingRobot:
+                case BattlePhase.Select:
                     DisableSelecting(SelectType.Grid);
-                    // EnableSelecting(SelectType.Robot);
+                    EnableSelecting(SelectType.Robot);
                     break;
                     
-                case BattlePhase.SelectingGrid:
+                case BattlePhase.Move:
                     DisableSelecting(SelectType.Robot);
                     EnableSelecting(SelectType.Grid);
                     break;
@@ -75,7 +96,8 @@ namespace adefagia
 
     public enum BattlePhase
     {
-        SelectingRobot,
-        SelectingGrid
+        Select,
+        Move,
+        Attack
     }
 }

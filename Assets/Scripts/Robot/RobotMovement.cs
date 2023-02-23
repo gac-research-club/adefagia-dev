@@ -55,6 +55,9 @@ namespace adefagia.Robot
                     // Change robot grid to end, then Occupy it
                     Robot.Move(end);
                     Robot.Grid.Occupy();
+                    
+                    Robot.ResetDefaultGrid();
+                    Robot.SetGridRange();
 
                     return true;
                 }
@@ -73,10 +76,16 @@ namespace adefagia.Robot
             transform.position = grid.GetLocation();
         }
 
+        private void RotateRobot(Grid grid)
+        {
+            transform.LookAt(grid.GetLocation());
+        }
+
         IEnumerator MoveToPath(List<Grid> path)
         {
             foreach (var grid in path)
             {
+                RotateRobot(grid);
                 MovePositionToGrid(grid);
 
                 yield return new WaitForSeconds(0.1f);
