@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using adefagia.Collections;
+using adefagia.Robot;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -115,7 +116,7 @@ namespace adefagia.Graph
         }
 
         [CanBeNull]
-        public Grid GetGridByLocation(Vector2 location)
+        public Grid GetGridByLocation(Vector2 location, bool showMessage = false)
         {
             var x = (int) location.x;
             var y = (int) location.y;
@@ -123,7 +124,10 @@ namespace adefagia.Graph
             // Make sure (x,y) in range of grid Size
             if (x < 0 || x > xSize - 1 || y < 0 || y > ySize - 1)
             {
-                // Debug.LogWarning($"({x},{y}) Index is out of range");
+                if (showMessage)
+                {
+                    Debug.LogWarning($"({x},{y}) Index is out of range");
+                }
                 return null;
             }
             
@@ -146,7 +150,15 @@ namespace adefagia.Graph
         {
             // Debug.Log("Hover");
             var grid = gridGameObject.GetComponent<GridStatus>().Grid;
-            Select.ChangeHover(grid);
+            var robot = GameManager.instance.robotManager.GetRobotSelect();
+            
+            if(robot.IsUnityNull()) return;
+            
+            // Only hover on specific grid
+            if (robot.IsInGridRange(grid))
+            {
+                Select.ChangeHover(grid);
+            }
         }
 
         public void MouseNotHover()
@@ -158,7 +170,9 @@ namespace adefagia.Graph
         {
             // Debug.Log("click");
             var grid = gridGameObject.GetComponent<GridStatus>().Grid;
-            if (!grid.IsOccupied)
+
+            // Only select on specific grid
+            if (!grid.IsOccupied && grid.IsHover)
             {
                 Select.ChangeSelect(grid);
             }
