@@ -15,12 +15,12 @@ namespace adefagia
         private Transform highlight;
         private Transform selection;
         private RaycastHit raycastHit;
-
         [SerializeField] private GameInput gameInput;
+        [SerializeField] private Color color;
+        
+        [SerializeField] private PlayerAction.MoveAction moveAction;
         [SerializeField] private Graph.GridManager gridManager;
         [SerializeField] private GameObject actionButton;
-        [SerializeField] private Color color;
-        [SerializeField] private Robot.RobotMovement robotMovement;
 
         private void Start()
         {
@@ -41,17 +41,17 @@ namespace adefagia
                 highlight = null;
                 actionButton.SetActive(true);
 
-                ShowHighlight();
+                // ShowHighlight(highlightPattern.movementPattern);
             }
             else
             {
-                if (selection)
+                if (!EventSystem.current.IsPointerOverGameObject() && selection)
                 {
                     selection.gameObject.GetComponent<Outline>().enabled = false;
                     selection = null;
                     actionButton.SetActive(false);
 
-                    ShowHighlight();
+                    moveAction.MoveButtonOnDisable();
                 }
             }
         }
@@ -61,13 +61,12 @@ namespace adefagia
             Highlight();
         }
 
-        private void ShowHighlight()
+        private void ShowHighlight(Vector2[] pattern)
         {
-            var grid = gridManager.GetGridByLocation(lastLoc);
-            // Debug.Log(lastLoc);
-
             // Add 8 BasicMovement Pattern : right, up, left, down, + 4 diagonal quads
-            Vector2[] dirsMovement = { Vector2.right, Vector2.up, Vector2.left, Vector2.down, new Vector2(-1,1), new Vector2(-1,-1), new Vector2(1,1), new Vector2(1,-1) };
+            Vector2[] dirsMovement = pattern;
+            
+            var grid = gridManager.GetGridByLocation(lastLoc);
             grid.movementGrid = new Graph.Grid[dirsMovement.Length];
 
             for (var i=0; i<dirsMovement.Length; i++)
@@ -87,30 +86,24 @@ namespace adefagia
                     {
                         if(grids.Value.location == grid.movementGrid[i].location)
                         {
-                            if(selection != null)
-                            {
-                                SetHighlightMovementEnable(grids.Value._gameObject.transform);
-                            } else 
-                            {
-                                Debug.Log(true);
-                                SetHighlightMovementDisable(grids.Value._gameObject.transform);
-                            }
+                                SetHighlightMovement(grids.Value._gameObject.transform, selection);
                         }
                     }
                 }
             }
         }
 
-        public void SetHighlightMovementEnable(Transform grid)
+        public void SetHighlightMovement(Transform grid, Transform selection)
         {
             GameObject highlight = grid.GetChild(0).gameObject;
-            highlight.SetActive(true);
-        }
 
-        public void SetHighlightMovementDisable(Transform grid)
-        {
-            GameObject highlight = grid.GetChild(0).gameObject;
-            highlight.SetActive(false);
+            if(!selection.IsUnityNull())
+            {
+                highlight.SetActive(true);
+            } else 
+            {
+                highlight.SetActive(false);
+            }
         }
 
         private void Highlight()
