@@ -11,14 +11,15 @@ namespace adefagia
         public float baseHp;
         public float currentHp;
         public float damage;
+        public float healAmount;
 
-        public PlayerStats()
-        {
-            name = "Megatron";
-            baseHp = 10f;
-            currentHp = 10f;
-            damage = 2f;
-        }
+        // public PlayerStats()
+        // {
+        //     name = "Megatron";
+        //     baseHp = 10f;
+        //     currentHp = 10f;
+        //     damage = 2f;
+        // }
 
         public bool TakeDamage(float dmg)
         {
