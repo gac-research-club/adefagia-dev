@@ -6,9 +6,11 @@ namespace adefagia.PlayerAction
 {
     public class DefendAction : MonoBehaviour
     {
+        [SerializeField] private PlayerStats playerStats;
+        [SerializeField] private EnemyStats enemyStats;
         public void DefendButtonOnClicked()
         {
-            Debug.Log("defend successful");
+            playerStats.Heal(playerStats.healAmount);
         }
     }
 }

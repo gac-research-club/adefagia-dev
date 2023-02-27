@@ -10,7 +10,13 @@ namespace adefagia.PlayerAction
         [SerializeField] private EnemyStats enemyStats;
         public void AttackButtonOnClicked()
         {
-            enemyStats.TakeDamage(playerStats.damage);
+            bool isDead = enemyStats.TakeDamage(playerStats.damage);
+
+            if (isDead)
+            {
+                Debug.Log("Kamu mati!");
+            }
+
         }
     }
 }
