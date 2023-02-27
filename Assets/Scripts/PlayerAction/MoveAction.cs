@@ -9,9 +9,12 @@ namespace adefagia.PlayerAction
     public class MoveAction : MonoBehaviour
     {
         [SerializeField] private HighlighPattern highlighPattern;
+        [SerializeField] private AttackHighlight attackHighlight;
         public Vector2 playerLocation;
         private Grid[] grid;
         private Vector2[] pattern;
+
+
 
         void Start()
         {
@@ -21,6 +24,7 @@ namespace adefagia.PlayerAction
 
         public void MoveButtonOnClicked()
         {
+            attackHighlight.AttackButtonOnDisable();
             highlighPattern.SetActiveHighlightMovement(grid);
         }
 

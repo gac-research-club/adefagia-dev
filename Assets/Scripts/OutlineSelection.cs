@@ -19,6 +19,7 @@ namespace adefagia
         [SerializeField] private Color color;
         
         [SerializeField] private PlayerAction.MoveAction moveAction;
+        [SerializeField] private PlayerAction.AttackHighlight attackHighlight;
         [SerializeField] private Graph.GridManager gridManager;
         [SerializeField] private GameObject actionButton;
 
@@ -52,6 +53,7 @@ namespace adefagia
                     actionButton.SetActive(false);
 
                     moveAction.MoveButtonOnDisable();
+                    attackHighlight.AttackButtonOnDisable();
                 }
             }
         }

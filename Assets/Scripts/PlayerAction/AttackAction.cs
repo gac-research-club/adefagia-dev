@@ -11,7 +11,6 @@ namespace adefagia.PlayerAction
         public void AttackButtonOnClicked()
         {
             enemyStats.TakeDamage(playerStats.damage);
-
         }
     }
 }
