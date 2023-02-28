@@ -13,11 +13,13 @@ namespace adefagia.PlayerAction
         public Vector2 playerLocation;
         private Grid[] grid;
         private Vector2[] pattern;
+        private bool isHighlighted;
 
 
 
         void Start()
         {
+            isHighlighted = false;
             pattern = highlighPattern.movementPattern;
             grid = highlighPattern.GetHighlightGrid(pattern, playerLocation);
         }
@@ -26,11 +28,16 @@ namespace adefagia.PlayerAction
         {
             attackHighlight.AttackButtonOnDisable();
             highlighPattern.SetActiveHighlightMovement(grid);
+            isHighlighted = true;
         }
 
         public void MoveButtonOnDisable()
         {
+            if(isHighlighted)
+            {
             highlighPattern.SetDisableHighlightMovement(grid);
+            }
+            isHighlighted = false;
         }
     }
 }

@@ -18,15 +18,15 @@ namespace adefagia.PlayerAction
         void Start()
         {
             isHighlighted = false;
-            pattern = highlighPattern.attackPattern;
+            pattern = highlighPattern.attackPatternDiamond;
             grid = highlighPattern.GetHighlightGrid(pattern, playerLocation);
         }
 
         public void AttackButtonOnClicked()
         {
+            moveAction.MoveButtonOnDisable();
             highlighPattern.SetActiveHighlightMovement(grid);
             isHighlighted = true;
-            // moveAction.MoveButtonOnDisable();
         }
 
         public void AttackButtonOnDisable()
