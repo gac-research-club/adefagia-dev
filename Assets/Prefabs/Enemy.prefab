@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4115041775723920449}
   - component: {fileID: 2031448484966099291}
   - component: {fileID: 1017912684528008927}
+  - component: {fileID: 3595040046971190493}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -113,5 +114,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: optimus
   baseHp: 10
-  currentHp: 10
+  currentHp: 98
   damage: 2
+  healAmount: 0
+--- !u!114 &3595040046971190493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3871096852065545214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5444a73167fc1948af1500be47d45a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endLocation: {x: 0, y: 0}
