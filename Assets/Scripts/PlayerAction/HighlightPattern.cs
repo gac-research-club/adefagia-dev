@@ -35,6 +35,14 @@ namespace adefagia.PlayerAction
             new Vector2(-1,2), new Vector2(0,2), new Vector2(1,2), 
             new Vector2(-1,3), new Vector2(0,3), new Vector2(1,3), };
 
+            /*  4 Front Rows Attack Pattern
+                
+                      X 
+                    X X X
+                  X X O X X
+                    X X X
+                      X
+            */
             attackPatternDiamond = new Vector2[] { Vector2.right, Vector2.up , Vector2.left, Vector2.down,
             new Vector2(-1,1), new Vector2(-1,-1), new Vector2(1,1), new Vector2(1,-1),
             new Vector2(0,2), new Vector2(0,-2), new Vector2(-2,0), new Vector2(2,0) 
