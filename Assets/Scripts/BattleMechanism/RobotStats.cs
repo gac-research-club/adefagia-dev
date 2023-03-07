@@ -4,25 +4,17 @@ using UnityEngine;
 
 namespace adefagia
 {
-    public class EnemyStats : MonoBehaviour
+    public class RobotStats : MonoBehaviour
     {
-        public string name;
+        public string robotName;
         public float baseHp;
         public float currentHp;
         public float damage;
         public float healAmount;
 
-        // public EnemyStats()
-        // {
-        //     name = "optimus";
-        //     baseHp = 10f;
-        //     currentHp = 10f;
-        //     damage = 2f;
-        // }
-
         public bool TakeDamage(float dmg)
         {
-            currentHp -= dmg;
+            currentHp -= damage;
             if (currentHp <= 0)
             {
                 return true;

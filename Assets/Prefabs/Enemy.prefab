@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 3768572560806348202}
   - component: {fileID: 4115041775723920449}
   - component: {fileID: 2031448484966099291}
-  - component: {fileID: 1017912684528008927}
   - component: {fileID: 3595040046971190493}
+  - component: {fileID: 7083071089523554986}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Selectable
+  m_TagString: EnemySelectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3871096852065545214}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -100,23 +100,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1017912684528008927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3871096852065545214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbb9933ff4413774faa8bb0b83d8b932, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: optimus
-  baseHp: 10
-  currentHp: 42
-  damage: 2
-  healAmount: 0
 --- !u!114 &3595040046971190493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,3 +113,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endLocation: {x: 0, y: 0}
+--- !u!114 &7083071089523554986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3871096852065545214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8490022a6ad7625498cf66da91968cf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  robotName: Megachan
+  baseHp: 10
+  currentHp: 10
+  damage: 2
+  healAmount: 2

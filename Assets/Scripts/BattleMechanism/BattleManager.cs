@@ -1,16 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Collections;
+using UnityEngine.UI;
 
 namespace adefagia
 {
-    public class OutlineSelection : MonoBehaviour
+    public enum BattleState {START, PLAYERTURN, ENEMYTURN, WON, LOST}
+    public class BattleManager : MonoBehaviour
     {
-        public Vector2 lastLoc;
+        public BattleState state;
+        [SerializeField] RobotStats playerUnit;
+        [SerializeField] RobotStats enemyUnit;
 
         private Transform highlight;
         private Transform selection;
@@ -20,12 +20,24 @@ namespace adefagia
         
         [SerializeField] private PlayerAction.MoveAction moveAction;
         [SerializeField] private PlayerAction.AttackHighlight attackHighlight;
-        [SerializeField] private Graph.GridManager gridManager;
         [SerializeField] private GameObject actionButton;
+        [SerializeField] private Button attackButton;
+        [SerializeField] private Button defendButton;
 
         private void Start()
         {
             gameInput.OnInteractAction += GameInput_OnInteractAction;
+            // foreach (var item in spawner._playerUnit.Values)
+            // {
+            //     playerUnit = item.GetComponent<RobotStats>();
+            // }
+            StartCoroutine(SetupBattle());
+
+        }
+
+        void Update()
+        {
+            Highlight();
         }
 
         private void GameInput_OnInteractAction(object sender, System.EventArgs e)
@@ -42,7 +54,6 @@ namespace adefagia
                 highlight = null;
                 actionButton.SetActive(true);
 
-                // ShowHighlight(highlightPattern.movementPattern);
             }
             else
             {
@@ -58,53 +69,64 @@ namespace adefagia
             }
         }
 
-        void Update()
+        IEnumerator SetupBattle()
         {
-            Highlight();
+            yield return new WaitForSeconds(0f);
+            
+            state = BattleState.PLAYERTURN;
+            PlayerTurn();
         }
 
-        private void ShowHighlight(Vector2[] pattern)
+        void PlayerTurn()
         {
-            // Add 8 BasicMovement Pattern : right, up, left, down, + 4 diagonal quads
-            Vector2[] dirsMovement = pattern;
-            
-            var grid = gridManager.GetGridByLocation(lastLoc);
-            grid.movementGrid = new Graph.Grid[dirsMovement.Length];
+            Debug.Log("Player turn");
+        }
 
-            for (var i=0; i<dirsMovement.Length; i++)
+        void EnemyTurn()
+        {
+            Debug.Log("Enemy turn");
+        }
+
+        public void AttackButtonOnClicked()
+        {
+            bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+            attackButton.interactable = false;
+            if (isDead)
             {
-                grid.movementGrid[i] = gridManager.GetGridByLocation(lastLoc + dirsMovement[i]);
-                if (Graph.GridManager.IsGridEmpty(grid.movementGrid[i]))
-                {
-                    grid.movementGrid[i] = null;
-                } else 
-                {
-                    grid.movementGrid[i] = grid.movementGrid[i];
-                }
-
-                if(grid.movementGrid[i] != null)
-                {
-                    foreach (var grids in gridManager._allGridTransform)
-                    {
-                        if(grids.Value.location == grid.movementGrid[i].location)
-                        {
-                                SetHighlightMovement(grids.Value._gameObject.transform, selection);
-                        }
-                    }
-                }
+                state = BattleState.WON;
+                EndBattle();
             }
         }
 
-        public void SetHighlightMovement(Transform grid, Transform selection)
+        public void DefendButtonOnClicked()
         {
-            GameObject highlight = grid.GetChild(0).gameObject;
+            playerUnit.Heal(playerUnit.healAmount);
+            defendButton.interactable = false;
+        }
 
-            if(!selection.IsUnityNull())
+        void EndBattle()
+        {
+            if(state == BattleState.WON)
             {
-                highlight.SetActive(true);
-            } else 
+                Debug.Log("You Won the battle!");
+            } 
+            else if(state == BattleState.LOST)
             {
-                highlight.SetActive(false);
+                Debug.Log("You were defeated.");
+            }
+        }
+
+        public void EndTurnButtonOnClicked()
+        {
+            if(state == BattleState.PLAYERTURN)
+            {
+                state = BattleState.ENEMYTURN;
+                EnemyTurn();
+            }
+            else
+            {
+                state = BattleState.PLAYERTURN;
+                PlayerTurn();
             }
         }
 
@@ -120,7 +142,21 @@ namespace adefagia
             if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out raycastHit)) //Make sure you have EventSystem in the hierarchy before using EventSystem
             {
                 highlight = raycastHit.transform;
-                if (highlight.CompareTag("Selectable") && highlight != selection)
+                if (highlight.CompareTag("Selectable") && highlight != selection && state == BattleState.PLAYERTURN)
+                {
+                    if (highlight.gameObject.GetComponent<Outline>() != null)
+                    {
+                        highlight.gameObject.GetComponent<Outline>().enabled = true;
+                    }
+                    else
+                    {
+                        Outline outline = highlight.gameObject.AddComponent<Outline>();
+                        outline.enabled = true;
+                        highlight.gameObject.GetComponent<Outline>().OutlineColor = color;
+                        highlight.gameObject.GetComponent<Outline>().OutlineWidth = 8.0f;
+                    }
+                }
+                else if((highlight.CompareTag("EnemySelectable") && highlight != selection && state == BattleState.ENEMYTURN))
                 {
                     if (highlight.gameObject.GetComponent<Outline>() != null)
                     {
@@ -142,3 +178,4 @@ namespace adefagia
         }
     }
 }
+
