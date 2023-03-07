@@ -8,6 +8,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Grid = adefagia.Graph.Grid;
 
+// Using DOTween Plugin
+using DG.Tweening;
+
+
 namespace adefagia.Robot
 {
     public class RobotMovement : MonoBehaviour
@@ -21,6 +25,7 @@ namespace adefagia.Robot
         private void Start()
         {
             _gridManager = GameManager.instance.gridManager;
+
         }
         
         void Update()
@@ -55,6 +60,9 @@ namespace adefagia.Robot
                     // Change robot grid to end, then Occupy it
                     Robot.Move(end);
                     Robot.Grid.Occupy();
+                    
+                    Robot.ResetDefaultGrid();
+                    Robot.SetGridRange();
 
                     return true;
                 }
@@ -65,18 +73,31 @@ namespace adefagia.Robot
             // If end is missing or pathfinding failed
             return false;
         }
-        
 
-        // Only move transform position
+
+        /*----------------------------------------------------------------------------------------------------/
+         * MovePositionToGrid(Grid grid)
+         * Move the Robot into spesific the Grid. Movement is using the transform.position.
+         * Adding transition on movement with DOTween
+         * params: 
+         *  - Grid destinationGrid  // Grid can be got from function GetGridByLocation(vector2 location)
+         *  
+         *----------------------------------------------------------------------------------------------------*/
         private void MovePositionToGrid(Grid grid)
         {
             transform.position = grid.GetLocation();
+        }
+
+        private void RotateRobot(Grid grid)
+        {
+            transform.LookAt(grid.GetLocation());
         }
 
         IEnumerator MoveToPath(List<Grid> path)
         {
             foreach (var grid in path)
             {
+                RotateRobot(grid);
                 MovePositionToGrid(grid);
 
                 yield return new WaitForSeconds(0.1f);
