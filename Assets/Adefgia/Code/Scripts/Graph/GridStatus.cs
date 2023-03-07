@@ -35,10 +35,12 @@ namespace adefagia.Graph
             {
                 ChangeMaterial(hoverMaterial);
             }
+            
             else if (Grid.IsHighlight)
             {
                 ChangeMaterial(highlightMaterial);
             }
+
             else
             {
                 ResetMaterial();
