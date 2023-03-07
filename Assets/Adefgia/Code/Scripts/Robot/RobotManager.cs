@@ -33,6 +33,14 @@ namespace adefagia.Robot
             return Select.GetSelect();
         }
 
+        public void DeleteRobotSelect()
+        {
+            Select.GetSelect().Selected(false);
+            Select.GetSelect().Hover(false);
+            Select.GetSelect().ClearGridRange();
+            Select.DeleteSelect();
+        }
+
         public bool IsRobotSelect()
         {
             return !GetRobotSelect().IsUnityNull();

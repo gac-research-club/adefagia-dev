@@ -92,5 +92,13 @@ namespace adefagia.Collections
         {
             return _objectSelect;
         }
+
+        public void DeleteSelect()
+        {
+            if (_objectSelect != null)
+            {
+                _objectSelect = default;
+            }
+        }
     }
 }

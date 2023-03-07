@@ -8,6 +8,7 @@ namespace adefagia.Graph
         public Material occupiedMaterial;
         public Material selectMaterial;
         public Material hoverMaterial;
+        public Material highlightMaterial;
 
         private Material _defaultMaterial;
         private MeshRenderer _meshRenderer;
@@ -34,6 +35,12 @@ namespace adefagia.Graph
             {
                 ChangeMaterial(hoverMaterial);
             }
+            
+            else if (Grid.IsHighlight)
+            {
+                ChangeMaterial(highlightMaterial);
+            }
+
             else
             {
                 ResetMaterial();

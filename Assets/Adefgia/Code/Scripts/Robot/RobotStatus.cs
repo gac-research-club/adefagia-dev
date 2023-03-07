@@ -12,6 +12,8 @@ namespace adefagia
 
         private List<Material> _defaultMaterial;
         private List<MeshRenderer> _meshRenderer;
+
+        public float health;
         
         public Robot.Robot Robot { get; set; }
 
@@ -31,6 +33,8 @@ namespace adefagia
         // Update is called once per frame
         void Update()
         {
+            health = Robot.Health;
+            
             if (Robot.IsSelect)
             {
                 ChangeMaterial(selectMaterial);

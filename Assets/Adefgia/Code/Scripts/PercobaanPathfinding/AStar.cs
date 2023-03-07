@@ -14,7 +14,8 @@ namespace adefagia.PercobaanPathfinding
         private readonly PriorityQueueMin _frontierQueue;
         
         // Reached
-        public List<Grid> reached;
+        public List<Grid> Reached { get; }
+        public List<Robot.Robot> Robots { get; }
         
         // CameFrom
         private Dictionary<Grid, Grid> _cameFrom;
@@ -25,8 +26,9 @@ namespace adefagia.PercobaanPathfinding
         public AStar()
         {
             _frontierQueue = new PriorityQueueMin();
-            reached = new List<Grid>();
+            Reached = new List<Grid>();
             _cameFrom = new Dictionary<Grid, Grid>();
+            Robots = new List<Robot.Robot>();
         }
 
         public bool Pathfinding(Grid start, Grid end)
@@ -55,7 +57,7 @@ namespace adefagia.PercobaanPathfinding
                     if (neighbor.IsUnityNull()) continue;
                     
                     // Neighbor have not reached, grid ground and not occupied
-                    if (GridManager.CheckGround(neighbor) && !reached.Contains(neighbor) && !neighbor.IsOccupied)
+                    if (GridManager.CheckGround(neighbor) && !Reached.Contains(neighbor) && !neighbor.IsOccupied)
                     {
 
                         var newCost = costSoFar[current] + 1;
@@ -72,11 +74,11 @@ namespace adefagia.PercobaanPathfinding
                 }
                 
                 // grid Has reached
-                reached.Add(current);
+                Reached.Add(current);
             }
 
             // Pathfinding failed
-            DebugListGrid(reached);
+            // DebugListGrid(Reached);
             return false;
         }
 
@@ -100,13 +102,132 @@ namespace adefagia.PercobaanPathfinding
             return path;
         }
 
+        public bool BFS(Grid start, List<Vector2> dirs)
+        {
+            // Starting point
+            _frontierQueue.Insert(start);
+            
+            while (_frontierQueue.size > 0)
+            {
+                // Enqueue from Queue
+                var current = _frontierQueue.DeleteMin();
+
+                // Looking Neighbor
+                foreach (var neighbor in current.Neighbors)
+                {
+                    // Set neighbor came from
+                    // Neighbor is must not null
+                    if (neighbor.IsUnityNull()) continue;
+                    
+                    if(!dirs.Contains(neighbor.Location)) continue;
+                    
+                    // Occupied by the others Robot
+                    if (neighbor.IsOccupied && !Robots.Contains(neighbor.Robot))
+                    {
+                        // Debug.Log($"Grid ({neighbor.Location.x},{neighbor.Location.y})");
+                        Robots.Add(neighbor.Robot);
+                        continue;
+                    }
+
+                    // Neighbor have not reached, grid ground and not occupied
+                    if (GridManager.CheckGround(neighbor) && !Reached.Contains(neighbor))
+                    {
+
+                        // If distance is more closer update _cameFrom
+                        neighbor.Priority = Heuristic(start.Location, neighbor.Location);
+            
+                        _frontierQueue.Insert(neighbor);
+                    }
+                }
+                
+                // grid Has reached
+                current.IsHighlight = true;
+                Reached.Add(current);
+            }
+
+            // Pathfinding failed
+            // DebugListGrid(reached);
+            return true;
+        }
+
+        public enum BFSLineType
+        {
+            Right,
+            Up,
+            Left,
+            Down
+        }
+        public bool BFSLine(BFSLineType type, Grid start)
+        {
+            // Starting point
+            _frontierQueue.Insert(start);
+            
+            while (_frontierQueue.size > 0)
+            {
+                // Enqueue from Queue
+                var current = _frontierQueue.DeleteMin();
+                
+                // grid Has reached
+                current.IsHighlight = true;
+                Reached.Add(current);
+                
+                // Looking Neighbor
+                Grid neighbor = null;
+                switch (type)
+                {
+                    case BFSLineType.Right:
+                        neighbor = current.Right;
+                        break;
+                    case BFSLineType.Up:
+                        neighbor = current.Up;
+                        break;
+                    case BFSLineType.Left:
+                        neighbor = current.Left;
+                        break;
+                    case BFSLineType.Down:
+                        neighbor = current.Down;
+                        break;
+                }
+
+                // Set neighbor came from
+                // Neighbor is must not null
+                if (neighbor.IsUnityNull())
+                {
+                    return false;
+                }
+                
+                if (GridManager.CheckGround(neighbor) && !Reached.Contains(neighbor) && !neighbor.IsOccupied)
+                {
+                    _frontierQueue.Insert(neighbor);
+                }
+                
+            }
+
+            // Pathfinding failed
+            // DebugListGrid(reached);
+            return true;
+        }
+
         public void DebugListGrid(List<Grid> grids)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("[ ");
             foreach (var grid in grids)
             {
-                // sb.Append(grid.id + " ");
+                sb.Append($"({grid.Location.x},{grid.Location.y})" + " ");
+            }
+            sb.Append("]");
+                
+            Debug.Log(sb);
+        }
+        
+        public void DebugListRobot(List<Robot.Robot> robots)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[ ");
+            foreach (var robot in robots)
+            {
+                sb.Append($"Robot {robot.Id}, ");
             }
             sb.Append("]");
                 
