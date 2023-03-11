@@ -56,7 +56,7 @@ namespace adefagia.Graph
             _listGrid = new Grid[xSize, ySize];
             
             // Map String
-            var map = ReadFile("Assets/Resources/"+ mapName +".txt");
+            var map = ReadFile("Assets/Adefgia/Resources/"+ mapName +".txt");
             
             // If map empty break generate grid
             if(map == string.Empty || map.Length != xSize*ySize) return;
