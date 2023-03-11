@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5406876603397092360}
   m_Layer: 7
   m_Name: Robot
-  m_TagString: Untagged
+  m_TagString: Selectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -241,3 +241,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5444a73167fc1948af1500be47d45a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  endLocation: {x: 0, y: 0}
+--- !u!114 &-6622697156706269320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8125765562878820399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8490022a6ad7625498cf66da91968cf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  robotName: OptimumPride
+  baseHp: 10
+  currentHp: 8
+  damage: 2
+  healAmount: 2
