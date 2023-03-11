@@ -40,7 +40,6 @@ namespace adefagia.Graph
             {
                 ChangeMaterial(highlightMaterial);
             }
-
             else
             {
                 ResetMaterial();
