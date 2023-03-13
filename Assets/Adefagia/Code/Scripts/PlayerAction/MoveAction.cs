@@ -1,4 +1,7 @@
+using Adefagia.GridSystem;
+using Adefagia.RobotSystem;
 using UnityEngine;
+using Grid = Adefagia.GridSystem.Grid;
 
 namespace Adefagia.PlayerAction
 {
@@ -10,9 +13,7 @@ namespace Adefagia.PlayerAction
         private Grid[] grid;
         private Vector2[] pattern;
         private bool isHighlighted;
-
-
-
+        
         void Start()
         {
             isHighlighted = false;
@@ -24,6 +25,18 @@ namespace Adefagia.PlayerAction
         {
             attackHighlight.AttackButtonOnDisable();
             // highlighPattern.SetActiveHighlightMovement(grid);
+            
+            // Get Robot Selected
+            // Robot robot = RobotManager.GetRobot();
+            // if (robot == null) return;
+            //
+            // Grid gridSelected = GridManager.GetGrid();
+            // if (gridSelected == null) return;
+            //
+            // robot.RobotGameObject.GetComponent<RobotMovement>().Move(gridSelected);
+            //
+            // Debug.Log("Move Clicked");
+            
             isHighlighted = true;
         }
 
@@ -31,7 +44,7 @@ namespace Adefagia.PlayerAction
         {
             if(isHighlighted)
             {
-            // highlighPattern.SetDisableHighlightMovement(grid);
+                highlighPattern.SetDisableHighlightMovement(grid);
             }
             isHighlighted = false;
         }

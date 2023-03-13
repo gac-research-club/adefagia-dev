@@ -6,6 +6,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 using Adefagia.SelectObject;
+using UnityEngine.Serialization;
 
 namespace Adefagia.GridSystem
 {
@@ -23,7 +24,7 @@ namespace Adefagia.GridSystem
         // ---
         
         public List<GridScirptableObject> listGridPrefab;
-        public Vector3 offsetGrid;
+        public Vector3 offsetGridPosition;
 
         public string mapName = "Map";
     
@@ -31,10 +32,10 @@ namespace Adefagia.GridSystem
         
         // List All Grid
         private Grid[,] _listGrid;
-        
+
         private const GridType DefaultTypeGrid = GridType.Ground;
 
-        public SelectableObject<Grid> Select { get; private set; }
+        public SelectableObject<Grid> GridSelected { get; private set; }
 
         private void Awake()
         {
@@ -59,7 +60,13 @@ namespace Adefagia.GridSystem
             SetNeighbors();
 
             // _doneGenerateGrids = true;
-            Select = new SelectableObject<Grid>(this);
+            GridSelected = new SelectableObject<Grid>(this);
+        }
+
+        public void Start()
+        {
+            // GetGrid(3, 4, true);
+            // GameManager.instance.gridManager.GetGrid(3,4, true);
         }
 
         /*----------------------------------------------------------------------------------
@@ -162,7 +169,7 @@ namespace Adefagia.GridSystem
                 for (var i=0; i<dirs.Length; i++)
                 {
                     var location = grid.Location + dirs[i];
-                    var neighbor = GetGridByLocation(location);
+                    var neighbor = GetGrid(location);
                     grid.Neighbors[i] = neighbor;
                     
                     // If neighbor is null make it border game object
@@ -185,54 +192,69 @@ namespace Adefagia.GridSystem
             return null;
         }
 
-        public Grid GetGridByLocation(Vector2 location, bool showMessage = false)
+        
+        /*-----------------------------------------------------------------------------------------------
+         * GetGrid() // return grid yang sedang terselect
+         *
+         * GetGrid(int x, int y, bool debugMessage = false)
+         * params:
+         *  - int x // index grid x
+         *  - int y // index grid y
+         *  - bool debugMessage // optional for Debug.Log GetGrid Result
+         * 
+         * GetGrid(Vector2 location, bool debugMessage = false)
+         * - vector XYindex // Location where x and y grid
+         *
+         * Fungsi untuk Mengambil Grid
+         *-----------------------------------------------------------------------------------------------*/
+        public Grid GetGrid(int x, int y, bool debugMessage = false)
         {
-            var x = (int) location.x;
-            var y = (int) location.y;
-            
             // Make sure (x,y) in range of grid Size
             if (x < 0 || x > xSize - 1 || y < 0 || y > ySize - 1)
             {
-                if (showMessage)
+                if (debugMessage)
                 {
-                    Debug.LogWarning($"({x},{y}) Index is out of range");
+                    Debug.LogWarning($"Grid ({x},{y}) Index is out of range");
                 }
                 return null;
             }
             
-            return _listGrid[x, y];
-        }
+            var grid = _listGrid[x, y];
+            if (debugMessage)
+            {
+                Debug.Log($"Grid ({grid.Location.x},{grid.Location.y})");
+            }
 
-        public Grid GetGridSelect()
+            return grid;
+        }
+        public Grid GetGrid(Vector2 location, bool debugMessage = false)
         {
-            return Select.GetSelect();
+            return GetGrid((int) location.x, (int) location.y, debugMessage);
         }
 
-        public static bool CheckGround(Grid grid)
+        public static Grid GetGrid()
         {
-            return grid.GridType == GridType.Ground;
+            return GameManager.instance.gridManager.GetGridSelected();
         }
-
-
+        public Grid GetGridSelected()
+        {
+            return GridSelected.GetSelect();
+        }
+        
         #region UnityEvent
         public void MouseHover(GameObject gridGameObject)
         {
             // Debug.Log("Hover");
             var grid = gridGameObject.GetComponent<GridStatus>().Grid;
-            var robot = GameManager.instance.robotManager.GetRobotSelect();
             
-            if(robot == null) return;
+            if(grid == null) return;
             
-            // Only hover on specific grid
-            if (robot.IsInGridRange(grid))
-            {
-                Select.ChangeHover(grid);
-            }
+            GridSelected.ChangeHover(grid);
         }
 
         public void MouseNotHover()
         {
-            Select.NotHover();
+            GridSelected.NotHover();
         }
 
         public void GridClick(GameObject gridGameObject)
@@ -243,10 +265,16 @@ namespace Adefagia.GridSystem
             // Only select on specific grid
             if (!grid.IsOccupied && grid.IsHover)
             {
-                Select.ChangeSelect(grid);
+                GridSelected.ChangeSelect(grid);
             }
         }
         #endregion
+
+        
+        public static bool CheckGround(Grid grid)
+        {
+            return grid.GridType == GridType.Ground;
+        }
 
         private GridType GetGridTypeByChar(char character)
         {
@@ -265,14 +293,14 @@ namespace Adefagia.GridSystem
 
         }
 
-        void InstantiateBorder(Vector2 location)
+        private void InstantiateBorder(Vector2 location)
         {
             var loc3 = new Vector3(location.x, 0, location.y);
             var borderPrefab = GetPrefab(GridType.Border);
             if(borderPrefab == null) return;
             Instantiate(borderPrefab, loc3, Quaternion.identity, borderParent);
         }
-        void InstantiateBorderCorner()
+        private void InstantiateBorderCorner()
         {
             InstantiateBorder(new Vector2(-1,-1));
             InstantiateBorder(new Vector2(xSize,-1));

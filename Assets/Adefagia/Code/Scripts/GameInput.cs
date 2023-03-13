@@ -12,10 +12,10 @@ namespace adefagia.Adefgia.Code.Scripts
             PlayerInputActions playerInputActions = new PlayerInputActions();
             playerInputActions.Player.Enable();
 
-            playerInputActions.Player.OnClickPlayer.performed += Interact_performed;
+            playerInputActions.Player.OnClickPlayer.performed += InteractPerformed;
         }
 
-        private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
             OnInteractAction?.Invoke(this, EventArgs.Empty);
         }

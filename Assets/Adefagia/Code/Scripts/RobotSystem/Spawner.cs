@@ -20,8 +20,6 @@ namespace Adefagia.RobotSystem
         // private List<int> _robotsId;
         private Dictionary<int, Robot> _robots;
 
-        private GridManager _gridManager;
-
         public Spawner(RobotManager robotManager, RobotTeam team)
         {
             RobotTeam = team;
@@ -40,7 +38,7 @@ namespace Adefagia.RobotSystem
                 {
                     parent = RobotManager.transform
                 },
-                name = "Spawner " + RobotTeam.name 
+                name = "Spawner " + RobotTeam.name,
             };
 
             return spawner;

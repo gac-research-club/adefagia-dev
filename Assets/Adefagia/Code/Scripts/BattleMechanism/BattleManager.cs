@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 using Adefagia.RobotSystem;
+using Adefagia.PlayerAction;
 
 namespace Adefagia.BattleMechanism
 {
@@ -11,8 +12,8 @@ namespace Adefagia.BattleMechanism
     public class BattleManager : MonoBehaviour
     {
         public BattleState state;
-        [SerializeField] RobotStats playerUnit;
-        [SerializeField] RobotStats enemyUnit;
+        [SerializeField] RobotStatus playerUnit;
+        [SerializeField] RobotStatus enemyUnit;
 
         private Transform highlight;
         private Transform selection;
@@ -20,8 +21,8 @@ namespace Adefagia.BattleMechanism
         // [SerializeField] private GameInput gameInput;
         [SerializeField] private Color color;
         
-        [SerializeField] private PlayerAction.MoveAction moveAction;
-        [SerializeField] private PlayerAction.AttackHighlight attackHighlight;
+        [SerializeField] private MoveAction moveAction;
+        [SerializeField] private AttackHighlight attackHighlight;
         [SerializeField] private GameObject actionButton;
         [SerializeField] private Button attackButton;
         [SerializeField] private Button defendButton;
@@ -42,7 +43,7 @@ namespace Adefagia.BattleMechanism
             Highlight();
         }
 
-        private void GameInput_OnInteractAction(object sender, System.EventArgs e)
+        private void GameInputOnInteractAction(object sender, System.EventArgs e)
         {
             // Selection
             if (highlight)
@@ -70,39 +71,39 @@ namespace Adefagia.BattleMechanism
                 }
             }
         }
-
+    
         IEnumerator SetupBattle()
         {
             yield return new WaitForSeconds(0f);
             
             state = BattleState.PLAYERTURN;
-            PlayerTurn();
+            PlayerTurnMessage();
         }
 
-        void PlayerTurn()
+        void PlayerTurnMessage()
         {
             Debug.Log("Player turn");
         }
 
-        void EnemyTurn()
+        void EnemyTurnMessage()
         {
             Debug.Log("Enemy turn");
         }
 
         public void AttackButtonOnClicked()
         {
-            bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+            // bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
             attackButton.interactable = false;
-            if (isDead)
-            {
-                state = BattleState.WON;
-                EndBattle();
-            }
+            // if (isDead)
+            // {
+            //     state = BattleState.WON;
+            //     EndBattle();
+            // }
         }
 
         public void DefendButtonOnClicked()
         {
-            playerUnit.Heal(playerUnit.healAmount);
+            // playerUnit.Heal(playerUnit.healAmount);
             defendButton.interactable = false;
         }
 
@@ -123,12 +124,12 @@ namespace Adefagia.BattleMechanism
             if(state == BattleState.PLAYERTURN)
             {
                 state = BattleState.ENEMYTURN;
-                EnemyTurn();
+                EnemyTurnMessage();
             }
             else
             {
                 state = BattleState.PLAYERTURN;
-                PlayerTurn();
+                PlayerTurnMessage();
             }
         }
 

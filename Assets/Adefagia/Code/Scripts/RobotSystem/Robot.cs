@@ -13,13 +13,14 @@ namespace Adefagia.RobotSystem
     public class Robot : ISelectableObject
     {
         public int Id { get; }
-        private GameObject RobotGameObject { get; }
+        public GameObject RobotGameObject { get; }
         public Grid Grid { get; private set; }
 
         private readonly Spawner _spawner;
         private RobotManager _robotManager;
         
-        public float Health { get; set; }
+        public float MaxHealth { get; set; }
+        public float CurrentHealth { get; set; }
         public float Damage { get; set; }
         
         public bool IsHover { get; private set; }
@@ -34,11 +35,11 @@ namespace Adefagia.RobotSystem
 
             Id = prefab.id;
             
-            Grid = GameManager.instance.gridManager.GetGridByLocation(prefab.location, true);
+            Grid = spawner.RobotManager.GridManager.GetGrid(prefab.location, true);
 
             RobotGameObject = Instantiate(prefab.gameObject);
 
-            Health = prefab.status.healthPoint;
+            CurrentHealth = prefab.status.healthPoint;
             Damage = prefab.status.attackDamage;
             
             _gridRange = new List<Grid>();
@@ -59,7 +60,9 @@ namespace Adefagia.RobotSystem
                 if (GridManager.CheckGround(Grid) && !Grid.IsOccupied)
                 {
                     Debug.Log("Instantiate Robot");
-                    var robot = Object.Instantiate(prefab, Grid.GetLocation(), prefab.transform.rotation, _spawner.SpawnerGameObject.transform);
+                    var robot = Object.Instantiate(prefab, 
+                        Grid.GetLocation(_spawner.RobotManager.offsetRobotPosition),
+                        prefab.transform.rotation, _spawner.SpawnerGameObject.transform);
                     robot.name = "Robot " + Id;
 
                     robot.GetComponent<RobotStatus>().Robot = this;
@@ -79,14 +82,13 @@ namespace Adefagia.RobotSystem
 
         public void Attack(Robot robot)
         {
-            robot.Health -= Damage;
+            robot.CurrentHealth -= Damage;
         }
         
         public void Move(Grid grid)
         {
             Grid = grid;
             if (Grid != null) Grid.Robot = this;
-            
         }
         
         public void SetGridRange()
@@ -103,6 +105,28 @@ namespace Adefagia.RobotSystem
 
             _gridRange = bfs.Reached;
             // aStar.DebugListRobot(aStar.Robots);
+        }
+        
+        public bool TakeDamage(float dmg)
+        {
+            CurrentHealth -= Damage;
+            if (CurrentHealth <= 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void Heal(float amount)
+        {
+            CurrentHealth += amount;
+            if (CurrentHealth > MaxHealth)
+            {
+                CurrentHealth = MaxHealth;
+            }
         }
 
         public void ClearGridRange()

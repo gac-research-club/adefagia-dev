@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Adefagia.SelectObject;
+using Adefagia.GridSystem;
 
 namespace Adefagia.RobotSystem
 {
     public class RobotManager : MonoBehaviour
     {
+        public Vector3 offsetRobotPosition;
         // public bool doneSpawnRobot;
         public List<RobotTeam> robotTeams;
-
-        public SelectableObject<Robot> Select { get; private set; }
+        public GridManager GridManager => GameManager.instance.gridManager;
 
         private void Awake()
         {
             CreateSpawnerGameObject();
-            
-            Select = new SelectableObject<Robot>(this);
         }
 
         void CreateSpawnerGameObject()
@@ -28,42 +27,13 @@ namespace Adefagia.RobotSystem
             }
         }
 
-        public Robot GetRobotSelect()
-        {
-            return Select.GetSelect();
-        }
+        // public void DeleteRobotSelect()
+        // {
+        //     RobotSelect.GetSelect().Selected(false);
+        //     RobotSelect.GetSelect().Hover(false);
+        //     RobotSelect.GetSelect().ClearGridRange();
+        //     RobotSelect.DeleteSelect();
+        // }
 
-        public void DeleteRobotSelect()
-        {
-            Select.GetSelect().Selected(false);
-            Select.GetSelect().Hover(false);
-            Select.GetSelect().ClearGridRange();
-            Select.DeleteSelect();
-        }
-
-        public bool IsRobotSelect()
-        {
-            return GetRobotSelect() != null;
-        }
-
-        #region UnityEvent
-        public void Hover(GameObject robotGameObject)
-        {
-            Select.ChangeHover(robotGameObject.GetComponent<RobotStatus>().Robot);
-        }
-        
-        public void NotHover()
-        {
-            Select.NotHover();
-        }
-        
-        public void RobotClick(GameObject robotGameObject)
-        {
-            // Debug.Log("click");
-            var robot = robotGameObject.GetComponent<RobotStatus>().Robot;
-            Select.ChangeSelect(robot);
-        }
-        #endregion
-        
     }
 }

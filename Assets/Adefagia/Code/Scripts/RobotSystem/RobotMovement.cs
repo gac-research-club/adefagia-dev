@@ -32,16 +32,15 @@ namespace Adefagia.RobotSystem
         void Update()
         {
             // Testing
-            if (Input.GetKeyDown(KeyCode.P) && Robot.IsSelect)
-            {
-                Move();
-            }
+            // if (Input.GetKeyDown(KeyCode.P) && Robot.IsSelect)
+            // {
+            //     Move(GridManager.GetGrid());
+            // }
         }
 
-        private bool Move()
+        public bool Move(Grid end)
         {
             var aStar = new AStar();
-            var end = _gridManager.GetGridSelect();
 
             // Make sure grid is selected and on ground grid
             if (end != null && GridManager.CheckGround(end))

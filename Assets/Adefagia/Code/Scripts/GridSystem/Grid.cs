@@ -36,7 +36,7 @@ namespace Adefagia.GridSystem
             var prefab = _gridManager.GetPrefab(GridType);
             if (prefab == null) return null;
             
-            var gridGameObject = Object.Instantiate(prefab, GetLocation(_gridManager.offsetGrid), prefab!.transform.rotation, _gridManager.transform);
+            var gridGameObject = Object.Instantiate(prefab, GetLocation(_gridManager.offsetGridPosition), prefab!.transform.rotation, _gridManager.transform);
             gridGameObject.name = $"Grid ({Location.x},{Location.y})";
             
             // Set reference to GridStatus

@@ -31,7 +31,7 @@ namespace Adefagia.RobotSystem
         // Update is called once per frame
         void Update()
         {
-            health = Robot.Health;
+            health = Robot.CurrentHealth;
             
             if (Robot.IsSelect)
             {

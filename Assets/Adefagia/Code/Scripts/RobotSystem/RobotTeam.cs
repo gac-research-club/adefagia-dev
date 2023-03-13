@@ -7,7 +7,5 @@ namespace Adefagia.RobotSystem
     {
         public string name;
         public List<RobotPrefab> dataRobot;
-        
-        
     }
 }
