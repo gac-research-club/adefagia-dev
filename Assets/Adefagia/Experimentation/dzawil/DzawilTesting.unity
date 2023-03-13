@@ -153,7 +153,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5473218
 MonoBehaviour:
@@ -194,7 +194,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &44344347
 RectTransform:
   m_ObjectHideFlags: 0
@@ -562,7 +562,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &278809105
 GameObject:
@@ -743,7 +743,55 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &296021818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 296021820}
+  - component: {fileID: 296021819}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &296021819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296021818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b829ae343a3260438186dc353690e87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleManager: {fileID: 5473218}
+  gridManager: {fileID: 1139746142}
+  robotManager: {fileID: 2073969574}
+  uiManager: {fileID: 0}
+--- !u!4 &296021820
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296021818}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.5, y: 0.5, z: 4.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &363582587
 GameObject:
@@ -1216,18 +1264,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: adefagia.BattleManager, Assembly-CSharp
-        m_MethodName: AttackButtonOnClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &670216715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1283,7 +1319,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &719748376
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1416,7 +1452,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &784417740
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1758,7 +1794,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &920596101
 GameObject:
@@ -1802,7 +1838,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &923417017
 GameObject:
@@ -1814,6 +1850,7 @@ GameObject:
   m_Component:
   - component: {fileID: 923417019}
   - component: {fileID: 923417018}
+  - component: {fileID: 923417020}
   m_Layer: 0
   m_Name: SelectRobot
   m_TagString: Untagged
@@ -1841,8 +1878,8 @@ MonoBehaviour:
   mouseHover:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2073969574}
-        m_TargetAssemblyTypeName: Adefagia.RobotSystem.RobotManager, Assembly-CSharp
+      - m_Target: {fileID: 923417020}
+        m_TargetAssemblyTypeName: Adefagia.SelectObject.SelectRobotManager, Assembly-CSharp
         m_MethodName: Hover
         m_Mode: 0
         m_Arguments:
@@ -1856,8 +1893,8 @@ MonoBehaviour:
   mouseHoverNotHit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2073969574}
-        m_TargetAssemblyTypeName: Adefagia.RobotSystem.RobotManager, Assembly-CSharp
+      - m_Target: {fileID: 923417020}
+        m_TargetAssemblyTypeName: Adefagia.SelectObject.SelectRobotManager, Assembly-CSharp
         m_MethodName: NotHover
         m_Mode: 1
         m_Arguments:
@@ -1871,8 +1908,8 @@ MonoBehaviour:
   mouseRightClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2073969574}
-        m_TargetAssemblyTypeName: Adefagia.RobotSystem.RobotManager, Assembly-CSharp
+      - m_Target: {fileID: 923417020}
+        m_TargetAssemblyTypeName: Adefagia.SelectObject.SelectRobotManager, Assembly-CSharp
         m_MethodName: RobotClick
         m_Mode: 0
         m_Arguments:
@@ -1896,8 +1933,22 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &923417020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923417017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb989f5d795e4b86848a007d82482258, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  index: 0
+  selectRobots: []
 --- !u!1 &1061104075
 GameObject:
   m_ObjectHideFlags: 0
@@ -2063,7 +2114,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1139746142
 MonoBehaviour:
@@ -2086,7 +2137,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: af244076d8153814e9d438f98c00b9c3, type: 2}
   - {fileID: 11400000, guid: e9c3297c610cf22419f176321379f7a4, type: 2}
   - {fileID: 11400000, guid: 672fadc19bc261d4785ac5edefe1f56a, type: 2}
-  offsetGridPosition: {x: 0, y: 0.5, z: 0}
+  offsetGridPosition: {x: 0, y: 0, z: 0}
   mapName: Map
 --- !u!1 &1214197100
 GameObject:
@@ -2134,7 +2185,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1214197104
 MonoBehaviour:
@@ -2735,54 +2786,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1429217556}
   m_CullTransparentMesh: 1
---- !u!1 &1703189688
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1703189690}
-  - component: {fileID: 1703189689}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1703189689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1703189688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b829ae343a3260438186dc353690e87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  battleManager: {fileID: 5473218}
-  gridManager: {fileID: 1139746142}
-  robotManager: {fileID: 0}
-  uiManager: {fileID: 0}
---- !u!4 &1703189690
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1703189688}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.486924, y: -0.7448106, z: 2.8908834}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1793626730
 GameObject:
   m_ObjectHideFlags: 0
@@ -2801,7 +2804,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1793626731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2880,7 +2883,7 @@ RectTransform:
   - {fileID: 719748376}
   - {fileID: 867506018}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3101,7 +3104,7 @@ Transform:
   - {fileID: 46457867}
   - {fileID: 1363115657}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2073969573
 GameObject:
@@ -3132,7 +3135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a829ee8f3d2e17f47aa66b24abfcc0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetRobotPosition: {x: 0, y: 0.5, z: 0}
+  offsetRobotPosition: {x: 0, y: 0, z: 0}
   robotTeams:
   - name: 
     dataRobot:
@@ -3163,7 +3166,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2146607924
 GameObject:
@@ -3196,7 +3199,7 @@ Transform:
   m_Children:
   - {fileID: 532834097}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 45, y: 45, z: 0}
 --- !u!114 &2146607926
 MonoBehaviour:
