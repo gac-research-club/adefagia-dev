@@ -168,14 +168,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  playerUnit: {fileID: 0}
-  enemyUnit: {fileID: 0}
-  color: {r: 0, g: 0, b: 0, a: 0}
-  moveAction: {fileID: 0}
-  attackHighlight: {fileID: 0}
-  actionButton: {fileID: 0}
-  attackButton: {fileID: 0}
-  defendButton: {fileID: 0}
+  playerUnit: {fileID: 2343947593837426010, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
+  enemyUnit: {fileID: 2343947593837426010, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
+  color: {r: 0.37254903, g: 0.80784315, b: 1, a: 1}
+  moveAction: {fileID: 1834694135}
+  attackHighlight: {fileID: 46457866}
+  actionButton: {fileID: 719748375}
+  attackButton: {fileID: 670216714}
+  defendButton: {fileID: 1429217558}
+  gameInput: {fileID: 920596102}
 --- !u!1 &44344346
 GameObject:
   m_ObjectHideFlags: 0
@@ -1319,7 +1320,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &719748376
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1857,7 +1858,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &923417018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2500,7 +2501,7 @@ MonoBehaviour:
   - {x: 0, y: -2}
   - {x: -2, y: 0}
   - {x: 2, y: 0}
-  gridManager: {fileID: 0}
+  gridManager: {fileID: 1139746142}
   actionButton: {fileID: 719748375}
 --- !u!4 &1363115657
 Transform:
@@ -3137,7 +3138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offsetRobotPosition: {x: 0, y: 0, z: 0}
   robotTeams:
-  - name: 
+  - name: Team A
     dataRobot:
     - id: 100
       location: {x: 5, y: 8}
@@ -3145,10 +3146,22 @@ MonoBehaviour:
       status:
         healthPoint: 100
         attackDamage: 10
-  - name: 
+    - id: 101
+      location: {x: 7, y: 7}
+      gameObject: {fileID: 5241450641409621038, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
+      status:
+        healthPoint: 100
+        attackDamage: 10
+  - name: Team B
     dataRobot:
     - id: 200
       location: {x: 5, y: 4}
+      gameObject: {fileID: 5241450641409621038, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
+      status:
+        healthPoint: 100
+        attackDamage: 10
+    - id: 201
+      location: {x: 3, y: 4}
       gameObject: {fileID: 5241450641409621038, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
       status:
         healthPoint: 100

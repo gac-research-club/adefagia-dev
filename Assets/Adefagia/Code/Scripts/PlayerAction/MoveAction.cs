@@ -21,6 +21,10 @@ namespace Adefagia.PlayerAction
             // grid = highlighPattern.GetHighlightGrid(pattern, playerLocation);
         }
 
+        /*--------------------------------------------------------------------------
+        * Saat move button di click dan attack highlight sudah tampil, maka disable attack button
+        * function untuk menampilkan movement pattern 
+        *--------------------------------------------------------------------------*/
         public void MoveButtonOnClicked()
         {
             attackHighlight.AttackButtonOnDisable();
@@ -40,6 +44,9 @@ namespace Adefagia.PlayerAction
             isHighlighted = true;
         }
 
+        /*--------------------------------------------------------------------------
+        * function untuk disable move button 
+        *--------------------------------------------------------------------------*/
         public void MoveButtonOnDisable()
         {
             if(isHighlighted)

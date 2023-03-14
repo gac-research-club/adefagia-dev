@@ -1,4 +1,5 @@
 using System.Collections;
+using adefagia.Adefgia.Code.Scripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -26,10 +27,12 @@ namespace Adefagia.BattleMechanism
         [SerializeField] private GameObject actionButton;
         [SerializeField] private Button attackButton;
         [SerializeField] private Button defendButton;
+        
+        [SerializeField] private GameInput gameInput;
 
         private void Start()
         {
-            // gameInput.OnInteractAction += GameInput_OnInteractAction;
+            gameInput.OnInteractAction += GameInput_OnInteractAction;
             // foreach (var item in spawner._playerUnit.Values)
             // {
             //     playerUnit = item.GetComponent<RobotStats>();
@@ -43,9 +46,12 @@ namespace Adefagia.BattleMechanism
             Highlight();
         }
 
-        private void GameInputOnInteractAction(object sender, System.EventArgs e)
+        /*--------------------------------------------------------------------------
+        * Kondisi di saat highlighted robot telah di click 
+        *--------------------------------------------------------------------------*/
+        private void GameInput_OnInteractAction(object sender, System.EventArgs e)
         {
-            // Selection
+                Debug.Log(true);
             if (highlight)
             {
                 if (selection != null)
@@ -55,8 +61,9 @@ namespace Adefagia.BattleMechanism
                 selection = raycastHit.transform;
                 selection.gameObject.GetComponent<Outline>().enabled = true;
                 highlight = null;
+                
+                // Saat highlighted robot di click maka set active action button hud
                 actionButton.SetActive(true);
-
             }
             else
             {
@@ -64,8 +71,11 @@ namespace Adefagia.BattleMechanism
                 {
                     selection.gameObject.GetComponent<Outline>().enabled = false;
                     selection = null;
+                    
+                    // Saat highlighted robot on clicked, lalu click apapun kecuali robot maka disable action button hud 
                     actionButton.SetActive(false);
 
+                    // Saat highlighted robot on clicked, lalu click apapun kecuali robot maka disable movement pattern dan attack pattern
                     moveAction.MoveButtonOnDisable();
                     attackHighlight.AttackButtonOnDisable();
                 }
@@ -133,18 +143,27 @@ namespace Adefagia.BattleMechanism
             }
         }
 
+        /*--------------------------------------------------------------------------
+        * Kondisi saat pointer berada di robot
+         * untuk menghighlight robot
+        *--------------------------------------------------------------------------*/
         private void Highlight()
         {
-            // Highlight
+            // Disable outline saat highlight != null
             if (highlight != null)
             {
                 highlight.gameObject.GetComponent<Outline>().enabled = false;
                 highlight = null;
             }
+            
+            /*--------------------------------------------------------------------------
+            * Saat pointer berada di game object dengan tag tertentu maka aktifkan outline
+            *--------------------------------------------------------------------------*/
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out raycastHit)) //Make sure you have EventSystem in the hierarchy before using EventSystem
+            if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out raycastHit))
             {
                 highlight = raycastHit.transform;
+                // 
                 if (highlight.CompareTag("Selectable") && highlight != selection && state == BattleState.PLAYERTURN)
                 {
                     if (highlight.gameObject.GetComponent<Outline>() != null)
