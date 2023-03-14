@@ -32,10 +32,10 @@ namespace Adefagia.RobotSystem
         void Update()
         {
             // Testing
-            // if (Input.GetKeyDown(KeyCode.P) && Robot.IsSelect)
-            // {
-            //     Move(GridManager.GetGrid());
-            // }
+            if (Input.GetKeyDown(KeyCode.P) && Robot.IsSelect)
+            {
+                Move(GridManager.GetGrid());
+            }
         }
 
         public bool Move(Grid end)

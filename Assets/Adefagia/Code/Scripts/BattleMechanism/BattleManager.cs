@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using adefagia.Adefgia.Code.Scripts;
 using UnityEngine;
@@ -32,7 +33,9 @@ namespace Adefagia.BattleMechanism
 
         private void Start()
         {
+            
             gameInput.OnInteractAction += GameInput_OnInteractAction;
+           
             // foreach (var item in spawner._playerUnit.Values)
             // {
             //     playerUnit = item.GetComponent<RobotStats>();
@@ -51,7 +54,7 @@ namespace Adefagia.BattleMechanism
         *--------------------------------------------------------------------------*/
         private void GameInput_OnInteractAction(object sender, System.EventArgs e)
         {
-                Debug.Log(true);
+            
             if (highlight)
             {
                 if (selection != null)
@@ -64,9 +67,7 @@ namespace Adefagia.BattleMechanism
                 
                 // Saat highlighted robot di click maka set active action button hud
                 actionButton.SetActive(true);
-            }
-            else
-            {
+            } else {
                 if (!EventSystem.current.IsPointerOverGameObject() && selection)
                 {
                     selection.gameObject.GetComponent<Outline>().enabled = false;
