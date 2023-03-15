@@ -25,6 +25,8 @@ namespace Adefagia.RobotSystem
         
         public bool IsHover { get; private set; }
         public bool IsSelect { get; private set; }
+        
+        public OutlineScriptableObject OutlineStyle { get; set; }
 
         private List<Grid> _gridRange;
         private Vector2[] _dirs;

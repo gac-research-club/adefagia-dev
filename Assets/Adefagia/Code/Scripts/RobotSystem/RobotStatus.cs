@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Adefagia.SelectObject;
 using UnityEngine;
 
 namespace Adefagia.RobotSystem
@@ -39,12 +40,14 @@ namespace Adefagia.RobotSystem
             }
             else if (Robot.IsHover)
             {
-                // Debug.Log("Clicked");
+                // Debug.Log("Hover");
                 ChangeMaterial(hoverMaterial);
+                AddOutlineComponent(Robot.OutlineStyle);
             }
             else
             {
                 ResetMaterial();
+                RemoveOutlineComponent();
             }
         }
         
@@ -61,6 +64,38 @@ namespace Adefagia.RobotSystem
             for (var i = 0; i < _defaultMaterial.Count; i++)
             {
                 _meshRenderer[i].material = _defaultMaterial[0];
+            }
+        }
+        
+        /*--------------------------------------------------------------------------
+        * Add outline component to gameObject
+        *--------------------------------------------------------------------------*/
+        private void AddOutlineComponent(OutlineScriptableObject outlineStyle)
+        {
+            var outline = gameObject.GetComponent<Outline>();
+
+            if (outline == null)
+            {
+                gameObject.AddComponent<Outline>();
+                
+                outline = gameObject.GetComponent<Outline>();
+                outline.OutlineMode = outlineStyle.outlineMode;
+                outline.OutlineColor = outlineStyle.outlineColor;
+                outline.OutlineWidth = outlineStyle.outlineWidth;
+            }
+            else
+            {
+                outline.enabled = true;
+            }
+        }
+        
+        private void RemoveOutlineComponent()
+        {
+            var outline = gameObject.GetComponent<Outline>();
+
+            if (outline != null)
+            {
+                outline.enabled = false;
             }
         }
     }

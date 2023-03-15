@@ -716,7 +716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &288360258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -730,6 +730,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputFieldLocation: {fileID: 44344348}
+  actionButton: {fileID: 719748375}
   robotId: 0
 --- !u!4 &288360259
 Transform:
@@ -778,7 +779,7 @@ MonoBehaviour:
   battleManager: {fileID: 5473218}
   gridManager: {fileID: 1139746142}
   robotManager: {fileID: 2073969574}
-  uiManager: {fileID: 0}
+  uiManager: {fileID: 288360258}
 --- !u!4 &296021820
 Transform:
   m_ObjectHideFlags: 0
@@ -1881,7 +1882,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 923417020}
         m_TargetAssemblyTypeName: Adefagia.SelectObject.SelectRobotManager, Assembly-CSharp
-        m_MethodName: Hover
+        m_MethodName: MouseHover
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1896,7 +1897,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 923417020}
         m_TargetAssemblyTypeName: Adefagia.SelectObject.SelectRobotManager, Assembly-CSharp
-        m_MethodName: NotHover
+        m_MethodName: MouseNotHover
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1911,7 +1912,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 923417020}
         m_TargetAssemblyTypeName: Adefagia.SelectObject.SelectRobotManager, Assembly-CSharp
-        m_MethodName: RobotClick
+        m_MethodName: MouseClick
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1950,6 +1951,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 0
   selectRobots: []
+  selectRobotActive: {fileID: 0}
+  robotSelect: {fileID: 0}
+  outlineStyles:
+  - {fileID: 11400000, guid: 6bf704a214cbf7243a06709156c1a3fe, type: 2}
 --- !u!1 &1061104075
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,19 +6,28 @@ namespace Adefagia.SelectObject
 {
     public class SelectRobot : MonoBehaviour
     {
-        public SelectableObject<Robot> RobotSelect { get; private set; }
+        private SelectableObject<Robot> robotSelect { get; set; }
 
-        public bool active;
-        public Robot robotSelected;
-        
         private void Start()
         {
-            RobotSelect = new SelectableObject<Robot>(GameManager.instance.robotManager);
+            robotSelect = new SelectableObject<Robot>(GameManager.instance.robotManager);
         }
         
         public Robot GetRobotSelect()
         {
-            return RobotSelect.GetSelect();
+            return robotSelect.GetSelect();
+        }
+        public void ChangeRobotSelect(Robot robot)
+        {
+            robotSelect.ChangeSelect(robot);
+        }
+        public void ChangeRobotHover(Robot robot)
+        {
+            robotSelect.ChangeHover(robot);
+        }
+        public void RobotNotHover()
+        {
+            robotSelect.NotHover();
         }
     }
 }

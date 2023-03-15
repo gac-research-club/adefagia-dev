@@ -8,12 +8,23 @@ namespace Adefagia
         // private GameManager _gameManager;
 
         public TMP_InputField inputFieldLocation;
+        [SerializeField] private GameObject actionButton;
 
         public int robotId;
-        
+
         void Start()
         {
             // _gameManager = GameManager.instance;
+        }
+
+        public static void ShowCanvas()
+        {
+            GameManager.instance.uiManager.actionButton.SetActive(true);
+        }
+
+        public static void HideCanvas()
+        {
+            GameManager.instance.uiManager.actionButton.SetActive(false);
         }
 
         public void ButtonMoveClicked()

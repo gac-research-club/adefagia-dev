@@ -19,6 +19,9 @@ namespace Adefagia.RobotSystem
             CreateSpawnerGameObject();
         }
 
+        /*---------------------------------------------------------------------
+         * Create spawner each Team
+         *---------------------------------------------------------------------*/
         void CreateSpawnerGameObject()
         {
             foreach (var team in robotTeams)

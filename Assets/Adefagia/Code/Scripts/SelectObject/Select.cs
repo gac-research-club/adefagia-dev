@@ -24,7 +24,7 @@ namespace Adefagia.SelectObject
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    StoreSelectedGrid(highlightGameObject);
+                    MouseRightClick(highlightGameObject);
                 }
             }
             else
@@ -34,12 +34,20 @@ namespace Adefagia.SelectObject
             }
         }
         
-        Ray CameraRay()
+        /*------------------------------------------------------------------------------------
+         * Shot ray from mouse pointer position to relative main camera
+         *------------------------------------------------------------------------------------*/
+        private Ray CameraRay()
         {
             return mainCamera.ScreenPointToRay(Input.mousePosition);
         }
 
-        bool RayHitObject(Ray ray)
+        /*------------------------------------------------------------------------------------
+         * Check whatever ray hit object or not
+         * true if hit gameObject
+         * false if not
+         *------------------------------------------------------------------------------------*/
+        private bool RayHitObject(Ray ray)
         {
             // If ray hit gameObject, set to Highlight
             if (Physics.Raycast(ray, out var hit, mainCamera.farClipPlane, layerMask))
@@ -51,14 +59,21 @@ namespace Adefagia.SelectObject
             return false;
         }
 
-        void StoreSelectedGrid(GameObject selected)
+        /*------------------------------------------------------------------------------------
+         * Delegate mouse Right Click action for selected gameObject
+         *------------------------------------------------------------------------------------*/
+        private void MouseRightClick(GameObject gameObjectSelected)
         {
-            if (selected.IsUnityNull()) return;
+            // Make sure gameObject not null
+            if (gameObjectSelected.IsUnityNull()) return;
 
-            mouseRightClick.Invoke(selected);
+            mouseRightClick.Invoke(gameObjectSelected);
         }
 
-        void CameraZoom(Camera cam, Ray ray, float speed)
+        /*------------------------------------------------------------------------------------
+         * Zoom in zoom out if ray hit object
+         *------------------------------------------------------------------------------------*/
+        private void CameraZoom(Camera cam, Ray ray, float speed)
         {
             float zoomDistance = speed * Input.mouseScrollDelta.y * Time.deltaTime;
         
@@ -84,6 +99,9 @@ namespace Adefagia.SelectObject
             cam.orthographicSize -= speed;
         }
 
+        /*------------------------------------------------------------------------------------
+         * Change local coordinate to world coordinate
+         *------------------------------------------------------------------------------------*/
         void LocalAndWorld()
         {
             Debug.Log("Local Space : " + Vector3.forward);

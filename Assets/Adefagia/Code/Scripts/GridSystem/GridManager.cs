@@ -23,7 +23,7 @@ namespace Adefagia.GridSystem
         // public Vector2 nodeLoc;
         // ---
         
-        public List<GridScirptableObject> listGridPrefab;
+        public List<GridScriptableObject> listGridPrefab;
         public Vector3 offsetGridPosition;
 
         public string mapName = "Map";
