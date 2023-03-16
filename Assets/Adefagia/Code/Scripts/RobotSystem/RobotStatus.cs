@@ -74,14 +74,15 @@ namespace Adefagia.RobotSystem
         {
             var outline = gameObject.GetComponent<Outline>();
 
+            // if outline not found, create first
             if (outline == null)
             {
                 gameObject.AddComponent<Outline>();
                 
                 outline = gameObject.GetComponent<Outline>();
-                outline.OutlineMode = outlineStyle.outlineMode;
-                outline.OutlineColor = outlineStyle.outlineColor;
-                outline.OutlineWidth = outlineStyle.outlineWidth;
+                outline.OutlineMode = Outline.Mode.OutlineVisible;
+                outline.OutlineColor = Color.red;
+                outline.OutlineWidth = 8f;
             }
             else
             {

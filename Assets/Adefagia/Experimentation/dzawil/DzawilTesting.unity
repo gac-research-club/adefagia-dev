@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5473217
 Transform:
   m_ObjectHideFlags: 0
@@ -1859,7 +1859,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &923417018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1949,7 +1949,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb989f5d795e4b86848a007d82482258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  index: 0
+  index: 1
   selectRobots: []
   selectRobotActive: {fileID: 0}
   robotSelect: {fileID: 0}
@@ -3153,6 +3153,12 @@ MonoBehaviour:
         attackDamage: 10
     - id: 101
       location: {x: 7, y: 7}
+      gameObject: {fileID: 5241450641409621038, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
+      status:
+        healthPoint: 100
+        attackDamage: 10
+    - id: 102
+      location: {x: 4, y: 7}
       gameObject: {fileID: 5241450641409621038, guid: 79ffbc74ca7dde345afbc266091b8e2a, type: 3}
       status:
         healthPoint: 100

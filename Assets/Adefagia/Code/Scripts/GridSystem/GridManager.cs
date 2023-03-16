@@ -266,6 +266,7 @@ namespace Adefagia.GridSystem
             if (!grid.IsOccupied && grid.IsHover)
             {
                 GridSelected.ChangeSelect(grid);
+                UIManager.HideCanvas();
             }
         }
         #endregion
