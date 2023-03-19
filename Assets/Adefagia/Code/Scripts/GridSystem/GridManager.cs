@@ -1,72 +1,90 @@
 using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Text.RegularExpressions;
 
+using Adefagia.BattleMechanism;
+using Adefagia.Collections;
 using Adefagia.SelectObject;
-using UnityEngine.Serialization;
 
 namespace Adefagia.GridSystem
 {
     public class GridManager : MonoBehaviour
     {
-        public int xSize, ySize;
-        public bool border;
-        public Transform borderParent;
-        
-        public bool emptyMap;
-        
-        // For Debugging
-        // public int index;
-        // public Vector2 nodeLoc;
-        // ---
-        
-        public List<GridScriptableObject> listGridPrefab;
-        public Vector3 offsetGridPosition;
+        public float gridLength = 1;
+        public int gridSizeX, gridSizeY;
 
-        public string mapName = "Map";
-    
-        private bool _doneGenerateGrids;
-        
+        public List<GridElement> listGridPrefab;
+
+        public GridController GridHover
+        {
+            get
+            {
+                try
+                {
+                    var gridController = GetComponent<Select>().GetObjectHit<GridController>();
+                    if (!ValidateGrid(gridController.Grid,0,0,9,4)) 
+                        throw new UnassignedReferenceException();
+                    
+                    return gridController;
+                }
+                catch (UnassignedReferenceException)
+                {
+                    return null;
+                }
+            }
+            set {}
+        }
+
+        private Dictionary<GridType, GridElement> _gridElements;
+
         // List All Grid
         private Grid[,] _listGrid;
 
-        private const GridType DefaultTypeGrid = GridType.Ground;
-
-        public SelectableObject<Grid> GridSelected { get; private set; }
-
         private void Awake()
         {
-            // Map String
-            var map = ReadFile("Assets/Adefagia/Resources/"+ mapName +".txt");
-
-            if (emptyMap)
-            {
-                GenerateDefaultGrids();
-            }
-            else if(ValidateMap(map))
-            {
-                GenerateGrids(map);
-            }
-            else
-            {
-                Debug.LogWarning("Ukuran Map tidak sesuai dengan grid Size");
-                Debug.LogWarning("**Generate Default Map**");
-                GenerateDefaultGrids();
-            }
-            
-            SetNeighbors();
-
-            // _doneGenerateGrids = true;
-            GridSelected = new SelectableObject<Grid>(this);
+            StartCoroutine(InitializeGridManager());
         }
 
-        public void Start()
+        private IEnumerator InitializeGridManager()
         {
-            // GetGrid(3, 4, true);
-            // GameManager.instance.gridManager.GetGrid(3,4, true);
+            // Wait until GameState is Initialize
+            while (BattleManager.gameState != GameState.Initialize)
+            {
+                yield return null;
+            }
+            
+            // Init gridElements
+            CreateGridElements();
+            
+            // Generate Grids
+            GenerateGrids();
+
+            // Set grid neighbor 
+            SetNeighbors();
+            
+            BattleManager.ChangeGameState(GameState.Preparation);
+        }
+
+        private void CreateGridElements()
+        {
+            _gridElements = new Dictionary<GridType, GridElement>();
+            var duplicateCount = 0;
+            foreach (var gridElement in listGridPrefab)
+            {
+                try
+                {
+                    if (_gridElements.ContainsKey(gridElement.gridType)) throw new DictionaryDuplicate();
+                    _gridElements.Add(gridElement.gridType, gridElement);
+                }
+                catch (DictionaryDuplicate)
+                {
+                    duplicateCount++;
+                }
+            }
+            
+            // duplicate error message
+            if(duplicateCount > 0) Debug.LogWarning($"Duplicate {duplicateCount} Item.");
         }
 
         /*----------------------------------------------------------------------------------
@@ -85,45 +103,7 @@ namespace Adefagia.GridSystem
          * Generate map grid secara procedural sesuai ukurang x dan y.
          * tipe Grid ditentukan dari urutan character string map.
          *---------------------------------------------------------------------------------*/
-        private void GenerateGrids(int x, int y, string map)
-        {
-            _listGrid = new Grid[x, y];
-
-            // Set all Grid by (x,y)
-            // xi = x index
-            // yi = y index
-            for (int i = 0, yi = y-1; yi >= 0 ; yi--)
-            {
-                for (var xi = 0; xi < x; xi++, i++)
-                {
-                    // Add every node
-                    // Set location (xi,yi)
-                    // Set type of grid (by map)
-                    var grid = new Grid(this, new Vector2(xi, yi), GetGridTypeByChar(map[i]));
-
-                    // Add into List grid Object
-                    _listGrid[xi, yi] = grid;
-                }
-            }
-        }
-        private void GenerateGrids(Vector2 gridSize, string map) => GenerateGrids((int)gridSize.x, (int)gridSize.y, map);
-        private void GenerateGrids(string map) => GenerateGrids(xSize, ySize, map);
-
-
-        /*----------------------------------------------------------------------------------
-         * GenerateDefaultGrids()
-         * GenerateDefaultGrids(Vector2 size)
-         * params :
-         *  - vector2 size // Vector untuk ukuran x dan y, misal new Vector2(x, y)
-         * 
-         * GenerateDefaultGrids(int x, int y)
-         * params :
-         *  - int x // untuk ukuran x
-         *  - int y // untuk ukuran y
-         *
-         * Generate map grid secara procedural sesuai ukurang x dan y dengan DefaultTypeGrid
-         *---------------------------------------------------------------------------------*/
-        private void GenerateDefaultGrids(int x, int y)
+        private void GenerateGrids(int x, int y)
         {
             _listGrid = new Grid[x, y];
 
@@ -132,22 +112,26 @@ namespace Adefagia.GridSystem
             // yi = y index
             for (int yi = y-1; yi >= 0 ; yi--)
             {
-                for (int xi = 0; xi < x; xi++)
+                for (var xi = 0; xi < x; xi++)
                 {
-                    // Add every node
-                    // Set location (xi,yi)
-                    // Set type of grid (by map)
-                    var grid = new Grid(this, new Vector2(xi, yi), DefaultTypeGrid);
+                    // Create gameObject of grid
+                    var gridObject = Instantiate(_gridElements[GridType.Ground].prefab, transform);
+                    gridObject.transform.position = new Vector3(xi * gridLength, 0, yi * gridLength);
+                    gridObject.name = $"Grid ({xi}, {yi})";
+                    
+                    // Add Grid Controller
+                    var gridController = gridObject.AddComponent<GridController>();
+                    gridController.Grid = new Grid(xi, yi);
 
                     // Add into List grid Object
-                    _listGrid[xi, yi] = grid;
+                    _listGrid[xi, yi] = gridController.Grid;
                 }
             }
         }
-        private void GenerateDefaultGrids(Vector2 gridSize) => GenerateDefaultGrids((int)gridSize.x, (int)gridSize.y);
-        private void GenerateDefaultGrids() => GenerateDefaultGrids(xSize, ySize);
-
-
+        private void GenerateGrids(Vector2 gridSize) => GenerateGrids((int)gridSize.x, (int)gridSize.y);
+        private void GenerateGrids() => GenerateGrids(gridSizeX, gridSizeY);
+        
+        
         /*----------------------------------------------------------------------------------
          * SetNeighbors()
          *
@@ -158,41 +142,19 @@ namespace Adefagia.GridSystem
          *---------------------------------------------------------------------------------*/
         void SetNeighbors()
         {
-            // Set all grid neighbors
-            foreach (var grid in _listGrid)
+            // Access all grid
+            for (int yi = 0; yi < gridSizeY ; yi++)
             {
-                // Add neighbor
-                // Add 4 : right, up, left, down
-                Vector2[] dirs = { Vector2.right, Vector2.up, Vector2.left, Vector2.down };
-                grid.Neighbors = new Grid[dirs.Length];
-                
-                for (var i=0; i<dirs.Length; i++)
+                for (var xi = 0; xi < gridSizeX; xi++)
                 {
-                    var location = grid.Location + dirs[i];
-                    var neighbor = GetGrid(location);
-                    grid.Neighbors[i] = neighbor;
-                    
-                    // If neighbor is null make it border game object
-                    if(grid.Neighbors[i] == null && border) InstantiateBorder(location);
+                    _listGrid[xi,yi].AddNeighbor(GridDirection.Right, GetGrid(xi+1, yi  ));
+                    _listGrid[xi,yi].AddNeighbor(GridDirection.Up   , GetGrid(xi  , yi+1));
+                    _listGrid[xi,yi].AddNeighbor(GridDirection.Left , GetGrid(xi-1, yi  ));
+                    _listGrid[xi,yi].AddNeighbor(GridDirection.Down , GetGrid(xi  , yi-1));
                 }
             }
-            
-            if(border) InstantiateBorderCorner();
-        }
-        
-        public GameObject GetPrefab(GridType gridType)
-        {
-            // Check if gridType is equal in each ListGridPrefab
-            foreach (var data in listGridPrefab.Where(data => data.gridPrefab.dataPrefab.gridType == gridType))
-            {
-                return data.gridPrefab.dataPrefab.prefab;
-            }
-
-            Debug.LogWarning(gridType + " must be listed in GridManager", transform);
-            return null;
         }
 
-        
         /*-----------------------------------------------------------------------------------------------
          * GetGrid() // return grid yang sedang terselect
          *
@@ -209,183 +171,39 @@ namespace Adefagia.GridSystem
          *-----------------------------------------------------------------------------------------------*/
         public Grid GetGrid(int x, int y, bool debugMessage = false)
         {
-            // Make sure (x,y) in range of grid Size
-            if (x < 0 || x > xSize - 1 || y < 0 || y > ySize - 1)
+            try
             {
-                if (debugMessage)
-                {
-                    Debug.LogWarning($"Grid ({x},{y}) Index is out of range");
-                }
+                return _listGrid[x, y];
+            }
+            catch (IndexOutOfRangeException error)
+            {
+                if(debugMessage) Debug.LogWarning(error.Message);
                 return null;
             }
-            
-            var grid = _listGrid[x, y];
-            if (debugMessage)
-            {
-                Debug.Log($"Grid ({grid.Location.x},{grid.Location.y})");
-            }
-
-            return grid;
         }
         public Grid GetGrid(Vector2 location, bool debugMessage = false)
         {
             return GetGrid((int) location.x, (int) location.y, debugMessage);
         }
 
-        public static Grid GetGrid()
+        public bool ValidateGrid(Grid grid, int ax, int ay, int bx, int by)
         {
-            return GameManager.instance.gridManager.GetGridSelected();
-        }
-        public Grid GetGridSelected()
-        {
-            return GridSelected.GetSelect();
-        }
-        
-        #region UnityEvent
-        public void MouseHover(GameObject gridGameObject)
-        {
-            // Debug.Log("Hover");
-            var grid = gridGameObject.GetComponent<GridStatus>().Grid;
-            
-            if(grid == null) return;
-            
-            GridSelected.ChangeHover(grid);
-        }
-
-        public void MouseNotHover()
-        {
-            GridSelected.NotHover();
-        }
-
-        public void GridClick(GameObject gridGameObject)
-        {
-            // Debug.Log("click");
-            var grid = gridGameObject.GetComponent<GridStatus>().Grid;
-
-            // Only select on specific grid
-            if (!grid.IsOccupied && grid.IsHover)
-            {
-                GridSelected.ChangeSelect(grid);
-                UIManager.HideCanvas();
-            }
-        }
-        #endregion
-
-        
-        public static bool CheckGround(Grid grid)
-        {
-            return grid.GridType == GridType.Ground;
-        }
-
-        private GridType GetGridTypeByChar(char character)
-        {
-            // Set State by char
-            switch (character)
-            {
-                case '-':
-                    return GridType.Empty;
-                    
-                case 'o':
-                    return GridType.Ground;
-                
-                default:
-                    return GridType.Empty;
-            }
-
-        }
-
-        private void InstantiateBorder(Vector2 location)
-        {
-            var loc3 = new Vector3(location.x, 0, location.y);
-            var borderPrefab = GetPrefab(GridType.Border);
-            if(borderPrefab == null) return;
-            Instantiate(borderPrefab, loc3, Quaternion.identity, borderParent);
-        }
-        private void InstantiateBorderCorner()
-        {
-            InstantiateBorder(new Vector2(-1,-1));
-            InstantiateBorder(new Vector2(xSize,-1));
-            InstantiateBorder(new Vector2(-1,ySize));
-            InstantiateBorder(new Vector2(xSize,ySize));
-        }
-        
-        // public static bool IsGridEmpty(Grid grid)
-        // {
-        //     // return grid.IsUnityNull() || grid.IsEmpty();
-        //     throw new NotImplementedException();
-        // }
-
-        /*----------------------------------------------------------------------------------
-         * ValidateMap(string mapString)
-         * params:
-         *  - string mapString // text dari Map
-         *
-         * Return true if map sesuai sama ukuran grid.
-         *---------------------------------------------------------------------------------*/
-        private bool ValidateMap(string mapString)
-        {
-            return mapString.Length == (xSize * ySize);
-        }
-
-        /*----------------------------------------------------------------------------------
-         * ReadFile(string pathFile)
-         * params:
-         *  - string pathFile // dimulai dari folder Asset. Misal: "Assets/Map/Map2.txt"
-         *
-         * Read File from directory and return the content text
-         * and turn into one line.
-         *---------------------------------------------------------------------------------*/
-        private string ReadFile(string pathFile)
-        {
-            var map = "";
-
             try
             {
-                // read from file
-                StreamReader reader = new StreamReader(pathFile);
-                map = reader.ReadToEnd();
-
+                if (grid.X < ax || grid.X > bx || grid.Y < ay || grid.Y > by) throw new IndexOutOfRangeException();
+                return true;
             }
-            catch (FileNotFoundException)
+            catch (IndexOutOfRangeException)
             {
-                Debug.LogWarning("File Map not found", this);
+                return false;
             }
-            catch (DirectoryNotFoundException)
-            {
-                Debug.LogWarning("File Map not found", this);
-            }
-
-            // Serialize string
-            // Debug.Log(map.Length);
-            return CleanInput(map);
         }
-        
-        
-        /*----------------------------------------------------------------------------------
-         * ---------------------------------------------------------------------------------
-         * CleanInput(string strIn)
-         * params:
-         *  - string strIn // text
-         *
-         * Replacing some character in the text to empty string
-         * character:
-         *  - Selain huruf & angka
-         *  - Selain (-)
-         * ---------------------------------------------------------------------------------
-         *---------------------------------------------------------------------------------*/
-        private string CleanInput(string strIn)
+
+        private void OnDrawGizmos()
         {
-            // Replace invalid characters with empty strings.
-            try {
-                return Regex.Replace(strIn, @"[^\w-]", "", RegexOptions.None, TimeSpan.FromSeconds(1));
-            }
-            // If we timeout when replacing invalid characters,
-            // we should return Empty.
-            catch (RegexMatchTimeoutException) {
-                return "";
-            }
+            var center = (gridSizeX*gridLength + gridSizeY*gridLength) * 0.5f;
+            Gizmos.DrawWireCube(transform.position  + new Vector3(center*0.5f-0.5f,0, center*0.5f-0.5f), new Vector3(center,1,center));
         }
-    
     }
 }
 

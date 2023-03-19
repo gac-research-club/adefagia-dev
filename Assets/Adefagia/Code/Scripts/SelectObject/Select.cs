@@ -9,7 +9,7 @@ namespace Adefagia.SelectObject
         public Camera mainCamera;
         public LayerMask layerMask;
         
-        public GameObject highlightGameObject;
+        public GameObject objectHit;
 
         public UnityGameObjectEvent mouseHover;
         public UnityEvent mouseHoverNotHit;
@@ -20,11 +20,11 @@ namespace Adefagia.SelectObject
             if (RayHitObject(CameraRay()))
             {
                 // Hover Event
-                mouseHover.Invoke(highlightGameObject);
+                mouseHover.Invoke(objectHit);
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    MouseRightClick(highlightGameObject);
+                    MouseRightClick(objectHit);
                 }
             }
             else
@@ -33,6 +33,11 @@ namespace Adefagia.SelectObject
                 mouseHoverNotHit.Invoke();
             }
         }
+
+        public T GetObjectHit<T>()
+        {
+            return objectHit.GetComponent<T>();
+        } 
         
         /*------------------------------------------------------------------------------------
          * Shot ray from mouse pointer position to relative main camera
@@ -52,9 +57,11 @@ namespace Adefagia.SelectObject
             // If ray hit gameObject, set to Highlight
             if (Physics.Raycast(ray, out var hit, mainCamera.farClipPlane, layerMask))
             {
-                highlightGameObject = hit.transform.gameObject;
+                objectHit = hit.transform.gameObject;
                 return true;
             }
+            
+            objectHit = null;
             
             return false;
         }
@@ -68,45 +75,6 @@ namespace Adefagia.SelectObject
             if (gameObjectSelected.IsUnityNull()) return;
 
             mouseRightClick.Invoke(gameObjectSelected);
-        }
-
-        /*------------------------------------------------------------------------------------
-         * Zoom in zoom out if ray hit object
-         *------------------------------------------------------------------------------------*/
-        private void CameraZoom(Camera cam, Ray ray, float speed)
-        {
-            float zoomDistance = speed * Input.mouseScrollDelta.y * Time.deltaTime;
-        
-            if (cam.orthographic)
-            {
-                CameraOrthographicZoom(cam, zoomDistance);
-            }
-            else
-            {
-                CameraPerspectiveZoom(cam, ray, zoomDistance);
-            }
-        }
-
-        // Zoom in Perspective view
-        void CameraPerspectiveZoom(Camera cam, Ray ray, float speed)
-        {
-            cam.transform.Translate(ray.direction * speed, Space.World);
-        }
-    
-        // Zoom in Orthographic view
-        void CameraOrthographicZoom(Camera cam, float speed)
-        {
-            cam.orthographicSize -= speed;
-        }
-
-        /*------------------------------------------------------------------------------------
-         * Change local coordinate to world coordinate
-         *------------------------------------------------------------------------------------*/
-        void LocalAndWorld()
-        {
-            Debug.Log("Local Space : " + Vector3.forward);
-            var direction = transform.TransformDirection(Vector3.forward);
-            Debug.Log("World Space : " + direction);
         }
     }
     

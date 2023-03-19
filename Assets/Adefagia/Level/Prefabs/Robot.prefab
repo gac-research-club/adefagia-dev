@@ -93,8 +93,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7993192457340510272}
   - component: {fileID: 1404938480179057047}
-  - component: {fileID: 2343947593837426010}
-  - component: {fileID: 2240993890475864908}
   m_Layer: 7
   m_Name: Robot
   m_TagString: Selectable
@@ -132,33 +130,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &2343947593837426010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5241450641409621038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d68b6fac88e1978459f25a99e56bebe4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectMaterial: {fileID: 2100000, guid: 6f61ed316be75084fa134b2112ef0c79, type: 2}
-  hoverMaterial: {fileID: 2100000, guid: ac4fd7f514441b345aad8a0a5fab56b9, type: 2}
-  health: 0
---- !u!114 &2240993890475864908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5241450641409621038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5444a73167fc1948af1500be47d45a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7728206225949464522
 GameObject:
   m_ObjectHideFlags: 0

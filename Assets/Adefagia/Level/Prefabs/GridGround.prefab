@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6574319586498684582}
   - component: {fileID: 8635499443245335511}
   - component: {fileID: 1935564431275070707}
-  - component: {fileID: -1729278027626236240}
   m_Layer: 8
   m_Name: GridGround
   m_TagString: Untagged
@@ -99,19 +98,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &-1729278027626236240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2829195777404453423}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2d59179ff801864caace6df411d095c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  occupiedMaterial: {fileID: 2100000, guid: 1c9b46065fba63e42b436a2d3cc95edf, type: 2}
-  selectMaterial: {fileID: 2100000, guid: 9f87799b3f1657c4eb0f91fafe253ec9, type: 2}
-  hoverMaterial: {fileID: 2100000, guid: a1ac7c953037dba41982b88813f69770, type: 2}
-  highlightMaterial: {fileID: 2100000, guid: 15a63c0fe381e4f4582fcd672929eac2, type: 2}
