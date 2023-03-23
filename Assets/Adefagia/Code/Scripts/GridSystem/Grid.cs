@@ -16,15 +16,19 @@ namespace Adefagia.GridSystem
     
     public class Grid
     {
-        /*--------------------------------------------------------
-         * Property
-         *-------------------------------------------------------*/
+        #region Properties
+
         public int X { get; }
         public int Y { get; }
         
         public GridStatus Status { get; set; }
         public Dictionary<GridDirection, Grid> Neighbors { get; set; }
         public float Priority { get; set; }
+
+
+        #endregion
+
+        #region Constructor
 
         /*------------------------------------------------------------------------------------------------------------
          * Constructor
@@ -36,6 +40,8 @@ namespace Adefagia.GridSystem
 
             Neighbors = new Dictionary<GridDirection, Grid>();
         }
+
+        #endregion
 
         public void AddNeighbor(GridDirection gridDirection, Grid grid)
         {
@@ -60,6 +66,21 @@ namespace Adefagia.GridSystem
             {
                 return null;
             } 
+        }
+
+        public void SetOccupied()
+        {
+            Status = GridStatus.Robot;
+        }
+
+        public static bool IsOccupied(Grid grid)
+        {
+            return grid.Status == GridStatus.Robot;
+        }
+
+        public override string ToString()
+        {
+            return $"Grid ({X}, {Y})";
         }
     }
 

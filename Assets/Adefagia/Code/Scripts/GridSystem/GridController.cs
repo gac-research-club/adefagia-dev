@@ -9,5 +9,7 @@ namespace Adefagia.GridSystem
     public class GridController : MonoBehaviour
     {
         public Grid Grid { get; set; }
+
+        public RobotController RobotController { get; set; }
     }
 }

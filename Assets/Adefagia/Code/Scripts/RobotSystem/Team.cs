@@ -7,7 +7,6 @@ namespace Adefagia.BattleMechanism
     public class Team
     {
         public string teamName;
-        public List<RobotController> robotControllers;
-        
+
     }
 }

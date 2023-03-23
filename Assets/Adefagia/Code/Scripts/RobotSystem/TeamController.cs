@@ -1,74 +1,129 @@
 ﻿using System;
-using System.Collections;
-using Adefagia.RobotSystem;
+using System.Collections.Generic;
+using Adefagia.Collections;
+using Adefagia.GridSystem;
 using UnityEngine;
+using Adefagia.RobotSystem;
+using Grid = Adefagia.GridSystem.Grid;
 
 namespace Adefagia.BattleMechanism
 {
     public class TeamController : MonoBehaviour
     {
-        public Team team;
-
-        public RobotController robotControllerActive;
-
-        private Vector3 _defaultPosition;
-
-        private int _number = 0;
+        [SerializeField] private Team team;
         
+        // Must be not SerializedField
+        // But for debugging, this is important to show in inspector
+        [SerializeField] private List<RobotController> robotControllers;
+        [SerializeField] private RobotController robotControllerActive;
+        [SerializeField] private RobotController robotControllerSelect;
+        [SerializeField] private List<int> _robotDeployed;
+
+        // Bound Area
+        private Vector2 _startArea, _endArea;
+        
+        // Index Robot
+        private int _index;
+
+        #region Properties
+        public Team Team => team;
+        public int TotalRobot => robotControllers.Count;
+        public Robot Robot => robotControllerActive.Robot;
+        public RobotController RobotController => robotControllerActive;
+        public GridController GridController { get; set; }
+        
+        // Robot Selected in Battle State
+        public RobotController RobotControllerSelected { 
+            get => robotControllerSelect;
+            set => robotControllerSelect = value;
+        }
+        #endregion
+
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1)) _number = 0;
-            if (Input.GetKeyDown(KeyCode.Alpha2)) _number = 1;
-            if (Input.GetKeyDown(KeyCode.Alpha3)) _number = 2;
-            
-            if (BattleManager.preparationState == PreparationState.ChooseRobot)
-            {
-                if (this == GameManager.instance.battleManager.TeamActive)
-                {
-                    if (robotControllerActive != team.robotControllers[_number])
-                    {
-                        if (team.robotControllers[_number] != null)
-                        {
-                            robotControllerActive = team.robotControllers[_number];
-                        }
-                    }
-                    
-                    if (Input.GetKeyDown(KeyCode.I))
-                    {
-                        BattleManager.ChangePreparationState(PreparationState.DeployRobot);
-                    }
-                }
-            }
-
             if (BattleManager.preparationState == PreparationState.DeployRobot)
             {
-
-                if (robotControllerActive == null) return;
-
-                var robotObject = robotControllerActive.gameObject;
-                
-                if (_defaultPosition == Vector3.zero)
-                {
-                    _defaultPosition = robotObject.transform.position;
-                }
-
-                try
-                {
-                    if (GameManager.instance.gridManager.GridHover == null) throw new NullReferenceException();
-
-                    robotObject.transform.position =
-                        GameManager.instance.gridManager.GridHover.transform.position;
-                }
-                catch (NullReferenceException)
-                {
-                    robotObject.transform.position = _defaultPosition;
-                }
+                SelectingRobot();
             }
         }
-
-        private void ChooseRobot()
+        
+        // Area Selecting while preparation mode
+        public void SetPreparationArea(int ax, int ay, int bx, int by)
+        {
+            _startArea = new Vector2(ax, ay);
+            _endArea   = new Vector2(bx, by);
+        }
+        public bool IsInPreparationArea(Grid grid)
         {
             
+            return (grid.X >= _startArea.x &&
+                    grid.Y >= _startArea.y &&
+                    grid.X <= _endArea.x   &&
+                    grid.Y <= _endArea.y     );
+        }
+
+        // TODO: Team controller can change what robot is selected by ui user
+        private void SelectingRobot()
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                ChooseRobot(0);
+            } else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                ChooseRobot(1);
+            } else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                ChooseRobot(2);
+            }
+        }
+        public void ChooseRobot(int index)
+        {
+            _index = index;
+            robotControllerActive = robotControllers[_index];
+        }
+        public void ChooseRobot(RobotController robotController)
+        {
+            robotControllerActive = robotController;
+        }
+
+        public void DeployRobot()
+        {
+            _robotDeployed.Add(_index);
+        }
+
+        public bool IsHasDeployed(Robot robot)
+        {
+            return _robotDeployed.Contains(robot.ID);
+        }
+
+        public bool IsHasFinishDeploy()
+        {
+            return _robotDeployed.Count == TotalRobot;
+        }
+
+        public bool Contains(RobotController robotController)
+        {
+            return robotControllers.Contains(robotController);
+        }
+        
+        
+        /*-----------------------------------------------------------------------
+         * Change Team Robot Controllers
+         *----------------------------------------------------------------------*/
+        public void ChangeRobotController(List<RobotController> newRobotControllers)
+        {
+            robotControllers = newRobotControllers;
+        }
+        
+        /*-----------------------------------------------------------------------
+         * get reference from dummy gameObject
+         *----------------------------------------------------------------------*/
+        public GameObject GetRobotGameObject(int index)
+        {
+            // Out of range index is returning null
+            if (index >= TotalRobot || index < 0) return null;
+
+            return robotControllers[index].gameObject;
         }
 
         private void OnGUI()
@@ -76,9 +131,12 @@ namespace Adefagia.BattleMechanism
             var text = "";
             try
             {
-                text = robotControllerActive.name;
+                text = "Active: " + Robot;
             }
-            catch (NullReferenceException) { }
+            catch (NullReferenceException)
+            {
+                text = "Empty";
+            }
             
             GUI.Box (new Rect (0,Screen.height - 50,100,50), text);
         }

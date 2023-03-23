@@ -11,17 +11,33 @@ namespace Adefagia.RobotSystem
 {
     public class Robot
     {
-        public Grid Grid { get; set; }
-        
+        private Grid _grid;
+
+        #region Properties
+        public int ID { get; set; }
+        public string Name { get; }
+        public Grid Location => _grid;
         public float MaxHealth { get; }
         public float CurrentHealth { get; }
         public float Damage { get; }
+        #endregion
 
-        public Robot(float maxHealth, float damage)
+        public Robot(string name, float maxHealth, float damage)
         {
+            Name = name;
             MaxHealth = maxHealth;
             CurrentHealth = MaxHealth;
             Damage = damage;
+        }
+
+        public void ChangeLocation(Grid grid)
+        {
+            _grid = grid;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name}";
         }
     }
 }

@@ -14,4 +14,11 @@ namespace Adefagia.Collections
             
         }
     }
+
+    public class HasDeployException : Exception
+    {
+        public HasDeployException() : base("Robot Has Deployed before")
+        {
+        }
+    }
 }

@@ -9,52 +9,57 @@ namespace Adefagia.RobotSystem
 {
     public class RobotManager : MonoBehaviour
     {
-        public GameObject robotPrefab;
-
+        
+        [SerializeField] private GameObject robotPrefab;
         private TeamController _teamController;
 
         private void Awake()
         {
             _teamController = GetComponent<TeamController>();
 
-            StartCoroutine(SpawnRobot());
+            // Initiate Robots
+            SpawnRobot();
             
+            _teamController.ChooseRobot(0);
         }
 
-        private IEnumerator SpawnRobot()
+        /*--------------------------------------------------------------------------------------
+         * Create a real robot gameObject with selected prefab
+         * and replace the dummy gameObject
+         *--------------------------------------------------------------------------------------*/
+        private void SpawnRobot()
         {
 
-            while (BattleManager.gameState != GameState.Initialize)
-            {
-                yield return null;
-            }
-
             List<RobotController> newRobotControllers = new List<RobotController>();
-            for (int i = _teamController.team.robotControllers.Count-1; i >= 0 ; i--)
+            for (int i = _teamController.TotalRobot-1; i >= 0 ; i--)
             {
-                var dummy = _teamController.team.robotControllers[i].gameObject;
+                var dummy = _teamController.GetRobotGameObject(i);
                 
+                // If dummy is null then skip to next loop
+                if(dummy == null) continue;
+             
+                // Create a real robot gameObject
                 var robotObject = Instantiate(robotPrefab, transform);
                 robotObject.name = "Robot " + i;
                 robotObject.transform.position = dummy.transform.position;
 
-                newRobotControllers.Add(robotObject.AddComponent<RobotController>());
+                // Add RobotController to attach on robot gameObject
+                var robotController = robotObject.AddComponent<RobotController>();
                 
+                // TODO: Make each robot dynamic edited by user
+                // Manual input robot stat
+                robotController.Robot = new Robot(robotObject.name, 100, 10);
+                robotController.Robot.ID = _teamController.TotalRobot-1 - i;
+
+                // Edit name
+                // robotController.Robot.Name = robotObject.name;
+                newRobotControllers.Add(robotController);
+                
+                // Delete the dummy gameObject
                 Destroy(dummy);
             }
 
-            _teamController.team.robotControllers = newRobotControllers;
-
-            // Create gameObject of robot
-            // gridObject.transform.position = new Vector3(xi * gridLength, 0, yi * gridLength);
-            // gridObject.name = $"Grid ({xi}, {yi})";
-            //         
-            // // Add Grid Controller
-            // var gridController = gridObject.AddComponent<GridController>();
-            // gridController.Grid = new Grid(xi, yi);
-            //
-            // // Add into List grid Object
-            // _listGrid[xi, yi] = gridController.Grid;
+            _teamController.ChangeRobotController(newRobotControllers);
         }
 
     }

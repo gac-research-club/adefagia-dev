@@ -16,27 +16,9 @@ namespace Adefagia.GridSystem
 
         public List<GridElement> listGridPrefab;
 
-        public GridController GridHover
-        {
-            get
-            {
-                try
-                {
-                    var gridController = GetComponent<Select>().GetObjectHit<GridController>();
-                    if (!ValidateGrid(gridController.Grid,0,0,9,4)) 
-                        throw new UnassignedReferenceException();
-                    
-                    return gridController;
-                }
-                catch (UnassignedReferenceException)
-                {
-                    return null;
-                }
-            }
-            set {}
-        }
-
         private Dictionary<GridType, GridElement> _gridElements;
+        
+        private Select _select;
 
         // List All Grid
         private Grid[,] _listGrid;
@@ -44,6 +26,7 @@ namespace Adefagia.GridSystem
         private void Awake()
         {
             StartCoroutine(InitializeGridManager());
+            _select = GetComponent<Select>();
         }
 
         private IEnumerator InitializeGridManager()
@@ -186,16 +169,21 @@ namespace Adefagia.GridSystem
             return GetGrid((int) location.x, (int) location.y, debugMessage);
         }
 
-        public bool ValidateGrid(Grid grid, int ax, int ay, int bx, int by)
+        // Grid hover
+        public Grid GetGrid()
+        {
+            return GetGridController()?.Grid;
+        }
+
+        public GridController GetGridController()
         {
             try
             {
-                if (grid.X < ax || grid.X > bx || grid.Y < ay || grid.Y > by) throw new IndexOutOfRangeException();
-                return true;
+                return _select.GetObjectHit<GridController>();
             }
-            catch (IndexOutOfRangeException)
+            catch (NullReferenceException)
             {
-                return false;
+                return null;
             }
         }
 

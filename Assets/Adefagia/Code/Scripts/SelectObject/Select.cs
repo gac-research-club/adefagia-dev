@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -36,7 +37,14 @@ namespace Adefagia.SelectObject
 
         public T GetObjectHit<T>()
         {
-            return objectHit.GetComponent<T>();
+            try
+            {
+                return objectHit.GetComponent<T>();
+            }
+            catch (NullReferenceException)
+            {
+                return default;
+            }
         } 
         
         /*------------------------------------------------------------------------------------

@@ -1,15 +1,16 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using Adefagia;
 using Adefagia.GridSystem;
+using Adefagia.SelectObject;
 using UnityEngine;
+using Grid = Adefagia.GridSystem.Grid;
 
 public class GUIGridManager : MonoBehaviour
 {
     private GridManager _gridManager;
     private void Start()
     {
-        _gridManager = GetComponent<GridManager>();
+        _gridManager = GameManager.instance.gridManager;
     }
 
     private void OnGUI()
@@ -17,7 +18,8 @@ public class GUIGridManager : MonoBehaviour
         var text = "";
         try
         {
-            var grid = _gridManager.GridHover.Grid;
+            // Show what grid is hover
+            var grid = _gridManager.GetGrid();
             text = $"Grid ({grid.X}, {grid.Y})";
         }
         catch (NullReferenceException)
