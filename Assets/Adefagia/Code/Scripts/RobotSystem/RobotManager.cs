@@ -10,7 +10,7 @@ namespace Adefagia.RobotSystem
     public class RobotManager : MonoBehaviour
     {
         
-        [SerializeField] private GameObject robotPrefab;
+        [SerializeField] private List<GameObject> robotPrefab;
         private TeamController _teamController;
 
         private void Awake()
@@ -39,7 +39,7 @@ namespace Adefagia.RobotSystem
                 if(dummy == null) continue;
              
                 // Create a real robot gameObject
-                var robotObject = Instantiate(robotPrefab, transform);
+                var robotObject = Instantiate(robotPrefab[i], transform);
                 robotObject.name = "Robot " + i;
                 robotObject.transform.position = dummy.transform.position;
 

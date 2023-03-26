@@ -53,7 +53,7 @@ namespace Adefagia.BattleMechanism
             _startArea = new Vector2(ax, ay);
             _endArea   = new Vector2(bx, by);
         }
-        public bool IsInPreparationArea(Grid grid)
+        public bool IsGridInPreparationArea(Grid grid)
         {
             
             return (grid.X >= _startArea.x &&
@@ -62,19 +62,44 @@ namespace Adefagia.BattleMechanism
                     grid.Y <= _endArea.y     );
         }
 
-        // TODO: Team controller can change what robot is selected by ui user
+        // TODO: Team controller can change what robot is selected by UI user
         private void SelectingRobot()
         {
+            // Only for the team active
+            var teamActive = GameManager.instance.battleManager.TeamActive;
+            if (this != teamActive) return;
+
+            var last = RobotController;
+            
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
+                if (!IsHasDeployed(Robot))
+                {
+                    last.ResetPosition();
+                }
                 ChooseRobot(0);
-            } else if (Input.GetKeyDown(KeyCode.Alpha2))
+            } 
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
+                if (!IsHasDeployed(Robot))
+                {
+                    last.ResetPosition();
+                }
                 ChooseRobot(1);
-            } else if (Input.GetKeyDown(KeyCode.Alpha3))
+            } 
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
+                if (!IsHasDeployed(Robot))
+                {
+                    last.ResetPosition();
+                }
                 ChooseRobot(2);
             }
+        }
+
+        public void ChooseRobot()
+        {
+            robotControllerActive = robotControllers[_index];
         }
         public void ChooseRobot(int index)
         {
@@ -84,6 +109,23 @@ namespace Adefagia.BattleMechanism
         public void ChooseRobot(RobotController robotController)
         {
             robotControllerActive = robotController;
+        }
+
+        public void IncrementIndex()
+        {
+            while (true)
+            {
+                if (!_robotDeployed.Contains(_index) || _robotDeployed.Count == TotalRobot)
+                {
+                    return;
+                }
+
+                _index++;
+                if (_index >= TotalRobot)
+                {
+                    _index = 0;
+                }
+            }
         }
 
         public void DeployRobot()
@@ -124,21 +166,6 @@ namespace Adefagia.BattleMechanism
             if (index >= TotalRobot || index < 0) return null;
 
             return robotControllers[index].gameObject;
-        }
-
-        private void OnGUI()
-        {
-            var text = "";
-            try
-            {
-                text = "Active: " + Robot;
-            }
-            catch (NullReferenceException)
-            {
-                text = "Empty";
-            }
-            
-            GUI.Box (new Rect (0,Screen.height - 50,100,50), text);
         }
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Adefagia.GridSystem;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 using Random = UnityEngine.Random;
@@ -60,27 +59,38 @@ namespace Adefagia.BattleMechanism
                     }
                 }
                 
-                // Move robot location & position
-                var gridHover = GameManager.instance.gridManager.GetGrid();
-                
-                if(gridHover == null) return;
-
-                // gridHover only in team active Area
-                if (!TeamActive.IsInPreparationArea(gridHover)) return;
-                
-                // if grid has been occupied by other robot
-                if(Grid.IsOccupied(gridHover)) return;
+                /*---------------------------------------------------------------
+                 * Move robot location & position
+                 *---------------------------------------------------------------*/
                 
                 // if have been deployed, cannot change location and position
                 if (TeamActive.IsHasDeployed(TeamActive.Robot)) return;
                 
-                TeamActive.Robot.ChangeLocation(gridHover);
-                TeamActive.RobotController.MovePosition(gridHover);
+                TeamActive.GridController = GameManager.instance.gridManager.GetGridController();
 
-                // Change gridController
-                var gridController = GameManager.instance.gridManager.GetGridController();
-                if (gridController == null) return;
-                TeamActive.GridController = gridController;
+                try
+                {
+                    var gridHover = TeamActive.GridController.Grid;
+
+                    // gridHover only in team active Area
+                    // & if grid has been occupied by other robot
+                    if (!TeamActive.IsGridInPreparationArea(gridHover) || Grid.IsOccupied(gridHover))
+                    {
+                        throw new NullReferenceException();
+                    }
+
+                    // Set grid reference to robot
+                    TeamActive.RobotController.MovePosition(gridHover);
+                    TeamActive.Robot.ChangeLocation(gridHover);
+                }
+                catch (NullReferenceException)
+                {
+                    // Reset position
+                    TeamActive.RobotController.ResetPosition();
+                    
+                    // make grid controller null
+                    TeamActive.GridController = null;
+                }
             }
 
             #endregion
@@ -89,20 +99,24 @@ namespace Adefagia.BattleMechanism
 
             if (battleState == BattleState.SelectRobot)
             {
+                // get grid controller
                 var gridController = GameManager.instance.gridManager.GetGridController();
-                
-                if(gridController == null) return;
-                
-                // select robot by grid
-                if (TeamActive.Contains(gridController.RobotController))
+
+                // set robot from gridController
+                try
                 {
+                    if (!TeamActive.Contains(gridController.RobotController))
+                    {
+                        throw new NullReferenceException();
+                    }
+                    
+                    // select robot by grid
                     TeamActive.ChooseRobot(gridController.RobotController);
                 }
-                else
+                catch (NullReferenceException)
                 {
                     TeamActive.ChooseRobot(null);
                 }
-                
             }
 
             #endregion
@@ -167,13 +181,25 @@ namespace Adefagia.BattleMechanism
         {
             if (preparationState == PreparationState.DeployRobot)
             {
-                if (TeamActive.IsHasDeployed(TeamActive.Robot)) return;
+                /*-----------------------------------------------------------------
+                 * Deploy Robot
+                 *-----------------------------------------------------------------*/
+
+                // Robot has deploy or grid is empty
+                if (TeamActive.IsHasDeployed(TeamActive.Robot) 
+                    || TeamActive.GridController == null) return;
+
                 TeamActive.DeployRobot();
+                
+                // set robot to grid
+                TeamActive.GridController.RobotController = TeamActive.RobotController;
                 
                 // Occupied the grid
                 TeamActive.Robot.Location.SetOccupied();
-                TeamActive.RobotController.GridController = TeamActive.GridController;
-                TeamActive.GridController.RobotController = TeamActive.RobotController;
+                
+                // change to the next robot index
+                TeamActive.IncrementIndex();
+                TeamActive.ChooseRobot();
             }
 
             if (battleState == BattleState.SelectRobot)
@@ -198,6 +224,21 @@ namespace Adefagia.BattleMechanism
         }
         
         #endregion
+        
+        private void OnGUI()
+        {
+            var text = "";
+            try
+            {
+                text = "Active: " + TeamActive.Robot;
+            }
+            catch (NullReferenceException)
+            {
+                text = "Empty";
+            }
+            
+            GUI.Box (new Rect (0,Screen.height - 50,100,50), text);
+        }
     }
     
 
