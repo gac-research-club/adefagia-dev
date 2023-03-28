@@ -17,14 +17,13 @@ namespace Adefagia.GridSystem
     public class Grid
     {
         #region Properties
-
+        
         public int X { get; }
         public int Y { get; }
         
         public GridStatus Status { get; set; }
-        public Dictionary<GridDirection, Grid> Neighbors { get; set; }
+        public Dictionary<GridDirection, Grid> Neighbors { get; }
         public float Priority { get; set; }
-
 
         #endregion
 

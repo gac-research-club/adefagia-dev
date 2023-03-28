@@ -47,12 +47,15 @@ namespace Adefagia.BattleMechanism
             }
         }
         
-        // Area Selecting while preparation mode
+        /*----------------------------------------------------------------------
+         * Area Selecting while preparation mode
+         *----------------------------------------------------------------------*/
         public void SetPreparationArea(int ax, int ay, int bx, int by)
         {
             _startArea = new Vector2(ax, ay);
             _endArea   = new Vector2(bx, by);
         }
+        
         public bool IsGridInPreparationArea(Grid grid)
         {
             
@@ -62,11 +65,11 @@ namespace Adefagia.BattleMechanism
                     grid.Y <= _endArea.y     );
         }
 
-        // TODO: Team controller can change what robot is selected by UI user
+        //TODO: Team controller can change what robot is selected by UI user
         private void SelectingRobot()
         {
             // Only for the team active
-            var teamActive = GameManager.instance.battleManager.TeamActive;
+            var teamActive = BattleManager.TeamActive;
             if (this != teamActive) return;
 
             var last = RobotController;
@@ -166,6 +169,11 @@ namespace Adefagia.BattleMechanism
             if (index >= TotalRobot || index < 0) return null;
 
             return robotControllers[index].gameObject;
+        }
+
+        public override string ToString()
+        {
+            return $"Controller Team {team.teamName}";
         }
     }
 }

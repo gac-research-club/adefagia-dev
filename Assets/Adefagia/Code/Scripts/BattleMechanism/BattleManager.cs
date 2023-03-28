@@ -16,8 +16,8 @@ namespace Adefagia.BattleMechanism
             
         [SerializeField] private TeamController teamA, teamB;
         
-        public TeamController TeamActive { get; set; }
-        public TeamController NextTeam { get; set; }
+        public static TeamController TeamActive { get; set; }
+        public static TeamController NextTeam { get; set; }
 
         private void Awake()
         {
@@ -34,7 +34,8 @@ namespace Adefagia.BattleMechanism
              *----------------------*/
             teamB.SetPreparationArea(0,0,9,3);
             
-            StartCoroutine(PreparationBattle());
+            // StartCoroutine(PreparationBattle());
+            PreparationBattle();
         }
 
         private void Update()
@@ -42,7 +43,8 @@ namespace Adefagia.BattleMechanism
             
             #region Preparation
 
-            if (preparationState == PreparationState.DeployRobot)
+            if (gameState == GameState.Preparation && 
+                preparationState == PreparationState.DeployRobot)
             {
                 
                 // Change Team Activate if has deployed all the robot
@@ -97,7 +99,8 @@ namespace Adefagia.BattleMechanism
 
             #region Battle
 
-            if (battleState == BattleState.SelectRobot)
+            if (gameState == GameState.Battle &&
+                battleState == BattleState.SelectRobot)
             {
                 // get grid controller
                 var gridController = GameManager.instance.gridManager.GetGridController();
@@ -122,13 +125,13 @@ namespace Adefagia.BattleMechanism
             #endregion
         }
 
-        private IEnumerator PreparationBattle()
+        private void PreparationBattle()
         {
             // Wait until GameState is Preparation
-            while (gameState != GameState.Preparation)
-            {
-                yield return null;
-            }
+            // while (gameState != GameState.Preparation)
+            // {
+            //     yield return null;
+            // }
 
             ChangePreparationState(PreparationState.SelectTeam);
             // Selecting Team to start first
@@ -218,9 +221,16 @@ namespace Adefagia.BattleMechanism
             }
         }
 
+        
+        /*----------------------------------------------------------------------
+         * Move robot to clicked grid
+         *----------------------------------------------------------------------*/
         public void MoveClick()
         {
-            Debug.Log($"Move {TeamActive.RobotControllerSelected.Robot}");
+            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Move");
+            
+            // TODO: State cannot change
+            ChangeBattleState(BattleState.MoveRobot);
         }
         
         #endregion
@@ -260,6 +270,7 @@ namespace Adefagia.BattleMechanism
     {
         Nothing,
         SelectRobot,
+        MoveRobot,
     }
 }
 
