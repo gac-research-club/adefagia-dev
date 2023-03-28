@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -5,42 +6,24 @@ namespace Adefagia
 {
     public class UIManager : MonoBehaviour
     {
-        // private GameManager _gameManager;
+        [SerializeField] private Canvas canvas;
 
-        public TMP_InputField inputFieldLocation;
-        [SerializeField] private GameObject actionButton;
-
-        public int robotId;
-
-        void Start()
+        private void Awake()
         {
-            // _gameManager = GameManager.instance;
+            if (canvas.enabled)
+            {
+                HideBattleUI();
+            }
         }
 
-        public static void ShowCanvas()
+        public void ShowBattleUI()
         {
-            GameManager.instance.uiManager.actionButton.SetActive(true);
+            canvas.enabled = true;
         }
 
-        public static void HideCanvas()
+        public void HideBattleUI()
         {
-            GameManager.instance.uiManager.actionButton.SetActive(false);
-        }
-
-        public void ButtonMoveClicked()
-        {
-            // Debug.Log(inputFieldLocation.text);
-            
-            var s = inputFieldLocation.text.Split(",");
-            var endLocation = new Vector2();
-            endLocation.x = float.Parse(s[0]);
-            endLocation.y = float.Parse(s[1]);
-
-            // var robot = _gameManager.spawnManager.GetRobot();
-            // var robot = _gameManager.robotManager.spawner.GetRobotById(robotId);
-            // if (robot.IsUnityNull()) return;
-            
-            // robot.Move(endLocation);
+            canvas.enabled = false;
         }
     }
 }

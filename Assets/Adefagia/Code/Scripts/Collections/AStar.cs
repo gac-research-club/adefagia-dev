@@ -32,56 +32,56 @@ namespace Adefagia.Collections
             Robots = new List<Robot>();
         }
 
-        public bool Pathfinding(Grid start, Grid end)
-        {
-            // For better choosing path
-            var costSoFar = new Dictionary<Grid, float>();
-            
-            // Starting point
-            _frontierQueue.Insert(start);
-            costSoFar[start] = 0;
-
-            while (_frontierQueue.size > 0)
-            {
-                // Enqueue from Queue
-                var current = _frontierQueue.DeleteMin();
-                
-                // If already reaching end. break loop
-                // Pathfinding success
-                if (current.Equals(end)) return true;
-
-                // Looking Neighbor
-                foreach (var neighbor in current.Neighbors)
-                {
-                    // Set neighbor came from
-                    // Neighbor is must not null
-                    if (neighbor == null) continue;
-                    
-                    // Neighbor have not reached, grid ground and not occupied
-                    if (GridManager.CheckGround(neighbor) && !Reached.Contains(neighbor) && !neighbor.IsOccupied)
-                    {
-
-                        var newCost = costSoFar[current] + 1;
-                        costSoFar[neighbor] = newCost;
-                        
-                        // If distance is more closer update _cameFrom
-                        if (newCost > costSoFar[neighbor]) continue;
-                        
-                        neighbor.Priority = newCost + Heuristic(end.Location, neighbor.Location);
-            
-                        _cameFrom[neighbor] = current;
-                        _frontierQueue.Insert(neighbor);
-                    }
-                }
-                
-                // grid Has reached
-                Reached.Add(current);
-            }
-
-            // Pathfinding failed
-            // DebugListGrid(Reached);
-            return false;
-        }
+        // public bool Pathfinding(Grid start, Grid end)
+        // {
+        //     // For better choosing path
+        //     var costSoFar = new Dictionary<Grid, float>();
+        //     
+        //     // Starting point
+        //     _frontierQueue.Insert(start);
+        //     costSoFar[start] = 0;
+        //
+        //     while (_frontierQueue.size > 0)
+        //     {
+        //         // Enqueue from Queue
+        //         var current = _frontierQueue.DeleteMin();
+        //         
+        //         // If already reaching end. break loop
+        //         // Pathfinding success
+        //         if (current.Equals(end)) return true;
+        //
+        //         // Looking Neighbor
+        //         foreach (var neighbor in current.Neighbors)
+        //         {
+        //             // Set neighbor came from
+        //             // Neighbor is must not null
+        //             if (neighbor == null) continue;
+        //             
+        //             // Neighbor have not reached, grid ground and not occupied
+        //             if (GridManager.CheckGround(neighbor) && !Reached.Contains(neighbor) && !neighbor.IsOccupied)
+        //             {
+        //
+        //                 var newCost = costSoFar[current] + 1;
+        //                 costSoFar[neighbor] = newCost;
+        //                 
+        //                 // If distance is more closer update _cameFrom
+        //                 if (newCost > costSoFar[neighbor]) continue;
+        //                 
+        //                 neighbor.Priority = newCost + Heuristic(end.Location, neighbor.Location);
+        //     
+        //                 _cameFrom[neighbor] = current;
+        //                 _frontierQueue.Insert(neighbor);
+        //             }
+        //         }
+        //         
+        //         // grid Has reached
+        //         Reached.Add(current);
+        //     }
+        //
+        //     // Pathfinding failed
+        //     // DebugListGrid(Reached);
+        //     return false;
+        // }
 
         public List<Grid> Traversal(Grid start, Grid end)
         {
@@ -109,7 +109,7 @@ namespace Adefagia.Collections
             sb.Append("[ ");
             foreach (var grid in grids)
             {
-                sb.Append($"({grid.Location.x},{grid.Location.y})" + " ");
+                // sb.Append($"({grid.Location.x},{grid.Location.y})" + " ");
             }
             sb.Append("]");
                 
@@ -122,7 +122,7 @@ namespace Adefagia.Collections
             sb.Append("[ ");
             foreach (var robot in robots)
             {
-                sb.Append($"Robot {robot.Id}, ");
+
             }
             sb.Append("]");
                 

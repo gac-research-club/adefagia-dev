@@ -15,7 +15,6 @@ namespace Adefagia
         // All Manager
         public BattleManager battleManager;
         public GridManager gridManager;
-        public RobotManager robotManager;
         public UIManager uiManager;
 
         private void Awake()

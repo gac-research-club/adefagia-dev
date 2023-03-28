@@ -67,35 +67,6 @@ namespace Adefagia.SelectObject
         /*----------------------------------------------------------------------------
          * Delegate UnityEvent for Select
          *----------------------------------------------------------------------------*/
-        #region UnityEvent
-        public void MouseHover(GameObject robotGameObject)
-        {
-            Robot robot = robotGameObject.GetComponent<RobotStatus>()?.Robot;
-            if (robot == null) return;
-            robot.OutlineStyle = outlineStyles[0];
-            selectRobotActive.ChangeRobotHover(robot);
-        }
         
-        public void MouseNotHover()
-        {
-            selectRobotActive.RobotNotHover();
-            
-            //Show UI Move, Attack, Defend
-            // UIManager.HideCanvas();
-        }
-        
-        public void MouseClick(GameObject robotGameObject)
-        {
-            // Debug.Log("click");
-            var robotStatus = robotGameObject.GetComponent<RobotStatus>();
-            selectRobotActive.ChangeRobotSelect(robotStatus.Robot);
-
-            // Set gameObject selected
-            robotSelect = selectRobotActive.GetRobotSelect().RobotGameObject;
-            
-            //Show UI Move, Attack, Defend
-            UIManager.ShowCanvas();
-        }
-        #endregion
     }
 }

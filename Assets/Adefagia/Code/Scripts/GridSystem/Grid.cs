@@ -1,94 +1,94 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 using Adefagia.SelectObject;
 using Adefagia.RobotSystem;
 
 namespace Adefagia.GridSystem
 {
-    public class Grid : ISelectableObject
+    public enum GridStatus
     {
-        private readonly GridManager _gridManager;
-        public Vector2 Location { get;}
-        public GridType GridType { get; }
-        public GameObject GridGameObject { get; }
+        Free,
+        Robot,
+        Obstacle,
+    }
+    
+    public class Grid
+    {
+        #region Properties
 
-        public Grid[] Neighbors { get; set; }
+        public int X { get; }
+        public int Y { get; }
         
+        public GridStatus Status { get; set; }
+        public Dictionary<GridDirection, Grid> Neighbors { get; set; }
         public float Priority { get; set; }
 
-        public bool IsOccupied { get; private set; }
-        public bool IsHover { get; private set; }
-        public bool IsHighlight { get; set; }
-        public bool IsSelect { get; set; }
-        public Robot Robot { get; set; }
 
-        public Grid(GridManager gridManager, Vector2 location, GridType gridType)
+        #endregion
+
+        #region Constructor
+
+        /*------------------------------------------------------------------------------------------------------------
+         * Constructor
+         *------------------------------------------------------------------------------------------------------------*/
+        public Grid(int x, int y)
         {
-            _gridManager = gridManager;
-            Location = location;
-            GridType = gridType;
+            X = x;
+            Y = y;
 
-            GridGameObject = Instantiate();
+            Neighbors = new Dictionary<GridDirection, Grid>();
         }
 
-        private GameObject Instantiate()
+        #endregion
+
+        public void AddNeighbor(GridDirection gridDirection, Grid grid)
         {
-            var prefab = _gridManager.GetPrefab(GridType);
-            if (prefab == null) return null;
-            
-            var gridGameObject = Object.Instantiate(prefab, GetLocation(_gridManager.offsetGridPosition), prefab!.transform.rotation, _gridManager.transform);
-            gridGameObject.name = $"Grid ({Location.x},{Location.y})";
-            
-            // Set reference to GridStatus
-            if (gridGameObject.GetComponent<GridStatus>() == null)
+            try
             {
-                gridGameObject.AddComponent<GridStatus>();
+                if (grid == null) throw new NullReferenceException("Grid null");
+                
+                Neighbors.Add(gridDirection, grid);
             }
-            gridGameObject.GetComponent<GridStatus>().Grid = this;
-
-            return gridGameObject;
-        }
-
-        public Vector3 GetLocation(float x = 0, float y = 0, float z = 0)
-        {
-            return Vec2ToVec3(Location) + new Vector3(x,y,z);
-        }
-        public Vector3 GetLocation(Vector3 offset) => Vec2ToVec3(Location) + offset;
-
-        public static Vector3 Vec2ToVec3(Vector2 loc)
-        {
-            return new Vector3(loc.x, 0f, loc.y);
-        }
-
-        public void Occupy()
-        {
-            IsOccupied = true;
-        }
-
-        public void Free()
-        {
-            IsOccupied = false;
+            // Error null reference
+            catch (NullReferenceException) {}
         }
         
-        public void Selected(bool value)
+        public Grid GetNeighbor(GridDirection gridDirection)
         {
-            IsSelect = value;
+            try
+            {
+                return Neighbors[gridDirection];
+            }
+            // If key not found
+            catch (KeyNotFoundException)
+            {
+                return null;
+            } 
         }
 
-        public void Hover(bool value)
+        public void SetOccupied()
         {
-            IsHover = value;
+            Status = GridStatus.Robot;
         }
 
-        public Grid Right => Neighbors[0];
-        public Grid Up => Neighbors[1];
-        public Grid Left => Neighbors[2];
-        public Grid Down => Neighbors[3];
+        public static bool IsOccupied(Grid grid)
+        {
+            return grid.Status == GridStatus.Robot;
+        }
+
+        public override string ToString()
+        {
+            return $"Grid ({X}, {Y})";
+        }
     }
 
-    public enum GridType {
-        Empty,
-        Ground,
-        Border
+    public enum GridDirection
+    {
+        Right,
+        Up,
+        Left,
+        Down,
     }
 }
