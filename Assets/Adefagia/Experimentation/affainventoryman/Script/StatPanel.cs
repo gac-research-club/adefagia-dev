@@ -29,22 +29,27 @@ public class StatPanel : MonoBehaviour
         for (int i = 0; i < statDisplays.Length; i++)
         {
             statDisplays[i].gameObject.SetActive(i < stats.Length);
+
+            if (i < stats.Length)
+            {
+                statDisplays[i].Stat = stats[i];
+            }
         }
     }
 
-    public void UpdateStateValue()
+    public void UpdateStatValue()
     {
         for (int i = 0; i < stats.Length; i++)
         {
-            statDisplays[i].ValueText.text = stats[i].Value.ToString();
+            statDisplays[i].UpdateStatValue();
         }
     }
 
-       public void UpdateStateNames()
+    public void UpdateStateNames()
     {
         for (int i = 0; i < statNames.Length; i++)
         {
-            statDisplays[i].NameText.text = statNames[i];
+            statDisplays[i].Name = statNames[i];
         }
     }
 }

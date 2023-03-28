@@ -17,7 +17,7 @@ public class Character : MonoBehaviour
     private void Awake()
     {
         statPanel.SetStats(Strength, Agility, Intelligence, Vitality);
-        statPanel.UpdateStateValue();
+        statPanel.UpdateStatValue();
 
         inventory.OnItemRightClickedEvent += EquipFromInventory;
         equipmentPanel.OnItemRightClickedEvent += UnequipFromEquipPanel;
@@ -50,11 +50,12 @@ public class Character : MonoBehaviour
                 {
                     inventory.AddItem(previousItem);
                     previousItem.Unequip(this);
-                    statPanel.UpdateStateValue();
+                    statPanel.UpdateStatValue();
                 }
                 item.Equip(this);
-                statPanel.UpdateStateValue();
-            }else
+                statPanel.UpdateStatValue();
+            }
+            else
             {
                 inventory.AddItem(item);
             }
@@ -66,7 +67,7 @@ public class Character : MonoBehaviour
         if (!inventory.IsFull() && equipmentPanel.RemoveItem(item))
         {
             item.Unequip(this);
-            statPanel.UpdateStateValue();
+            statPanel.UpdateStatValue();
             inventory.AddItem(item);
         }
     }
