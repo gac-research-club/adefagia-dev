@@ -1,204 +1,265 @@
 using System;
 using System.Collections;
-using adefagia.Adefgia.Code.Scripts;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-
-using Adefagia.RobotSystem;
-using Adefagia.PlayerAction;
+using Grid = Adefagia.GridSystem.Grid;
+using Random = UnityEngine.Random;
 
 namespace Adefagia.BattleMechanism
 {
-    public enum BattleState {START, PLAYERTURN, ENEMYTURN, WON, LOST}
     public class BattleManager : MonoBehaviour
     {
-        public BattleState state;
-        [SerializeField] RobotStatus playerUnit;
-        [SerializeField] RobotStatus enemyUnit;
+        // Before Battle start
+        public static GameState gameState = GameState.Initialize;
 
-        private Transform highlight;
-        private Transform selection;
-        private RaycastHit raycastHit;
-        // [SerializeField] private GameInput gameInput;
-        [SerializeField] private Color color;
-        
-        [SerializeField] private MoveAction moveAction;
-        [SerializeField] private AttackHighlight attackHighlight;
-        [SerializeField] private GameObject actionButton;
-        [SerializeField] private Button attackButton;
-        [SerializeField] private Button defendButton;
-        
-        [SerializeField] private GameInput gameInput;
-
-        private void Start()
-        {
+        public static PreparationState preparationState = PreparationState.Nothing;
+        public static BattleState battleState = BattleState.Nothing;
             
-            gameInput.OnInteractAction += GameInput_OnInteractAction;
-           
-            // foreach (var item in spawner._playerUnit.Values)
-            // {
-            //     playerUnit = item.GetComponent<RobotStats>();
-            // }
-            StartCoroutine(SetupBattle());
+        [SerializeField] private TeamController teamA, teamB;
+        
+        public TeamController TeamActive { get; set; }
+        public TeamController NextTeam { get; set; }
 
+        private void Awake()
+        {
+            /* Team A deploying Area
+             *  #  ........ 9,9
+             * 0,6 ........  #
+             *----------------------*/
+            teamA.SetPreparationArea(0,6,9,9);
+            
+            
+            /* Team B deploying Area
+             *  #  ........ 9,3
+             * 0,0 ........  #
+             *----------------------*/
+            teamB.SetPreparationArea(0,0,9,3);
+            
+            StartCoroutine(PreparationBattle());
         }
 
-        void Update()
-        {
-            Highlight();
-        }
-
-        /*--------------------------------------------------------------------------
-        * Kondisi di saat highlighted robot telah di click 
-        *--------------------------------------------------------------------------*/
-        private void GameInput_OnInteractAction(object sender, System.EventArgs e)
+        private void Update()
         {
             
-            if (highlight)
+            #region Preparation
+
+            if (preparationState == PreparationState.DeployRobot)
             {
-                if (selection != null)
-                {
-                    selection.gameObject.GetComponent<Outline>().enabled = false;
-                }
-                selection = raycastHit.transform;
-                selection.gameObject.GetComponent<Outline>().enabled = true;
-                highlight = null;
                 
-                // Saat highlighted robot di click maka set active action button hud
-                actionButton.SetActive(true);
-            } else {
-                if (!EventSystem.current.IsPointerOverGameObject() && selection)
+                // Change Team Activate if has deployed all the robot
+                if (TeamActive.IsHasFinishDeploy())
                 {
-                    selection.gameObject.GetComponent<Outline>().enabled = false;
-                    selection = null;
+                    ChangeTeam();
                     
-                    // Saat highlighted robot on clicked, lalu click apapun kecuali robot maka disable action button hud 
-                    actionButton.SetActive(false);
+                    // If 2 team has finishing deploy
+                    if (TeamActive.IsHasFinishDeploy())
+                    {
+                        ChangePreparationState(PreparationState.Nothing);
+                        ChangeBattleState(BattleState.SelectRobot);
+                        ChangeGameState(GameState.Battle);
+                    }
+                }
+                
+                /*---------------------------------------------------------------
+                 * Move robot location & position
+                 *---------------------------------------------------------------*/
+                
+                // if have been deployed, cannot change location and position
+                if (TeamActive.IsHasDeployed(TeamActive.Robot)) return;
+                
+                TeamActive.GridController = GameManager.instance.gridManager.GetGridController();
 
-                    // Saat highlighted robot on clicked, lalu click apapun kecuali robot maka disable movement pattern dan attack pattern
-                    moveAction.MoveButtonOnDisable();
-                    attackHighlight.AttackButtonOnDisable();
+                try
+                {
+                    var gridHover = TeamActive.GridController.Grid;
+
+                    // gridHover only in team active Area
+                    // & if grid has been occupied by other robot
+                    if (!TeamActive.IsGridInPreparationArea(gridHover) || Grid.IsOccupied(gridHover))
+                    {
+                        throw new NullReferenceException();
+                    }
+
+                    // Set grid reference to robot
+                    TeamActive.RobotController.MovePosition(gridHover);
+                    TeamActive.Robot.ChangeLocation(gridHover);
+                }
+                catch (NullReferenceException)
+                {
+                    // Reset position
+                    TeamActive.RobotController.ResetPosition();
+                    
+                    // make grid controller null
+                    TeamActive.GridController = null;
                 }
             }
-        }
-    
-        IEnumerator SetupBattle()
-        {
-            yield return new WaitForSeconds(0f);
-            
-            state = BattleState.PLAYERTURN;
-            PlayerTurnMessage();
-        }
 
-        void PlayerTurnMessage()
-        {
-            Debug.Log("Player turn");
-        }
+            #endregion
 
-        void EnemyTurnMessage()
-        {
-            Debug.Log("Enemy turn");
-        }
+            #region Battle
 
-        public void AttackButtonOnClicked()
-        {
-            // bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
-            attackButton.interactable = false;
-            // if (isDead)
-            // {
-            //     state = BattleState.WON;
-            //     EndBattle();
-            // }
-        }
-
-        public void DefendButtonOnClicked()
-        {
-            // playerUnit.Heal(playerUnit.healAmount);
-            defendButton.interactable = false;
-        }
-
-        void EndBattle()
-        {
-            if(state == BattleState.WON)
+            if (battleState == BattleState.SelectRobot)
             {
-                Debug.Log("You Won the battle!");
-            } 
-            else if(state == BattleState.LOST)
-            {
-                Debug.Log("You were defeated.");
+                // get grid controller
+                var gridController = GameManager.instance.gridManager.GetGridController();
+
+                // set robot from gridController
+                try
+                {
+                    if (!TeamActive.Contains(gridController.RobotController))
+                    {
+                        throw new NullReferenceException();
+                    }
+                    
+                    // select robot by grid
+                    TeamActive.ChooseRobot(gridController.RobotController);
+                }
+                catch (NullReferenceException)
+                {
+                    TeamActive.ChooseRobot(null);
+                }
             }
+
+            #endregion
         }
 
-        public void EndTurnButtonOnClicked()
+        private IEnumerator PreparationBattle()
         {
-            if(state == BattleState.PLAYERTURN)
+            // Wait until GameState is Preparation
+            while (gameState != GameState.Preparation)
             {
-                state = BattleState.ENEMYTURN;
-                EnemyTurnMessage();
+                yield return null;
+            }
+
+            ChangePreparationState(PreparationState.SelectTeam);
+            // Selecting Team to start first
+            if (Random.Range(0, 2) == 0)
+            {
+                TeamActive = teamA;
+                NextTeam = teamB;
             }
             else
             {
-                state = BattleState.PLAYERTURN;
-                PlayerTurnMessage();
+                TeamActive = teamB;
+                NextTeam = teamA;
             }
+
+            ChangePreparationState(PreparationState.DeployRobot);
         }
 
-        /*--------------------------------------------------------------------------
-        * Kondisi saat pointer berada di robot
-         * untuk menghighlight robot
-        *--------------------------------------------------------------------------*/
-        private void Highlight()
+        private void ChangeTeam()
         {
-            // Disable outline saat highlight != null
-            if (highlight != null)
+            // Swap via destruction
+            (TeamActive, NextTeam) = (NextTeam, TeamActive);
+        }
+
+        #region ChangeState
+        
+        public static void ChangeGameState(GameState state)
+        {
+            gameState = state;
+        }
+        
+        public static void ChangePreparationState(PreparationState state)
+        {
+            if (gameState == GameState.Preparation)
             {
-                highlight.gameObject.GetComponent<Outline>().enabled = false;
-                highlight = null;
+                preparationState = state;
             }
-            
-            /*--------------------------------------------------------------------------
-            * Saat pointer berada di game object dengan tag tertentu maka aktifkan outline
-            *--------------------------------------------------------------------------*/
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out raycastHit))
+        }
+        public static void ChangeBattleState(BattleState state)
+        {
+            if (gameState == GameState.Preparation)
             {
-                highlight = raycastHit.transform;
-                // 
-                if (highlight.CompareTag("Selectable") && highlight != selection && state == BattleState.PLAYERTURN)
+                battleState = state;
+            }
+        }
+        
+        #endregion
+
+        #region UnityEvent
+        public void OnMouseClick()
+        {
+            if (preparationState == PreparationState.DeployRobot)
+            {
+                /*-----------------------------------------------------------------
+                 * Deploy Robot
+                 *-----------------------------------------------------------------*/
+
+                // Robot has deploy or grid is empty
+                if (TeamActive.IsHasDeployed(TeamActive.Robot) 
+                    || TeamActive.GridController == null) return;
+
+                TeamActive.DeployRobot();
+                
+                // set robot to grid
+                TeamActive.GridController.RobotController = TeamActive.RobotController;
+                
+                // Occupied the grid
+                TeamActive.Robot.Location.SetOccupied();
+                
+                // change to the next robot index
+                TeamActive.IncrementIndex();
+                TeamActive.ChooseRobot();
+            }
+
+            if (battleState == BattleState.SelectRobot)
+            {
+                TeamActive.RobotControllerSelected = TeamActive.RobotController;
+                
+                // Show or Hide Battle UI
+                if (TeamActive.RobotControllerSelected != null)
                 {
-                    if (highlight.gameObject.GetComponent<Outline>() != null)
-                    {
-                        highlight.gameObject.GetComponent<Outline>().enabled = true;
-                    }
-                    else
-                    {
-                        Outline outline = highlight.gameObject.AddComponent<Outline>();
-                        outline.enabled = true;
-                        highlight.gameObject.GetComponent<Outline>().OutlineColor = color;
-                        highlight.gameObject.GetComponent<Outline>().OutlineWidth = 8.0f;
-                    }
-                }
-                else if((highlight.CompareTag("EnemySelectable") && highlight != selection && state == BattleState.ENEMYTURN))
-                {
-                    if (highlight.gameObject.GetComponent<Outline>() != null)
-                    {
-                        highlight.gameObject.GetComponent<Outline>().enabled = true;
-                    }
-                    else
-                    {
-                        Outline outline = highlight.gameObject.AddComponent<Outline>();
-                        outline.enabled = true;
-                        highlight.gameObject.GetComponent<Outline>().OutlineColor = color;
-                        highlight.gameObject.GetComponent<Outline>().OutlineWidth = 8.0f;
-                    }
+                    GameManager.instance.uiManager.ShowBattleUI();
                 }
                 else
                 {
-                    highlight = null;
+                    GameManager.instance.uiManager.HideBattleUI();
                 }
             }
         }
+
+        public void MoveClick()
+        {
+            Debug.Log($"Move {TeamActive.RobotControllerSelected.Robot}");
+        }
+        
+        #endregion
+        
+        private void OnGUI()
+        {
+            var text = "";
+            try
+            {
+                text = "Active: " + TeamActive.Robot;
+            }
+            catch (NullReferenceException)
+            {
+                text = "Empty";
+            }
+            
+            GUI.Box (new Rect (0,Screen.height - 50,100,50), text);
+        }
+    }
+    
+
+    public enum GameState
+    {
+        Initialize,
+        Preparation,
+        Battle
+    }
+
+    public enum PreparationState
+    {
+        Nothing,
+        SelectTeam,
+        DeployRobot,
+    }
+
+    public enum BattleState
+    {
+        Nothing,
+        SelectRobot,
     }
 }
 
