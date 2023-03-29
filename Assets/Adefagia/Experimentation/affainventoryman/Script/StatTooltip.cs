@@ -13,6 +13,7 @@ public class StatTooltip : MonoBehaviour
 
     private StringBuilder sb = new StringBuilder();
 
+    //To show tooltip with name and stat form item
     public void ShowTooltip(CharacterStat stat, string statName)
     {
         StatNameText.text = GetStatTopText(stat, statName);
@@ -27,6 +28,7 @@ public class StatTooltip : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    //Show information about item on item tooltip
     private string GetStatTopText(CharacterStat stat, string statName)
     {
         sb.Length = 0;
@@ -49,6 +51,7 @@ public class StatTooltip : MonoBehaviour
         return sb.ToString();
     }
 
+    //Show information about stat on character panel
     private string GetStatModifiersText(CharacterStat stat)
     {
         sb.Length = 0;

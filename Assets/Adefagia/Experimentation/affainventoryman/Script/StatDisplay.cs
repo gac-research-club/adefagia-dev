@@ -8,6 +8,8 @@ using adefagia.CharacterStats;
 public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private CharacterStat _stat;
+
+    //To update stat value on character stat
     public CharacterStat Stat
     {
         get { return _stat; }
@@ -43,6 +45,7 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             tooltip = FindObjectOfType<StatTooltip>();
     }
 
+    //To show tooltip
     public void OnPointerEnter(PointerEventData eventData)
     {
 
@@ -50,11 +53,13 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     }
 
+    //To hide tooltip
     public void OnPointerExit(PointerEventData eventData)
     {
         tooltip.HideTooltip();
     }
 
+    //To update stat value
     public void UpdateStatValue()
     {
         valueText.text = _stat.Value.ToString();

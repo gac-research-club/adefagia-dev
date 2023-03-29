@@ -111,14 +111,14 @@ public class Character : MonoBehaviour
         }
     }
 
-    //When item dont drag again
+    //When item stop drag again
     private void EndDrag(ItemSlot itemSlot)
     {
         draggedSlot = null;
         draggableItem.enabled = false;
     }
 
-    //Item to drag while its clicked
+    //Item to drag while its hold click
     private void Drag(ItemSlot itemSlot)
     {
         if (draggableItem.enabled)
@@ -127,7 +127,7 @@ public class Character : MonoBehaviour
         }
     }
 
-    //For item while its drop
+    //For item while its drop after dragging
     private void Drop(ItemSlot dropItemSlot)
     {
         if (dropItemSlot.CanReceiveItem(draggedSlot.Item) && draggedSlot.CanReceiveItem(dropItemSlot.Item))

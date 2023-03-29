@@ -9,6 +9,7 @@ public class EquipmentPanel : MonoBehaviour
     [SerializeField] Transform equipmentSlotsParent;
     public EquipmentSlot[] equipmentSlots;
 
+    //Command for action
     public event Action<ItemSlot> OnPointerEnterEvent;
     public event Action<ItemSlot> OnPointerExitEvent;
     public event Action<ItemSlot> OnRightClickEvent;
@@ -16,6 +17,8 @@ public class EquipmentPanel : MonoBehaviour
     public event Action<ItemSlot> OnEndDragEvent;
     public event Action<ItemSlot> OnDragEvent;
     public event Action<ItemSlot> OnDropEvent;
+
+    //Item on item slot be able to action on below
     private void Start()
     {
         for (int i = 0; i < equipmentSlots.Length; i++)
@@ -35,6 +38,7 @@ public class EquipmentPanel : MonoBehaviour
         equipmentSlots = equipmentSlotsParent.GetComponentsInChildren<EquipmentSlot>();
     }
 
+    //Adding item to equipment panel and change from previous item
     public bool AddItem(EquippableItem item, out EquippableItem previousItem)
     {
         for (int i = 0; i < equipmentSlots.Length; i++)
@@ -50,6 +54,7 @@ public class EquipmentPanel : MonoBehaviour
         return false;
     }
 
+    //Remove item on equipment panel
     public bool RemoveItem(EquippableItem item)
     {
         for (int i = 0; i < equipmentSlots.Length; i++)

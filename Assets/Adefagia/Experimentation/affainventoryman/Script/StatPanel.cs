@@ -16,6 +16,7 @@ public class StatPanel : MonoBehaviour
         UpdateStatNames();
     }
 
+    //Set stat from character stat
     public void SetStats(params CharacterStat[] charStats)
     {
         stats = charStats;

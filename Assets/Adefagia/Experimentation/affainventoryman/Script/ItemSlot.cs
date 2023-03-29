@@ -17,12 +17,12 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     public event Action<ItemSlot> OnDragEvent;
     public event Action<ItemSlot> OnDropEvent;
 
-    /*
-    To enable and disable, while enable its normalcolor then its disable its disableColor
-    */
+
+    //To enable and disable, while enable its normalcolor then its disable its disableColor
     private Color normalColor = Color.white;
     private Color disabledColor = new Color(1, 1, 1, 0);
 
+    //Check its item slot on inventory its empty or any item there
     private Item _item;
     public Item Item
     {
@@ -53,6 +53,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     {
         return true;
     }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData != null && eventData.button == PointerEventData.InputButton.Right)
@@ -62,9 +63,6 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         }
     }
 
-    /*
-    
-    */
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (OnPointerEnterEvent != null)

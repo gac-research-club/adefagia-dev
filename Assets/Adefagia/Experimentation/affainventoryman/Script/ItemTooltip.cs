@@ -7,15 +7,16 @@ using UnityEngine.UI;
 public class ItemTooltip : MonoBehaviour
 {
     [SerializeField] Text ItemNameText;
-    //[SerializeField] Text ItemTypeText;
+    [SerializeField] Text ItemTypeText;
     [SerializeField] Text ItemStatsText;
 
     private StringBuilder sb = new StringBuilder();
 
+    //Show tooltip while cursor on equippable item
     public void ShowTooltip(EquippableItem item)
     {
         ItemNameText.text = item.ItemName;
-        ItemNameText.text = item.EquipmentType.ToString();
+        ItemTypeText.text = item.EquipmentType.ToString();
 
         sb.Length = 0;
         AddStat(item.StrengthBonus, "Strength");
@@ -28,17 +29,18 @@ public class ItemTooltip : MonoBehaviour
         AddStat(item.IntelligencePercentBonus, "Intelligence", isPercent: true);
         AddStat(item.VitalityPercentBonus, "Vitality", isPercent: true);
 
-        //ItemTypeText.text = item.GetItemType();
         ItemStatsText.text = sb.ToString();
 
         gameObject.SetActive(true);
     }
 
+    //Hide tooltip
     public void HideTooltip()
     {
         gameObject.SetActive(false);
     }
 
+    //To show calculate from item stat
     private void AddStat(float value, string statName, bool isPercent = false)
     {
         if (value != 0)

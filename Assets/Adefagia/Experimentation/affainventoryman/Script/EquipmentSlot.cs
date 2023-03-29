@@ -12,6 +12,7 @@ public class EquipmentSlot : ItemSlot
         gameObject.name = EquipmentType.ToString() + " Slot";
     }
 
+    //For equipment slot its empty to replace with equippable item
     public override bool CanReceiveItem(Item item)
     {
         if (item == null)
