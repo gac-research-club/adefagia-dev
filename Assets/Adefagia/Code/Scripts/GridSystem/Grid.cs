@@ -21,7 +21,7 @@ namespace Adefagia.GridSystem
         public int X { get; }
         public int Y { get; }
         
-        public GridStatus Status { get; set; }
+        public GridStatus Status { get; private set; }
         public Dictionary<GridDirection, Grid> Neighbors { get; }
         public float Priority { get; set; }
 
@@ -70,6 +70,11 @@ namespace Adefagia.GridSystem
         public void SetOccupied()
         {
             Status = GridStatus.Robot;
+        }
+
+        public void SetFree()
+        {
+            Status = GridStatus.Free;
         }
 
         public static bool IsOccupied(Grid grid)

@@ -147,7 +147,7 @@ namespace Adefagia.GridSystem
             return GetGrid((int) location.x, (int) location.y, debugMessage);
         }
 
-        // Grid hover
+        // Grid hover 
         public Grid GetGrid()
         {
             return GetGridController()?.Grid;

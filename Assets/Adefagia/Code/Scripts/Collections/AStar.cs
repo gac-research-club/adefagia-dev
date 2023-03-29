@@ -70,6 +70,9 @@ namespace Adefagia.Collections
                     // Neighbor is must not null
                     if (neighbor == null) continue;
                     
+                    // neighbor is must grid free
+                    if (neighbor.Status != GridStatus.Free) continue;
+                    
                     // Neighbor have not reached, grid ground and not occupied
                     // GridManager.CheckGround(neighbor) && !Reached.Contains(neighbor) && !neighbor.IsOccupied
                     if (!Reached.Contains(neighbor))

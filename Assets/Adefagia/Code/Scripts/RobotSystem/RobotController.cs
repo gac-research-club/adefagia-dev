@@ -15,6 +15,7 @@ namespace Adefagia.RobotSystem
         private RobotMovement _robotMovement;
         
         public Robot Robot { get; set; }
+        public RobotMovement RobotMovement => _robotMovement;
 
         private void Awake()
         {

@@ -65,7 +65,7 @@ namespace Adefagia.BattleMechanism
                     grid.Y <= _endArea.y     );
         }
 
-        //TODO: Team controller can change what robot is selected by UI user
+        // TODO: Team controller can change what robot is selected by UI user
         private void SelectingRobot()
         {
             // Only for the team active
@@ -99,21 +99,10 @@ namespace Adefagia.BattleMechanism
                 ChooseRobot(2);
             }
         }
-
-        public void ChooseRobot()
-        {
-            robotControllerActive = robotControllers[_index];
-        }
-        public void ChooseRobot(int index)
-        {
-            _index = index;
-            robotControllerActive = robotControllers[_index];
-        }
-        public void ChooseRobot(RobotController robotController)
-        {
-            robotControllerActive = robotController;
-        }
-
+        
+        /*--------------------------------------------------------------
+         * Increment index robots
+         *--------------------------------------------------------------*/
         public void IncrementIndex()
         {
             while (true)
@@ -130,6 +119,27 @@ namespace Adefagia.BattleMechanism
                 }
             }
         }
+
+        /*--------------------------------------------------------------
+         * Change RobotControllerActive
+         *--------------------------------------------------------------*/
+        public void ChooseRobot()
+        {
+            robotControllerActive = robotControllers[_index];
+        }
+        // By Index
+        public void ChooseRobot(int index)
+        {
+            _index = index;
+            robotControllerActive = robotControllers[_index];
+        }
+        // By RobotController
+        public void ChooseRobot(RobotController robotController)
+        {
+            robotControllerActive = robotController;
+        }
+
+        
 
         public void DeployRobot()
         {
@@ -149,6 +159,17 @@ namespace Adefagia.BattleMechanism
         public bool Contains(RobotController robotController)
         {
             return robotControllers.Contains(robotController);
+        }
+
+        public void ResetRobotSelected()
+        {
+            robotControllerSelect = null;
+            
+            // Reset step status each robot
+            foreach (var robot in robotControllers)
+            {
+                robot.Robot.ResetStepStat();
+            }
         }
         
         

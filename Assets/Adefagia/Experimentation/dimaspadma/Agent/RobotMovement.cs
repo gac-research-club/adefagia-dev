@@ -1,12 +1,73 @@
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Adefagia;
+using Adefagia.BattleMechanism;
+using Adefagia.Collections;
+using Adefagia.GridSystem;
+using Adefagia.RobotSystem;
 using UnityEngine;
+using Grid = Adefagia.GridSystem.Grid;
 
 public class RobotMovement : MonoBehaviour
 {
-    // TODO: Move can be only in Move state and the Team Active
-    
-    // TODO: mouse click then run the function
-    
-    // TODO: run AStar Pathfinding
+    private AStar _aStar;
+
+    private void Awake()
+    {
+        _aStar = new AStar();
+    }
+
+    public void Move(RobotController robotController,Grid grid, float delayMove)
+    {
+        if (grid == null)
+        {
+            Debug.LogWarning("Pathfinding failed");
+            return;
+        }
+
+        if (grid.Status != GridStatus.Free)
+        {
+            Debug.LogWarning("Pathfinding failed");
+            return;
+        }
+
+        // Move
+        var start = BattleManager.TeamActive.RobotControllerSelected.Robot.Location;
+
+        var directions = _aStar.Move(start, grid);
+
+        if (directions == null)
+        {
+            Debug.LogWarning("Pathfinding Failed");
+            return;
+        }
+        
+        // Change grid reference to
+        var gridController = GameManager.instance.gridManager.GetGridController();
+        gridController.RobotController = robotController;
+        gridController.Grid.SetFree();
+        
+        
+        StartCoroutine(MovePosition(robotController, directions, delayMove));
+        
+        robotController.Robot.ChangeLocation(grid);
+        grid.SetOccupied();
+        
+        // means the robot is considered to move
+        robotController.Robot.HasMove = true;
+
+        Debug.Log($"Move to {grid}");
+    }
+
+    private IEnumerator MovePosition(RobotController robotController ,List<Grid> grids, float delayMove)
+    {
+        foreach (var grid in grids)
+        {
+            robotController.MovePosition(grid);
+
+            yield return new WaitForSeconds(delayMove);
+        }
+    }
 }
