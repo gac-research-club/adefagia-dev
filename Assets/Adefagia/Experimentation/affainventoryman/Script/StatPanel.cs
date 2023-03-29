@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using affa.CharacterStats;
+using adefagia.CharacterStats;
 
 public class StatPanel : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class StatPanel : MonoBehaviour
     private void OnValidate()
     {
         statDisplays = GetComponentsInChildren<StatDisplay>();
-        UpdateStateNames();
+        UpdateStatNames();
     }
 
     public void SetStats(params CharacterStat[] charStats)
@@ -45,7 +45,7 @@ public class StatPanel : MonoBehaviour
         }
     }
 
-    public void UpdateStateNames()
+    public void UpdateStatNames()
     {
         for (int i = 0; i < statNames.Length; i++)
         {

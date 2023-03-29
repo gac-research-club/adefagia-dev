@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace affa.CharacterStats
+namespace adefagia.CharacterStats
 {
 
     [Serializable]
@@ -10,6 +10,7 @@ namespace affa.CharacterStats
     {
         public float BaseValue;
 
+        //For final Calculate value from Stat Item
         public virtual float Value
         {
             get
@@ -31,6 +32,7 @@ namespace affa.CharacterStats
         protected readonly List<StatModifier> statModifiers;
         public readonly ReadOnlyCollection<StatModifier> StatModifiers;
 
+        //To create Character stat on character panel where statmodifier its just read
         public CharacterStat()
         {
             statModifiers = new List<StatModifier>();
@@ -42,6 +44,7 @@ namespace affa.CharacterStats
             BaseValue = baseValue;
         }
 
+        //Add stat from items
         public virtual void AddModifier(StatModifier mod)
         {
             isDirty = true;
@@ -49,6 +52,7 @@ namespace affa.CharacterStats
             statModifiers.Sort(CompareModifierOrder);
         }
 
+        //Remove modifier stat from item
         public virtual bool RemoveModifier(StatModifier mod)
         {
             if (statModifiers.Remove(mod))
@@ -59,6 +63,8 @@ namespace affa.CharacterStats
             return false;
         }
 
+
+        //Remove all modifier from source item
         public virtual bool RemoveAllModifiersFromSource(object source)
         {
             bool didRemove = false;
@@ -75,6 +81,7 @@ namespace affa.CharacterStats
             return didRemove;
         }
 
+        //To compare modifier item order
         protected virtual int CompareModifierOrder(StatModifier a, StatModifier b)
         {
             if (a.Order < b.Order)
@@ -84,6 +91,7 @@ namespace affa.CharacterStats
             return 0;
         }
 
+        //Calculate final value from any item on character panel
         protected virtual float CalculateFinalValue()
         {
             float finalValue = BaseValue;

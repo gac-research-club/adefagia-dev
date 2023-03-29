@@ -32,58 +32,78 @@ namespace Adefagia.Collections
             Robots = new List<Robot>();
         }
 
-        // public bool Pathfinding(Grid start, Grid end)
-        // {
-        //     // For better choosing path
-        //     var costSoFar = new Dictionary<Grid, float>();
-        //     
-        //     // Starting point
-        //     _frontierQueue.Insert(start);
-        //     costSoFar[start] = 0;
-        //
-        //     while (_frontierQueue.size > 0)
-        //     {
-        //         // Enqueue from Queue
-        //         var current = _frontierQueue.DeleteMin();
-        //         
-        //         // If already reaching end. break loop
-        //         // Pathfinding success
-        //         if (current.Equals(end)) return true;
-        //
-        //         // Looking Neighbor
-        //         foreach (var neighbor in current.Neighbors)
-        //         {
-        //             // Set neighbor came from
-        //             // Neighbor is must not null
-        //             if (neighbor == null) continue;
-        //             
-        //             // Neighbor have not reached, grid ground and not occupied
-        //             if (GridManager.CheckGround(neighbor) && !Reached.Contains(neighbor) && !neighbor.IsOccupied)
-        //             {
-        //
-        //                 var newCost = costSoFar[current] + 1;
-        //                 costSoFar[neighbor] = newCost;
-        //                 
-        //                 // If distance is more closer update _cameFrom
-        //                 if (newCost > costSoFar[neighbor]) continue;
-        //                 
-        //                 neighbor.Priority = newCost + Heuristic(end.Location, neighbor.Location);
-        //     
-        //                 _cameFrom[neighbor] = current;
-        //                 _frontierQueue.Insert(neighbor);
-        //             }
-        //         }
-        //         
-        //         // grid Has reached
-        //         Reached.Add(current);
-        //     }
-        //
-        //     // Pathfinding failed
-        //     // DebugListGrid(Reached);
-        //     return false;
-        // }
+        /*----------------------------------------------------------------
+         * AStar Move
+         *----------------------------------------------------------------*/
+        public List<Grid> Move(Grid start, Grid end)
+        {
+            if (Pathfinding(start, end))
+            {
+                return Traversal(start, end);
+            }
 
-        public List<Grid> Traversal(Grid start, Grid end)
+            return null;
+        }
+
+        private bool Pathfinding(Grid start, Grid end)
+        {
+            // For better choosing path
+            var costSoFar = new Dictionary<Grid, float>();
+            
+            // Starting point
+            _frontierQueue.Insert(start);
+            costSoFar[start] = 0;
+        
+            while (_frontierQueue.size > 0)
+            {
+                // Enqueue from Queue
+                var current = _frontierQueue.DeleteMin();
+                
+                // If already reaching end. break loop
+                // Pathfinding success
+                if (current.Equals(end)) return true;
+        
+                // Looking Neighbor
+                foreach (var neighbor in current.Neighbors.Values)
+                {
+                    // Set neighbor came from
+                    // Neighbor is must not null
+                    if (neighbor == null) continue;
+                    
+                    // neighbor is must grid free
+                    if (neighbor.Status != GridStatus.Free) continue;
+                    
+                    // Neighbor have not reached, grid ground and not occupied
+                    // GridManager.CheckGround(neighbor) && !Reached.Contains(neighbor) && !neighbor.IsOccupied
+                    if (!Reached.Contains(neighbor))
+                    {
+        
+                        var newCost = costSoFar[current] + 1;
+                        costSoFar[neighbor] = newCost;
+                        
+                        // If distance is more closer update _cameFrom
+                        if (newCost > costSoFar[neighbor]) continue;
+                        
+                        neighbor.Priority = newCost + Heuristic(end, neighbor);
+            
+                        _cameFrom[neighbor] = current;
+                        _frontierQueue.Insert(neighbor);
+                    }
+                }
+                
+                // grid Has reached
+                Reached.Add(current);
+            }
+        
+            // Pathfinding failed
+            // DebugListGrid(Reached);
+            return false;
+        }
+
+        /*--------------------------------------------------------------------------------
+         * Travel from end Grid to start Grid
+         *--------------------------------------------------------------------------------*/
+        private List<Grid> Traversal(Grid start, Grid end)
         {
             var path = new List<Grid>();
             
@@ -129,10 +149,10 @@ namespace Adefagia.Collections
             Debug.Log(sb);
         }
         
-        private float Heuristic(Vector2 a, Vector2 b)
+        private float Heuristic(Grid a, Grid b)
         {
             // Manhattan distance on a square grid
-            return Mathf.Abs(b.x - a.x) + Mathf.Abs(b.y - a.y);
+            return Mathf.Abs(b.X - a.X) + Mathf.Abs(b.Y - a.Y);
         }
     }
 }

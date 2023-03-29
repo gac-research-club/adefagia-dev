@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using affa.CharacterStats;
+using adefagia.CharacterStats;
 
 public enum EquipmentType
 {
@@ -11,6 +11,8 @@ public enum EquipmentType
 }
 
 [CreateAssetMenu]
+
+//For any status on equippableitem
 public class EquippableItem : Item
 {
     public int StrengthBonus;
@@ -25,6 +27,7 @@ public class EquippableItem : Item
     [Space]
     public EquipmentType EquipmentType;
 
+    //For any stat on Item add any bonus and percent
     public void Equip(Character c)
     {
         if (StrengthBonus != 0)
@@ -46,6 +49,7 @@ public class EquippableItem : Item
             c.Vitality.AddModifier(new StatModifier(VitalityPercentBonus, StatModType.PercentMult, this));
     }
 
+    //Remove all stat modifier from source on character panel
     public void Unequip(Character c)
     {
         c.Strength.RemoveAllModifiersFromSource(this);

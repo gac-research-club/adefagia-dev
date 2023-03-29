@@ -17,14 +17,13 @@ namespace Adefagia.GridSystem
     public class Grid
     {
         #region Properties
-
+        
         public int X { get; }
         public int Y { get; }
         
-        public GridStatus Status { get; set; }
-        public Dictionary<GridDirection, Grid> Neighbors { get; set; }
+        public GridStatus Status { get; private set; }
+        public Dictionary<GridDirection, Grid> Neighbors { get; }
         public float Priority { get; set; }
-
 
         #endregion
 
@@ -71,6 +70,11 @@ namespace Adefagia.GridSystem
         public void SetOccupied()
         {
             Status = GridStatus.Robot;
+        }
+
+        public void SetFree()
+        {
+            Status = GridStatus.Free;
         }
 
         public static bool IsOccupied(Grid grid)

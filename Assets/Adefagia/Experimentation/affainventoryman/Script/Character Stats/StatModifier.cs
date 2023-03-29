@@ -1,5 +1,5 @@
 
-namespace affa.CharacterStats
+namespace adefagia.CharacterStats
 {
     public enum StatModType
     {
@@ -8,6 +8,7 @@ namespace affa.CharacterStats
         PercentMult = 300,
     }
 
+    //For readonly any condition stat
     public class StatModifier
     {
         public readonly float Value;
@@ -15,6 +16,7 @@ namespace affa.CharacterStats
         public readonly int Order;
         public readonly object Source;
 
+        //For stat include on statmodifier
         public StatModifier(float value, StatModType type, int order, object source)
         {
             Value = value;

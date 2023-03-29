@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine.UI;
 using UnityEngine;
-using affa.CharacterStats;
+using adefagia.CharacterStats;
 
 public class StatTooltip : MonoBehaviour
 {
