@@ -39,6 +39,16 @@ namespace Adefagia.Experimentation.dimaspadma
                 {
                     EnableButton(buttonMove);
                 }
+                
+                // Disable if robot has attacked
+                if (robotSelected.Robot.HasAttack)
+                {
+                    DisableButton(buttonAttack);
+                }
+                else
+                {
+                    EnableButton(buttonAttack);
+                }
             }
         }
 

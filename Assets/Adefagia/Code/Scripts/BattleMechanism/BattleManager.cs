@@ -253,15 +253,31 @@ namespace Adefagia.BattleMechanism
                 if (battleState == BattleState.MoveRobot)
                 {
                     // Get current grid click
-                    var grid = GameManager.instance.gridManager.GetGrid();
+                    var gridController = GameManager.instance.gridManager.GetGridController();
 
                     // run AStar Pathfinding
                     TeamActive.RobotControllerSelected.RobotMovement.Move(
                         robotController: TeamActive.RobotControllerSelected, 
-                        grid           : grid,
+                        gridController : gridController,
                         delayMove      : TeamActive.RobotControllerSelected.Robot.DelayMove
                         );
 
+                    // change to selecting state
+                    ChangeBattleState(BattleState.SelectRobot);
+                }
+                
+                // Attack Robot
+                if (battleState == BattleState.AttackRobot)
+                {
+                    // Get current grid click
+                    var gridController = GameManager.instance.gridManager.GetGridController();
+                    
+                    // TODO: robot attack
+                    TeamActive.RobotControllerSelected.RobotAttack.Attack(
+                        robotController: TeamActive.RobotControllerSelected,
+                        gridController: gridController
+                        );
+                    
                     // change to selecting state
                     ChangeBattleState(BattleState.SelectRobot);
                 }
@@ -277,7 +293,7 @@ namespace Adefagia.BattleMechanism
             // change to move robot
             ChangeBattleState(BattleState.MoveRobot);
             
-            // Run Function Move from RobotMovement
+            // Run Function Move from RobotMovement.cs
 
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Move");
         }
@@ -290,8 +306,7 @@ namespace Adefagia.BattleMechanism
             // change to move robot
             ChangeBattleState(BattleState.AttackRobot);
             
-            // means the robot is considered to move
-            TeamActive.RobotControllerSelected.Robot.HasAttack = true;
+            // Run Function Attack from RobotAttack.cs
             
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
         }
@@ -332,8 +347,20 @@ namespace Adefagia.BattleMechanism
             {
                 text = "Empty";
             }
+
+            var text2 = "";
+            try
+            {
+                var robot = GameManager.instance.gridManager.GetGridController().RobotController.Robot;
+                text2 = $"Active: {robot}\n" +
+                       $"Health: {robot.CurrentHealth}";
+            }catch (NullReferenceException)
+            {
+                text2 = "Empty";
+            }
             
-            GUI.Box (new Rect (0,Screen.height - 50,100,50), text);
+            GUI.Box (new Rect (0,Screen.height - 100,100,50), text);
+            GUI.Box (new Rect (0,Screen.height - 50,100,50), text2);
         }
     }
     

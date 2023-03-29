@@ -12,6 +12,7 @@ namespace Adefagia.RobotSystem
     public class Robot
     {
         private Grid _grid;
+        private float _health;
 
         #region Properties
         
@@ -20,7 +21,7 @@ namespace Adefagia.RobotSystem
         public string Name { get; }
         public Grid Location => _grid;
         public float MaxHealth { get; }
-        public float CurrentHealth { get; }
+        public float CurrentHealth => _health;
         public float Damage { get; }
         public float DelayMove { get; set; }
         
@@ -30,16 +31,35 @@ namespace Adefagia.RobotSystem
         public bool HasDefend { get; set; }
         
         #endregion
+        
 
+        public Robot(string name)
+        {
+            Name = name;
+            MaxHealth = 100;
+            _health = MaxHealth;
+            Damage = 10;
+            
+            //-----------------------
+            ResetStepStat();
+        }
         public Robot(string name, float maxHealth, float damage)
         {
             Name = name;
             MaxHealth = maxHealth;
-            CurrentHealth = MaxHealth;
+            _health = MaxHealth;
             Damage = damage;
             
             //-----------------------
             ResetStepStat();
+        }
+        
+        /*-------------------------------------------------------
+         * Robot battle methods
+         *-------------------------------------------------------*/
+        public void TakeDamage(float damage)
+        {
+            _health -= damage;
         }
 
         /*------------------------------------------------------------------
