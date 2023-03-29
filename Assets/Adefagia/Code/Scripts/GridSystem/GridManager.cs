@@ -29,6 +29,9 @@ namespace Adefagia.GridSystem
             _select = GetComponent<Select>();
         }
 
+        /*----------------------------------------------------------------------
+         * Initialize Grid, their Neighbor 
+         *----------------------------------------------------------------------*/
         private IEnumerator InitializeGridManager()
         {
             // Wait until GameState is Initialize
@@ -71,18 +74,6 @@ namespace Adefagia.GridSystem
         }
 
         /*----------------------------------------------------------------------------------
-         * GenerateGrids(string map)
-         *  - string map // isi string dari text map. Bisa memakai fungsi ReadFile(namaMap)
-         * 
-         * GenerateGrids(Vector2 size, string map)
-         * params :
-         *  - vector2 size // Vector untuk ukuran x dan y, misal new Vector2(x, y)
-         * 
-         * GenerateGrids(int x, int y, string map)
-         * params :
-         *  - int x // untuk ukuran x
-         *  - int y // untuk ukuran y
-         *
          * Generate map grid secara procedural sesuai ukurang x dan y.
          * tipe Grid ditentukan dari urutan character string map.
          *---------------------------------------------------------------------------------*/
@@ -116,8 +107,6 @@ namespace Adefagia.GridSystem
         
         
         /*----------------------------------------------------------------------------------
-         * SetNeighbors()
-         *
          * Menyambungkan 1 grid dengan 4 grid di sebelahnya,
          * yaitu: Kanan, Atas, Kiri, Bawah.
          * Dan jika border pada inspector diset true,
@@ -139,17 +128,6 @@ namespace Adefagia.GridSystem
         }
 
         /*-----------------------------------------------------------------------------------------------
-         * GetGrid() // return grid yang sedang terselect
-         *
-         * GetGrid(int x, int y, bool debugMessage = false)
-         * params:
-         *  - int x // index grid x
-         *  - int y // index grid y
-         *  - bool debugMessage // optional for Debug.Log GetGrid Result
-         * 
-         * GetGrid(Vector2 location, bool debugMessage = false)
-         * - vector XYindex // Location where x and y grid
-         *
          * Fungsi untuk Mengambil Grid
          *-----------------------------------------------------------------------------------------------*/
         public Grid GetGrid(int x, int y, bool debugMessage = false)
@@ -169,7 +147,7 @@ namespace Adefagia.GridSystem
             return GetGrid((int) location.x, (int) location.y, debugMessage);
         }
 
-        // Grid hover
+        // Grid hover 
         public Grid GetGrid()
         {
             return GetGridController()?.Grid;

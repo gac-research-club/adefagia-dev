@@ -11,6 +11,8 @@ namespace Adefagia.RobotSystem
     {
         
         [SerializeField] private List<GameObject> robotPrefab;
+        [SerializeField] private float delayMove = 0.2f;
+        
         private TeamController _teamController;
 
         private void Awake()
@@ -46,10 +48,15 @@ namespace Adefagia.RobotSystem
                 // Add RobotController to attach on robot gameObject
                 var robotController = robotObject.AddComponent<RobotController>();
                 
+                // Set robot the parent of teamController
+                robotController.SetTeam(_teamController);
+                
                 // TODO: Make each robot dynamic edited by user
+                
                 // Manual input robot stat
                 robotController.Robot = new Robot(robotObject.name, 100, 10);
                 robotController.Robot.ID = _teamController.TotalRobot-1 - i;
+                robotController.Robot.DelayMove = delayMove;
 
                 // Edit name
                 // robotController.Robot.Name = robotObject.name;

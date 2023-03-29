@@ -47,12 +47,15 @@ namespace Adefagia.BattleMechanism
             }
         }
         
-        // Area Selecting while preparation mode
+        /*----------------------------------------------------------------------
+         * Area Selecting while preparation mode
+         *----------------------------------------------------------------------*/
         public void SetPreparationArea(int ax, int ay, int bx, int by)
         {
             _startArea = new Vector2(ax, ay);
             _endArea   = new Vector2(bx, by);
         }
+        
         public bool IsGridInPreparationArea(Grid grid)
         {
             
@@ -66,7 +69,7 @@ namespace Adefagia.BattleMechanism
         private void SelectingRobot()
         {
             // Only for the team active
-            var teamActive = GameManager.instance.battleManager.TeamActive;
+            var teamActive = BattleManager.TeamActive;
             if (this != teamActive) return;
 
             var last = RobotController;
@@ -96,21 +99,10 @@ namespace Adefagia.BattleMechanism
                 ChooseRobot(2);
             }
         }
-
-        public void ChooseRobot()
-        {
-            robotControllerActive = robotControllers[_index];
-        }
-        public void ChooseRobot(int index)
-        {
-            _index = index;
-            robotControllerActive = robotControllers[_index];
-        }
-        public void ChooseRobot(RobotController robotController)
-        {
-            robotControllerActive = robotController;
-        }
-
+        
+        /*--------------------------------------------------------------
+         * Increment index robots
+         *--------------------------------------------------------------*/
         public void IncrementIndex()
         {
             while (true)
@@ -127,6 +119,27 @@ namespace Adefagia.BattleMechanism
                 }
             }
         }
+
+        /*--------------------------------------------------------------
+         * Change RobotControllerActive
+         *--------------------------------------------------------------*/
+        public void ChooseRobot()
+        {
+            robotControllerActive = robotControllers[_index];
+        }
+        // By Index
+        public void ChooseRobot(int index)
+        {
+            _index = index;
+            robotControllerActive = robotControllers[_index];
+        }
+        // By RobotController
+        public void ChooseRobot(RobotController robotController)
+        {
+            robotControllerActive = robotController;
+        }
+
+        
 
         public void DeployRobot()
         {
@@ -147,6 +160,17 @@ namespace Adefagia.BattleMechanism
         {
             return robotControllers.Contains(robotController);
         }
+
+        public void ResetRobotSelected()
+        {
+            robotControllerSelect = null;
+            
+            // Reset step status each robot
+            foreach (var robot in robotControllers)
+            {
+                robot.Robot.ResetStepStat();
+            }
+        }
         
         
         /*-----------------------------------------------------------------------
@@ -166,6 +190,11 @@ namespace Adefagia.BattleMechanism
             if (index >= TotalRobot || index < 0) return null;
 
             return robotControllers[index].gameObject;
+        }
+
+        public override string ToString()
+        {
+            return $"Controller Team {team.teamName}";
         }
     }
 }
