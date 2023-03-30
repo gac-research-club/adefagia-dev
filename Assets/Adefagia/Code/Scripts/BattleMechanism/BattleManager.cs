@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Adefagia.GridSystem;
+using Adefagia.Highlight;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 using Random = UnityEngine.Random;
@@ -13,7 +14,7 @@ namespace Adefagia.BattleMechanism
         public static GameState gameState               = GameState.Initialize;
         public static PreparationState preparationState = PreparationState.Nothing;
         public static BattleState battleState           = BattleState.Nothing;
-            
+        
         [SerializeField] private TeamController teamA, teamB;
         
         public static TeamController TeamActive { get; set; }
@@ -254,6 +255,10 @@ namespace Adefagia.BattleMechanism
                 {
                     // Get current grid click
                     var gridController = GameManager.instance.gridManager.GetGridController();
+
+                    // hihglight grid movement
+                    HighlightMovement.SetActiveHighlightMovement(grid);
+
 
                     // run AStar Pathfinding
                     TeamActive.RobotControllerSelected.RobotMovement.Move(
