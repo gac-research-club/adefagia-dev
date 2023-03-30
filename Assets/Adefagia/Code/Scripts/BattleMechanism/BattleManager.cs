@@ -19,6 +19,9 @@ namespace Adefagia.BattleMechanism
         public static TeamController TeamActive { get; set; }
         public static TeamController NextTeam   { get; set; }
 
+        public static float currentTime = 10f;
+        float startingTime = 10f;
+
         private void Awake()
         {
             /* Team A deploying Area
@@ -39,7 +42,6 @@ namespace Adefagia.BattleMechanism
 
         private void Update()
         {
-            
             #region Preparation
 
             if (gameState == GameState.Preparation && 
@@ -145,6 +147,21 @@ namespace Adefagia.BattleMechanism
                 
             }
 
+            if(TeamActive.IsHasFinishDeploy())
+            {
+                currentTime -= 1 * Time.deltaTime;
+                if(currentTime<0)
+                {
+                    currentTime = 0;
+                }
+                
+                if(currentTime == 0)
+                {
+                    EndTurnButtonClick();
+                    currentTime = startingTime;
+                }
+            }
+
             #endregion
         }
 
@@ -178,6 +195,9 @@ namespace Adefagia.BattleMechanism
         {
             // Swap via destruction
             (TeamActive, NextTeam) = (NextTeam, TeamActive);
+            
+            // Hide PlayerActionHUD
+            GameManager.instance.uiManager.HideBattleUI();
         }
 
         #region ChangeState
@@ -293,7 +313,7 @@ namespace Adefagia.BattleMechanism
             // change to move robot
             ChangeBattleState(BattleState.MoveRobot);
             
-            // Run Function Move from RobotMovement.cs
+            // Running Function Move from RobotMovement.cs
 
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Move");
         }
@@ -306,7 +326,7 @@ namespace Adefagia.BattleMechanism
             // change to move robot
             ChangeBattleState(BattleState.AttackRobot);
             
-            // Run Function Attack from RobotAttack.cs
+            // Running Function Attack from RobotAttack.cs
             
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
         }
@@ -324,6 +344,10 @@ namespace Adefagia.BattleMechanism
 
         public void EndTurnButtonClick()
         {
+            if(currentTime != 0)
+            {
+                currentTime = startingTime;
+            }
             TeamActive.ResetRobotSelected();
             
             
