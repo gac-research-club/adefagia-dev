@@ -15,6 +15,8 @@ namespace Adefagia.BattleMechanism
         public static PreparationState preparationState = PreparationState.Nothing;
         public static BattleState battleState           = BattleState.Nothing;
         
+        private static HighlightMovement highlightMovement;
+
         [SerializeField] private TeamController teamA, teamB;
         
         public static TeamController TeamActive { get; set; }
@@ -38,6 +40,9 @@ namespace Adefagia.BattleMechanism
              *----------------------*/
             teamB.SetPreparationArea(0,0,9,3);
             
+
+            highlightMovement = new HighlightMovement();
+
             StartCoroutine(PreparationBattle());
         }
 
@@ -276,10 +281,6 @@ namespace Adefagia.BattleMechanism
                     // Get current grid click
                     var gridController = GameManager.instance.gridManager.GetGridController();
 
-                    // hihglight grid movement
-                    HighlightMovement.SetActiveHighlightMovement(grid);
-
-
                     // run AStar Pathfinding
                     TeamActive.RobotControllerSelected.RobotMovement.Move(
                         robotController: TeamActive.RobotControllerSelected, 
@@ -315,6 +316,10 @@ namespace Adefagia.BattleMechanism
          *----------------------------------------------------------------------*/
         public void MoveButtonClick()
         {
+            
+            // hihglight grid movement
+            highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+
             // change to move robot
             ChangeBattleState(BattleState.MoveRobot);
             

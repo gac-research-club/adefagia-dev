@@ -8,31 +8,32 @@ namespace Adefagia.Highlight{
     public class HighlightMovement : MonoBehaviour
     {
 
-        public HighlightMovement()
-        {
-            
-        }
+        [SerializeField] public GameObject quadMove;
+
 
         public void SetSurroundMove(Grid grid)
         {
-            var xGrid = grid.X;
-            var yGrid = grid.Y;
+            if(grid != null){
+                var xGrid = grid.X;
+                var yGrid = grid.Y;
 
-            GridHighlight(xGrid + 0, yGrid + 1);
-            GridHighlight(xGrid + 0, yGrid - 1);
-            GridHighlight(xGrid - 1, yGrid + 0);
-            GridHighlight(xGrid - 1, yGrid - 1);
-            GridHighlight(xGrid - 1, yGrid + 1);
-            GridHighlight(xGrid + 1, yGrid + 0);
-            GridHighlight(xGrid + 1, yGrid - 1);
-            GridHighlight(xGrid + 1, yGrid + 1);
-
+                GridHighlight(xGrid + 0, yGrid + 1);
+                GridHighlight(xGrid + 0, yGrid - 1);
+                GridHighlight(xGrid - 1, yGrid + 0);
+                GridHighlight(xGrid - 1, yGrid - 1);
+                GridHighlight(xGrid - 1, yGrid + 1);
+                GridHighlight(xGrid + 1, yGrid + 0);
+                GridHighlight(xGrid + 1, yGrid - 1);
+                GridHighlight(xGrid + 1, yGrid + 1);
+            }
         }
 
-        public void GridHighlight(int x, int y){
+
+        private void GridHighlight(int x, int y){
             var grid = GameManager.instance.gridManager.GetGrid(x, y);
-            if(grid == null){
-                Debug.Log("Babi");
+            if(grid != null){
+                GameObject quadDup = GameObject.Instantiate(quadMove);
+                quadDup.transform.position = GameManager.instance.gridManager.CellToWorld(grid); 
             }
         }
     }

@@ -149,6 +149,11 @@ namespace Adefagia.GridSystem
             return GetGrid((int) location.x, (int) location.y, debugMessage);
         }
 
+        // Get Vector3 by Grid
+        public Vector3 CellToWorld(Grid grid){
+            return new Vector3( grid.X, 0, grid.Y);
+        }
+
         // Grid hover 
         public Grid GetGrid()
         {
@@ -182,6 +187,8 @@ namespace Adefagia.GridSystem
         }
 
         #endregion
+
+        
         
         private void OnDrawGizmos()
         {
