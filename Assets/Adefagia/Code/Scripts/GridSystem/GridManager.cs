@@ -12,6 +12,7 @@ namespace Adefagia.GridSystem
     public class GridManager : MonoBehaviour
     {
         [SerializeField] private GameObject gridQuad;
+        [SerializeField] private GameObject gridQuadSelect;
 
         public float gridLength = 1;
         public int gridSizeX, gridSizeY;
@@ -29,6 +30,23 @@ namespace Adefagia.GridSystem
         {
             StartCoroutine(InitializeGridManager());
             _select = GetComponent<Select>();
+        }
+
+        private void Update()
+        {
+            if (BattleManager.gameState == GameState.Battle)
+            {
+                var robotControllerSelected = BattleManager.TeamActive.RobotControllerSelected;
+                if (robotControllerSelected != null)
+                {
+                    gridQuadSelect.transform.position = CellToWorld(robotControllerSelected.Robot.Location);
+                }
+                else
+                {
+                    // Kept away from keep sent
+                    gridQuadSelect.transform.position = new Vector3(99, 99, 99);
+                }
+            }
         }
 
         /*----------------------------------------------------------------------

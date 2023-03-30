@@ -46,15 +46,6 @@ namespace Adefagia.BattleMechanism
             {
                 SelectingRobot();
             }
-
-            // Add grid to selected robot
-            if (BattleManager.gameState == GameState.Battle)
-            {
-                if (BattleManager.TeamActive == this)
-                {
-                    
-                }
-            }
         }
         
         /*----------------------------------------------------------------------
