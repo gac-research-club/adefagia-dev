@@ -27,6 +27,9 @@ namespace Adefagia.BattleMechanism
                 var text2 = $"Team: \n{BattleManager.TeamActive.Team.teamName}";
                 GUI.Box (new Rect (Screen.width - 100,100,100,50), text2);
             }
+
+            var timerText = $"Timer :{BattleManager.currentTime.ToString("0")}";
+            GUI.Box (new Rect (Screen.width - 100,150,100,50), timerText);
         }
     }
 }

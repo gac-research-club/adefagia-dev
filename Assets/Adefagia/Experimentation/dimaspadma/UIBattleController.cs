@@ -55,7 +55,7 @@ namespace Adefagia.Experimentation.dimaspadma
          *-------------------------------------------------*/
         public void DisableButton(Button button)
         {
-            button.enabled = false;
+            button.interactable = false;
         }
 
         /*-------------------------------------------------
@@ -63,7 +63,7 @@ namespace Adefagia.Experimentation.dimaspadma
          *-------------------------------------------------*/
         public void EnableButton(Button button)
         {
-            button.enabled = true;
+            button.interactable = true;
         }
         
     }
