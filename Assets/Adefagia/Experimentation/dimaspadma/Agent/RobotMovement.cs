@@ -1,8 +1,5 @@
-
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Adefagia;
 using Adefagia.BattleMechanism;
 using Adefagia.Collections;
 using Adefagia.GridSystem;
@@ -19,13 +16,15 @@ public class RobotMovement : MonoBehaviour
         _aStar = new AStar();
     }
 
-    public void Move(RobotController robotController,Grid grid, float delayMove)
+    public void Move(RobotController robotController,GridController gridController, float delayMove)
     {
-        if (grid == null)
+        if (gridController == null)
         {
             Debug.LogWarning("Pathfinding failed");
             return;
         }
+
+        var grid = gridController.Grid;
 
         if (grid.Status != GridStatus.Free)
         {
@@ -45,10 +44,8 @@ public class RobotMovement : MonoBehaviour
         }
         
         // Change grid reference to
-        var gridController = GameManager.instance.gridManager.GetGridController();
         gridController.RobotController = robotController;
         gridController.Grid.SetFree();
-        
         
         StartCoroutine(MovePosition(robotController, directions, delayMove));
         

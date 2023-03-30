@@ -11,6 +11,8 @@ namespace Adefagia.GridSystem
 {
     public class GridManager : MonoBehaviour
     {
+        [SerializeField] private GameObject gridQuad;
+
         public float gridLength = 1;
         public int gridSizeX, gridSizeY;
 
@@ -165,6 +167,22 @@ namespace Adefagia.GridSystem
             }
         }
 
+        #region UnityEvent
+
+        public void OnMouseHover(GameObject objectHit)
+        {
+            // Move grid Quad
+            if (objectHit == null)
+            {
+                gridQuad.transform.position = new Vector3(99, 99, 99);
+                return;
+            }
+
+            gridQuad.transform.position = objectHit.transform.position;
+        }
+
+        #endregion
+        
         private void OnDrawGizmos()
         {
             var center = (gridSizeX*gridLength + gridSizeY*gridLength) * 0.5f;
