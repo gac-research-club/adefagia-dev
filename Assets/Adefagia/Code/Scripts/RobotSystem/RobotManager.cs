@@ -54,7 +54,7 @@ namespace Adefagia.RobotSystem
                 // TODO: Make each robot dynamic edited by user
                 
                 // Manual input robot stat
-                robotController.Robot = new Robot(robotObject.name, 100, 10);
+                robotController.Robot = new Robot(robotObject.name);
                 robotController.Robot.ID = _teamController.TotalRobot-1 - i;
                 robotController.Robot.DelayMove = delayMove;
 

@@ -14,9 +14,7 @@ namespace Adefagia.Experimentation.dimaspadma
         [SerializeField] private Button buttonMove;
         [SerializeField] private Button buttonAttack;
         [SerializeField] private Button buttonDefend;
-        [SerializeField] private Button endButton;
         
-
         // TODO: disable button Move
         private void Update()
         {
@@ -39,6 +37,16 @@ namespace Adefagia.Experimentation.dimaspadma
                 {
                     EnableButton(buttonMove);
                 }
+                
+                // Disable if robot has attacked
+                if (robotSelected.Robot.HasAttack)
+                {
+                    DisableButton(buttonAttack);
+                }
+                else
+                {
+                    EnableButton(buttonAttack);
+                }
             }
         }
 
@@ -47,7 +55,7 @@ namespace Adefagia.Experimentation.dimaspadma
          *-------------------------------------------------*/
         public void DisableButton(Button button)
         {
-            button.enabled = false;
+            button.interactable = false;
         }
 
         /*-------------------------------------------------
@@ -55,7 +63,7 @@ namespace Adefagia.Experimentation.dimaspadma
          *-------------------------------------------------*/
         public void EnableButton(Button button)
         {
-            button.enabled = true;
+            button.interactable = true;
         }
         
     }
