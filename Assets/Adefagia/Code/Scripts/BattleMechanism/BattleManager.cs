@@ -19,6 +19,9 @@ namespace Adefagia.BattleMechanism
         public static TeamController TeamActive { get; set; }
         public static TeamController NextTeam   { get; set; }
 
+        public static float currentTime = 10f;
+        float startingTime = 10f;
+
         private void Awake()
         {
             /* Team A deploying Area
@@ -39,7 +42,6 @@ namespace Adefagia.BattleMechanism
 
         private void Update()
         {
-            
             #region Preparation
 
             if (gameState == GameState.Preparation && 
@@ -143,6 +145,21 @@ namespace Adefagia.BattleMechanism
                     }
                 }
                 
+            }
+
+            if(TeamActive.IsHasFinishDeploy())
+            {
+                currentTime -= 1 * Time.deltaTime;
+                if(currentTime<0)
+                {
+                    currentTime = 0;
+                }
+                
+                if(currentTime == 0)
+                {
+                    EndTurnButtonClick();
+                    currentTime = startingTime;
+                }
             }
 
             #endregion
@@ -324,6 +341,10 @@ namespace Adefagia.BattleMechanism
 
         public void EndTurnButtonClick()
         {
+            if(currentTime != 0)
+            {
+                currentTime = startingTime;
+            }
             TeamActive.ResetRobotSelected();
             
             
