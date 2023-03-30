@@ -195,6 +195,9 @@ namespace Adefagia.BattleMechanism
         {
             // Swap via destruction
             (TeamActive, NextTeam) = (NextTeam, TeamActive);
+            
+            // Hide PlayerActionHUD
+            GameManager.instance.uiManager.HideBattleUI();
         }
 
         #region ChangeState
@@ -310,7 +313,7 @@ namespace Adefagia.BattleMechanism
             // change to move robot
             ChangeBattleState(BattleState.MoveRobot);
             
-            // Run Function Move from RobotMovement.cs
+            // Running Function Move from RobotMovement.cs
 
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Move");
         }
@@ -323,7 +326,7 @@ namespace Adefagia.BattleMechanism
             // change to move robot
             ChangeBattleState(BattleState.AttackRobot);
             
-            // Run Function Attack from RobotAttack.cs
+            // Running Function Attack from RobotAttack.cs
             
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
         }

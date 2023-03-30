@@ -13,7 +13,6 @@ namespace Adefagia
         [SerializeField] private Canvas battleCanvas;
         [SerializeField] private Button buttonEndTurn;
         
-
         private void Awake()
         {
             if (battleCanvas.enabled)
