@@ -352,7 +352,7 @@ namespace Adefagia.BattleMechanism
             try
             {
                 var robot = GameManager.instance.gridManager.GetGridController().RobotController.Robot;
-                text2 = $"Active: {robot}\n" +
+                text2 = $"Hover: {robot}\n" +
                        $"Health: {robot.CurrentHealth}";
             }catch (NullReferenceException)
             {

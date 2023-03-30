@@ -14,9 +14,7 @@ namespace Adefagia.Experimentation.dimaspadma
         [SerializeField] private Button buttonMove;
         [SerializeField] private Button buttonAttack;
         [SerializeField] private Button buttonDefend;
-        [SerializeField] private Button endButton;
         
-
         // TODO: disable button Move
         private void Update()
         {
