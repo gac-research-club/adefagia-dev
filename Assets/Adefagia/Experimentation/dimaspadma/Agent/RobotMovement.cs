@@ -16,11 +16,11 @@ public class RobotMovement : MonoBehaviour
         _aStar = new AStar();
     }
 
-    public void Move(RobotController robotController,GridController gridController, float delayMove)
+    public void Move(RobotController robotController, GridController gridController, float delayMove)
     {
         if (gridController == null)
         {
-            Debug.LogWarning("Pathfinding failed");
+            Debug.LogWarning("Pathfinding failed grid null");
             return;
         }
 
@@ -28,7 +28,7 @@ public class RobotMovement : MonoBehaviour
 
         if (grid.Status != GridStatus.Free)
         {
-            Debug.LogWarning("Pathfinding failed");
+            Debug.LogWarning("Pathfinding failed Grid not Free");
             return;
         }
 
@@ -39,26 +39,26 @@ public class RobotMovement : MonoBehaviour
 
         if (directions == null)
         {
-            Debug.LogWarning("Pathfinding Failed");
+            Debug.LogWarning("Pathfinding Failed Direction null");
             return;
         }
-        
+
         // Change grid reference to
         gridController.RobotController = robotController;
         gridController.Grid.SetFree();
-        
+
         StartCoroutine(MovePosition(robotController, directions, delayMove));
-        
+
         robotController.Robot.ChangeLocation(grid);
         grid.SetOccupied();
-        
+
         // means the robot is considered to move
         robotController.Robot.HasMove = true;
 
         Debug.Log($"Move to {grid}");
     }
 
-    private IEnumerator MovePosition(RobotController robotController ,List<Grid> grids, float delayMove)
+    private IEnumerator MovePosition(RobotController robotController, List<Grid> grids, float delayMove)
     {
         foreach (var grid in grids)
         {
