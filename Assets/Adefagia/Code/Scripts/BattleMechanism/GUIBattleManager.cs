@@ -1,7 +1,8 @@
 ﻿using System;
+using Adefagia.BattleMechanism;
 using UnityEngine;
 
-namespace Adefagia.BattleMechanism
+namespace Adefagia.UI
 {
     public class GUIBattleManager : MonoBehaviour
     {

@@ -6,7 +6,8 @@ using Adefagia.GridSystem;
 using Grid = Adefagia.GridSystem.Grid;
 using UnityEngine;
 
-namespace Adefagia.Highlight{
+namespace Adefagia.PlayerAction
+{
     public class HighlightMovement : MonoBehaviour
     {
         [SerializeField] private GameObject quadMove, quadAttack;

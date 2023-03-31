@@ -4,7 +4,7 @@ using Adefagia.GridSystem;
 using Adefagia.RobotSystem;
 using UnityEngine;
 
-namespace Adefagia.Experimentation.dimaspadma.Agent
+namespace Adefagia.PlayerAction
 {
     public class RobotAttack : MonoBehaviour
     {

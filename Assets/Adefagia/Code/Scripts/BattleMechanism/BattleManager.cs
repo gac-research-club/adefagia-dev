@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
-using Adefagia.GridSystem;
-using Adefagia.Highlight;
+using Adefagia.PlayerAction;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 using Random = UnityEngine.Random;
@@ -251,6 +250,9 @@ namespace Adefagia.BattleMechanism
                 
                 // set robot to grid
                 TeamActive.GridController.RobotController = TeamActive.RobotController;
+                
+                // set grid to robot
+                TeamActive.GridController.RobotController.GridController = TeamActive.GridController;
                 
                 // Occupied the grid
                 TeamActive.Robot.Location.SetOccupied();

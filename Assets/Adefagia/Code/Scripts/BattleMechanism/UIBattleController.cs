@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Adefagia.Experimentation.dimaspadma
+namespace Adefagia.UI
 {
     public class UIBattleController : MonoBehaviour
     {
