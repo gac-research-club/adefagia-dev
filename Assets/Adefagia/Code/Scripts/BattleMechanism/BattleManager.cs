@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
-using Adefagia.GridSystem;
-using Adefagia.Highlight;
+using Adefagia.PlayerAction;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 using Random = UnityEngine.Random;
