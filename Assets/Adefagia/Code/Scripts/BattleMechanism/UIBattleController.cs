@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Adefagia.Experimentation.dimaspadma
+namespace Adefagia.UI
 {
     public class UIBattleController : MonoBehaviour
     {
@@ -14,12 +14,24 @@ namespace Adefagia.Experimentation.dimaspadma
         [SerializeField] private Button buttonMove;
         [SerializeField] private Button buttonAttack;
         [SerializeField] private Button buttonDefend;
+        [SerializeField] private Button cancelButton;
+        
         
         // TODO: disable button Move
         private void Update()
         {
             if (BattleManager.gameState == GameState.Battle)
             {
+
+                if (BattleManager.battleState == BattleState.MoveRobot ||
+                    BattleManager.battleState == BattleState.AttackRobot)
+                {
+                    ShowButton(cancelButton);
+                }
+                else
+                {
+                    HideButton(cancelButton);
+                }
 
                 var robotSelected = BattleManager.TeamActive.RobotControllerSelected;
                 
@@ -64,6 +76,16 @@ namespace Adefagia.Experimentation.dimaspadma
         public void EnableButton(Button button)
         {
             button.interactable = true;
+        }
+
+        private void ShowButton(Button button)
+        {
+            button.gameObject.SetActive(true);
+        }
+        
+        private void HideButton(Button button)
+        {
+            button.gameObject.SetActive(false);
         }
         
     }

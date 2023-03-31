@@ -41,7 +41,8 @@ namespace Adefagia.BattleMechanism
 
         private void Update()
         {
-            if (BattleManager.preparationState == PreparationState.DeployRobot)
+            if (BattleManager.gameState == GameState.Preparation ||
+                BattleManager.preparationState == PreparationState.DeployRobot)
             {
                 SelectingRobot();
             }

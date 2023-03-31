@@ -77,7 +77,6 @@ namespace Adefagia.Collections
                     // GridManager.CheckGround(neighbor) && !Reached.Contains(neighbor) && !neighbor.IsOccupied
                     if (!Reached.Contains(neighbor))
                     {
-        
                         var newCost = costSoFar[current] + 1;
                         costSoFar[neighbor] = newCost;
                         
