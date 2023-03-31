@@ -1,8 +1,6 @@
-﻿using System;
-using Adefagia.BattleMechanism;
-using Adefagia.Experimentation.dimaspadma.Agent;
+﻿using Adefagia.BattleMechanism;
+using Adefagia.PlayerAction;
 using Adefagia.GridSystem;
-using Unity.VisualScripting;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 
@@ -24,7 +22,7 @@ namespace Adefagia.RobotSystem
         public TeamController TeamController => _teamController;
         public RobotMovement RobotMovement => _robotMovement;
         public RobotAttack RobotAttack => _robotAttack;
-        
+        public GridController GridController { get; set; }
 
         private void Awake()
         {

@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using Adefagia.GridSystem;
+using Adefagia.PlayerAction;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 using Random = UnityEngine.Random;
@@ -9,15 +9,20 @@ namespace Adefagia.BattleMechanism
 {
     public class BattleManager : MonoBehaviour
     {
+        [SerializeField] private TeamController teamA, teamB;
+        [SerializeField] private float startingTime = 10f;
+        
         // Before Battle start
         public static GameState gameState               = GameState.Initialize;
         public static PreparationState preparationState = PreparationState.Nothing;
         public static BattleState battleState           = BattleState.Nothing;
-            
-        [SerializeField] private TeamController teamA, teamB;
         
+        private static HighlightMovement highlightMovement;
+
         public static TeamController TeamActive { get; set; }
         public static TeamController NextTeam   { get; set; }
+
+        public static float currentTime = -1;
 
         private void Awake()
         {
@@ -34,12 +39,16 @@ namespace Adefagia.BattleMechanism
              *----------------------*/
             teamB.SetPreparationArea(0,0,9,3);
             
+            highlightMovement = GetComponent<HighlightMovement>();
+
+            // Initialize current Time
+            currentTime = startingTime;
+            
             StartCoroutine(PreparationBattle());
         }
 
         private void Update()
         {
-            
             #region Preparation
 
             if (gameState == GameState.Preparation && 
@@ -134,15 +143,26 @@ namespace Adefagia.BattleMechanism
                     }
                 }
 
-                if (battleState == BattleState.MoveRobot)
+                if (battleState == BattleState.MoveRobot ||
+                    battleState == BattleState.AttackRobot)
                 {
                     // Exit to select another Robot
                     if (Input.GetKeyDown(KeyCode.Escape))
                     {
-                        ChangeBattleState(BattleState.SelectRobot);
+                        CancelButtonClick();
                     }
                 }
                 
+            }
+
+            if(TeamActive.IsHasFinishDeploy())
+            {
+                currentTime -= 1 * Time.deltaTime; // seconds
+                
+                if(currentTime <= 0)
+                {
+                    EndTurnButtonClick();
+                }
             }
 
             #endregion
@@ -178,6 +198,14 @@ namespace Adefagia.BattleMechanism
         {
             // Swap via destruction
             (TeamActive, NextTeam) = (NextTeam, TeamActive);
+
+            if (gameState == GameState.Battle)
+            {
+                // Hide PlayerActionHUD
+                GameManager.instance.uiManager.HideBattleUI();
+                
+                highlightMovement.CleanHighlight();
+            }
         }
 
         #region ChangeState
@@ -223,6 +251,9 @@ namespace Adefagia.BattleMechanism
                 // set robot to grid
                 TeamActive.GridController.RobotController = TeamActive.RobotController;
                 
+                // set grid to robot
+                TeamActive.GridController.RobotController.GridController = TeamActive.GridController;
+                
                 // Occupied the grid
                 TeamActive.Robot.Location.SetOccupied();
                 
@@ -264,6 +295,8 @@ namespace Adefagia.BattleMechanism
 
                     // change to selecting state
                     ChangeBattleState(BattleState.SelectRobot);
+                    
+                    highlightMovement.CleanHighlight();
                 }
                 
                 // Attack Robot
@@ -280,6 +313,8 @@ namespace Adefagia.BattleMechanism
                     
                     // change to selecting state
                     ChangeBattleState(BattleState.SelectRobot);
+                    
+                    highlightMovement.CleanHighlight();
                 }
             }
         }
@@ -293,7 +328,10 @@ namespace Adefagia.BattleMechanism
             // change to move robot
             ChangeBattleState(BattleState.MoveRobot);
             
-            // Run Function Move from RobotMovement.cs
+            // hihglight grid movement
+            highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            
+            // Running Function Move from RobotMovement.cs
 
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Move");
         }
@@ -305,8 +343,11 @@ namespace Adefagia.BattleMechanism
         {
             // change to move robot
             ChangeBattleState(BattleState.AttackRobot);
+
+            // highlight grid movement
+            highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
             
-            // Run Function Attack from RobotAttack.cs
+            // Running Function Attack from RobotAttack.cs
             
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
         }
@@ -324,44 +365,26 @@ namespace Adefagia.BattleMechanism
 
         public void EndTurnButtonClick()
         {
+            // starting with initial starting time
+            currentTime = startingTime;
+
             TeamActive.ResetRobotSelected();
-            
-            
+
             ChangeTeam();
             
             // change to select robot
             ChangeBattleState(BattleState.SelectRobot);
         }
+
+        public void CancelButtonClick()
+        {
+            ChangeBattleState(BattleState.SelectRobot);
+                        
+            highlightMovement.CleanHighlight();
+        }
         
         
         #endregion
-        
-        private void OnGUI()
-        {
-            var text = "";
-            try
-            {
-                text = "Active: " + TeamActive.Robot;
-            }
-            catch (NullReferenceException)
-            {
-                text = "Empty";
-            }
-
-            var text2 = "";
-            try
-            {
-                var robot = GameManager.instance.gridManager.GetGridController().RobotController.Robot;
-                text2 = $"Hover: {robot}\n" +
-                       $"Health: {robot.CurrentHealth}";
-            }catch (NullReferenceException)
-            {
-                text2 = "Empty";
-            }
-            
-            GUI.Box (new Rect (0,Screen.height - 100,100,50), text);
-            GUI.Box (new Rect (0,Screen.height - 50,100,50), text2);
-        }
     }
     
 
