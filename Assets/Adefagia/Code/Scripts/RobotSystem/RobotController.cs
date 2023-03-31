@@ -24,7 +24,7 @@ namespace Adefagia.RobotSystem
         public TeamController TeamController => _teamController;
         public RobotMovement RobotMovement => _robotMovement;
         public RobotAttack RobotAttack => _robotAttack;
-        
+        public GridController GridController { get; set; }
 
         private void Awake()
         {

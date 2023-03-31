@@ -252,6 +252,9 @@ namespace Adefagia.BattleMechanism
                 // set robot to grid
                 TeamActive.GridController.RobotController = TeamActive.RobotController;
                 
+                // set grid to robot
+                TeamActive.GridController.RobotController.GridController = TeamActive.GridController;
+                
                 // Occupied the grid
                 TeamActive.Robot.Location.SetOccupied();
                 

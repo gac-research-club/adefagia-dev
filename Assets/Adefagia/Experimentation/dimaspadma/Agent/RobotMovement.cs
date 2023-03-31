@@ -9,13 +9,6 @@ using Grid = Adefagia.GridSystem.Grid;
 
 public class RobotMovement : MonoBehaviour
 {
-    private AStar _aStar;
-
-    private void Awake()
-    {
-        _aStar = new AStar();
-    }
-
     public void Move(RobotController robotController, GridController gridController, float delayMove)
     {
         if (gridController == null)
@@ -35,17 +28,22 @@ public class RobotMovement : MonoBehaviour
         // Move
         var start = BattleManager.TeamActive.RobotControllerSelected.Robot.Location;
 
-        var directions = _aStar.Move(start, grid);
-
+        var directions = new AStar().Move(start, grid);
+    
         if (directions == null)
         {
             Debug.LogWarning("Pathfinding Failed Direction null");
             return;
         }
 
-        // Change grid reference to
+        // Free grid start
+        robotController.GridController.Grid.SetFree();
+        
+        // Change grid reference to robot
         gridController.RobotController = robotController;
-        gridController.Grid.SetFree();
+        
+        // Change robot reference to grid
+        gridController.RobotController.GridController = gridController;
 
         StartCoroutine(MovePosition(robotController, directions, delayMove));
 
