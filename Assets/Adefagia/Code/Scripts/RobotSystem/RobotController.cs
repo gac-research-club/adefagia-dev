@@ -57,6 +57,7 @@ namespace Adefagia.RobotSystem
             transform.position = position;
             
             // TODO: move to position with some transition
+            // move with lerp
         }
 
         public void ResetPosition()
