@@ -13,7 +13,7 @@ namespace Adefagia.UI
         
         [SerializeField] private Button buttonMove;
         [SerializeField] private Button buttonAttack;
-        [SerializeField] private Button buttonDefend;
+        [SerializeField] private Button buttonDeffend;
         [SerializeField] private Button cancelButton;
         
         
@@ -40,25 +40,43 @@ namespace Adefagia.UI
 
                 robotNameText.text = robotSelected.Robot.ToString();
                 
-                // Disable if robot has moved
-                if (robotSelected.Robot.HasMove)
-                {
-                    DisableButton(buttonMove);
-                }
-                else
-                {
-                    EnableButton(buttonMove);
-                }
-                
-                // Disable if robot has attacked
-                if (robotSelected.Robot.HasAttack)
-                {
+                if(robotSelected.Robot.CurrentStamina <= 0){
                     DisableButton(buttonAttack);
+                    DisableButton(buttonMove);
+                    DisableButton(buttonDeffend);
+                }else{
+                    
+                    // Disable if robot has moved
+                    if (robotSelected.Robot.HasMove)
+                    {
+                        DisableButton(buttonMove);
+                    }
+                    else
+                    {
+                        EnableButton(buttonMove);
+                    }
+                    
+                    // Disable if robot has attacked
+                    if (robotSelected.Robot.HasAttack)
+                    {
+                        DisableButton(buttonAttack);
+                    }
+                    else
+                    {
+                        EnableButton(buttonAttack);
+                    }
+
+                    if (robotSelected.Robot.HasDeffend)
+                    {
+                        DisableButton(buttonDeffend);
+                    }
+                    else
+                    {
+                        EnableButton(buttonDeffend);
+                    }
+                    
                 }
-                else
-                {
-                    EnableButton(buttonAttack);
-                }
+
             }
         }
 

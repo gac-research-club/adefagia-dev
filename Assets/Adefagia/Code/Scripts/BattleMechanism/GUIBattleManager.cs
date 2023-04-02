@@ -22,8 +22,9 @@ namespace Adefagia.UI
             try
             {
                 var robot = GameManager.instance.gridManager.GetGridController().RobotController.Robot;
-                observe = $"Hover: {robot}\n" +
-                        $"Health: {robot.CurrentHealth}";
+                observe = $"Hover : {robot}\n" +
+                        $"Health : {robot.CurrentHealth}\n" + 
+                        $"Stamina : {robot.CurrentStamina}";
             }catch (NullReferenceException)
             {
                 observe = "Empty";
@@ -56,6 +57,8 @@ namespace Adefagia.UI
 
             var timerText = $"Timer :{BattleManager.currentTime.ToString("0")}";
             GUI.Box (new Rect (Screen.width - 100,150,100,50), timerText);
+
+            
         }
     }
 }

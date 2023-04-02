@@ -13,6 +13,7 @@ namespace Adefagia.RobotSystem
     {
         private Grid _grid;
         private float _health;
+        private float _stamina;
 
         #region Properties
         
@@ -21,14 +22,19 @@ namespace Adefagia.RobotSystem
         public string Name { get; }
         public Grid Location => _grid;
         public float MaxHealth { get; }
+        public float MaxStamina { get; }
+
         public float CurrentHealth => _health;
+
+        public float CurrentStamina => _stamina;
+
         public float Damage { get; }
         public float DelayMove { get; set; }
         
         // Step Status
         public bool HasMove { get; set; }
         public bool HasAttack { get; set; }
-        public bool HasDefend { get; set; }
+        public bool HasDeffend { get; set; }
         
         #endregion
         
@@ -37,21 +43,25 @@ namespace Adefagia.RobotSystem
         {
             Name = name;
             MaxHealth = 100;
+            MaxStamina = 20;
             _health = MaxHealth;
             Damage = 10;
             
             //-----------------------
             ResetStepStat();
+            ResetStamina();
         }
-        public Robot(string name, float maxHealth, float damage)
+        public Robot(string name, float maxHealth, float maxStamina, float damage)
         {
             Name = name;
             MaxHealth = maxHealth;
+            MaxStamina = maxStamina;
             _health = MaxHealth;
             Damage = damage;
             
             //-----------------------
             ResetStepStat();
+            ResetStamina();
         }
         
         /*-------------------------------------------------------
@@ -60,6 +70,16 @@ namespace Adefagia.RobotSystem
         public void TakeDamage(float damage)
         {
             _health -= damage;
+        }
+
+        public void ResetStamina()
+        {
+            _stamina = MaxStamina;
+        }
+
+        public void DecreaseStamina(float stamina)
+        {
+            _stamina -= stamina;
         }
 
         /*------------------------------------------------------------------
@@ -74,7 +94,7 @@ namespace Adefagia.RobotSystem
         {
             HasMove = false;
             HasAttack = false;
-            HasDefend = false;
+            HasDeffend = false;
         }
 
         public override string ToString()
@@ -82,5 +102,10 @@ namespace Adefagia.RobotSystem
             return $"{Name}";
         }
         
+        public enum Stamina {
+            Move = 10,
+            Attack = 10,
+            Deffend = 10
+        }
     }
 }
