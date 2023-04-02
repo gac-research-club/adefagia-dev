@@ -36,7 +36,7 @@ namespace Adefagia.RobotSystem
         private void Update()
         {
             healthPoint = Robot.CurrentHealth;
-            staminaPoint = Robot.MaxStamina;
+            staminaPoint = Robot.CurrentStamina;
             // If the team is teamActive
             // if (_teamController == BattleManager.TeamActive && this == _teamController.RobotControllerSelected)
             // {
