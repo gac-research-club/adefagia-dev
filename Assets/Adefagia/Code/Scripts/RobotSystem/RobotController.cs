@@ -11,6 +11,7 @@ namespace Adefagia.RobotSystem
     public class RobotController : MonoBehaviour
     {
         [SerializeField] private float healthPoint;
+        [SerializeField] private float staminaPoint;
         
         private Vector3 _startPosition;
         private TeamController _teamController;
@@ -35,7 +36,7 @@ namespace Adefagia.RobotSystem
         private void Update()
         {
             healthPoint = Robot.CurrentHealth;
-            
+            staminaPoint = Robot.MaxStamina;
             // If the team is teamActive
             // if (_teamController == BattleManager.TeamActive && this == _teamController.RobotControllerSelected)
             // {
@@ -58,6 +59,7 @@ namespace Adefagia.RobotSystem
             
             // TODO: move to position with some transition
             // move with lerp
+            
         }
 
         public void ResetPosition()

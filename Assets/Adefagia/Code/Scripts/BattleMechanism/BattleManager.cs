@@ -60,6 +60,7 @@ namespace Adefagia.BattleMechanism
                 {
                     // Reset team active robot selected
                     TeamActive.ResetRobotSelected();
+                    TeamActive.ResetRobotStamina();
                     TeamActive.SetPreparationArea(0,0,9,9); // full area
                     
                     // Change team Active
@@ -369,6 +370,7 @@ namespace Adefagia.BattleMechanism
             currentTime = startingTime;
 
             TeamActive.ResetRobotSelected();
+            TeamActive.ResetRobotStamina();
 
             ChangeTeam();
             

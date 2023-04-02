@@ -13,7 +13,7 @@ namespace Adefagia.UI
         
         [SerializeField] private Button buttonMove;
         [SerializeField] private Button buttonAttack;
-        [SerializeField] private Button buttonDefend;
+        [SerializeField] private Button buttonDeffend;
         [SerializeField] private Button cancelButton;
         
         
@@ -40,6 +40,7 @@ namespace Adefagia.UI
 
                 robotNameText.text = robotSelected.Robot.ToString();
                 
+
                 // Disable if robot has moved
                 if (robotSelected.Robot.HasMove)
                 {
@@ -59,6 +60,13 @@ namespace Adefagia.UI
                 {
                     EnableButton(buttonAttack);
                 }
+
+                if(robotSelected.Robot.CurrentStamina <= 0){
+                    DisableButton(buttonAttack);
+                    DisableButton(buttonMove);
+                    DisableButton(buttonDeffend);
+                }
+
             }
         }
 
