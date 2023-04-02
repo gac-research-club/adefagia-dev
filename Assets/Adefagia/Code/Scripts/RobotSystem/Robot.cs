@@ -13,6 +13,7 @@ namespace Adefagia.RobotSystem
     {
         private Grid _grid;
         private float _health;
+        private float _stamina;
 
         #region Properties
         
@@ -21,7 +22,12 @@ namespace Adefagia.RobotSystem
         public string Name { get; }
         public Grid Location => _grid;
         public float MaxHealth { get; }
+        public float MaxStamina { get; }
+
         public float CurrentHealth => _health;
+
+        public float CurrentStamina => _stamina;
+
         public float Damage { get; }
         public float DelayMove { get; set; }
         
@@ -38,6 +44,7 @@ namespace Adefagia.RobotSystem
             Name = name;
             MaxHealth = 100;
             _health = MaxHealth;
+            _stamina = MaxStamina;
             Damage = 10;
             
             //-----------------------
