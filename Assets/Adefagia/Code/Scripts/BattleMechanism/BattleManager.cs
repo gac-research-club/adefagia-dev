@@ -359,7 +359,7 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.DefendRobot);
             
             // means the robot is considered to move
-            TeamActive.RobotControllerSelected.Robot.HasDefend = true;
+            TeamActive.RobotControllerSelected.Robot.HasDeffend = true;
             
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Defend");
         }
