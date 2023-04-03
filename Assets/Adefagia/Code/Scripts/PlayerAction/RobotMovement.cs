@@ -62,7 +62,9 @@ namespace Adefagia.PlayerAction
         {
             foreach (var grid in grids)
             {
-                robotController.MovePosition(grid);
+                StartCoroutine(robotController.MoveRobotPosition(grid));
+
+                // robotController.MovePosition(grid);
 
                 yield return new WaitForSeconds(delayMove);
             }

@@ -3,6 +3,7 @@ using Adefagia.PlayerAction;
 using Adefagia.GridSystem;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
+using System.Collections;
 
 namespace Adefagia.RobotSystem
 {
@@ -11,6 +12,8 @@ namespace Adefagia.RobotSystem
     public class RobotController : MonoBehaviour
     {
         [SerializeField] private float healthPoint;
+        private float elapsedTime;
+        private float desiredDuration = 0.49f;
         
         private Vector3 _startPosition;
         private TeamController _teamController;
@@ -58,6 +61,23 @@ namespace Adefagia.RobotSystem
             
             // TODO: move to position with some transition
             // move with lerp
+        }
+
+        /*--------------------------------------------------------------------------------------
+         * Move Robot smoothly for each grid
+         *--------------------------------------------------------------------------------------*/
+        public IEnumerator MoveRobotPosition(Grid grid)
+        {
+            var position = new Vector3(grid.X, 0, grid.Y);
+
+            elapsedTime = 0;
+            while(elapsedTime < desiredDuration)
+            {
+                transform.position = Vector3.Lerp(transform.position, position, elapsedTime / desiredDuration);
+                elapsedTime += Time.deltaTime;
+                Debug.Log(elapsedTime);
+                yield return null;
+            }
         }
 
         public void ResetPosition()
