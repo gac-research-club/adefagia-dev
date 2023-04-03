@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -306,6 +306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoint: 0
+  staminaPoint: 0
 --- !u!114 &96379015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,6 +511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoint: 0
+  staminaPoint: 0
 --- !u!114 &248517906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -579,7 +581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamA: {fileID: 629306666}
   teamB: {fileID: 769710307}
-  startingTime: 30
+  startingTime: 3000
 --- !u!4 &530493426
 Transform:
   m_ObjectHideFlags: 0
@@ -1028,6 +1030,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoint: 0
+  staminaPoint: 0
 --- !u!114 &656425229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1097,6 +1100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoint: 0
+  staminaPoint: 0
 --- !u!4 &709075309
 Transform:
   m_ObjectHideFlags: 0
@@ -1637,6 +1641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoint: 0
+  staminaPoint: 0
 --- !u!4 &967812010
 Transform:
   m_ObjectHideFlags: 0
@@ -2470,6 +2475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoint: 0
+  staminaPoint: 0
 --- !u!114 &1634554115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2566,7 +2572,7 @@ MonoBehaviour:
   robotNameText: {fileID: 46186959}
   buttonMove: {fileID: 2139236103}
   buttonAttack: {fileID: 1056920653}
-  buttonDefend: {fileID: 2124797459}
+  buttonDeffend: {fileID: 2124797459}
   cancelButton: {fileID: 1089501040}
 --- !u!114 &1689452392
 MonoBehaviour:

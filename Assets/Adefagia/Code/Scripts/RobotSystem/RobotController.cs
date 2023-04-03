@@ -12,6 +12,7 @@ namespace Adefagia.RobotSystem
     public class RobotController : MonoBehaviour
     {
         [SerializeField] private float healthPoint;
+        [SerializeField] private float staminaPoint;
         private float elapsedTime;
         private float desiredDuration = 0.49f;
         
@@ -38,7 +39,7 @@ namespace Adefagia.RobotSystem
         private void Update()
         {
             healthPoint = Robot.CurrentHealth;
-            
+            staminaPoint = Robot.CurrentStamina;
             // If the team is teamActive
             // if (_teamController == BattleManager.TeamActive && this == _teamController.RobotControllerSelected)
             // {

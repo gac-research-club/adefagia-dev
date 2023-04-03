@@ -27,6 +27,8 @@ namespace Adefagia.PlayerAction
                 return;
             }
             
+            robotController.Robot.DecreaseStamina((float) Robot.Stamina.Attack);
+
             // a robot at other grid attacked by the current robot
             gridController.RobotController.Robot.TakeDamage(robotController.Robot.Damage);
 

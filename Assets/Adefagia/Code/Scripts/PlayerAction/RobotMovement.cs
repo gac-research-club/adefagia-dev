@@ -43,7 +43,10 @@ namespace Adefagia.PlayerAction
             
             // Change grid reference to robot
             gridController.RobotController = robotController;
-            
+
+            // Robot Decrease Stamina            
+            robotController.Robot.DecreaseStamina((float) Robot.Stamina.Move);
+
             // Change robot reference to grid
             gridController.RobotController.GridController = gridController;
 
