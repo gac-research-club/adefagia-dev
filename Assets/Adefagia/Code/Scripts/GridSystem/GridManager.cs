@@ -14,10 +14,12 @@ namespace Adefagia.GridSystem
         [SerializeField] private GameObject gridQuad;
         [SerializeField] private GameObject gridQuadSelect;
 
-        public float gridLength = 1;
-        public int gridSizeX, gridSizeY;
+        [SerializeField] private float gridLength = 1;
+        [SerializeField] private int gridSizeX, gridSizeY;
 
-        public List<GridElement> listGridPrefab;
+        [SerializeField] private List<GridElement> listGridPrefab;
+
+        [SerializeField] private Vector3 offset;
 
         private Dictionary<GridType, GridElement> _gridElements;
         
@@ -110,7 +112,7 @@ namespace Adefagia.GridSystem
                 {
                     // Create gameObject of grid
                     var gridObject = Instantiate(_gridElements[GridType.Ground].prefab, transform);
-                    gridObject.transform.position = new Vector3(xi * gridLength, 0, yi * gridLength);
+                    gridObject.transform.position = new Vector3(xi * gridLength, 0, yi * gridLength) + offset;
                     gridObject.name = $"Grid ({xi}, {yi})";
                     
                     // Add Grid Controller
@@ -201,7 +203,7 @@ namespace Adefagia.GridSystem
                 return;
             }
 
-            gridQuad.transform.position = objectHit.transform.position;
+            gridQuad.transform.position = objectHit.transform.position - offset;
         }
 
         #endregion

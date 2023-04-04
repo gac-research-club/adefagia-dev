@@ -48,6 +48,7 @@ namespace Adefagia.GridSystem
             {
                 if (grid == null) throw new NullReferenceException("Grid null");
                 
+                // Add neighbor by direction
                 Neighbors.Add(gridDirection, grid);
             }
             // Error null reference
