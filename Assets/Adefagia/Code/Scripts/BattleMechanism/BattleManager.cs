@@ -330,6 +330,7 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.MoveRobot);
 
             // hihglight grid movement
+            //highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
             highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
 
             // Running Function Move from RobotMovement.cs
@@ -346,6 +347,7 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.AttackRobot);
 
             // highlight grid movement
+            //highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
             highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
 
             // Running Function Attack from RobotAttack.cs
