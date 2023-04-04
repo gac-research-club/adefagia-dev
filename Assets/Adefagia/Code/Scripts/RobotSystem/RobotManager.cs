@@ -11,7 +11,7 @@ namespace Adefagia.RobotSystem
     {
         
         [SerializeField] private List<GameObject> robotPrefab;
-        [SerializeField] private float delayMove = 0.2f;
+        [SerializeField] private float speed = 5f;
         
         private TeamController _teamController;
 
@@ -56,7 +56,7 @@ namespace Adefagia.RobotSystem
                 // Manual input robot stat
                 robotController.Robot = new Robot(robotObject.name);
                 robotController.Robot.ID = _teamController.TotalRobot-1 - i;
-                robotController.Robot.DelayMove = delayMove;
+                robotController.Robot.Speed = speed;
 
                 // Edit name
                 // robotController.Robot.Name = robotObject.name;

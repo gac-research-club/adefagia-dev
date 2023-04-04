@@ -4,6 +4,8 @@ using Adefagia.GridSystem;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 using System.Collections;
+using System.Collections.Generic;
+using DG.Tweening;
 
 namespace Adefagia.RobotSystem
 {
@@ -13,9 +15,7 @@ namespace Adefagia.RobotSystem
     {
         [SerializeField] private float healthPoint;
         [SerializeField] private float staminaPoint;
-        private float elapsedTime;
-        private float desiredDuration = 0.49f;
-        
+
         private Vector3 _startPosition;
         private TeamController _teamController;
         
@@ -67,18 +67,42 @@ namespace Adefagia.RobotSystem
         /*--------------------------------------------------------------------------------------
          * Move Robot smoothly for each grid
          *--------------------------------------------------------------------------------------*/
-        public IEnumerator MoveRobotPosition(Grid grid)
+        public IEnumerator MoveRobotPosition(List<Grid> grids, float speed)
         {
-            var position = new Vector3(grid.X, 0, grid.Y);
-
-            elapsedTime = 0;
-            while(elapsedTime < desiredDuration)
+            var current = 0;
+            while (Vector3.Distance(transform.position, GridManager.CellToWorld(grids[^1])) > 0.01f)
             {
-                transform.position = Vector3.Lerp(transform.position, position, elapsedTime / desiredDuration);
-                elapsedTime += Time.deltaTime;
-                Debug.Log(elapsedTime);
+                var step =  speed * Time.deltaTime; // calculate distance to move
+                transform.position = Vector3.MoveTowards(transform.position, GridManager.CellToWorld(grids[current]), step);
+                
+                if (Vector3.Distance(transform.position, GridManager.CellToWorld(grids[current])) < 0.01f)
+                {
+                    current++;
+                }
+
                 yield return null;
             }
+
+            transform.position = GridManager.CellToWorld(grids[^1]);
+        }
+
+        public void MoveWithDoTween(List<Grid> grids)
+        {
+            // move to position with some transition
+            // move with lerp
+
+            var wayPoints = new List<Vector3>();
+            foreach (var grid in grids)
+            {
+                wayPoints.Add(GridManager.CellToWorld(grid));
+            }
+
+            transform.DOPath(
+                path: wayPoints.ToArray(), 
+                duration: 0.2f * wayPoints.Count,
+                pathType: PathType.Linear,
+                pathMode: PathMode.TopDown2D
+            );
         }
 
         public void ResetPosition()

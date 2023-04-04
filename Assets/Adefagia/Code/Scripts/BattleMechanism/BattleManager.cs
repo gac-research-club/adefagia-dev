@@ -291,7 +291,7 @@ namespace Adefagia.BattleMechanism
                     TeamActive.RobotControllerSelected.RobotMovement.Move(
                         robotController: TeamActive.RobotControllerSelected, 
                         gridController : gridController,
-                        delayMove      : TeamActive.RobotControllerSelected.Robot.DelayMove
+                        speed          : TeamActive.RobotControllerSelected.Robot.Speed
                         );
 
                     // change to selecting state

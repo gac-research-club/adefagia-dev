@@ -169,7 +169,7 @@ namespace Adefagia.GridSystem
 
         // Get Vector3 by Grid
         public static Vector3 CellToWorld(Grid grid){
-            return new Vector3( grid.X, 0, grid.Y);
+            return new Vector3(grid.X, 0, grid.Y);
         }
 
         // Grid hover 
