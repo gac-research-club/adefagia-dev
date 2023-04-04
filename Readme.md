@@ -1,7 +1,8 @@
 # Adefagia
-Adefagia is a tactical grid strategy RPG game. Players control a party of characters on a grid-based battlefield, using turn-based combat to defeat enemies and complete objectives.
 
 [![GitHub Super-Linter](https://github.com/gac-research-club/adefagia-dev/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
+Adefagia is a tactical grid strategy RPG game. Players control a party of characters on a grid-based battlefield, using turn-based combat to defeat enemies and complete objectives.
 
 ## Getting Started
 To play Adefagia, you will need to download and install the game. You can do this by [downloading the latest release](https://github.com/gac-research-club/adefagia-dev/releases) from the GitHub releases page.
