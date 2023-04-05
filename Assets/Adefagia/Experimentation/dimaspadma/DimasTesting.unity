@@ -269,6 +269,7 @@ GameObject:
   - component: {fileID: 96379013}
   - component: {fileID: 96379014}
   - component: {fileID: 96379015}
+  - component: {fileID: 96379016}
   - component: {fileID: 96379017}
   m_Layer: 0
   m_Name: DummyRobot1
@@ -316,6 +317,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d596579733485f45927cdef22da5739, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &96379016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 96379012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7089b23b0824cce9d02f68717f46d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &96379017
@@ -462,6 +475,7 @@ GameObject:
   - component: {fileID: 248517904}
   - component: {fileID: 248517905}
   - component: {fileID: 248517906}
+  - component: {fileID: 248517907}
   - component: {fileID: 248517908}
   m_Layer: 0
   m_Name: DummyRobot2
@@ -509,6 +523,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d596579733485f45927cdef22da5739, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &248517907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248517903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7089b23b0824cce9d02f68717f46d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &248517908
@@ -956,7 +982,7 @@ MonoBehaviour:
   - {fileID: 3113646294553717625, guid: bd677693055704743bc88d4731563131, type: 3}
   - {fileID: 3113646294553717625, guid: bd677693055704743bc88d4731563131, type: 3}
   - {fileID: 3113646294553717625, guid: bd677693055704743bc88d4731563131, type: 3}
-  delayMove: 0.2
+  speed: 5
 --- !u!1 &656425226
 GameObject:
   m_ObjectHideFlags: 0
@@ -968,6 +994,7 @@ GameObject:
   - component: {fileID: 656425227}
   - component: {fileID: 656425228}
   - component: {fileID: 656425229}
+  - component: {fileID: 656425230}
   - component: {fileID: 656425231}
   m_Layer: 0
   m_Name: DummyRobot1
@@ -1015,6 +1042,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d596579733485f45927cdef22da5739, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &656425230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656425226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7089b23b0824cce9d02f68717f46d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &656425231
@@ -1299,7 +1338,7 @@ MonoBehaviour:
   - {fileID: 3113646294553717625, guid: a2b0920cb44b80d428d48bde7c0399c3, type: 3}
   - {fileID: 3113646294553717625, guid: a2b0920cb44b80d428d48bde7c0399c3, type: 3}
   - {fileID: 3113646294553717625, guid: a2b0920cb44b80d428d48bde7c0399c3, type: 3}
-  delayMove: 0.2
+  speed: 5
 --- !u!1 &793209250
 GameObject:
   m_ObjectHideFlags: 0
@@ -1581,6 +1620,7 @@ GameObject:
   - component: {fileID: 967812010}
   - component: {fileID: 967812009}
   - component: {fileID: 967812011}
+  - component: {fileID: 967812012}
   - component: {fileID: 967812013}
   m_Layer: 0
   m_Name: DummyRobot3
@@ -1628,6 +1668,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d596579733485f45927cdef22da5739, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &967812012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967812008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7089b23b0824cce9d02f68717f46d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &967812013
@@ -2503,7 +2555,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -270, y: -166}
+  m_AnchoredPosition: {x: -294, y: -119}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1689452391
@@ -2892,7 +2944,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 343, y: -340}
+  m_AnchoredPosition: {x: 515, y: -322}
   m_SizeDelta: {x: 160, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2124797457
