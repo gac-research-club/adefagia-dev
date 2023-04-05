@@ -40,6 +40,10 @@ namespace Adefagia.RobotSystem
         {
             healthPoint = Robot.CurrentHealth;
             staminaPoint = Robot.CurrentStamina;
+
+            if(Robot.IsDead){
+                Destroy(gameObject);
+            }
             // If the team is teamActive
             // if (_teamController == BattleManager.TeamActive && this == _teamController.RobotControllerSelected)
             // {
