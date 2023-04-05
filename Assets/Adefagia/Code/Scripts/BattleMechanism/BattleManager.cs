@@ -289,9 +289,9 @@ namespace Adefagia.BattleMechanism
 
                     // run AStar Pathfinding
                     TeamActive.RobotControllerSelected.RobotMovement.Move(
-                        robotController: TeamActive.RobotControllerSelected,
-                        gridController: gridController,
-                        delayMove: TeamActive.RobotControllerSelected.Robot.DelayMove
+                        robotController: TeamActive.RobotControllerSelected, 
+                        gridController : gridController,
+                        speed          : TeamActive.RobotControllerSelected.Robot.Speed
                         );
 
                     // change to selecting state

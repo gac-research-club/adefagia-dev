@@ -29,7 +29,7 @@ namespace Adefagia.RobotSystem
         public float CurrentStamina => _stamina;
 
         public float Damage { get; }
-        public float DelayMove { get; set; }
+        public float Speed { get; set; }
         
         // Step Status
         public bool HasMove { get; set; }
