@@ -112,7 +112,7 @@ namespace Adefagia.RobotSystem
         
         public enum Stamina {
             
-            Initial = 10,
+            Initial = 20,
 
             Round = 10,
 
