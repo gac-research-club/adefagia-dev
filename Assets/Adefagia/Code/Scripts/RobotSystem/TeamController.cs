@@ -173,14 +173,14 @@ namespace Adefagia.BattleMechanism
             }
         }
 
-        public void ResetRobotStamina()
+        public void IncreaseRobotStamina()
         {
             robotControllerSelect = null;
             
             // Reset step status each robot
             foreach (var robot in robotControllers)
             {
-                robot.Robot.ResetStamina();
+                robot.Robot.IncreaseStamina();
             }
         }
         

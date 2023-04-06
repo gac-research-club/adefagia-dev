@@ -60,7 +60,6 @@ namespace Adefagia.BattleMechanism
                 {
                     // Reset team active robot selected
                     TeamActive.ResetRobotSelected();
-                    TeamActive.ResetRobotStamina();
                     TeamActive.SetPreparationArea(0,0,9,9); // full area
                     
                     // Change team Active
@@ -191,7 +190,7 @@ namespace Adefagia.BattleMechanism
                 TeamActive = teamB;
                 NextTeam = teamA;
             }
-
+            
             ChangePreparationState(PreparationState.DeployRobot);
         }
 
@@ -204,7 +203,7 @@ namespace Adefagia.BattleMechanism
             {
                 // Hide PlayerActionHUD
                 GameManager.instance.uiManager.HideBattleUI();
-                
+                TeamActive.IncreaseRobotStamina();
                 highlightMovement.CleanHighlight();
             }
         }
@@ -376,8 +375,6 @@ namespace Adefagia.BattleMechanism
             currentTime = startingTime;
 
             TeamActive.ResetRobotSelected();
-            TeamActive.ResetRobotStamina();
-
             ChangeTeam();
             
             // change to select robot
