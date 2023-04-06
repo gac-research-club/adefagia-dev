@@ -34,7 +34,7 @@ namespace Adefagia.PlayerAction
             
             // if grid is robot ally then friendly fire
             var teamController = gridController.RobotController.TeamController;
-            
+
             if (teamController == BattleManager.TeamActive)
             {
                 Debug.Log($"Friendly fire to {gridController.RobotController.Robot}");

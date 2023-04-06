@@ -17,6 +17,7 @@ namespace Adefagia.BattleMechanism
         [SerializeField] private List<RobotController> robotControllers;
         [SerializeField] private RobotController robotControllerActive;
         [SerializeField] private RobotController robotControllerSelect;
+        
         [SerializeField] private List<int> _robotDeployed;
 
         // Bound Area
@@ -182,6 +183,11 @@ namespace Adefagia.BattleMechanism
             {
                 robot.Robot.IncreaseStamina();
             }
+        }
+
+        public void RemoveRobot(RobotController inputRobotController)
+        {
+            robotControllers.Remove(inputRobotController);
         }
         
         
