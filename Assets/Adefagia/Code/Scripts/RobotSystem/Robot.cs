@@ -43,15 +43,15 @@ namespace Adefagia.RobotSystem
         public Robot(string name)
         {
             Name = name;
-            MaxHealth = 30;
-            MaxStamina = 20;
+            MaxHealth = 100;
+            MaxStamina = 50;
             _health = MaxHealth;
+            _stamina = (float) Stamina.Initial;
             Damage = 10;
             IsDead = false;
 
             //-----------------------
             ResetStepStat();
-            ResetStamina();
         }
         public Robot(string name, float maxHealth, float maxStamina, float damage)
         {
@@ -59,12 +59,12 @@ namespace Adefagia.RobotSystem
             MaxHealth = maxHealth;
             MaxStamina = maxStamina;
             _health = MaxHealth;
+            _stamina = (float) Stamina.Initial;
             Damage = damage;
             IsDead = false;
             
             //-----------------------
             ResetStepStat();
-            ResetStamina();
         }
         
         /*-------------------------------------------------------
@@ -79,9 +79,10 @@ namespace Adefagia.RobotSystem
            
         }
 
-        public void ResetStamina()
-        {
-            _stamina = MaxStamina;
+        public void IncreaseStamina()
+        {   
+            _stamina += (float) Stamina.Round;
+            if(_stamina > MaxStamina) _stamina = MaxStamina;
         }
 
         public void DecreaseStamina(float stamina)
@@ -110,9 +111,11 @@ namespace Adefagia.RobotSystem
         }
         
         public enum Stamina {
-            Move = 10,
-            Attack = 10,
-            Deffend = 10
+            
+            Initial = 10,
+
+            Round = 10,
+
         }
     }
 }
