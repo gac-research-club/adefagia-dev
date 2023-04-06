@@ -331,8 +331,8 @@ namespace Adefagia.BattleMechanism
 
             // hihglight grid movement
             // highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            // highlightMovement.ThreeFrontRow(TeamActive);
-            highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            highlightMovement.ThreeFrontRow(TeamActive);
+            // highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
 
             // Running Function Move from RobotMovement.cs
 
@@ -349,8 +349,8 @@ namespace Adefagia.BattleMechanism
 
             // highlight grid movement
             // highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            // highlightMovement.ThreeFrontRow(TeamActive);
-            highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            highlightMovement.ThreeFrontRow(TeamActive);
+            // highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
 
             // Running Function Attack from RobotAttack.cs
 

@@ -43,7 +43,7 @@ namespace Adefagia.RobotSystem
         public Robot(string name)
         {
             Name = name;
-            MaxHealth = 100;
+            MaxHealth = 30;
             MaxStamina = 20;
             _health = MaxHealth;
             Damage = 10;
