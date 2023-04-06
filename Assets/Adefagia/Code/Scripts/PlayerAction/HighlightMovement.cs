@@ -20,6 +20,11 @@ namespace Adefagia.PlayerAction
             _tempHighlight = new List<GameObject>();
         }
 
+        /*--------------
+         *    o o o
+         *    o r o
+         *    o o o
+         --------------*/
         public void SetSurroundMove(Grid grid)
         {
             if (grid == null) return;
@@ -52,7 +57,11 @@ namespace Adefagia.PlayerAction
             GridHighlight(xGrid + 1, yGrid + 1);
         }
 
-        // TODO : Please modified This Code to assign pattern
+        /*--------------
+         *      o
+         *    o o o
+         *  o o r o o
+         --------------*/
         public void SetTankRow(TeamController teamActive)
         {
             var grid = teamActive.RobotControllerSelected.Robot.Location;
@@ -102,6 +111,13 @@ namespace Adefagia.PlayerAction
             }
         }
         
+        /*--------------
+         *      o
+         *    o o o
+         *  o o r o o
+         *    o o o
+         *      o
+         --------------*/
         public void SetDiamondSurroundMove(Grid grid)
         {
             if (grid == null) return;
@@ -138,6 +154,12 @@ namespace Adefagia.PlayerAction
             GridHighlight(xGrid + 0, yGrid - 2);
         }
         
+        /*--------------
+         *      o
+         *      o
+         *      o
+         *      r
+         --------------*/
         public void ThreeFrontRow(TeamController teamActive)
         {
             var grid = teamActive.RobotControllerSelected.Robot.Location;
