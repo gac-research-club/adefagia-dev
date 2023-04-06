@@ -20,10 +20,15 @@ namespace Adefagia.PlayerAction
             _tempHighlight = new List<GameObject>();
         }
 
+        /*--------------
+         *    o o o
+         *    o r o
+         *    o o o
+         --------------*/
         public void SetSurroundMove(Grid grid)
         {
             if (grid == null) return;
-            
+
             CleanHighlight();
 
             if (BattleManager.battleState == BattleState.MoveRobot)
@@ -38,7 +43,7 @@ namespace Adefagia.PlayerAction
             {
                 return;
             }
-            
+
             var xGrid = grid.X;
             var yGrid = grid.Y;
 
@@ -52,11 +57,16 @@ namespace Adefagia.PlayerAction
             GridHighlight(xGrid + 1, yGrid + 1);
         }
 
-        // TODO : Please modified This Code to assign pattern
-        public void NameYourFunction(Grid grid)
+        /*--------------
+         *      o
+         *    o o o
+         *  o o r o o
+         --------------*/
+        public void SetTankRow(TeamController teamActive)
         {
+            var grid = teamActive.RobotControllerSelected.Robot.Location;
             if (grid == null) return;
-            
+
             CleanHighlight();
 
             if (BattleManager.battleState == BattleState.MoveRobot)
@@ -71,20 +81,43 @@ namespace Adefagia.PlayerAction
             {
                 return;
             }
-            
+
             var xGrid = grid.X;
             var yGrid = grid.Y;
 
-            GridHighlight(xGrid + 0, yGrid + 1);
-            GridHighlight(xGrid + 0, yGrid - 1);
-            GridHighlight(xGrid - 1, yGrid + 0);
-            GridHighlight(xGrid - 1, yGrid - 1);
-            GridHighlight(xGrid - 1, yGrid + 1);
-            GridHighlight(xGrid + 1, yGrid + 0);
-            GridHighlight(xGrid + 1, yGrid - 1);
-            GridHighlight(xGrid + 1, yGrid + 1);
+            var whichTeam = teamActive.Team.teamName;
+            if (whichTeam == "DIMOCRAT") // 3 Front Row team biru
+            {
+                GridHighlight(xGrid + 0, yGrid + 1);
+                GridHighlight(xGrid + 0, yGrid + 2);
+                GridHighlight(xGrid + 1, yGrid + 1);
+                GridHighlight(xGrid - 1, yGrid + 1);
+                GridHighlight(xGrid + 1, yGrid + 0);
+                GridHighlight(xGrid + 2, yGrid + 0);
+                GridHighlight(xGrid - 1, yGrid + 0);
+                GridHighlight(xGrid - 2, yGrid + 0);
+
+            }
+            else //highlight kebalik
+            {
+                GridHighlight(xGrid + 0, yGrid - 1);
+                GridHighlight(xGrid + 0, yGrid - 2);
+                GridHighlight(xGrid - 1, yGrid - 1);
+                GridHighlight(xGrid + 1, yGrid - 1);
+                GridHighlight(xGrid - 1, yGrid + 0);
+                GridHighlight(xGrid - 2, yGrid + 0);
+                GridHighlight(xGrid + 1, yGrid + 0);
+                GridHighlight(xGrid + 2, yGrid + 0);
+            }
         }
         
+        /*--------------
+         *      o
+         *    o o o
+         *  o o r o o
+         *    o o o
+         *      o
+         --------------*/
         public void SetDiamondSurroundMove(Grid grid)
         {
             if (grid == null) return;
@@ -121,6 +154,12 @@ namespace Adefagia.PlayerAction
             GridHighlight(xGrid + 0, yGrid - 2);
         }
         
+        /*--------------
+         *      o
+         *      o
+         *      o
+         *      r
+         --------------*/
         public void ThreeFrontRow(TeamController teamActive)
         {
             var grid = teamActive.RobotControllerSelected.Robot.Location;
@@ -167,16 +206,16 @@ namespace Adefagia.PlayerAction
 
             var quadDup = Instantiate(_quad, transform);
             quadDup.transform.position = GridManager.CellToWorld(grid);
-            _tempHighlight.Add(quadDup);      
+            _tempHighlight.Add(quadDup);
         }
-        
+
         public void CleanHighlight()
         {
             foreach (var temp in _tempHighlight)
             {
                 Destroy(temp);
             }
-            
+
             _tempHighlight.Clear();
         }
 
