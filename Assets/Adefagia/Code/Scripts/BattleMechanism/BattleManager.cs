@@ -11,7 +11,7 @@ namespace Adefagia.BattleMechanism
     {
         [SerializeField] private TeamController teamA, teamB;
         [SerializeField] private float startingTime = 10f;
-
+        
         // Before Battle start
         public static GameState gameState = GameState.Initialize;
         public static PreparationState preparationState = PreparationState.Nothing;
@@ -289,9 +289,9 @@ namespace Adefagia.BattleMechanism
 
                     // run AStar Pathfinding
                     TeamActive.RobotControllerSelected.RobotMovement.Move(
-                        robotController: TeamActive.RobotControllerSelected,
-                        gridController: gridController,
-                        delayMove: TeamActive.RobotControllerSelected.Robot.DelayMove
+                        robotController: TeamActive.RobotControllerSelected, 
+                        gridController : gridController,
+                        speed          : TeamActive.RobotControllerSelected.Robot.Speed
                         );
 
                     // change to selecting state
@@ -330,7 +330,8 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.MoveRobot);
 
             // hihglight grid movement
-            //highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            // highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            // highlightMovement.ThreeFrontRow(TeamActive);
             highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
 
             // Running Function Move from RobotMovement.cs
@@ -347,7 +348,8 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.AttackRobot);
 
             // highlight grid movement
-            //highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            // highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            // highlightMovement.ThreeFrontRow(TeamActive);
             highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
 
             // Running Function Attack from RobotAttack.cs
@@ -375,7 +377,7 @@ namespace Adefagia.BattleMechanism
             TeamActive.ResetRobotStamina();
 
             ChangeTeam();
-
+            
             // change to select robot
             ChangeBattleState(BattleState.SelectRobot);
         }
@@ -383,14 +385,14 @@ namespace Adefagia.BattleMechanism
         public void CancelButtonClick()
         {
             ChangeBattleState(BattleState.SelectRobot);
-
+                        
             highlightMovement.CleanHighlight();
         }
-
-
+        
+        
         #endregion
     }
-
+    
 
     public enum GameState
     {
