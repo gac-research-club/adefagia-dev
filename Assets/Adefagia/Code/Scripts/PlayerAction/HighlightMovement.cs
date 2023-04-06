@@ -101,7 +101,81 @@ namespace Adefagia.PlayerAction
                 GridHighlight(xGrid + 2, yGrid + 0);
             }
         }
+        
+        public void SetDiamondSurroundMove(Grid grid)
+        {
+            if (grid == null) return;
 
+            CleanHighlight();
+
+            if (BattleManager.battleState == BattleState.MoveRobot)
+            {
+                _quad = quadMove;
+            }
+            else if (BattleManager.battleState == BattleState.AttackRobot)
+            {
+                _quad = quadAttack;
+            }
+            else
+            {
+                return;
+            }
+
+            var xGrid = grid.X;
+            var yGrid = grid.Y;
+
+            GridHighlight(xGrid + 0, yGrid + 1);
+            GridHighlight(xGrid + 0, yGrid - 1);
+            GridHighlight(xGrid + 1, yGrid + 0);
+            GridHighlight(xGrid - 1, yGrid + 0);
+            GridHighlight(xGrid + 1, yGrid + 1);
+            GridHighlight(xGrid + 1, yGrid - 1);
+            GridHighlight(xGrid - 1, yGrid - 1);
+            GridHighlight(xGrid - 1, yGrid + 1);
+            GridHighlight(xGrid + 2, yGrid + 0);
+            GridHighlight(xGrid - 2, yGrid + 0);
+            GridHighlight(xGrid + 0, yGrid + 2);
+            GridHighlight(xGrid + 0, yGrid - 2);
+        }
+        
+        public void ThreeFrontRow(TeamController teamActive)
+        {
+            var grid = teamActive.RobotControllerSelected.Robot.Location;
+            if (grid == null) return;
+
+            CleanHighlight();
+
+            if (BattleManager.battleState == BattleState.MoveRobot)
+            {
+                _quad = quadMove;
+            }
+            else if (BattleManager.battleState == BattleState.AttackRobot)
+            {
+                _quad = quadAttack;
+            }
+            else
+            {
+                return;
+            }
+
+            var xGrid = grid.X;
+            var yGrid = grid.Y;
+
+            var whichTeam = teamActive.Team.teamName;
+            if (whichTeam == "DIMOCRAT") // 3 Front Row team biru
+            {
+                GridHighlight(xGrid + 0, yGrid + 1);
+                GridHighlight(xGrid + 0, yGrid + 2);
+                GridHighlight(xGrid + 0, yGrid + 3);
+            }
+            else //highlight kebalik
+            {
+                GridHighlight(xGrid + 0, yGrid - 1);
+                GridHighlight(xGrid + 0, yGrid - 2);
+                GridHighlight(xGrid + 0, yGrid - 3);
+            }
+
+        }
 
         private void GridHighlight(int x, int y)
         {

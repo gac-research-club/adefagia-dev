@@ -31,7 +31,7 @@ namespace Adefagia.PlayerAction
 
             // a robot at other grid attacked by the current robot
             gridController.RobotController.Robot.TakeDamage(robotController.Robot.Damage);
-
+            
             // if grid is robot ally then friendly fire
             var teamController = gridController.RobotController.TeamController;
             

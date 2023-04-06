@@ -3,6 +3,9 @@ using Adefagia.PlayerAction;
 using Adefagia.GridSystem;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
+using System.Collections;
+using System.Collections.Generic;
+using DG.Tweening;
 
 namespace Adefagia.RobotSystem
 {
@@ -12,7 +15,7 @@ namespace Adefagia.RobotSystem
     {
         [SerializeField] private float healthPoint;
         [SerializeField] private float staminaPoint;
-        
+
         private Vector3 _startPosition;
         private TeamController _teamController;
         
@@ -37,14 +40,10 @@ namespace Adefagia.RobotSystem
         {
             healthPoint = Robot.CurrentHealth;
             staminaPoint = Robot.CurrentStamina;
-            // If the team is teamActive
-            // if (_teamController == BattleManager.TeamActive && this == _teamController.RobotControllerSelected)
-            // {
-            //     if (Input.GetMouseButtonDown(0))
-            //     {
-            //         Debug.Log(this);
-            //     }
-            // }
+
+            if (Robot.IsDead){
+                Destroy(gameObject);
+            }
         }
 
         public void SetTeam(TeamController teamController)
@@ -59,7 +58,47 @@ namespace Adefagia.RobotSystem
             
             // TODO: move to position with some transition
             // move with lerp
-            
+        }
+
+        /*--------------------------------------------------------------------------------------
+         * Move Robot smoothly for each grid
+         *--------------------------------------------------------------------------------------*/
+        public IEnumerator MoveRobotPosition(List<Grid> grids, float speed)
+        {
+            var current = 0;
+            while (Vector3.Distance(transform.position, GridManager.CellToWorld(grids[^1])) > 0.01f)
+            {
+                var step =  speed * Time.deltaTime; // calculate distance to move
+                transform.position = Vector3.MoveTowards(transform.position, GridManager.CellToWorld(grids[current]), step);
+                
+                if (Vector3.Distance(transform.position, GridManager.CellToWorld(grids[current])) < 0.01f)
+                {
+                    current++;
+                }
+
+                yield return null;
+            }
+
+            transform.position = GridManager.CellToWorld(grids[^1]);
+        }
+
+        public void MoveWithDoTween(List<Grid> grids)
+        {
+            // move to position with some transition
+            // move with lerp
+
+            var wayPoints = new List<Vector3>();
+            foreach (var grid in grids)
+            {
+                wayPoints.Add(GridManager.CellToWorld(grid));
+            }
+
+            transform.DOPath(
+                path: wayPoints.ToArray(), 
+                duration: 0.2f * wayPoints.Count,
+                pathType: PathType.Linear,
+                pathMode: PathMode.TopDown2D
+            );
         }
 
         public void ResetPosition()

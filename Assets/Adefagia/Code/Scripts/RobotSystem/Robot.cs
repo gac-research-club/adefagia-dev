@@ -29,8 +29,9 @@ namespace Adefagia.RobotSystem
         public float CurrentStamina => _stamina;
 
         public float Damage { get; }
-        public float DelayMove { get; set; }
+        public float Speed { get; set; }
         
+        public bool IsDead { get; set; }
         // Step Status
         public bool HasMove { get; set; }
         public bool HasAttack { get; set; }
@@ -42,11 +43,12 @@ namespace Adefagia.RobotSystem
         public Robot(string name)
         {
             Name = name;
-            MaxHealth = 100;
+            MaxHealth = 30;
             MaxStamina = 20;
             _health = MaxHealth;
             Damage = 10;
-            
+            IsDead = false;
+
             //-----------------------
             ResetStepStat();
             ResetStamina();
@@ -58,6 +60,7 @@ namespace Adefagia.RobotSystem
             MaxStamina = maxStamina;
             _health = MaxHealth;
             Damage = damage;
+            IsDead = false;
             
             //-----------------------
             ResetStepStat();
@@ -70,6 +73,10 @@ namespace Adefagia.RobotSystem
         public void TakeDamage(float damage)
         {
             _health -= damage;
+            if(_health <= 0){
+               IsDead = true;
+            }
+           
         }
 
         public void ResetStamina()

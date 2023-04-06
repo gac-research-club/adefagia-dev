@@ -7,6 +7,5 @@ namespace Adefagia.BattleMechanism
     public class Team
     {
         public string teamName;
-
     }
 }
