@@ -63,10 +63,11 @@ namespace Adefagia.GridSystem
             }
             
             // Init gridElements
-            CreateGridElements();
+            // CreateGridElements();
             
             // Generate Grids
-            GenerateGrids();
+            // GenerateGrids();
+            ReferenceGrid(gridSizeX, gridSizeY);
 
             // Set grid neighbor 
             SetNeighbors();
@@ -74,7 +75,7 @@ namespace Adefagia.GridSystem
             BattleManager.ChangeGameState(GameState.Preparation);
         }
 
-        private void CreateGridElements()
+        public void CreateGridElements()
         {
             _gridElements = new Dictionary<GridType, GridElement>();
             var duplicateCount = 0;
@@ -125,7 +126,18 @@ namespace Adefagia.GridSystem
             }
         }
         private void GenerateGrids(Vector2 gridSize) => GenerateGrids((int)gridSize.x, (int)gridSize.y);
-        private void GenerateGrids() => GenerateGrids(gridSizeX, gridSizeY);
+        public void GenerateGrids() => GenerateGrids(gridSizeX, gridSizeY);
+
+        public void ReferenceGrid(int x, int y)
+        {
+            _listGrid = new Grid[x, y];
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                // destroy
+                DestroyImmediate(transform.GetChild(i).gameObject);
+            }
+        }
         
         
         /*----------------------------------------------------------------------------------
