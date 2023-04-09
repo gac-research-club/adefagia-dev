@@ -1,4 +1,5 @@
-﻿using Adefagia.BattleMechanism;
+﻿using System;
+using Adefagia.BattleMechanism;
 using Adefagia.PlayerAction;
 using Adefagia.GridSystem;
 using UnityEngine;
@@ -47,6 +48,14 @@ namespace Adefagia.RobotSystem
 
             if (Robot.IsDead){
                 Destroy(gameObject);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_teamController != null)
+            {
+                _teamController.RemoveRobot(this);
             }
         }
 
