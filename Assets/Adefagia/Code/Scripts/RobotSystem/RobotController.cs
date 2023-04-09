@@ -19,11 +19,15 @@ namespace Adefagia.RobotSystem
         private Vector3 _startPosition;
         private TeamController _teamController;
         
+        private SkillController _skillController;
+
         private RobotMovement _robotMovement;
         private RobotAttack _robotAttack;
         
         public Robot Robot { get; set; }
+        
         public TeamController TeamController => _teamController;
+        public SkillController SkillController => _skillController;
         public RobotMovement RobotMovement => _robotMovement;
         public RobotAttack RobotAttack => _robotAttack;
         public GridController GridController { get; set; }
@@ -49,6 +53,10 @@ namespace Adefagia.RobotSystem
         public void SetTeam(TeamController teamController)
         {
             _teamController = teamController;
+        }
+
+        public void SetSkill(SkillController skillController){
+            _skillController = skillController;
         }
 
         public void MovePosition(Grid grid)

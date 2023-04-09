@@ -31,6 +31,8 @@ namespace Adefagia.RobotSystem
         public float Damage { get; }
         public float Speed { get; set; }
         
+        public float Skill { get; }
+
         public bool IsDead { get; set; }
         // Step Status
         public bool HasMove { get; set; }
