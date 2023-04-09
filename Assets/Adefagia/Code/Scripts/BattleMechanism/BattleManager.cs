@@ -24,8 +24,12 @@ namespace Adefagia.BattleMechanism
 
         public static float currentTime = -1;
 
+        public static Logging battleLog;
+
         private void Awake()
         {
+            battleLog = new Logging();
+            
             /* Team A deploying Area
              *  #  ........ 9,9
              * 0,6 ........  #
@@ -221,8 +225,12 @@ namespace Adefagia.BattleMechanism
         public void TeamWin(TeamController teamController)
         {
             Debug.Log($"Team {teamController.Team.teamName} is Winning");
+            
+            
             ChangeBattleState(BattleState.Nothing);
             ChangeGameState(GameState.Finish);
+            
+            battleLog.LogStep($"{teamController.Team.teamName} is Winning");
             
             // reset timer
             currentTime = -1;
@@ -278,6 +286,9 @@ namespace Adefagia.BattleMechanism
                 
                 // Occupied the grid
                 TeamActive.Robot.Location.SetOccupied();
+                
+                battleLog.LogStep($"{TeamActive.Team.teamName} - {TeamActive.RobotController.Robot} " +
+                                                $"- Deploy to {TeamActive.GridController.Grid}");
                 
                 // change to the next robot index
                 TeamActive.IncrementIndex();
@@ -397,6 +408,10 @@ namespace Adefagia.BattleMechanism
             currentTime = startingTime;
 
             TeamActive.ResetRobotSelected();
+            
+            battleLog.LogStep($"{TeamActive.Team.teamName} " +
+                              "- End Turn");
+            
             ChangeTeam();
             
             // change to select robot

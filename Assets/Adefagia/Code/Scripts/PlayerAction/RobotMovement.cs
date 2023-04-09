@@ -62,7 +62,9 @@ namespace Adefagia.PlayerAction
             Debug.Log($"Move to {grid}");
             
             // write to log text
-            Logging.LogStep($"Move to {grid}");
+            // TeamName - RobotName - Action
+            BattleManager.battleLog.LogStep($"{robotController.TeamController.Team.teamName} " +
+                                            $"- {robotController.Robot.Name} - Move to {grid}");
         }
 
         private void MovePosition(RobotController robotController, List<Grid> grids, float speed)

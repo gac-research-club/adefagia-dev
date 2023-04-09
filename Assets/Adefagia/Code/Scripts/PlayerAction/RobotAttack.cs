@@ -12,6 +12,8 @@ namespace Adefagia.PlayerAction
             if (gridController == null)
             {
                 Debug.LogWarning("Attack failed");
+                BattleManager.battleLog.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} " +
+                                                $"- Attack failed");
                 return;
             }
             
@@ -24,6 +26,8 @@ namespace Adefagia.PlayerAction
             if (grid.Status != GridStatus.Robot)
             {
                 Debug.Log("Attack Miss");
+                BattleManager.battleLog.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} " +
+                                                $"- Attack Miss");
                 return;
             }
             
@@ -38,10 +42,14 @@ namespace Adefagia.PlayerAction
             if (teamController == BattleManager.TeamActive)
             {
                 Debug.Log($"Friendly fire to {gridController.RobotController.Robot}");
+                BattleManager.battleLog.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} " +
+                                                $"- Friendly fire to {gridController.RobotController.Robot}");
                 return;
             }
 
             Debug.Log($"Attack to {gridController.RobotController.Robot}");
+            BattleManager.battleLog.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} " +
+                                            $"- Attack to {gridController.RobotController.Robot}");
         }
     }
 }
