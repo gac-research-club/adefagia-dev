@@ -24,8 +24,12 @@ namespace Adefagia.BattleMechanism
 
         public static float currentTime = -1;
 
+        public static Logging battleLog;
+
         private void Awake()
         {
+            battleLog = new Logging();
+            
             /* Team A deploying Area
              *  #  ........ 9,9
              * 0,6 ........  #
@@ -121,6 +125,16 @@ namespace Adefagia.BattleMechanism
 
             if (gameState == GameState.Battle)
             {
+                if (TeamActive.TotalRobot == 0)
+                {
+                    TeamWin(NextTeam);
+                }
+
+                if (NextTeam.TotalRobot == 0)
+                {
+                    TeamWin(TeamActive);
+                }
+                
                 if (battleState == BattleState.SelectRobot)
                 {
                     // get grid controller
@@ -208,6 +222,22 @@ namespace Adefagia.BattleMechanism
             }
         }
 
+        public void TeamWin(TeamController teamController)
+        {
+            Debug.Log($"Team {teamController.Team.teamName} is Winning");
+            
+            
+            ChangeBattleState(BattleState.Nothing);
+            ChangeGameState(GameState.Finish);
+            
+            battleLog.LogStep($"{teamController.Team.teamName} is Winning");
+            
+            // reset timer
+            currentTime = -1;
+            
+            GameManager.instance.uiManager.ShowFinishUI(teamController.Team.teamName);
+        }
+
         #region ChangeState
         
         public static void ChangeGameState(GameState state)
@@ -257,6 +287,9 @@ namespace Adefagia.BattleMechanism
                 // Occupied the grid
                 TeamActive.Robot.Location.SetOccupied();
                 
+                battleLog.LogStep($"{TeamActive.Team.teamName} - {TeamActive.RobotController.Robot} " +
+                                                $"- Deploy to {TeamActive.GridController.Grid}");
+                
                 // change to the next robot index
                 TeamActive.IncrementIndex();
                 TeamActive.ChooseRobot();
@@ -268,7 +301,7 @@ namespace Adefagia.BattleMechanism
                 if (battleState == BattleState.SelectRobot)
                 {
                     TeamActive.RobotControllerSelected = TeamActive.RobotController;
-                
+
                     // Show or Hide Battle UI
                     if (TeamActive.RobotControllerSelected != null)
                     {
@@ -310,7 +343,7 @@ namespace Adefagia.BattleMechanism
                         robotController: TeamActive.RobotControllerSelected,
                         gridController: gridController
                         );
-                    
+
                     // change to selecting state
                     ChangeBattleState(BattleState.SelectRobot);
                     
@@ -375,6 +408,10 @@ namespace Adefagia.BattleMechanism
             currentTime = startingTime;
 
             TeamActive.ResetRobotSelected();
+            
+            battleLog.LogStep($"{TeamActive.Team.teamName} " +
+                              "- End Turn");
+            
             ChangeTeam();
             
             // change to select robot
@@ -387,8 +424,7 @@ namespace Adefagia.BattleMechanism
                         
             highlightMovement.CleanHighlight();
         }
-        
-        
+
         #endregion
     }
     
@@ -397,7 +433,8 @@ namespace Adefagia.BattleMechanism
     {
         Initialize,
         Preparation,
-        Battle
+        Battle,
+        Finish
     }
 
     public enum PreparationState

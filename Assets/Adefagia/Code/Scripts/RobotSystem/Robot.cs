@@ -15,6 +15,13 @@ namespace Adefagia.RobotSystem
         private float _health;
         private float _stamina;
 
+        #region Constants
+
+        private const float StaminaInitial = 20;
+        private const float StaminaRound = 10;
+
+        #endregion
+
         #region Properties
         
         // Status
@@ -43,10 +50,10 @@ namespace Adefagia.RobotSystem
         public Robot(string name)
         {
             Name = name;
-            MaxHealth = 100;
+            MaxHealth = 30;
             MaxStamina = 50;
             _health = MaxHealth;
-            _stamina = (float) Stamina.Initial;
+            _stamina = StaminaInitial;
             Damage = 10;
             IsDead = false;
 
@@ -59,7 +66,7 @@ namespace Adefagia.RobotSystem
             MaxHealth = maxHealth;
             MaxStamina = maxStamina;
             _health = MaxHealth;
-            _stamina = (float) Stamina.Initial;
+            _stamina = StaminaInitial;
             Damage = damage;
             IsDead = false;
             
@@ -80,8 +87,8 @@ namespace Adefagia.RobotSystem
         }
 
         public void IncreaseStamina()
-        {   
-            _stamina += (float) Stamina.Round;
+        {
+            _stamina += StaminaRound;
             if(_stamina > MaxStamina) _stamina = MaxStamina;
         }
 
@@ -108,14 +115,6 @@ namespace Adefagia.RobotSystem
         public override string ToString()
         {
             return $"{Name}";
-        }
-        
-        public enum Stamina {
-            
-            Initial = 20,
-
-            Round = 10,
-
         }
     }
 }
