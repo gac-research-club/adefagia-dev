@@ -23,6 +23,7 @@ namespace Adefagia.BattleMechanism
         public static TeamController NextTeam   { get; set; }
 
         public static float currentTime = -1;
+        private int skillChoosed = 0;
 
         private void Awake()
         {
@@ -144,7 +145,9 @@ namespace Adefagia.BattleMechanism
                 }
 
                 if (battleState == BattleState.MoveRobot ||
-                    battleState == BattleState.AttackRobot)
+                    battleState == BattleState.AttackRobot || 
+                    battleState == BattleState.SkillRobot || 
+                    battleState == BattleState.SkillSelectionRobot )
                 {
                     // Exit to select another Robot
                     if (Input.GetKeyDown(KeyCode.Escape))
@@ -313,9 +316,27 @@ namespace Adefagia.BattleMechanism
                     
                     // change to selecting state
                     ChangeBattleState(BattleState.SelectRobot);
-                    
                     highlightMovement.CleanHighlight();
                 }
+
+                // Skill Robot
+                if (battleState == BattleState.SkillSelectionRobot)
+                {
+                    // Get current grid click
+                    var gridController = GameManager.instance.gridManager.GetGridController();
+                    
+                    // TODO: robot skill
+                    TeamActive.RobotControllerSelected.RobotSkill.Skill(
+                        robotController: TeamActive.RobotControllerSelected,
+                        gridController: gridController,
+                        skillChoosed : skillChoosed
+                        );
+                    
+                    // change to selecting state
+                    ChangeBattleState(BattleState.SelectRobot);
+                    // highlightMovement.CleanHighlight();
+                }
+
             }
         }
 
@@ -358,15 +379,26 @@ namespace Adefagia.BattleMechanism
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
         }
         
-        public void DefendButtonClick()
+        public void SkillButtonClick()
         {
             // change to defend robot
-            ChangeBattleState(BattleState.DefendRobot);
+            ChangeBattleState(BattleState.SkillRobot);
             
             // means the robot is considered to move
-            TeamActive.RobotControllerSelected.Robot.HasDeffend = true;
+            // TeamActive.RobotControllerSelected.Robot.HasSkill = true;
             
-            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Defend");
+            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} List Skill Active");
+        }
+
+        public void SkillChildButtonClick(int skill){
+            
+            // change to skill selection robot
+            ChangeBattleState(BattleState.SkillSelectionRobot);
+            skillChoosed = skill;
+            // means the robot is considered to move
+            // TeamActive.RobotControllerSelected.Robot.HasSkill = true;
+            
+            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Skill Active");
         }
 
         public void EndTurnButtonClick()
@@ -413,7 +445,8 @@ namespace Adefagia.BattleMechanism
         SelectRobot,
         MoveRobot,
         AttackRobot,
-        DefendRobot,
+        SkillRobot,
+        SkillSelectionRobot,
     }
 }
 

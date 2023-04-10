@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 96379016}
   - component: {fileID: 96379017}
   - component: {fileID: 96379018}
+  - component: {fileID: 96379019}
   m_Layer: 0
   m_Name: DummyRobot1
   m_TagString: Untagged
@@ -354,6 +355,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a656746ba975fb439e57b43646f7cf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &96379019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 96379012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18e66c0bb846668499e9b5f91189efa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &162462299
@@ -626,6 +639,7 @@ GameObject:
   - component: {fileID: 248517907}
   - component: {fileID: 248517908}
   - component: {fileID: 248517909}
+  - component: {fileID: 248517910}
   m_Layer: 0
   m_Name: DummyRobot2
   m_TagString: Untagged
@@ -708,6 +722,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a656746ba975fb439e57b43646f7cf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &248517910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248517903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18e66c0bb846668499e9b5f91189efa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &321595631
@@ -1293,6 +1319,7 @@ GameObject:
   - component: {fileID: 656425230}
   - component: {fileID: 656425231}
   - component: {fileID: 656425232}
+  - component: {fileID: 656425233}
   m_Layer: 0
   m_Name: DummyRobot1
   m_TagString: Untagged
@@ -1377,6 +1404,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a656746ba975fb439e57b43646f7cf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &656425233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656425226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18e66c0bb846668499e9b5f91189efa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &709075307
 GameObject:
   m_ObjectHideFlags: 0
@@ -1391,6 +1430,7 @@ GameObject:
   - component: {fileID: 709075311}
   - component: {fileID: 709075312}
   - component: {fileID: 709075313}
+  - component: {fileID: 709075314}
   m_Layer: 0
   m_Name: DummyRobot3
   m_TagString: Untagged
@@ -1473,6 +1513,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a656746ba975fb439e57b43646f7cf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &709075314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709075307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18e66c0bb846668499e9b5f91189efa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &754895327
@@ -1810,7 +1862,7 @@ GameObject:
   - component: {fileID: 803782238}
   m_Layer: 5
   m_Name: SecondSkill
-  m_TagString: DefendButton
+  m_TagString: SkillButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1882,12 +1934,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 530493425}
         m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
-        m_MethodName: DefendButtonClick
-        m_Mode: 1
+        m_MethodName: SkillChildButtonClick
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2079,6 +2131,7 @@ GameObject:
   - component: {fileID: 967812012}
   - component: {fileID: 967812013}
   - component: {fileID: 967812014}
+  - component: {fileID: 967812015}
   m_Layer: 0
   m_Name: DummyRobot3
   m_TagString: Untagged
@@ -2161,6 +2214,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a656746ba975fb439e57b43646f7cf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &967812015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967812008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18e66c0bb846668499e9b5f91189efa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1056920651
@@ -2311,7 +2376,7 @@ GameObject:
   - component: {fileID: 1089501040}
   m_Layer: 5
   m_Name: Cancel
-  m_TagString: DefendButton
+  m_TagString: SkillButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3046,6 +3111,7 @@ GameObject:
   - component: {fileID: 1634554116}
   - component: {fileID: 1634554117}
   - component: {fileID: 1634554118}
+  - component: {fileID: 1634554119}
   m_Layer: 0
   m_Name: DummyRobot2
   m_TagString: Untagged
@@ -3130,6 +3196,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a656746ba975fb439e57b43646f7cf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1634554119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634554112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18e66c0bb846668499e9b5f91189efa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1689452389
 GameObject:
   m_ObjectHideFlags: 0
@@ -3191,8 +3269,9 @@ MonoBehaviour:
   robotNameText: {fileID: 46186959}
   buttonMove: {fileID: 2139236103}
   buttonAttack: {fileID: 1056920653}
-  buttonDeffend: {fileID: 2124797459}
+  buttonSkill: {fileID: 2124797459}
   cancelButton: {fileID: 1089501040}
+  listSkill: {fileID: 1772865758}
 --- !u!114 &1689452392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3416,7 +3495,7 @@ GameObject:
   - component: {fileID: 2095263261}
   m_Layer: 5
   m_Name: FirstSkill
-  m_TagString: DefendButton
+  m_TagString: SkillButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3488,8 +3567,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 530493425}
         m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
-        m_MethodName: DefendButtonClick
-        m_Mode: 1
+        m_MethodName: SkillChildButtonClick
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3550,7 +3629,7 @@ GameObject:
   - component: {fileID: 2103016650}
   m_Layer: 5
   m_Name: UltimateSkill
-  m_TagString: DefendButton
+  m_TagString: SkillButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3622,12 +3701,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 530493425}
         m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
-        m_MethodName: DefendButtonClick
-        m_Mode: 1
+        m_MethodName: SkillChildButtonClick
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3752,7 +3831,7 @@ GameObject:
   - component: {fileID: 2116804364}
   m_Layer: 5
   m_Name: EndTurn
-  m_TagString: DefendButton
+  m_TagString: SkillButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3886,7 +3965,7 @@ GameObject:
   - component: {fileID: 2124797459}
   m_Layer: 5
   m_Name: Skill
-  m_TagString: DefendButton
+  m_TagString: SkillButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3958,7 +4037,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 530493425}
         m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
-        m_MethodName: DefendButtonClick
+        m_MethodName: SkillButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

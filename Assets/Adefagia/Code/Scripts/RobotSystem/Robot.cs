@@ -37,7 +37,7 @@ namespace Adefagia.RobotSystem
         // Step Status
         public bool HasMove { get; set; }
         public bool HasAttack { get; set; }
-        public bool HasDeffend { get; set; }
+        public bool HasSkill { get; set; }
         
         #endregion
         
@@ -104,7 +104,7 @@ namespace Adefagia.RobotSystem
         {
             HasMove = false;
             HasAttack = false;
-            HasDeffend = false;
+            HasSkill = false;
         }
 
         public override string ToString()
