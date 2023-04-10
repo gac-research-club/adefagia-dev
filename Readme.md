@@ -20,3 +20,5 @@ Adefagia is licensed under the [MIT License](https://opensource.org/licenses/MIT
 
 ## Credits
 Adefagia was created by [alifianadexe](https://github.com/alifianadexe) and [dimaspadma](https://github.com/dimaspadma) with contributions from [kertaskids](https://github.com/kertaskids) and [akuanaksehat](https://github.com/akuanaksehat). The game uses the Unity engine and RPG Core Combat Creator asset from the Unity Asset Store.
+
+Supported By Unity
