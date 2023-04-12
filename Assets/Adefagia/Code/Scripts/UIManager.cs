@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
 using Adefagia.BattleMechanism;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Adefagia
@@ -12,14 +9,15 @@ namespace Adefagia
     {
         [SerializeField] private Canvas battleCanvas;
         [SerializeField] private Button buttonEndTurn;
+
+        [SerializeField] private Canvas finishCanvas;
+        
         
         private void Awake()
         {
-            if (battleCanvas.enabled)
-            {
-                HideBattleUI();
-            }
-
+            HideCanvasUI(finishCanvas);
+            HideBattleUI();
+            
             buttonEndTurn.gameObject.SetActive(false);
             StartCoroutine(ShowButtonEndTurn());
         }
@@ -34,20 +32,36 @@ namespace Adefagia
             buttonEndTurn.gameObject.SetActive(true);
         }
 
-        /*-------------------------------------------------------------
-         * Enable canvas battleUI
-         *-------------------------------------------------------------*/
+        
         public void ShowBattleUI()
         {
-            battleCanvas.enabled = true;
+            ShowCanvasUI(battleCanvas);
+        }
+        public void HideBattleUI()
+        {
+            HideCanvasUI(battleCanvas);
+        }
+
+        public void ShowFinishUI(string teamName)
+        {
+            finishCanvas.GetComponent<UIFinishController>().ChangeName(teamName);
+            ShowCanvasUI(finishCanvas);
         }
 
         /*-------------------------------------------------------------
-         * Disable canvas battleUI
+         * Enable canvas
          *-------------------------------------------------------------*/
-        public void HideBattleUI()
+        private void ShowCanvasUI(Canvas canvas)
         {
-            battleCanvas.enabled = false;
+            canvas.enabled = true;
+        }
+
+        /*-------------------------------------------------------------
+         * Disable canvas
+         *-------------------------------------------------------------*/
+        private void HideCanvasUI(Canvas canvas)
+        {
+            canvas.enabled = false;
         }
     }
 }
