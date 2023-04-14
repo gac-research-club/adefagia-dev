@@ -10,7 +10,7 @@ using Grid = Adefagia.GridSystem.Grid;
 namespace Adefagia.PlayerAction
 {
     public class RobotMovement : MonoBehaviour
-        {
+    {
         public void Move(RobotController robotController, GridController gridController, float speed)
         {
             if (gridController == null)
@@ -71,6 +71,6 @@ namespace Adefagia.PlayerAction
         {
             StartCoroutine(robotController.MoveRobotPosition(grids, speed));
         }
-}
+    }
  
 }

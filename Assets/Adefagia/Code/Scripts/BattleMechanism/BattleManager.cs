@@ -316,58 +316,81 @@ namespace Adefagia.BattleMechanism
                     }
                 }
                 
-                // Move Robot
+                /*---------------------------------------------------------------
+                 * Move Robot
+                 *---------------------------------------------------------------*/
                 if (battleState == BattleState.MoveRobot)
                 {
                     // Get current grid click
                     var gridController = GameManager.instance.gridManager.GetGridController();
 
-                    // run AStar Pathfinding
-                    TeamActive.RobotControllerSelected.RobotMovement.Move(
-                        robotController: TeamActive.RobotControllerSelected, 
-                        gridController : gridController,
-                        speed          : TeamActive.RobotControllerSelected.Robot.Speed
-                        );
+                    // Click on the grid highlighted
+                    if (highlightMovement.CheckGridOnHighlight(gridController))
+                    {
+                        // run AStar Pathfinding
+                        TeamActive.RobotControllerSelected.RobotMovement.Move(
+                            robotController: TeamActive.RobotControllerSelected, 
+                            gridController : gridController,
+                            speed          : TeamActive.RobotControllerSelected.Robot.Speed
+                            );
+                    }
 
                     // change to selecting state
                     ChangeBattleState(BattleState.SelectRobot);
                     
+                    // Clear highlight
                     highlightMovement.CleanHighlight();
                 }
                 
-                // Attack Robot
+                
+                /*---------------------------------------------------------------
+                 * Attack Robot
+                 *---------------------------------------------------------------*/
                 if (battleState == BattleState.AttackRobot)
                 {
                     // Get current grid click
                     var gridController = GameManager.instance.gridManager.GetGridController();
                     
-                    // TODO: robot attack
-                    TeamActive.RobotControllerSelected.RobotAttack.Attack(
-                        robotController: TeamActive.RobotControllerSelected,
-                        gridController: gridController
+                    // Click on the grid highlighted
+                    if (highlightMovement.CheckGridOnHighlight(gridController))
+                    {
+                        TeamActive.RobotControllerSelected.RobotAttack.Attack(
+                            robotController: TeamActive.RobotControllerSelected,
+                            gridController: gridController
                         );
+                    }
 
                     // change to selecting state
                     ChangeBattleState(BattleState.SelectRobot);
+                    
+                    // Clear highlight
                     highlightMovement.CleanHighlight();
                 }
 
-                // Skill Robot
+                
+                /*---------------------------------------------------------------
+                 * Skill Robot
+                 *---------------------------------------------------------------*/
                 if (battleState == BattleState.SkillSelectionRobot)
                 {
                     // Get current grid click
                     var gridController = GameManager.instance.gridManager.GetGridController();
                     
-                    // TODO: robot skill
-                    TeamActive.RobotControllerSelected.RobotSkill.Skill(
-                        robotController: TeamActive.RobotControllerSelected,
-                        gridController: gridController,
-                        skillChoosed : skillChoosed
+                    // Click on the grid highlighted
+                    if (highlightMovement.CheckGridOnHighlight(gridController))
+                    {
+                        TeamActive.RobotControllerSelected.RobotSkill.Skill(
+                            robotController: TeamActive.RobotControllerSelected,
+                            gridController: gridController,
+                            skillChoosed: skillChoosed
                         );
-                    
+                    }
+
                     // change to selecting state
                     ChangeBattleState(BattleState.SelectRobot);
-                    // highlightMovement.CleanHighlight();
+                    
+                    // Clear highlight
+                    highlightMovement.CleanHighlight();
                 }
 
             }
