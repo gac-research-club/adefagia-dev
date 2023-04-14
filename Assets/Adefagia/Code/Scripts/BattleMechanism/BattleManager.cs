@@ -405,7 +405,7 @@ namespace Adefagia.BattleMechanism
             // change to move robot
             ChangeBattleState(BattleState.MoveRobot);
             
-            // hihglight grid movement
+            // highlight grid movement
             // highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
             // highlightMovement.ThreeFrontRow(TeamActive);
             // highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
