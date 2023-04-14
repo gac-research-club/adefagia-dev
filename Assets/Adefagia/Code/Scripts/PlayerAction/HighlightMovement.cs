@@ -12,12 +12,14 @@ namespace Adefagia.PlayerAction
     {
         [SerializeField] private GameObject quadMove, quadAttack;
 
-        private List<GameObject> _tempHighlight;
+        private List<Grid> _tempGrids;
+        private List<GameObject> _tempHighlights;
         private GameObject _quad;
 
         public void Awake()
         {
-            _tempHighlight = new List<GameObject>();
+            _tempHighlights = new List<GameObject>();
+            _tempGrids = new List<Grid>();
         }
 
         /*--------------
@@ -203,20 +205,32 @@ namespace Adefagia.PlayerAction
         {
             var grid = GameManager.instance.gridManager.GetGrid(x, y);
             if (grid == null) return;
+            
+            _tempGrids.Add(grid);
 
             var quadDup = Instantiate(_quad, transform);
             quadDup.transform.position = GridManager.CellToWorld(grid);
-            _tempHighlight.Add(quadDup);
+            
+            _tempHighlights.Add(quadDup);
+        }
+        
+        /*----------------------------------------------------------------------
+         * Checking grid is on the list of highlight
+         *----------------------------------------------------------------------*/
+        public bool CheckGridOnHighlight(GridController gridController)
+        {
+            return _tempGrids.Contains(gridController.Grid);
         }
 
         public void CleanHighlight()
         {
-            foreach (var temp in _tempHighlight)
+            foreach (var temp in _tempHighlights)
             {
                 Destroy(temp);
             }
 
-            _tempHighlight.Clear();
+            _tempHighlights.Clear();
+            _tempGrids.Clear();
         }
 
         public enum TypePattern
