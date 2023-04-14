@@ -6,8 +6,17 @@ jobs:
     name: Build my project ✨
     runs-on: ubuntu-latest
     steps:
-      # Checkout
+
+      # Step 1 - Checkout
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
           lfs: true
+
+      # Step 2 - Cache
+      - uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
