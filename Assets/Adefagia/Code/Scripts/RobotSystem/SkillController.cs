@@ -7,9 +7,6 @@ using System.Collections.Generic;
 
 namespace Adefagia.RobotSystem
 {
-    
-    
-
     public class SkillController : MonoBehaviour
     {
         
@@ -22,6 +19,5 @@ namespace Adefagia.RobotSystem
         public Skill ChooseSkill(int type){
             return Skills[type];
         }
-
     }
 }
