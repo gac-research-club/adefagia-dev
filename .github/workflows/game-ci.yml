@@ -1,0 +1,13 @@
+name: Github Actions Game CI 😎
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    name: Build my project ✨
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          lfs: true
