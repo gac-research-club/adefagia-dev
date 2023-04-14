@@ -1,30 +1,56 @@
-name: Github Actions Game CI 😎
-on: [ push, pull_request ]
+name: GameCI Template 🎮
+
+on: push
+
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
-  build:
-    name: Build my project ✨
+  testRunner:
+    name: Test in ${{ matrix.testMode }} ✨
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        testMode:
+          - EditMode
+          - PlayMode
     steps:
-
-      # Step 1 - Checkout
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          lfs: true
 
-      # Step 2 - Cache
-      - uses: actions/cache@v2
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - name: Restore LFS cache
+        uses: actions/cache@v2
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+
+      - name: Git LFS Pull
+        run: |
+          git lfs pull
+          git add .
+          git reset --hard
+      - name: Restore Library cache
+        uses: actions/cache@v2
         with:
           path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          key: Library-test-project-${{ matrix.targetPlatform }}
           restore-keys: |
+            Library-test-project-
             Library-
-
-      # Step 3 - Test
       - name: Run tests
         uses: game-ci/unity-test-runner@v2
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        id: testRunner
         with:
+          testMode: ${{ matrix.testMode }}
+          checkName: ${{ matrix.testMode }} test results
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Test results (${{ matrix.testMode }})
+          path: ${{ steps.testRunner.outputs.artifactsPath }}
