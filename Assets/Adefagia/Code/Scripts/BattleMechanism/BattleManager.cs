@@ -412,9 +412,9 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.MoveRobot);
             
             // highlight grid movement
-            // highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            // highlightMovement.ThreeFrontRow(TeamActive);
-            // highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            highlightMovement.ThreeFrontRow(TeamActive);
+            highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
             highlightMovement.SetTankRow(TeamActive);
 
             // Running Function Move from RobotMovement.cs
@@ -431,9 +431,9 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.AttackRobot);
 
             // highlight grid movement
-            // highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            // highlightMovement.ThreeFrontRow(TeamActive);
-            // highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            highlightMovement.ThreeFrontRow(TeamActive);
+            highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
             highlightMovement.SetTankRow(TeamActive);
             
             // Running Function Attack from RobotAttack.cs
@@ -447,7 +447,7 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.SkillRobot);
             
             // means the robot is considered to move
-            // TeamActive.RobotControllerSelected.Robot.HasSkill = true;
+            TeamActive.RobotControllerSelected.Robot.HasSkill = true;
             
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} List Skill Active");
         }
@@ -458,7 +458,7 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.SkillSelectionRobot);
             skillChoosed = skill;
             // means the robot is considered to move
-            // TeamActive.RobotControllerSelected.Robot.HasSkill = true;
+            TeamActive.RobotControllerSelected.Robot.HasSkill = true;
             
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Skill Active");
         }
