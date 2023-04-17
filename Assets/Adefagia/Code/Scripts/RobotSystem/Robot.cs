@@ -25,6 +25,7 @@ namespace Adefagia.RobotSystem
         #region Properties
         
         // Status
+        public HealthBar healthBar {get; set;}
         public int ID { get; set; }
         public string Name { get; }
         public Grid Location => _grid;

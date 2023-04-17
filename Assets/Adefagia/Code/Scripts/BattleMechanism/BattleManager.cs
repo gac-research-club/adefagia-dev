@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Adefagia.PlayerAction;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
@@ -11,6 +12,7 @@ namespace Adefagia.BattleMechanism
     {
         [SerializeField] private TeamController teamA, teamB;
         [SerializeField] private float startingTime = 10f;
+        public static List<GameObject> healthBars;
         
         // Before Battle start
         public static GameState gameState               = GameState.Initialize;
@@ -28,6 +30,7 @@ namespace Adefagia.BattleMechanism
 
         private void Awake()
         {
+            healthBars = new List<GameObject>();
             battleLog = new Logging();
             
             /* Team A deploying Area
@@ -81,6 +84,9 @@ namespace Adefagia.BattleMechanism
                         ChangePreparationState(PreparationState.Nothing);
                         ChangeGameState(GameState.Battle);
                         ChangeBattleState(BattleState.SelectRobot);
+
+                        // Enable healthbars when both teams deployed
+                        GameManager.instance.uiManager.EnableHealthBars(TeamActive.IsHasFinishDeploy());
                     }
                 }
                 
