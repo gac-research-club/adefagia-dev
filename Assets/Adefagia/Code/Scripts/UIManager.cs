@@ -63,5 +63,19 @@ namespace Adefagia
         {
             canvas.enabled = false;
         }
+
+        /*-------------------------------------------------------------
+         * Enable healthbars
+         *-------------------------------------------------------------*/
+        public void EnableHealthBars(bool isDeployed)
+        {
+            if(isDeployed)
+            {
+                foreach (var healthBar in BattleManager.healthBars)
+                {
+                    healthBar.SetActive(true);
+                }
+            }
+        }
     }
 }
