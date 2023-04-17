@@ -47,6 +47,10 @@ namespace Adefagia.RobotSystem
 
                 // Add RobotController to attach on robot gameObject
                 var robotController = robotObject.AddComponent<RobotController>();
+                
+                // Add SkillController to attach on robot
+                var skillController = robotObject.AddComponent<SkillController>();
+
 
                 // Find healthBar GameObject
                 var healthBarObject = GameObject.Find($"Robot {i}/Canvas/HealthBar");
@@ -67,6 +71,14 @@ namespace Adefagia.RobotSystem
                 robotController.Robot = new Robot(robotObject.name);
                 robotController.Robot.ID = _teamController.TotalRobot-1 - i;
                 robotController.Robot.Speed = speed;
+
+                // set skill
+                skillController.Skills.Add(new Skill("FireBall", 30.0f, 30f)); 
+                skillController.Skills.Add(new Skill("Repair", 20.0f, 20f)); 
+                skillController.Skills.Add(new Skill("Nuclear", 50.0f, 80f)); 
+                
+                robotController.SetSkill(skillController);
+                
                 robotController.Robot.healthBar = healthBar;
 
                 // Manual input HealthBar stat
