@@ -84,6 +84,7 @@ jobs:
           git lfs pull
           git add .
           git reset --hard
+          
       - name: Restore Library cache
         uses: actions/cache@v2
         with:
@@ -92,6 +93,7 @@ jobs:
           restore-keys: |
             Library-build-
             Library-
+
       - uses: game-ci/unity-builder@v2
         with:
           targetPlatform: StandaloneWindows64
@@ -100,3 +102,9 @@ jobs:
         with:
           name: build-StandaloneWindows64
           path: build/StandaloneWindows64
+      
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: build/StandaloneWindows64
