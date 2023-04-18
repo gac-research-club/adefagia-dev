@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class Logging
 {
-    private const string AbsPath = "Assets/Adefagia/Log/";
     private static string _path;
 
     public Logging()
@@ -14,7 +13,11 @@ public class Logging
         DateTime currentTime = DateTime.Now;
         // Debug.Log(currentTime);
 
-        _path = AbsPath + currentTime.ToString("ddMMyyyy-hhmmss") + ".txt";
+        // Create Logs directory
+        Directory.CreateDirectory(Path.Combine(Application.dataPath, "Logs"));
+        
+        // Write log file
+        _path = Path.Combine(Application.dataPath, "Logs", currentTime.ToString("ddMMyyyy-hhmmss") + ".txt");
     }
     
     public void LogStep(string step)
