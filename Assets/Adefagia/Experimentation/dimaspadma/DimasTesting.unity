@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1309,6 +1309,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 620804471}
+  - component: {fileID: 620804472}
+  - component: {fileID: 620804473}
   m_Layer: 0
   m_Name: ObstacleManager
   m_TagString: Untagged
@@ -1324,13 +1326,57 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 620804470}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 450.73764, y: 270.66333, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &620804472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620804470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce494010f58c18246a8837e72f40fde3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridLength: 1
+  gridSizeX: 10
+  gridSizeY: 10
+  listObstaclePrefab:
+  - {fileID: 11400000, guid: c19feb1c14586ce4ca09cdc0b969a1cb, type: 2}
+  offset: {x: 0, y: 0, z: 0}
+--- !u!114 &620804473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620804470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a19423ebab6a1b4698640d9dd504823, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 532834096}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  objectHit: {fileID: 0}
+  mouseHover:
+    m_PersistentCalls:
+      m_Calls: []
+  mouseHoverNotHit:
+    m_PersistentCalls:
+      m_Calls: []
+  mouseRightClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &629306661
 GameObject:
   m_ObjectHideFlags: 0
@@ -4274,7 +4320,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2116804363
 GameObject:

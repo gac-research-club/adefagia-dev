@@ -71,7 +71,7 @@ namespace Adefagia.GridSystem
             // Set grid neighbor 
             SetNeighbors();
             
-            BattleManager.ChangeGameState(GameState.Preparation);
+            // BattleManager.ChangeGameState(GameState.Preparation);
         }
 
         private void CreateGridElements()
@@ -203,6 +203,12 @@ namespace Adefagia.GridSystem
                 return;
             }
 
+            // var _grid = GetGrid(); 
+            // if(_grid.Status == GridStatus.Obstacle){
+            //     gridQuad.transform.position = new Vector3(99, 99, 99);
+            //     return;
+            // }
+            
             gridQuad.transform.position = objectHit.transform.position - offset;
         }
 

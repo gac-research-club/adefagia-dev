@@ -12,8 +12,8 @@ namespace Adefagia.GridSystem
     {
         #region Properties
         
-        private Grid _grid;
-        public Grid Location => _grid; 
+        public int X { get; }
+        public int Y { get; }
     
         #endregion
 
@@ -22,27 +22,18 @@ namespace Adefagia.GridSystem
         /*------------------------------------------------------------------------------------------------------------
          * Constructor
          *------------------------------------------------------------------------------------------------------------*/
-        public Obstacle(Grid grid)
+        public Obstacle(int x, int y)
         {
-            _grid = grid;
+            X = x;
+            Y = y;
         }
 
         #endregion
 
-        public void SetObstacle()
-        {
-            _grid.SetObstacle();
-        }
-
-
-        public void SetFree()
-        {
-           _grid.SetFree();
-        }
 
         public override string ToString()
         {
-            return $"Obstacle ({_grid.X}, {_grid.Y})";
+            return $"Obstacle (,)";
         }
     }
 
