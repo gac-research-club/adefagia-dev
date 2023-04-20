@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+
 using Adefagia.BattleMechanism;
 using Adefagia.Collections;
 using Adefagia.SelectObject;
@@ -82,30 +83,44 @@ namespace Adefagia.GridSystem
         {
             _gridManager = GameManager.instance.gridManager;
             _listObstacle = new ObstacleController[x , y];
-
-            // Set all Grid by (x,y)
-            // xi = x index
-            // yi = y index
-            // for (int yi = y-1; yi >= 0 ; yi--)
-            // {
-            //     for (var xi = 0; xi < x; xi++)
-            //     {
-
-            // Create gameObject of grid
-            var obstacleObject = Instantiate(_obstacleElements[ObstacleType.Solid].prefab, transform);
-            obstacleObject.transform.position = new Vector3(2 * gridLength, 0.3f , 3 * gridLength) + offset;
-            obstacleObject.name = $"Obstacle ({2}, {3})";
             
-            // Add Grid Controller
-            var obstacleController = obstacleObject.AddComponent<ObstacleController>();
-            obstacleController.Obstacle = new Obstacle(2,3);
-            obstacleController.Grid = _gridManager.GetGrid(2, 3); 
-            obstacleController.Grid.SetObstacle();
+            
+            int numPoints = 12; // change this to the number of points you want to generate
+            List<Vector2Int> points = new List<Vector2Int>();
 
-            // Add into List grid Object
-            _listObstacle[2, 3] = obstacleController;
-            //     }
-            // }
+            while (points.Count < numPoints)
+            {
+                int _x = UnityEngine.Random.Range(0, 10); // change the range as needed
+                int _y = UnityEngine.Random.Range(0, 10); // change the range as needed
+
+                Vector2Int point = new Vector2Int(_x, _y);
+
+                if (!points.Contains(point))
+                {
+                    points.Add(point);
+                }
+            }
+
+
+            // Set all randmo Grid by (x,y)
+
+            foreach (Vector2Int point in points)
+            {
+                // Create gameObject of grid
+                var obstacleObject = Instantiate(_obstacleElements[ObstacleType.Solid].prefab, transform);
+                obstacleObject.transform.position = new Vector3(point.x * gridLength, 0.3f , point.y * gridLength) + offset;
+                obstacleObject.name = $"Obstacle ({point.x}, {point.y})";
+                
+                // Add Grid Controller
+                var obstacleController = obstacleObject.AddComponent<ObstacleController>();
+                obstacleController.Obstacle = new Obstacle(point.x, point.y);
+                obstacleController.Grid = _gridManager.GetGrid(point.x, point.y); 
+                obstacleController.Grid.SetObstacle();
+
+                // Add into List grid Object
+                _listObstacle[point.x, point.y] = obstacleController;
+            }
+
         }
         private void GenerateObstacles(Vector2 gridSize) => GenerateObstacles((int)gridSize.x, (int)gridSize.y);
         private void GenerateObstacles() => GenerateObstacles(gridSizeX, gridSizeY);
