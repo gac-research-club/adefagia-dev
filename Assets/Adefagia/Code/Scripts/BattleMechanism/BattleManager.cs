@@ -175,17 +175,17 @@ namespace Adefagia.BattleMechanism
                         CancelButtonClick();
                     }
                 }
-                
-            }
 
-            if(TeamActive.IsHasFinishDeploy())
-            {
-                currentTime -= 1 * Time.deltaTime; // seconds
-                
-                if(currentTime <= 0)
+                if(TeamActive.IsHasFinishDeploy())
                 {
-                    EndTurnButtonClick();
+                    currentTime -= 1 * Time.deltaTime; // seconds
+                    
+                    if(currentTime <= 0)
+                    {
+                        EndTurnButtonClick();
+                    }
                 }
+                
             }
 
             #endregion

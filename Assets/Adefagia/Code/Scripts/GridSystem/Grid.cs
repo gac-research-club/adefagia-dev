@@ -73,6 +73,10 @@ namespace Adefagia.GridSystem
             Status = GridStatus.Robot;
         }
 
+        public void SetObstacle(){
+            Status = GridStatus.Obstacle;
+        }
+
         public void SetFree()
         {
             Status = GridStatus.Free;
