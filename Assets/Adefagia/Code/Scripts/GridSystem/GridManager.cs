@@ -11,10 +11,15 @@ namespace Adefagia.GridSystem
 {
     public class GridManager : MonoBehaviour
     {
-        public float gridLength = 1;
-        public int gridSizeX, gridSizeY;
+        [SerializeField] private GameObject gridQuad;
+        [SerializeField] private GameObject gridQuadSelect;
 
-        public List<GridElement> listGridPrefab;
+        [SerializeField] private float gridLength = 1;
+        [SerializeField] private int gridSizeX, gridSizeY;
+
+        [SerializeField] private List<GridElement> listGridPrefab;
+
+        [SerializeField] private Vector3 offset;
 
         private Dictionary<GridType, GridElement> _gridElements;
         
@@ -27,6 +32,23 @@ namespace Adefagia.GridSystem
         {
             StartCoroutine(InitializeGridManager());
             _select = GetComponent<Select>();
+        }
+
+        private void Update()
+        {
+            if (BattleManager.gameState == GameState.Battle)
+            {
+                var robotControllerSelected = BattleManager.TeamActive.RobotControllerSelected;
+                if (robotControllerSelected != null)
+                {
+                    gridQuadSelect.transform.position = CellToWorld(robotControllerSelected.Robot.Location);
+                }
+                else
+                {
+                    // Kept away from keep sent
+                    gridQuadSelect.transform.position = new Vector3(99, 99, 99);
+                }
+            }
         }
 
         /*----------------------------------------------------------------------
@@ -49,7 +71,7 @@ namespace Adefagia.GridSystem
             // Set grid neighbor 
             SetNeighbors();
             
-            BattleManager.ChangeGameState(GameState.Preparation);
+            // BattleManager.ChangeGameState(GameState.Preparation);
         }
 
         private void CreateGridElements()
@@ -90,7 +112,7 @@ namespace Adefagia.GridSystem
                 {
                     // Create gameObject of grid
                     var gridObject = Instantiate(_gridElements[GridType.Ground].prefab, transform);
-                    gridObject.transform.position = new Vector3(xi * gridLength, 0, yi * gridLength);
+                    gridObject.transform.position = new Vector3(xi * gridLength, 0, yi * gridLength) + offset;
                     gridObject.name = $"Grid ({xi}, {yi})";
                     
                     // Add Grid Controller
@@ -147,6 +169,11 @@ namespace Adefagia.GridSystem
             return GetGrid((int) location.x, (int) location.y, debugMessage);
         }
 
+        // Get Vector3 by Grid
+        public static Vector3 CellToWorld(Grid grid){
+            return new Vector3(grid.X, 0, grid.Y);
+        }
+
         // Grid hover 
         public Grid GetGrid()
         {
@@ -165,6 +192,30 @@ namespace Adefagia.GridSystem
             }
         }
 
+        #region UnityEvent
+
+        public void OnMouseHover(GameObject objectHit)
+        {
+            // Move grid Quad
+            if (objectHit == null)
+            {
+                gridQuad.transform.position = new Vector3(99, 99, 99);
+                return;
+            }
+
+            // var _grid = GetGrid(); 
+            // if(_grid.Status == GridStatus.Obstacle){
+            //     gridQuad.transform.position = new Vector3(99, 99, 99);
+            //     return;
+            // }
+            
+            gridQuad.transform.position = objectHit.transform.position - offset;
+        }
+
+        #endregion
+
+        
+        
         private void OnDrawGizmos()
         {
             var center = (gridSizeX*gridLength + gridSizeY*gridLength) * 0.5f;

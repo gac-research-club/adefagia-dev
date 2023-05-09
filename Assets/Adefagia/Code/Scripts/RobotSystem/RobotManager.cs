@@ -11,7 +11,7 @@ namespace Adefagia.RobotSystem
     {
         
         [SerializeField] private List<GameObject> robotPrefab;
-        [SerializeField] private float delayMove = 0.2f;
+        [SerializeField] private float speed = 5f;
         
         private TeamController _teamController;
 
@@ -48,15 +48,44 @@ namespace Adefagia.RobotSystem
                 // Add RobotController to attach on robot gameObject
                 var robotController = robotObject.AddComponent<RobotController>();
                 
+                // Add SkillController to attach on robot
+                var skillController = robotObject.AddComponent<SkillController>();
+
+
+                // Find healthBar GameObject
+                var healthBarObject = GameObject.Find($"Robot {i}/Canvas/HealthBar");
+                healthBarObject.name = "HBar Robot " + i;
+
+                // add healthBar GameObject to healthBars List
+                BattleManager.healthBars.Add(healthBarObject);
+
+                // GetComponent<HealthBar> to input healthBar stat
+                var healthBar = healthBarObject.GetComponent<HealthBar>();
+
                 // Set robot the parent of teamController
                 robotController.SetTeam(_teamController);
                 
                 // TODO: Make each robot dynamic edited by user
                 
                 // Manual input robot stat
-                robotController.Robot = new Robot(robotObject.name, 100, 10);
+                robotController.Robot = new Robot(robotObject.name);
                 robotController.Robot.ID = _teamController.TotalRobot-1 - i;
-                robotController.Robot.DelayMove = delayMove;
+                robotController.Robot.Speed = speed;
+
+                // set skill
+                skillController.Skills.Add(new Skill("FireBall", 30.0f, 30f)); 
+                skillController.Skills.Add(new Skill("Repair", 20.0f, 20f)); 
+                skillController.Skills.Add(new Skill("Nuclear", 50.0f, 80f)); 
+                
+                robotController.SetSkill(skillController);
+                
+                robotController.Robot.healthBar = healthBar;
+
+                // Manual input HealthBar stat
+                healthBar.health = robotController.Robot.MaxHealth;
+                healthBar.maxHealth = robotController.Robot.MaxHealth;
+                healthBar.damage = robotController.Robot.Damage;
+                
 
                 // Edit name
                 // robotController.Robot.Name = robotObject.name;

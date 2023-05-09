@@ -1,36 +1,81 @@
-using System;
-using TMPro;
+using System.Collections;
+using Adefagia.BattleMechanism;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace Adefagia
 {
     public class UIManager : MonoBehaviour
     {
         [SerializeField] private Canvas battleCanvas;
+        [SerializeField] private Button buttonEndTurn;
 
+        [SerializeField] private Canvas finishCanvas;
+        
+        
         private void Awake()
         {
-            if (battleCanvas.enabled)
-            {
-                HideBattleUI();
-            }
+            HideCanvasUI(finishCanvas);
+            HideBattleUI();
+            
+            buttonEndTurn.gameObject.SetActive(false);
+            StartCoroutine(ShowButtonEndTurn());
         }
 
-        /*-------------------------------------------------------------
-         * Enable canvas battleUI
-         *-------------------------------------------------------------*/
+        private IEnumerator ShowButtonEndTurn()
+        {
+            while (BattleManager.gameState != GameState.Battle)
+            {
+                yield return null;
+            }
+
+            buttonEndTurn.gameObject.SetActive(true);
+        }
+
+        
         public void ShowBattleUI()
         {
-            battleCanvas.enabled = true;
+            ShowCanvasUI(battleCanvas);
+        }
+        public void HideBattleUI()
+        {
+            HideCanvasUI(battleCanvas);
+        }
+
+        public void ShowFinishUI(string teamName)
+        {
+            finishCanvas.GetComponent<UIFinishController>().ChangeName(teamName);
+            ShowCanvasUI(finishCanvas);
         }
 
         /*-------------------------------------------------------------
-         * Disable canvas battleUI
+         * Enable canvas
          *-------------------------------------------------------------*/
-        public void HideBattleUI()
+        private void ShowCanvasUI(Canvas canvas)
         {
-            battleCanvas.enabled = false;
+            canvas.enabled = true;
+        }
+
+        /*-------------------------------------------------------------
+         * Disable canvas
+         *-------------------------------------------------------------*/
+        private void HideCanvasUI(Canvas canvas)
+        {
+            canvas.enabled = false;
+        }
+
+        /*-------------------------------------------------------------
+         * Enable healthbars
+         *-------------------------------------------------------------*/
+        public void EnableHealthBars(bool isDeployed)
+        {
+            if(isDeployed)
+            {
+                foreach (var healthBar in BattleManager.healthBars)
+                {
+                    healthBar.SetActive(true);
+                }
+            }
         }
     }
 }

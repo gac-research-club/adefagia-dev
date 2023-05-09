@@ -18,11 +18,11 @@ namespace Adefagia.SelectObject
 
         void Update()
         {
+            // Hover Event
+            mouseHover.Invoke(objectHit);
+            
             if (RayHitObject(CameraRay()))
             {
-                // Hover Event
-                mouseHover.Invoke(objectHit);
-
                 if (Input.GetMouseButtonDown(0))
                 {
                     MouseRightClick(objectHit);

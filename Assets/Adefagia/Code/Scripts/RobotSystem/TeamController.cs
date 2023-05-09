@@ -17,6 +17,7 @@ namespace Adefagia.BattleMechanism
         [SerializeField] private List<RobotController> robotControllers;
         [SerializeField] private RobotController robotControllerActive;
         [SerializeField] private RobotController robotControllerSelect;
+        
         [SerializeField] private List<int> _robotDeployed;
 
         // Bound Area
@@ -41,7 +42,8 @@ namespace Adefagia.BattleMechanism
 
         private void Update()
         {
-            if (BattleManager.preparationState == PreparationState.DeployRobot)
+            if (BattleManager.gameState == GameState.Preparation ||
+                BattleManager.preparationState == PreparationState.DeployRobot)
             {
                 SelectingRobot();
             }
@@ -170,6 +172,22 @@ namespace Adefagia.BattleMechanism
             {
                 robot.Robot.ResetStepStat();
             }
+        }
+
+        public void IncreaseRobotStamina()
+        {
+            robotControllerSelect = null;
+            
+            // Reset step status each robot
+            foreach (var robot in robotControllers)
+            {
+                robot.Robot.IncreaseStamina();
+            }
+        }
+
+        public void RemoveRobot(RobotController inputRobotController)
+        {
+            robotControllers.Remove(inputRobotController);
         }
         
         
