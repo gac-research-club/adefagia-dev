@@ -12,7 +12,15 @@ public class ItemTooltip : MonoBehaviour
 
     private StringBuilder sb = new StringBuilder();
 
+<<<<<<< HEAD
     //Show tooltip while cursor on equippable item
+=======
+    private void Awake()
+    {
+        gameObject.SetActive(false);
+    }
+
+>>>>>>> 18-feature-highlight-movement-an-bot
     public void ShowTooltip(EquippableItem item)
     {
         ItemNameText.text = item.ItemName;

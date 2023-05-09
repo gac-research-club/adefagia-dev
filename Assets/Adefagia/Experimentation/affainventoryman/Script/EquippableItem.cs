@@ -27,6 +27,16 @@ public class EquippableItem : Item
     [Space]
     public EquipmentType EquipmentType;
 
+    public override Item GetCopy()
+    {
+        return Instantiate(this);
+    }
+
+    public override void Destroy()
+    {
+        Destroy(this);
+    }
+
     //For any stat on Item add any bonus and percent
     public void Equip(Character c)
     {

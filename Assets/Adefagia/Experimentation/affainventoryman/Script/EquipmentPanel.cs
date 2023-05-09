@@ -7,8 +7,17 @@ using UnityEngine.EventSystems;
 public class EquipmentPanel : MonoBehaviour
 {
     [SerializeField] Transform equipmentSlotsParent;
-    public EquipmentSlot[] equipmentSlots;
+    [SerializeField] EquipmentSlot[] equipmentSlots;
 
+    public event Action<BaseItemSlot> OnPointerEnterEvent;
+    public event Action<BaseItemSlot> OnPointerExitEvent;
+    public event Action<BaseItemSlot> OnRightClickEvent;
+    public event Action<BaseItemSlot> OnBeginDragEvent;
+    public event Action<BaseItemSlot> OnEndDragEvent;
+    public event Action<BaseItemSlot> OnDragEvent;
+    public event Action<BaseItemSlot> OnDropEvent;
+
+<<<<<<< HEAD
     //Command for action
     public event Action<ItemSlot> OnPointerEnterEvent;
     public event Action<ItemSlot> OnPointerExitEvent;
@@ -19,6 +28,8 @@ public class EquipmentPanel : MonoBehaviour
     public event Action<ItemSlot> OnDropEvent;
 
     //Item on item slot be able to action on below
+=======
+>>>>>>> 18-feature-highlight-movement-an-bot
     private void Start()
     {
         for (int i = 0; i < equipmentSlots.Length; i++)
@@ -26,10 +37,10 @@ public class EquipmentPanel : MonoBehaviour
             equipmentSlots[i].OnPointerEnterEvent += OnPointerEnterEvent;
             equipmentSlots[i].OnPointerExitEvent += OnPointerExitEvent;
             equipmentSlots[i].OnRightClickEvent += OnRightClickEvent;
-            equipmentSlots[i].OnBeginDragEvent += OnBeginDragEvent;
+            /*equipmentSlots[i].OnBeginDragEvent += OnBeginDragEvent;
             equipmentSlots[i].OnEndDragEvent += OnEndDragEvent;
             equipmentSlots[i].OnDragEvent += OnDragEvent;
-            equipmentSlots[i].OnDropEvent += OnDropEvent;
+            equipmentSlots[i].OnDropEvent += OnDropEvent;*/
         }
     }
 

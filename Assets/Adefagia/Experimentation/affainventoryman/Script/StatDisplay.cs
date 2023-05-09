@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -35,6 +33,9 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] Text valueText;
     [SerializeField] StatTooltip tooltip;
 
+    private bool showingTooltip;
+
+
     private void OnValidate()
     {
         Text[] texts = GetComponentsInChildren<Text>();
@@ -48,21 +49,25 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     //To show tooltip
     public void OnPointerEnter(PointerEventData eventData)
     {
-
         tooltip.ShowTooltip(Stat, Name);
-
+        showingTooltip = true;
     }
 
     //To hide tooltip
     public void OnPointerExit(PointerEventData eventData)
     {
         tooltip.HideTooltip();
+        showingTooltip = false;
     }
 
     //To update stat value
     public void UpdateStatValue()
     {
         valueText.text = _stat.Value.ToString();
+        if (showingTooltip)
+        {
+            tooltip.ShowTooltip(Stat, Name);
+        }
     }
 }
 

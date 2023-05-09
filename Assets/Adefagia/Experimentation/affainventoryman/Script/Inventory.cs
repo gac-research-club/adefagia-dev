@@ -1,25 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Inventory : MonoBehaviour
+public class Inventory : ItemContainer
 {
-    [SerializeField] List<Item> startingItems;
+    [SerializeField] Item[] startingItems;
     [SerializeField] Transform itemsParent;
-    [SerializeField] ItemSlot[] itemSlots;
 
     //Action for itemslot where its any command like below this
-    public event Action<ItemSlot> OnPointerEnterEvent;
-    public event Action<ItemSlot> OnPointerExitEvent;
-    public event Action<ItemSlot> OnRightClickEvent;
-    public event Action<ItemSlot> OnBeginDragEvent;
-    public event Action<ItemSlot> OnEndDragEvent;
-    public event Action<ItemSlot> OnDragEvent;
-    public event Action<ItemSlot> OnDropEvent;
+    public event Action<BaseItemSlot> OnPointerEnterEvent;
+    public event Action<BaseItemSlot> OnPointerExitEvent;
+    public event Action<BaseItemSlot> OnRightClickEvent;
+    public event Action<BaseItemSlot> OnBeginDragEvent;
+    public event Action<BaseItemSlot> OnEndDragEvent;
+    public event Action<BaseItemSlot> OnDragEvent;
+    public event Action<BaseItemSlot> OnDropEvent;
 
-    //For checkin Itemslot where its able to control like ini below command 
+    //For check Itemslot where its able to control like ini below command 
     private void Start()
     {
         for (int i = 0; i < itemSlots.Length; i++)
@@ -35,68 +33,20 @@ public class Inventory : MonoBehaviour
         SetStartingItems();
     }
 
-    //For validate where items its in item slot
-    private void OnValidate()
-    {
-        if (itemsParent != null)
-            itemSlots = itemsParent.GetComponentsInChildren<ItemSlot>();
-
-        SetStartingItems();
-    }
-
     //Items ready at start
     private void SetStartingItems()
     {
         int i = 0;
-        for (; i < startingItems.Count && i < itemSlots.Length; i++)
+        for (; i < startingItems.Length && i < itemSlots.Length; i++)
         {
-            itemSlots[i].Item = startingItems[i];
+            itemSlots[i].Item = startingItems[i].GetCopy();
+            itemSlots[i].Amount = 1;
         }
 
         for (; i < itemSlots.Length; i++)
         {
             itemSlots[i].Item = null;
+            itemSlots[i].Amount = 0;
         }
-    }
-
-    //For adding Item on item slot a.k.a inventory
-    public bool AddItem(Item item)
-    {
-        for (int i = 0; i < itemSlots.Length; i++)
-        {
-            if (itemSlots[i].Item == null)
-            {
-                itemSlots[i].Item = item;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //For Remove item from inventory
-    public bool RemoveItem(Item item)
-    {
-        for (int i = 0; i < itemSlots.Length; i++)
-        {
-            if (itemSlots[i].Item == item)
-            {
-                itemSlots[i].Item = null;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //To check inventory is full or not
-    public bool IsFull()
-    {
-        for (int i = 0; i < itemSlots.Length; i++)
-        {
-            if (itemSlots[i].Item == null)
-            {
-                return false;
-            }
-        }
-        return true;
     }
 }

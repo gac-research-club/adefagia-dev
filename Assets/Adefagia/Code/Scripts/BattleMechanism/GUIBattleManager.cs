@@ -22,9 +22,14 @@ namespace Adefagia.UI
             try
             {
                 var robot = GameManager.instance.gridManager.GetGridController().RobotController.Robot;
+<<<<<<< HEAD
                 observe = $"Hover : {robot}\n" +
                         $"Health : {robot.CurrentHealth}\n" + 
                         $"Stamina : {robot.CurrentStamina}";
+=======
+                observe = $"Hover: {robot}\n" +
+                        $"Health: {robot.CurrentHealth}";
+>>>>>>> 18-feature-highlight-movement-an-bot
             }catch (NullReferenceException)
             {
                 observe = "Empty";

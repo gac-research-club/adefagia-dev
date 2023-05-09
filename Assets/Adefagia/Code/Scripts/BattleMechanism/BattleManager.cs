@@ -1,7 +1,12 @@
 using System;
 using System.Collections;
+<<<<<<< HEAD
 using System.Collections.Generic;
 using Adefagia.PlayerAction;
+=======
+using Adefagia.GridSystem;
+using Adefagia.Highlight;
+>>>>>>> 18-feature-highlight-movement-an-bot
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 using Random = UnityEngine.Random;
@@ -12,7 +17,10 @@ namespace Adefagia.BattleMechanism
     {
         [SerializeField] private TeamController teamA, teamB;
         [SerializeField] private float startingTime = 10f;
+<<<<<<< HEAD
         public static List<GameObject> healthBars;
+=======
+>>>>>>> 18-feature-highlight-movement-an-bot
         
         // Before Battle start
         public static GameState gameState               = GameState.Initialize;
@@ -25,9 +33,12 @@ namespace Adefagia.BattleMechanism
         public static TeamController NextTeam   { get; set; }
 
         public static float currentTime = -1;
+<<<<<<< HEAD
         private int skillChoosed = 0;
 
         public static Logging battleLog;
+=======
+>>>>>>> 18-feature-highlight-movement-an-bot
 
         private void Awake()
         {
@@ -165,14 +176,19 @@ namespace Adefagia.BattleMechanism
                 }
 
                 if (battleState == BattleState.MoveRobot ||
+<<<<<<< HEAD
                     battleState == BattleState.AttackRobot || 
                     battleState == BattleState.SkillRobot || 
                     battleState == BattleState.SkillSelectionRobot )
+=======
+                    battleState == BattleState.AttackRobot)
+>>>>>>> 18-feature-highlight-movement-an-bot
                 {
                     // Exit to select another Robot
                     if (Input.GetKeyDown(KeyCode.Escape))
                     {
                         CancelButtonClick();
+<<<<<<< HEAD
                     }
                 }
 
@@ -183,11 +199,26 @@ namespace Adefagia.BattleMechanism
                     if(currentTime <= 0)
                     {
                         EndTurnButtonClick();
+=======
+>>>>>>> 18-feature-highlight-movement-an-bot
                     }
                 }
                 
             }
 
+<<<<<<< HEAD
+=======
+            if(TeamActive.IsHasFinishDeploy())
+            {
+                currentTime -= 1 * Time.deltaTime; // seconds
+                
+                if(currentTime <= 0)
+                {
+                    EndTurnButtonClick();
+                }
+            }
+
+>>>>>>> 18-feature-highlight-movement-an-bot
             #endregion
         }
 
@@ -226,6 +257,7 @@ namespace Adefagia.BattleMechanism
             {
                 // Hide PlayerActionHUD
                 GameManager.instance.uiManager.HideBattleUI();
+<<<<<<< HEAD
                 TeamActive.IncreaseRobotStamina();
                 highlightMovement.CleanHighlight();
             }
@@ -245,6 +277,11 @@ namespace Adefagia.BattleMechanism
             currentTime = -1;
             
             GameManager.instance.uiManager.ShowFinishUI(teamController.Team.teamName);
+=======
+                
+                highlightMovement.CleanHighlight();
+            }
+>>>>>>> 18-feature-highlight-movement-an-bot
         }
 
         #region ChangeState
@@ -344,7 +381,10 @@ namespace Adefagia.BattleMechanism
                     // change to selecting state
                     ChangeBattleState(BattleState.SelectRobot);
                     
+<<<<<<< HEAD
                     // Clear highlight
+=======
+>>>>>>> 18-feature-highlight-movement-an-bot
                     highlightMovement.CleanHighlight();
                 }
                 
@@ -369,7 +409,10 @@ namespace Adefagia.BattleMechanism
                     // change to selecting state
                     ChangeBattleState(BattleState.SelectRobot);
                     
+<<<<<<< HEAD
                     // Clear highlight
+=======
+>>>>>>> 18-feature-highlight-movement-an-bot
                     highlightMovement.CleanHighlight();
                 }
 
@@ -411,12 +454,18 @@ namespace Adefagia.BattleMechanism
             // change to move robot
             ChangeBattleState(BattleState.MoveRobot);
             
+<<<<<<< HEAD
             // highlight grid movement
             highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
             highlightMovement.ThreeFrontRow(TeamActive);
             highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
             highlightMovement.SetTankRow(TeamActive);
 
+=======
+            // hihglight grid movement
+            highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            
+>>>>>>> 18-feature-highlight-movement-an-bot
             // Running Function Move from RobotMovement.cs
 
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Move");
@@ -432,9 +481,12 @@ namespace Adefagia.BattleMechanism
 
             // highlight grid movement
             highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+<<<<<<< HEAD
             highlightMovement.ThreeFrontRow(TeamActive);
             highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
             highlightMovement.SetTankRow(TeamActive);
+=======
+>>>>>>> 18-feature-highlight-movement-an-bot
             
             // Running Function Attack from RobotAttack.cs
             
@@ -469,10 +521,14 @@ namespace Adefagia.BattleMechanism
             currentTime = startingTime;
 
             TeamActive.ResetRobotSelected();
+<<<<<<< HEAD
             
             battleLog.LogStep($"{TeamActive.Team.teamName} " +
                               "- End Turn");
             
+=======
+
+>>>>>>> 18-feature-highlight-movement-an-bot
             ChangeTeam();
             
             // change to select robot
@@ -485,7 +541,12 @@ namespace Adefagia.BattleMechanism
                         
             highlightMovement.CleanHighlight();
         }
+<<<<<<< HEAD
 
+=======
+        
+        
+>>>>>>> 18-feature-highlight-movement-an-bot
         #endregion
     }
     

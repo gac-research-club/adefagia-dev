@@ -1,6 +1,6 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using adefagia.CharacterStats;
 
 public class StatPanel : MonoBehaviour
@@ -38,7 +38,7 @@ public class StatPanel : MonoBehaviour
         }
     }
 
-    public void UpdateStatValue()
+    public void UpdateStatValues()
     {
         for (int i = 0; i < stats.Length; i++)
         {

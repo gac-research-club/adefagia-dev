@@ -6,18 +6,27 @@ using Adefagia.GridSystem;
 using Grid = Adefagia.GridSystem.Grid;
 using UnityEngine;
 
+<<<<<<< HEAD
 namespace Adefagia.PlayerAction
 {
+=======
+namespace Adefagia.Highlight{
+>>>>>>> 18-feature-highlight-movement-an-bot
     public class HighlightMovement : MonoBehaviour
     {
         [SerializeField] private GameObject quadMove, quadAttack;
 
+<<<<<<< HEAD
         private List<Grid> _tempGrids;
         private List<GameObject> _tempHighlights;
+=======
+        private List<GameObject> _tempHighlight;
+>>>>>>> 18-feature-highlight-movement-an-bot
         private GameObject _quad;
 
         public void Awake()
         {
+<<<<<<< HEAD
             _tempHighlights = new List<GameObject>();
             _tempGrids = new List<Grid>();
         }
@@ -31,6 +40,15 @@ namespace Adefagia.PlayerAction
         {
             if (grid == null) return;
 
+=======
+            _tempHighlight = new List<GameObject>();
+        }
+
+        public void SetSurroundMove(Grid grid)
+        {
+            if (grid == null) return;
+            
+>>>>>>> 18-feature-highlight-movement-an-bot
             CleanHighlight();
 
             if (BattleManager.battleState == BattleState.MoveRobot)
@@ -45,7 +63,11 @@ namespace Adefagia.PlayerAction
             {
                 return;
             }
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 18-feature-highlight-movement-an-bot
             var xGrid = grid.X;
             var yGrid = grid.Y;
 
@@ -59,6 +81,7 @@ namespace Adefagia.PlayerAction
             GridHighlight(xGrid + 1, yGrid + 1);
         }
 
+<<<<<<< HEAD
         /*--------------
          *      o
          *    o o o
@@ -201,10 +224,13 @@ namespace Adefagia.PlayerAction
 
         }
 
+=======
+>>>>>>> 18-feature-highlight-movement-an-bot
         private void GridHighlight(int x, int y)
         {
             var grid = GameManager.instance.gridManager.GetGrid(x, y);
             if (grid == null) return;
+<<<<<<< HEAD
             
             _tempGrids.Add(grid);
 
@@ -231,6 +257,22 @@ namespace Adefagia.PlayerAction
 
             _tempHighlights.Clear();
             _tempGrids.Clear();
+=======
+
+            var quadDup = Instantiate(_quad, transform);
+            quadDup.transform.position = GridManager.CellToWorld(grid);
+            _tempHighlight.Add(quadDup);      
+        }
+        
+        public void CleanHighlight()
+        {
+            foreach (var temp in _tempHighlight)
+            {
+                Destroy(temp);
+            }
+            
+            _tempHighlight.Clear();
+>>>>>>> 18-feature-highlight-movement-an-bot
         }
 
         public enum TypePattern

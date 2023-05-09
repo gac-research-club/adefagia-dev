@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine;
 using System.Text;
 using UnityEngine.UI;
-using UnityEngine;
 using adefagia.CharacterStats;
 
 public class StatTooltip : MonoBehaviour
@@ -11,7 +9,12 @@ public class StatTooltip : MonoBehaviour
     [SerializeField] Text StatModifierLabelText;
     [SerializeField] Text StatModifierText;
 
-    private StringBuilder sb = new StringBuilder();
+    private readonly StringBuilder sb = new StringBuilder();
+
+    private void Awake()
+    {
+        gameObject.SetActive(false);
+    }
 
     //To show tooltip with name and stat form item
     public void ShowTooltip(CharacterStat stat, string statName)
@@ -74,7 +77,7 @@ public class StatTooltip : MonoBehaviour
                 sb.Append("%");
             }
 
-            EquippableItem item = mod.Source as EquippableItem;
+            Item item = mod.Source as Item;
 
             if (item != null)
             {
@@ -83,7 +86,7 @@ public class StatTooltip : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Modifier is null");
+                Debug.LogError("Modifier is not an Item!");
             }
         }
 
