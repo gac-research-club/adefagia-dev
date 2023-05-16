@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Adefagia.GridSystem;
 using Adefagia.PlayerAction;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
@@ -284,6 +285,12 @@ namespace Adefagia.BattleMechanism
                 // Robot has deploy or grid is empty
                 if (TeamActive.IsHasDeployed(TeamActive.Robot) 
                     || TeamActive.GridController == null) return;
+                
+                // Grid not obstacle
+                if (TeamActive.GridController.Grid.Status == GridStatus.Obstacle)
+                {
+                    return;
+                }
 
                 TeamActive.DeployRobot();
                 

@@ -52,6 +52,7 @@ namespace Adefagia.RobotSystem
             staminaPoint = Robot.CurrentStamina;
 
             if (Robot.IsDead){
+                GridController.Grid.SetFree();
                 Destroy(gameObject);
             }
         }
