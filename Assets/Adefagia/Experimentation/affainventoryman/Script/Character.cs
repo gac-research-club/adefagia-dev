@@ -8,10 +8,8 @@ public class Character : MonoBehaviour
 {
     public int Health  = 100;
 
-    public CharacterStat Strength;
-    public CharacterStat Agility;
-    public CharacterStat Intelligence;
-    public CharacterStat Vitality;
+    public CharacterStat Attack;
+    public CharacterStat Armor;
 
     [SerializeField] Inventory inventory;
     [SerializeField] EquipmentPanel equipmentPanel;
@@ -30,7 +28,7 @@ public class Character : MonoBehaviour
 
     private void Start()
     {
-        statPanel.SetStats(Strength, Agility, Intelligence, Vitality);
+        statPanel.SetStats(Attack, Armor);
         statPanel.UpdateStatValues();
 
         //Setup Event
