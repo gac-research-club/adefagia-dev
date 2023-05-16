@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -6,24 +8,18 @@ using adefagia.CharacterStats;
 public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private CharacterStat _stat;
-
-    //To update stat value on character stat
-    public CharacterStat Stat
-    {
+    public CharacterStat Stat {
         get { return _stat; }
-        set
-        {
+        set {
             _stat = value;
             UpdateStatValue();
         }
     }
 
     private string _name;
-    public string Name
-    {
+    public string Name {
         get { return _name; }
-        set
-        {
+        set {
             _name = value;
             nameText.text = _name.ToLower();
         }
@@ -32,9 +28,6 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] Text nameText;
     [SerializeField] Text valueText;
     [SerializeField] StatTooltip tooltip;
-
-    private bool showingTooltip;
-
 
     private void OnValidate()
     {
@@ -46,29 +39,18 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             tooltip = FindObjectOfType<StatTooltip>();
     }
 
-    //To show tooltip
     public void OnPointerEnter(PointerEventData eventData)
     {
         tooltip.ShowTooltip(Stat, Name);
-        showingTooltip = true;
     }
 
-    //To hide tooltip
     public void OnPointerExit(PointerEventData eventData)
     {
         tooltip.HideTooltip();
-        showingTooltip = false;
     }
 
-    //To update stat value
     public void UpdateStatValue()
     {
         valueText.text = _stat.Value.ToString();
-        if (showingTooltip)
-        {
-            tooltip.ShowTooltip(Stat, Name);
-        }
     }
 }
-
-

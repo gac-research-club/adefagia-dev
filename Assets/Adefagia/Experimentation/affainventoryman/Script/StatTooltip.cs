@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
 using UnityEngine.UI;
@@ -6,22 +8,16 @@ using adefagia.CharacterStats;
 public class StatTooltip : MonoBehaviour
 {
     [SerializeField] Text StatNameText;
-    [SerializeField] Text StatModifierLabelText;
-    [SerializeField] Text StatModifierText;
+    [SerializeField] Text StatModifiersLabelText;
+    [SerializeField] Text StatModifiersText;
 
-    private readonly StringBuilder sb = new StringBuilder();
+    private StringBuilder sb = new StringBuilder();
 
-    private void Awake()
-    {
-        gameObject.SetActive(false);
-    }
-
-    //To show tooltip with name and stat form item
     public void ShowTooltip(CharacterStat stat, string statName)
     {
         StatNameText.text = GetStatTopText(stat, statName);
 
-        StatModifierText.text = GetStatModifiersText(stat);
+        StatModifiersText.text = GetStatModifiersText(stat);
 
         gameObject.SetActive(true);
     }
@@ -31,7 +27,6 @@ public class StatTooltip : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    //Show information about item on item tooltip
     private string GetStatTopText(CharacterStat stat, string statName)
     {
         sb.Length = 0;
@@ -46,7 +41,7 @@ public class StatTooltip : MonoBehaviour
 
             if (stat.Value > stat.BaseValue)
                 sb.Append("+");
-
+        
             sb.Append(System.Math.Round(stat.Value - stat.BaseValue, 4));
             sb.Append(")");
         }
@@ -54,7 +49,6 @@ public class StatTooltip : MonoBehaviour
         return sb.ToString();
     }
 
-    //Show information about stat on character panel
     private string GetStatModifiersText(CharacterStat stat)
     {
         sb.Length = 0;
@@ -86,7 +80,7 @@ public class StatTooltip : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Modifier is not an Item!");
+                Debug.LogError("Modifier is Not an Item!");
             }
         }
 

@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.EventSystems;
+using System;
 using adefagia.CharacterStats;
 
 public class Character : MonoBehaviour
 {
+    public int Health  = 100;
+
     public CharacterStat Strength;
     public CharacterStat Agility;
     public CharacterStat Intelligence;
@@ -20,84 +22,85 @@ public class Character : MonoBehaviour
 
     private BaseItemSlot dragItemSlot;
 
-    private void Start()
+    protected void OnValidate()
     {
         if (itemTooltip == null)
             itemTooltip = FindObjectOfType<ItemTooltip>();
+    }
 
+    private void Start()
+    {
         statPanel.SetStats(Strength, Agility, Intelligence, Vitality);
         statPanel.UpdateStatValues();
 
-        //Setup Action:
+        //Setup Event
+        inventory.OnRightClickEvent += InventoryRigthClick;
+        equipmentPanel.OnRightClickEvent += EquipmentPanelRightClick;
 
-        //Right Click for Equip and Unequip
-        inventory.OnRightClickEvent += Equip;
-        equipmentPanel.OnRightClickEvent += Unequip;
-
-        //Pointer to show tooltip
         inventory.OnPointerEnterEvent += ShowTooltip;
         equipmentPanel.OnPointerEnterEvent += ShowTooltip;
         craftingWindow.OnPointerEnterEvent += ShowTooltip;
 
-        //Pointer to hide tooltip
         inventory.OnPointerExitEvent += HideTooltip;
         equipmentPanel.OnPointerExitEvent += HideTooltip;
         craftingWindow.OnPointerExitEvent += HideTooltip;
 
-        //Begin to Drag object
         inventory.OnBeginDragEvent += BeginDrag;
         equipmentPanel.OnBeginDragEvent += BeginDrag;
 
-        //To end Drag object
         inventory.OnEndDragEvent += EndDrag;
         equipmentPanel.OnEndDragEvent += EndDrag;
 
-        //On Drag event
         inventory.OnDragEvent += Drag;
         equipmentPanel.OnDragEvent += Drag;
 
-        //on Drop event
         inventory.OnDropEvent += Drop;
         equipmentPanel.OnDropEvent += Drop;
     }
 
-    //Equip item for action on item slot
-    private void Equip(BaseItemSlot itemSlot)
+    private void InventoryRigthClick(BaseItemSlot itemSlot)
     {
-        EquippableItem equippableItem = itemSlot.Item as EquippableItem;
-        if (equippableItem != null)
+        if (itemSlot.Item is EquippableItem)
         {
-            Equip(equippableItem);
+            Equip((EquippableItem)itemSlot.Item);
+        }
+        else if (itemSlot.Item is UsableItem)
+        {
+            UsableItem usableItem = (UsableItem)itemSlot.Item;
+            usableItem.Use(this);
+
+            if (usableItem.IsConsumable)
+            {
+                inventory.RemoveItem(usableItem);
+                usableItem.Destroy();
+            }
         }
     }
 
-    //Unequip item for action on item slot
-    private void Unequip(BaseItemSlot itemSlot)
+    private void EquipmentPanelRightClick(BaseItemSlot itemSlot)
     {
-        EquippableItem equippableItem = itemSlot.Item as EquippableItem;
-        if (equippableItem != null)
+        if (itemSlot.Item is EquippableItem)
         {
-            Unequip(equippableItem);
+            Unequip((EquippableItem)itemSlot.Item);
         }
     }
 
-    //Show tooltip when cursor hover on item 
     private void ShowTooltip(BaseItemSlot itemSlot)
     {
-        EquippableItem equippableItem = itemSlot.Item as EquippableItem;
-        if (equippableItem != null)
+        if (itemSlot.Item != null)
         {
-            itemTooltip.ShowTooltip(equippableItem);
+            itemTooltip.ShowTooltip(itemSlot.Item);
         }
     }
 
-    //When cursor no hit item Tooltip not show
     private void HideTooltip(BaseItemSlot itemSlot)
     {
-        itemTooltip.HideTooltip();
+        if (itemTooltip.gameObject.activeSelf)
+        {
+            itemTooltip.HideTooltip();
+        }
     }
 
-    //Begin to any able drag Item
     private void BeginDrag(BaseItemSlot itemSlot)
     {
         if (itemSlot.Item != null)
@@ -105,79 +108,50 @@ public class Character : MonoBehaviour
             dragItemSlot = itemSlot;
             draggableItem.sprite = itemSlot.Item.Icon;
             draggableItem.transform.position = Input.mousePosition;
-            draggableItem.enabled = true;
+            draggableItem.gameObject.SetActive(true);
         }
     }
 
-<<<<<<< HEAD
-    //When item stop drag again
-    private void EndDrag(ItemSlot itemSlot)
-=======
-    //When item dont drag again
+    private void Drag(BaseItemSlot itemSlot)
+    {
+        draggableItem.transform.position = Input.mousePosition;
+    }
+
     private void EndDrag(BaseItemSlot itemSlot)
->>>>>>> 18-feature-highlight-movement-an-bot
     {
         dragItemSlot = null;
-        draggableItem.enabled = false;
+        draggableItem.gameObject.SetActive(false);
     }
 
-<<<<<<< HEAD
-    //Item to drag while its hold click
-    private void Drag(ItemSlot itemSlot)
-=======
-    //Item to drag while its clicked
-    private void Drag(BaseItemSlot itemSlot)
->>>>>>> 18-feature-highlight-movement-an-bot
-    {
-        if (draggableItem.enabled)
-        {
-            draggableItem.transform.position = Input.mousePosition;
-        }
-    }
-
-<<<<<<< HEAD
-    //For item while its drop after dragging
-    private void Drop(ItemSlot dropItemSlot)
-=======
-    //For item while its drop
     private void Drop(BaseItemSlot dropItemSlot)
->>>>>>> 18-feature-highlight-movement-an-bot
     {
         if (dragItemSlot == null) return;
 
         if (dropItemSlot.CanAddStack(dragItemSlot.Item))
         {
-            AddStack(dropItemSlot);
-        }
+            AddStacks(dropItemSlot);
+        }       
         else if (dropItemSlot.CanReceiveItem(dragItemSlot.Item) && dragItemSlot.CanReceiveItem(dropItemSlot.Item))
         {
             SwapItems(dropItemSlot);
         }
     }
 
-    private void AddStack(BaseItemSlot dropItemSlot)
+    public void SwapItems(BaseItemSlot dropItemSlot)
     {
-        int numAddableStacks = dropItemSlot.Item.MaximumStacks - dropItemSlot.Amount;
-        int stacksToAdd = Mathf.Min(numAddableStacks, dragItemSlot.Amount);
+        EquippableItem dragEquipItem  = dragItemSlot.Item as EquippableItem;
+        EquippableItem dropEquipItem  = dropItemSlot.Item as EquippableItem;
 
-        dropItemSlot.Amount += stacksToAdd;
-        //dragItemSlot.RemoveStack(stacksToAdd);
-    }
-
-    private void SwapItems(BaseItemSlot dropItemSlot)
-    {
-        EquippableItem dragEquipItem = dragItemSlot.Item as EquippableItem;
-        EquippableItem dropEquipItem = dropItemSlot.Item as EquippableItem;
+        if (dragItemSlot is EquipmentSlot)
+        {
+            if (dragEquipItem  != null) dragEquipItem .Unequip(this);
+            if (dropEquipItem  != null) dropEquipItem .Equip(this);
+        }
 
         if (dropItemSlot is EquipmentSlot)
         {
-            if (dragEquipItem != null) dragEquipItem.Equip(this);
-            if (dropEquipItem != null) dropEquipItem.Unequip(this);
-        }
-        if (dragItemSlot is EquipmentSlot)
-        {
-            if (dragEquipItem != null) dragEquipItem.Unequip(this);
-            if (dropEquipItem != null) dropEquipItem.Equip(this);
+            if (dragEquipItem  != null) dragEquipItem .Equip(this);
+            if (dropEquipItem  != null) dropEquipItem .Unequip(this);
         }
         statPanel.UpdateStatValues();
 
@@ -191,7 +165,16 @@ public class Character : MonoBehaviour
         dropItemSlot.Amount = draggedItemAmount;
     }
 
-    //To equip item or move item from inventory to charcter panel where item type its equippable item
+    public void AddStacks(BaseItemSlot dropItemSlot)
+    {
+        int numAddableStacks = dropItemSlot.Item.MaximumStacks - dropItemSlot.Amount;
+        int stacksToAdd = Mathf.Min(numAddableStacks, dragItemSlot.Amount);
+
+        dragItemSlot.Amount -= stacksToAdd;
+        dropItemSlot.RemoveStack(stacksToAdd); 
+    }
+
+    //Check items is Equippable item or not from inventory to place on equipment panel
     public void Equip(EquippableItem item)
     {
         if (inventory.RemoveItem(item))
@@ -207,22 +190,26 @@ public class Character : MonoBehaviour
                 }
                 item.Equip(this);
                 statPanel.UpdateStatValues();
-            }
-            else
+            } 
+            else 
             {
                 inventory.AddItem(item);
             }
         }
     }
 
-    ////To unequip item from charcter panel where item type its equippable item
     public void Unequip(EquippableItem item)
     {
-        if (!inventory.IsFull() && equipmentPanel.RemoveItem(item))
+        if (!inventory.CanAddItem(item) && equipmentPanel.RemoveItem(item))
         {
             item.Unequip(this);
             statPanel.UpdateStatValues();
             inventory.AddItem(item);
         }
+    }
+
+    public void UpdateStatValues()
+    {
+        statPanel.UpdateStatValues();
     }
 }

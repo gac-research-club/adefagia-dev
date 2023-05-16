@@ -1,7 +1,8 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using adefagia.CharacterStats;
+
 
 public class StatPanel : MonoBehaviour
 {
@@ -16,14 +17,13 @@ public class StatPanel : MonoBehaviour
         UpdateStatNames();
     }
 
-    //Set stat from character stat
     public void SetStats(params CharacterStat[] charStats)
     {
         stats = charStats;
 
         if (stats.Length > statDisplays.Length)
         {
-            Debug.LogError("Not Enought Stat Display");
+            Debug.LogError("Not Enough Stat Display!");
             return;
         }
 
@@ -46,7 +46,7 @@ public class StatPanel : MonoBehaviour
         }
     }
 
-    public void UpdateStatNames()
+       public void UpdateStatNames()
     {
         for (int i = 0; i < statNames.Length; i++)
         {
