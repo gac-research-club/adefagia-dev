@@ -7,6 +7,8 @@ namespace Adefagia.PlayerAction
 {
     public class RobotAttack : MonoBehaviour
     {
+        // robotController = current select
+        // gridController = another select robot
         public void Attack(RobotController robotController,GridController gridController)
         {
             if (gridController == null)
@@ -36,7 +38,7 @@ namespace Adefagia.PlayerAction
             // a robot at other grid attacked by the current robot
             gridController.RobotController.Robot.TakeDamage(robotController.Robot.Damage);
             
-            // update the attacked robot healthbar
+            // update the attacked robot health bar
             gridController.RobotController.Robot.healthBar.UpdateHealthBar(gridController.RobotController.Robot.CurrentHealth);
             
             // if grid is robot ally then friendly fire
