@@ -140,12 +140,16 @@ namespace Adefagia.BattleMechanism
         {
             robotControllerActive = robotController;
         }
-
         
-
         public void DeployRobot()
         {
             _robotDeployed.Add(_index);
+            
+            // Disable button select
+            GameManager.instance.uiManager.DisableButtonSelect(_index);
+            
+            // Show ui character select
+            GameManager.instance.uiManager.ShowCharacterSelectCanvas();
         }
 
         public bool IsHasDeployed(Robot robot)

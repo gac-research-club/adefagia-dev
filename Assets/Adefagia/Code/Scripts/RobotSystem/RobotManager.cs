@@ -50,8 +50,7 @@ namespace Adefagia.RobotSystem
                 
                 // Add SkillController to attach on robot
                 var skillController = robotObject.AddComponent<SkillController>();
-
-
+                
                 // Find healthBar GameObject
                 var healthBarObject = GameObject.Find($"Robot {i}/Canvas/HealthBar");
                 healthBarObject.name = "HBar Robot " + i;
