@@ -12,6 +12,8 @@ namespace Adefagia.BattleMechanism
 {
     public class BattleManager : MonoBehaviour
     {
+        private const string DataKey = "GameData";
+
         [SerializeField] private TeamController teamA, teamB;
         [SerializeField] private float startingTime = 10f;
         public static List<GameObject> healthBars;
@@ -73,6 +75,8 @@ namespace Adefagia.BattleMechanism
 
                     // Change team Active
                     ChangeTeam();
+                    Dictionary<string, string> statRobot = LoadData();
+                    Debug.Log(statRobot);
 
                     // If 2 team has finishing deploy
                     if (TeamActive.IsHasFinishDeploy())
@@ -465,7 +469,7 @@ namespace Adefagia.BattleMechanism
             highlightMovement.SetTankRow(TeamActive);
 
             // Running Function Attack from RobotAttack.cs
-
+            Debug.Log("17.6");
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
         }
 
@@ -514,6 +518,21 @@ namespace Adefagia.BattleMechanism
 
             highlightMovement.CleanHighlight();
         }
+
+        // Mengambil data dari PlayerPrefs
+        public static Dictionary<string, string> LoadData()
+        {
+            if (PlayerPrefs.HasKey(DataKey))
+            {
+                string jsonData = PlayerPrefs.GetString(DataKey);
+                return JsonUtility.FromJson<Dictionary<string, string>>(jsonData);
+            }
+            else
+            {
+                return new Dictionary<string, string>();
+            }
+        }
+
         #endregion
     }
 

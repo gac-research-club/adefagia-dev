@@ -7,6 +7,7 @@ using adefagia.CharacterStats;
 
 public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    private const string DataKey = "GameData";
     private CharacterStat _stat;
     public CharacterStat Stat {
         get { return _stat; }
@@ -15,6 +16,8 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             UpdateStatValue();
         }
     }
+
+    public string robotSelect = "0";
 
     private string _name;
     public string Name {
@@ -28,6 +31,10 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] Text nameText;
     [SerializeField] Text valueText;
     [SerializeField] StatTooltip tooltip;
+
+    public void setRobotSelect(string idRobot){
+        robotSelect = idRobot;
+    }
 
     private void OnValidate()
     {
@@ -52,5 +59,20 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void UpdateStatValue()
     {
         valueText.text = _stat.Value.ToString();
+        
+        Dictionary<string, string> data = new Dictionary<string, string>();
+            
+        data.Add("robot", robotSelect);
+        data.Add("type", _name);
+        data.Add("value", _stat.Value.ToString());
+        
+        SaveData(data);
+    }
+
+    // Menyimpan data dalam PlayerPrefs
+    public static void SaveData(Dictionary<string, string> data)
+    {
+        string jsonData = JsonUtility.ToJson(data);
+        PlayerPrefs.SetString(DataKey, jsonData);
     }
 }

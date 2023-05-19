@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 using adefagia.CharacterStats;
+using UnityEngine.SceneManagement;
 
 public class Character : MonoBehaviour
 {
@@ -209,5 +210,9 @@ public class Character : MonoBehaviour
     public void UpdateStatValues()
     {
         statPanel.UpdateStatValues();
+    }
+
+    public void NextScene(){
+        SceneManager.LoadScene("DimasTesting");
     }
 }
