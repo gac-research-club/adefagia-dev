@@ -11,16 +11,20 @@ public enum EquipmentType
 [CreateAssetMenu(menuName = "Items/Equippable Item")]
 public class EquippableItem : Item
 {
+    // Item stats
     public int AttackBonus;
     public int ArmorBonus;
     [Space]
     public float AttackPercentBonus;
     public float ArmorPercentBonus;
     [Space]
+    
+    // Item Type
     public EquipmentType EquipmentType;
 
     public override Item GetCopy()
     {
+        // Generate this prefab
         return Instantiate(this);
     }
 
