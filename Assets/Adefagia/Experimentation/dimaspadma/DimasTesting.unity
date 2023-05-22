@@ -1826,7 +1826,6 @@ GameObject:
   m_Component:
   - component: {fileID: 620804471}
   - component: {fileID: 620804472}
-  - component: {fileID: 620804473}
   m_Layer: 0
   m_Name: ObstacleManager
   m_TagString: Untagged
@@ -1867,32 +1866,6 @@ MonoBehaviour:
   listObstaclePrefab:
   - {fileID: 11400000, guid: c19feb1c14586ce4ca09cdc0b969a1cb, type: 2}
   offset: {x: 0, y: 0, z: 0}
---- !u!114 &620804473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 620804470}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a19423ebab6a1b4698640d9dd504823, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainCamera: {fileID: 532834096}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  objectHit: {fileID: 0}
-  mouseHover:
-    m_PersistentCalls:
-      m_Calls: []
-  mouseHoverNotHit:
-    m_PersistentCalls:
-      m_Calls: []
-  mouseRightClick:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &629306661
 GameObject:
   m_ObjectHideFlags: 0
@@ -5098,6 +5071,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1842012768}
   - component: {fileID: 1842012767}
+  - component: {fileID: 1842012769}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5135,6 +5109,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1842012769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842012766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5991c4604ef7594186d665f5ab8657e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamA:
+    teamName: Coba
+  robotsA:
+  - maxHealth: 10
+    maxStamina: 10
+    damage: 10
+  - maxHealth: 10
+    maxStamina: 10
+    damage: 10
+  - maxHealth: 10
+    maxStamina: 10
+    damage: 10
+  teamB:
+    teamName: Test
+  robotsB:
+  - maxHealth: 0
+    maxStamina: 0
+    damage: 0
+  - maxHealth: 0
+    maxStamina: 0
+    damage: 0
+  - maxHealth: 0
+    maxStamina: 0
+    damage: 0
 --- !u!1 &1844561335
 GameObject:
   m_ObjectHideFlags: 0

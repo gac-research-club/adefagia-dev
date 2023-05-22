@@ -35,6 +35,12 @@ namespace Adefagia.BattleMechanism
 
         private void Awake()
         {
+            // Set into battleManager
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.battleManager = this;
+            }
+            
             healthBars = new List<GameObject>();
             battleLog = new Logging();
 
@@ -76,7 +82,11 @@ namespace Adefagia.BattleMechanism
                     // Change team Active
                     ChangeTeam();
                     Dictionary<string, string> statRobot = LoadData();
-                    Debug.Log(statRobot);
+                    Debug.Log("Total data: " + statRobot.Count);
+                    foreach (var stat in statRobot)
+                    {
+                        Debug.Log(stat.Key + ": " + stat.Value);
+                    }
 
                     // If 2 team has finishing deploy
                     if (TeamActive.IsHasFinishDeploy())

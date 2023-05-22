@@ -28,8 +28,16 @@ namespace Adefagia.GridSystem
         // List All Grid
         private Grid[,] _listGrid;
 
+        public static bool DoneGenerate = false;
+
         private void Awake()
         {
+            // Set into gameManager
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.gridManager = this;
+            }
+            
             StartCoroutine(InitializeGridManager());
             _select = GetComponent<Select>();
         }
@@ -72,6 +80,9 @@ namespace Adefagia.GridSystem
             SetNeighbors();
 
             // BattleManager.ChangeGameState(GameState.Preparation);
+            
+            // Finish Generate
+            DoneGenerate = true;
         }
 
         private void CreateGridElements()

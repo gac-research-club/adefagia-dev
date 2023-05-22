@@ -18,6 +18,9 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
 
     public string robotSelect = "0";
+    
+    // Data state
+    private DataState _state;
 
     private string _name;
     public string Name {
@@ -28,9 +31,9 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
     }
 
-    [SerializeField] Text nameText;
-    [SerializeField] Text valueText;
-    [SerializeField] StatTooltip tooltip;
+    [SerializeField] private Text nameText;
+    [SerializeField] private Text valueText;
+    [SerializeField] private StatTooltip tooltip;
 
     public void setRobotSelect(string idRobot){
         robotSelect = idRobot;
@@ -60,17 +63,27 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         valueText.text = _stat.Value.ToString();
         
-        Dictionary<string, string> data = new Dictionary<string, string>();
+        // Dictionary<string, string> data = new Dictionary<string, string>();
             
-        data.Add("robot", robotSelect);
-        data.Add("type", _name);
-        data.Add("value", _stat.Value.ToString());
+        // data.Add("robot", robotSelect);
+        // data.Add("type", _name);
+        // data.Add("value", _stat.Value.ToString());
+
+        // _state.robot = robotSelect;
+        // _state.type = _name;
+        // _state.value = _stat.Value.ToString();
         
-        SaveData(data);
+        // SaveData(data);
+        // SaveData(this);
     }
 
     // Menyimpan data dalam PlayerPrefs
     public static void SaveData(Dictionary<string, string> data)
+    {
+        string jsonData = JsonUtility.ToJson(data);
+        PlayerPrefs.SetString(DataKey, jsonData);
+    }
+    public static void SaveData(MonoBehaviour data)
     {
         string jsonData = JsonUtility.ToJson(data);
         PlayerPrefs.SetString(DataKey, jsonData);
@@ -80,4 +93,11 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         
     }
+}
+
+class DataState : MonoBehaviour
+{
+    public string robot;
+    public string type;
+    public string value;
 }

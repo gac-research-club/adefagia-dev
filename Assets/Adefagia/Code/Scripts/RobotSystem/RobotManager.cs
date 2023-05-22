@@ -15,14 +15,29 @@ namespace Adefagia.RobotSystem
         
         private TeamController _teamController;
 
-        private void Awake()
+        private List<RobotStat> robotSelected;
+        private static int count = 0;
+
+        private TeamManager teamManager;
+        private Team teamSelected;
+
+        private void Start()
         {
             _teamController = GetComponent<TeamController>();
 
             // Initiate Robots
+            teamManager = GameManager.instance.gameObject.GetComponent<TeamManager>();
+            
+            // Change team name
+            teamSelected = new Team(teamManager.teamA.teamName);
+            
+            // Use robot A first
+            robotSelected = teamManager.robotsA;
+
             SpawnRobot();
             
             _teamController.ChooseRobot(0);
+            
         }
 
         /*--------------------------------------------------------------------------------------
@@ -32,7 +47,20 @@ namespace Adefagia.RobotSystem
         private void SpawnRobot()
         {
 
+            if (count > 0)
+            {
+                // after robotA, change to robotB
+                robotSelected = teamManager.robotsB;
+                
+                // Change team name
+                teamSelected = new Team(teamManager.teamB.teamName);
+            }
+            
+            // Change team name
+            _teamController.Team = teamSelected;
+
             List<RobotController> newRobotControllers = new List<RobotController>();
+            
             for (int i = _teamController.TotalRobot-1; i >= 0 ; i--)
             {
                 var dummy = _teamController.GetRobotGameObject(i);
@@ -67,7 +95,17 @@ namespace Adefagia.RobotSystem
                 // TODO: Make each robot dynamic edited by user
                 
                 // Manual input robot stat
-                robotController.Robot = new Robot(robotObject.name);
+                
+                // Get robot from teamManager
+                var robot = robotSelected[i];
+
+                if (robot == null) return;
+                robotController.Robot = new Robot(
+                    _teamController.Team.teamName + "-" + robotObject.name,
+                    robot.maxHealth,
+                    robot.maxStamina,
+                    robot.damage);
+                
                 robotController.Robot.ID = _teamController.TotalRobot-1 - i;
                 robotController.Robot.Speed = speed;
 
@@ -95,6 +133,8 @@ namespace Adefagia.RobotSystem
             }
 
             _teamController.ChangeRobotController(newRobotControllers);
+
+            count++;
         }
 
     }

@@ -57,7 +57,7 @@ namespace Adefagia.RobotSystem
             MaxStamina = 50;
             _health = MaxHealth;
             _stamina = StaminaInitial;
-            Damage = 15;
+            Damage = 10;
             IsDead = false;
 
             //-----------------------
