@@ -75,4 +75,9 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         string jsonData = JsonUtility.ToJson(data);
         PlayerPrefs.SetString(DataKey, jsonData);
     }
+
+    public static void loadData()
+    {
+        
+    }
 }
