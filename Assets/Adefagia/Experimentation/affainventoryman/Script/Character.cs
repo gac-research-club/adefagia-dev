@@ -207,9 +207,9 @@ public class Character : MonoBehaviour
     }
 
     public void Unequip(EquippableItem item)
-    {
-        if (!inventory.CanAddItem(item) && equipmentPanel.RemoveItem(item))
-        {
+    {        
+        if (inventory.CanAddItem(item) && equipmentPanel.RemoveItem(item))
+        {            
             item.Unequip(this);
             statPanel.UpdateStatValues();
             inventory.AddItem(item);
