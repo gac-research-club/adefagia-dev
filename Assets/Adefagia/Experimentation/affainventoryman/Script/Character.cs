@@ -2,7 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using System.Collections.Generic;
+using Adefagia.BattleMechanism;
 using adefagia.CharacterStats;
+using Adefagia.RobotSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class Character : MonoBehaviour
 {
@@ -20,14 +25,19 @@ public class Character : MonoBehaviour
 
     private BaseItemSlot dragItemSlot;
 
+    // Editor-only function that Unity calls when the script is loaded or a value changes in the Inspector.
     protected void OnValidate()
     {
         if (itemTooltip == null)
+        {
+            // Find ItemTooltip
             itemTooltip = FindObjectOfType<ItemTooltip>();
+        }
     }
 
     private void Start()
     {
+        // Set Status
         statPanel.SetStats(Attack, Armor);
         statPanel.UpdateStatValues();
 

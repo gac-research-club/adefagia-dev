@@ -27,7 +27,10 @@ namespace Adefagia.BattleMechanism
         private int _index;
 
         #region Properties
-        public Team Team => team;
+        public Team Team { 
+            get => team;
+            set => team = value;
+        }
         public int TotalRobot => robotControllers.Count;
         public Robot Robot => robotControllerActive.Robot;
         public RobotController RobotController => robotControllerActive;
@@ -140,12 +143,16 @@ namespace Adefagia.BattleMechanism
         {
             robotControllerActive = robotController;
         }
-
         
-
         public void DeployRobot()
         {
             _robotDeployed.Add(_index);
+            
+            // Disable button select
+            GameManager.instance.uiManager.DisableButtonSelect(_index);
+            
+            // Show ui character select
+            GameManager.instance.uiManager.ShowCharacterSelectCanvas();
         }
 
         public bool IsHasDeployed(Robot robot)

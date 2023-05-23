@@ -7,6 +7,8 @@ namespace Adefagia.PlayerAction
 {
     public class RobotSkill : MonoBehaviour
     {
+        // robotController = current select
+        // gridController = another select robot
         public void Skill(RobotController robotController, GridController gridController, int skillChoosed)
         {
             if (gridController == null)
@@ -35,7 +37,6 @@ namespace Adefagia.PlayerAction
             // a robot at other grid attacked by the current robot
             gridController.RobotController.Robot.TakeDamage(skill.Damage);
             gridController.RobotController.Robot.healthBar.UpdateHealthBar(gridController.RobotController.Robot.CurrentHealth);
-
             
             // if grid is robot ally then friendly fire
             var teamController = gridController.RobotController.TeamController;

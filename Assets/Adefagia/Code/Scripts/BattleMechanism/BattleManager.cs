@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Adefagia.GridSystem;
 using Adefagia.PlayerAction;
+using Adefagia.UI;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 using Random = UnityEngine.Random;
@@ -10,6 +12,8 @@ namespace Adefagia.BattleMechanism
 {
     public class BattleManager : MonoBehaviour
     {
+        private const string DataKey = "GameData";
+
         [SerializeField] private TeamController teamA, teamB;
         [SerializeField] private float startingTime = 10f;
         public static List<GameObject> healthBars;
@@ -31,6 +35,12 @@ namespace Adefagia.BattleMechanism
 
         private void Awake()
         {
+            // Set into battleManager
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.battleManager = this;
+            }
+            
             healthBars = new List<GameObject>();
             battleLog = new Logging();
 
@@ -60,9 +70,8 @@ namespace Adefagia.BattleMechanism
             #region Preparation
 
             if (gameState == GameState.Preparation &&
-                preparationState == PreparationState.DeployRobot)
+                preparationState == PreparationState.DeploySelect)
             {
-
                 // Change Team Activate if has deployed all the robot
                 if (TeamActive.IsHasFinishDeploy())
                 {
@@ -72,6 +81,12 @@ namespace Adefagia.BattleMechanism
 
                     // Change team Active
                     ChangeTeam();
+                    Dictionary<string, string> statRobot = LoadData();
+                    Debug.Log("Total data: " + statRobot.Count);
+                    foreach (var stat in statRobot)
+                    {
+                        Debug.Log(stat.Key + ": " + stat.Value);
+                    }
 
                     // If 2 team has finishing deploy
                     if (TeamActive.IsHasFinishDeploy())
@@ -85,11 +100,19 @@ namespace Adefagia.BattleMechanism
                         ChangePreparationState(PreparationState.Nothing);
                         ChangeGameState(GameState.Battle);
                         ChangeBattleState(BattleState.SelectRobot);
+                        
+                        GameManager.instance.uiManager.HideCharacterSelectCanvas();
 
                         // Enable healthbars when both teams deployed
                         GameManager.instance.uiManager.EnableHealthBars(TeamActive.IsHasFinishDeploy());
                     }
                 }
+            }
+
+            // Deploying robot
+            if (gameState == GameState.Preparation && 
+                preparationState == PreparationState.DeployRobot)
+            {
 
                 /*---------------------------------------------------------------
                  * Move robot location & position
@@ -191,6 +214,7 @@ namespace Adefagia.BattleMechanism
             #endregion
         }
 
+        // First Round
         private IEnumerator PreparationBattle()
         {
             // Wait until GameState is Preparation
@@ -213,19 +237,31 @@ namespace Adefagia.BattleMechanism
                 TeamActive = teamB;
                 NextTeam = teamA;
             }
-
-            ChangePreparationState(PreparationState.DeployRobot);
+            
+            // Edit text team name
+            ChangePreparationState(PreparationState.DeploySelect);
+            GameManager.instance.uiManager.ChangeTextTeam(TeamActive.Team.teamName);
+            
+            // ChangePreparationState(PreparationState.DeployRobot);
         }
 
         private void ChangeTeam()
         {
             // Swap via destruction
             (TeamActive, NextTeam) = (NextTeam, TeamActive);
+            
+            // Edit text team name
+            GameManager.instance.uiManager.ChangeTextTeam(TeamActive.Team.teamName);
+            // Reset character select
+            // ChangePreparationState(PreparationState.DeploySelect);
+            GameManager.instance.uiManager.ResetButtonSelect();
+            GameManager.instance.uiManager.ShowCharacterSelectCanvas();
 
             if (gameState == GameState.Battle)
             {
                 // Hide PlayerActionHUD
                 GameManager.instance.uiManager.HideBattleUI();
+
                 TeamActive.IncreaseRobotStamina();
                 highlightMovement.CleanHighlight();
             }
@@ -284,6 +320,12 @@ namespace Adefagia.BattleMechanism
                 // Robot has deploy or grid is empty
                 if (TeamActive.IsHasDeployed(TeamActive.Robot)
                     || TeamActive.GridController == null) return;
+                
+                // Grid not obstacle
+                if (TeamActive.GridController.Grid.Status == GridStatus.Obstacle)
+                {
+                    return;
+                }
 
                 TeamActive.DeployRobot();
 
@@ -383,13 +425,14 @@ namespace Adefagia.BattleMechanism
                     var gridController = GameManager.instance.gridManager.GetGridController();
 
                     // Click on the grid highlighted
+                    TeamActive.RobotControllerSelected.RobotSkill.Skill(
+                        robotController: TeamActive.RobotControllerSelected,
+                        gridController: gridController,
+                        skillChoosed: skillChoosed
+                    );
+                    
                     if (highlightMovement.CheckGridOnHighlight(gridController))
                     {
-                        TeamActive.RobotControllerSelected.RobotSkill.Skill(
-                            robotController: TeamActive.RobotControllerSelected,
-                            gridController: gridController,
-                            skillChoosed: skillChoosed
-                        );
                     }
 
                     // change to selecting state
@@ -398,7 +441,6 @@ namespace Adefagia.BattleMechanism
                     // Clear highlight
                     highlightMovement.CleanHighlight();
                 }
-
             }
         }
 
@@ -437,7 +479,7 @@ namespace Adefagia.BattleMechanism
             highlightMovement.SetTankRow(TeamActive);
 
             // Running Function Attack from RobotAttack.cs
-
+            Debug.Log("17.6");
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
         }
 
@@ -486,6 +528,21 @@ namespace Adefagia.BattleMechanism
 
             highlightMovement.CleanHighlight();
         }
+
+        // Mengambil data dari PlayerPrefs
+        public static Dictionary<string, string> LoadData()
+        {
+            if (PlayerPrefs.HasKey(DataKey))
+            {
+                string jsonData = PlayerPrefs.GetString(DataKey);
+                return JsonUtility.FromJson<Dictionary<string, string>>(jsonData);
+            }
+            else
+            {
+                return new Dictionary<string, string>();
+            }
+        }
+
         #endregion
     }
 
@@ -503,6 +560,7 @@ namespace Adefagia.BattleMechanism
         Nothing,
         SelectTeam,
         DeployRobot,
+        DeploySelect,
     }
 
     public enum BattleState
