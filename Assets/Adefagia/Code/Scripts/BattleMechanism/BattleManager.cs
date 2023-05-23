@@ -250,13 +250,6 @@ namespace Adefagia.BattleMechanism
             // Swap via destruction
             (TeamActive, NextTeam) = (NextTeam, TeamActive);
             
-            // Edit text team name
-            GameManager.instance.uiManager.ChangeTextTeam(TeamActive.Team.teamName);
-            // Reset character select
-            // ChangePreparationState(PreparationState.DeploySelect);
-            GameManager.instance.uiManager.ResetButtonSelect();
-            GameManager.instance.uiManager.ShowCharacterSelectCanvas();
-
             if (gameState == GameState.Battle)
             {
                 // Hide PlayerActionHUD
@@ -264,6 +257,15 @@ namespace Adefagia.BattleMechanism
 
                 TeamActive.IncreaseRobotStamina();
                 highlightMovement.CleanHighlight();
+            }
+            else
+            {
+                // Edit text team name
+                GameManager.instance.uiManager.ChangeTextTeam(TeamActive.Team.teamName);
+                // Reset character select
+                // ChangePreparationState(PreparationState.DeploySelect);
+                GameManager.instance.uiManager.ResetButtonSelect();
+                GameManager.instance.uiManager.ShowCharacterSelectCanvas();
             }
         }
 
@@ -454,10 +456,10 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.MoveRobot);
 
             // highlight grid movement
-            highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            highlightMovement.ThreeFrontRow(TeamActive);
+            //highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            //highlightMovement.ThreeFrontRow(TeamActive);
             highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            highlightMovement.SetTankRow(TeamActive);
+            //highlightMovement.SetTankRow(TeamActive);
 
             // Running Function Move from RobotMovement.cs
 
@@ -474,9 +476,9 @@ namespace Adefagia.BattleMechanism
 
             // highlight grid movement
             highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            highlightMovement.ThreeFrontRow(TeamActive);
-            highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            highlightMovement.SetTankRow(TeamActive);
+            //highlightMovement.ThreeFrontRow(TeamActive);
+            //highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            //highlightMovement.SetTankRow(TeamActive);
 
             // Running Function Attack from RobotAttack.cs
             Debug.Log("17.6");
@@ -513,6 +515,7 @@ namespace Adefagia.BattleMechanism
 
             TeamActive.ResetRobotSelected();
 
+            // Logging
             battleLog.LogStep($"{TeamActive.Team.teamName} " +
                               "- End Turn");
 
