@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 using System.Collections.Generic;
+using Adefagia;
 using Adefagia.BattleMechanism;
 using adefagia.CharacterStats;
 using Adefagia.RobotSystem;
@@ -64,6 +65,21 @@ public class Character : MonoBehaviour
 
         inventory.OnDropEvent += Drop;
         equipmentPanel.OnDropEvent += Drop;
+        
+        // Starting robot maxHealth value
+        var teamManager =  GameManager.instance.GetComponent<TeamManager>();
+        
+        // Robots A
+        foreach (var robot in teamManager.robotsA)
+        {
+            robot.maxHealth = Health;
+        }
+        
+        // Robots B
+        foreach (var robot in teamManager.robotsB)
+        {
+            robot.maxHealth = Health;
+        }
     }
 
     private void InventoryRigthClick(BaseItemSlot itemSlot)
