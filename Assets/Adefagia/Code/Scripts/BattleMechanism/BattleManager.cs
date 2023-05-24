@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Adefagia.Code.Scripts.BattleMechanism;
 using Adefagia.GridSystem;
 using Adefagia.PlayerAction;
+using Adefagia.RobotSystem;
 using Adefagia.UI;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
@@ -23,7 +25,7 @@ namespace Adefagia.BattleMechanism
         public static PreparationState preparationState = PreparationState.Nothing;
         public static BattleState battleState = BattleState.Nothing;
 
-        private static HighlightMovement highlightMovement;
+        public static HighlightMovement highlightMovement;
 
         public static TeamController TeamActive { get; set; }
         public static TeamController NextTeam { get; set; }
@@ -404,10 +406,8 @@ namespace Adefagia.BattleMechanism
                     // Click on the grid highlighted
                     if (highlightMovement.CheckGridOnHighlight(gridController))
                     {
-                        TeamActive.RobotControllerSelected.RobotAttack.Attack(
-                            robotController: TeamActive.RobotControllerSelected,
-                            gridController: gridController
-                        );
+                        // Invoking attack
+                        BattleController.InvokeRobotAttack(TeamActive.RobotControllerSelected, gridController);
                     }
 
                     // change to selecting state
@@ -456,10 +456,10 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.MoveRobot);
 
             // highlight grid movement
-            //highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            //highlightMovement.ThreeFrontRow(TeamActive);
+            // highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            // highlightMovement.ThreeFrontRow(TeamActive);
             highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            //highlightMovement.SetTankRow(TeamActive);
+            // highlightMovement.SetTankRow(TeamActive);
 
             // Running Function Move from RobotMovement.cs
 
@@ -476,15 +476,14 @@ namespace Adefagia.BattleMechanism
 
             // highlight grid movement
             highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            //highlightMovement.ThreeFrontRow(TeamActive);
-            //highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            //highlightMovement.SetTankRow(TeamActive);
+            // highlightMovement.ThreeFrontRow(TeamActive);
+            // highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
+            // highlightMovement.SetTankRow(TeamActive);
 
             // Running Function Attack from RobotAttack.cs
-            Debug.Log("17.6");
-            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
+            // Debug.Log("17.6");
+            // Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
         }
-
         public void SkillButtonClick()
         {
             // change to defend robot

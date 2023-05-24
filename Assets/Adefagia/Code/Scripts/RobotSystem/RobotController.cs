@@ -6,6 +6,7 @@ using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 using System.Collections;
 using System.Collections.Generic;
+using Adefagia.Code.Scripts.BattleMechanism;
 using DG.Tweening;
 
 namespace Adefagia.RobotSystem
@@ -13,6 +14,7 @@ namespace Adefagia.RobotSystem
     [RequireComponent(typeof(RobotMovement))]
     [RequireComponent(typeof(RobotAttack))]
     [RequireComponent(typeof(RobotSkill))]
+    [RequireComponent(typeof(RobotDead))]
     public class RobotController : MonoBehaviour
     {
         [SerializeField] private float healthPoint;
@@ -48,13 +50,9 @@ namespace Adefagia.RobotSystem
 
         private void Update()
         {
+            // Update state every frame
             healthPoint = Robot.CurrentHealth;
             staminaPoint = Robot.CurrentStamina;
-
-            if (Robot.IsDead){
-                GridController.Grid.SetFree();
-                Destroy(gameObject);
-            }
         }
 
         private void OnDestroy()
@@ -81,6 +79,18 @@ namespace Adefagia.RobotSystem
             
             // TODO: move to position with some transition
             // move with lerp
+        }
+        
+        /*--------------------------------------------------------------------------------------
+         * Robot menerima serangan dari robot lain
+         *--------------------------------------------------------------------------------------*/
+        public void TakeDamage(float damage)
+        {
+            Robot.TakeDamage(damage);
+
+            if (!Robot.IsDead) return;
+            BattleController.InvokeRobotDead(this);
+
         }
 
         /*--------------------------------------------------------------------------------------

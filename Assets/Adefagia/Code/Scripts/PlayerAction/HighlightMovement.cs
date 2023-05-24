@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Adefagia.BattleMechanism;
 using Adefagia.GridSystem;
+using Adefagia.RobotSystem;
 using Grid = Adefagia.GridSystem.Grid;
 using UnityEngine;
 
@@ -15,6 +16,9 @@ namespace Adefagia.PlayerAction
         private List<Grid> _tempGrids;
         private List<GameObject> _tempHighlights;
         private GameObject _quad;
+        
+        // Event ketika robot attack
+        public static event Action<RobotController, GridController> OnRobotAttack;
 
         public void Awake()
         {
