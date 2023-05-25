@@ -46,15 +46,31 @@ namespace Adefagia.RobotSystem
             _startPosition = transform.position;
         }
 
+        private void Start()
+        {
+            // var robotAttack = GetComponent<RobotAttack>();
+            // if (robotAttack != null)
+            // {
+            //     RobotAttack.ThingHappened += OnThingHappened;
+            // }
+            RobotAttack.ThingHappened += OnThingHappened;
+
+            if (Robot != null)
+            {
+                Robot.Damaged += OnDamaged;
+                Robot.Dead += OnDead;
+            }
+        }
+
         private void Update()
         {
             healthPoint = Robot.CurrentHealth;
             staminaPoint = Robot.CurrentStamina;
 
-            if (Robot.IsDead){
-                GridController.Grid.SetFree();
-                Destroy(gameObject);
-            }
+            // if (Robot.IsDead){
+            //     
+            //     Destroy(gameObject);
+            // }
         }
 
         private void OnDestroy()
@@ -63,6 +79,26 @@ namespace Adefagia.RobotSystem
             {
                 _teamController.RemoveRobot(this);
             }
+        }
+
+        public void OnThingHappened(RobotController robotController)
+        {
+            if (robotController.GetInstanceID() != GetInstanceID()) return;
+            Debug.Log($"InstanceID: {GetInstanceID()}");
+            Debug.Log($"{robotController.Robot.Name} Attack");
+        }
+
+        public void OnDamaged()
+        {
+            Debug.Log($"InstanceID: {GetInstanceID()}");
+            Debug.Log($"{Robot.Name} Damaged");
+        }
+
+        public void OnDead()
+        {
+            GridController.Grid.SetObstacle();
+            Debug.Log($"InstanceID: {GetInstanceID()}");
+            Debug.Log($"{Robot.Name} Dead");
         }
 
         public void SetTeam(TeamController teamController)

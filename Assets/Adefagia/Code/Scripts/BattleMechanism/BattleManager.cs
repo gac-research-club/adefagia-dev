@@ -82,7 +82,7 @@ namespace Adefagia.BattleMechanism
                     // Change team Active
                     ChangeTeam();
                     Dictionary<string, string> statRobot = LoadData();
-                    Debug.Log("Total data: " + statRobot.Count);
+                    // Debug.Log("Total data: " + statRobot.Count);
                     foreach (var stat in statRobot)
                     {
                         Debug.Log(stat.Key + ": " + stat.Value);
@@ -463,7 +463,7 @@ namespace Adefagia.BattleMechanism
 
             // Running Function Move from RobotMovement.cs
 
-            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Move");
+            // Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Move");
         }
 
         /*----------------------------------------------------------------------
@@ -481,8 +481,8 @@ namespace Adefagia.BattleMechanism
             //highlightMovement.SetTankRow(TeamActive);
 
             // Running Function Attack from RobotAttack.cs
-            Debug.Log("17.6");
-            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
+            // Debug.Log("17.6");
+            // Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
         }
 
         public void SkillButtonClick()

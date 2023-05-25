@@ -1,4 +1,5 @@
-﻿using Adefagia.BattleMechanism;
+﻿using System;
+using Adefagia.BattleMechanism;
 using Adefagia.GridSystem;
 using Adefagia.RobotSystem;
 using UnityEngine;
@@ -7,10 +8,15 @@ namespace Adefagia.PlayerAction
 {
     public class RobotAttack : MonoBehaviour
     {
+
+        public static Action<RobotController> ThingHappened;
+        
         // robotController = current select
         // gridController = another select robot
         public void Attack(RobotController robotController,GridController gridController)
         {
+            ThingHappened?.Invoke(robotController);
+            
             if (gridController == null)
             {
                 Debug.LogWarning("Attack failed");
@@ -27,7 +33,7 @@ namespace Adefagia.PlayerAction
             // if grid is not robot then miss
             if (grid.Status != GridStatus.Robot)
             {
-                Debug.Log("Attack Miss");
+                // Debug.Log("Attack Miss");
                 BattleManager.battleLog.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} " +
                                                 $"- Attack Miss");
                 return;
@@ -52,7 +58,7 @@ namespace Adefagia.PlayerAction
                 return;
             }
 
-            Debug.Log($"Attack to {gridController.RobotController.Robot}");
+            // Debug.Log($"Attack to {gridController.RobotController.Robot}");
             BattleManager.battleLog.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} " +
                                             $"- Attack to {gridController.RobotController.Robot}");
         }

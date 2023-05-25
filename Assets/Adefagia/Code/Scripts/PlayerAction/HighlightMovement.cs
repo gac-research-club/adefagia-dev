@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Adefagia.BattleMechanism;
 using Adefagia.GridSystem;
+using Adefagia.RobotSystem;
 using Grid = Adefagia.GridSystem.Grid;
 using UnityEngine;
 
@@ -20,6 +21,17 @@ namespace Adefagia.PlayerAction
         {
             _tempHighlights = new List<GameObject>();
             _tempGrids = new List<Grid>();
+        }
+
+        private void Start()
+        {
+            RobotAttack.ThingHappened += OnThingHappened;
+        }
+
+        public void OnThingHappened(RobotController robotController)
+        {
+            var gridController = robotController.GridController;
+            Debug.Log($"{gridController.Grid} Highlight attack");
         }
 
         /*--------------
