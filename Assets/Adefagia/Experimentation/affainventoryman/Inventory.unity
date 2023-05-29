@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -128,6 +128,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1713191986389444262, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
   m_PrefabInstance: {fileID: 1713191986435552141}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &54564140 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1713191986389444257, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
+  m_PrefabInstance: {fileID: 1713191986435552141}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 187ec42fcfc22a346bedc35c2c675de6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &148010487 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1713191986177835057, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
+  m_PrefabInstance: {fileID: 1713191986435552141}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &175466407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1426,8 +1448,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1935220045}
-        m_TargetAssemblyTypeName: StatPanel, Assembly-CSharp
+      - m_Target: {fileID: 54564140}
+        m_TargetAssemblyTypeName: Character, Assembly-CSharp
         m_MethodName: ChangeRobotIndex
         m_Mode: 3
         m_Arguments:
@@ -1759,8 +1781,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1935220045}
-        m_TargetAssemblyTypeName: StatPanel, Assembly-CSharp
+      - m_Target: {fileID: 54564140}
+        m_TargetAssemblyTypeName: Character, Assembly-CSharp
         m_MethodName: ChangeRobotIndex
         m_Mode: 3
         m_Arguments:
@@ -2269,8 +2291,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1935220045}
-        m_TargetAssemblyTypeName: StatPanel, Assembly-CSharp
+      - m_Target: {fileID: 54564140}
+        m_TargetAssemblyTypeName: Character, Assembly-CSharp
         m_MethodName: ChangeTeam
         m_Mode: 1
         m_Arguments:
@@ -2439,17 +2461,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1935220045 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1713191986096484046, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
-  m_PrefabInstance: {fileID: 1713191986435552141}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0b3a27a83bf37c4ca1a41d9bac7d1cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1994254859
 GameObject:
   m_ObjectHideFlags: 0
@@ -2669,8 +2680,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1935220045}
-        m_TargetAssemblyTypeName: StatPanel, Assembly-CSharp
+      - m_Target: {fileID: 54564140}
+        m_TargetAssemblyTypeName: Character, Assembly-CSharp
         m_MethodName: ChangeRobotIndex
         m_Mode: 3
         m_Arguments:
@@ -2854,6 +2865,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1713191985677292609, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0f3095ebf07dc4947af9b92d62e13708, type: 3}
     - target: {fileID: 1713191985677292615, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2878,6 +2893,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1713191985682769733, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 74273f8347949504f9a7c29d2ad62471, type: 3}
     - target: {fileID: 1713191985682769739, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2902,6 +2921,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1713191985692744245, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 212502267435ecb4e8b6dc668209dfb8, type: 3}
     - target: {fileID: 1713191985692744251, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2949,6 +2972,18 @@ PrefabInstance:
     - target: {fileID: 1713191985805238275, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1713191986096484046, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
+      propertyPath: characterName
+      value: 
+      objectReference: {fileID: 148010487}
+    - target: {fileID: 1713191986177835062, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 1713191986177835062, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 203
       objectReference: {fileID: 0}
     - target: {fileID: 1713191986210466424, guid: c56d550d04c25514386dafb9e458bd2a, type: 3}
       propertyPath: m_AnchorMax.y

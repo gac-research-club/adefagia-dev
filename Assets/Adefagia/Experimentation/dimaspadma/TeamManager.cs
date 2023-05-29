@@ -23,4 +23,11 @@ public class RobotStat
     public float maxStamina;
     public float damage;
     public float armor;
+
+    public Item armorId;
+
+    public Item helmetId;
+    
+    public Item weaponId;
+    
 }

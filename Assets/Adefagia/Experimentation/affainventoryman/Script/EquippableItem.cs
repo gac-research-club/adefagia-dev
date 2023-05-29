@@ -14,6 +14,7 @@ public class EquippableItem : Item
     // Item stats
     public int AttackBonus;
     public int ArmorBonus;
+
     [Space]
     public float AttackPercentBonus;
     public float ArmorPercentBonus;
@@ -56,6 +57,7 @@ public class EquippableItem : Item
     {
         return EquipmentType.ToString();
     }
+
 
     public override string GetDescription()
     {
