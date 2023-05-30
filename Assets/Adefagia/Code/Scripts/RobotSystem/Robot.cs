@@ -1,11 +1,8 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
-
-using Adefagia.GridSystem;
+﻿using System;
+using Adefagia.Code.Scripts.BattleMechanism;
+using Adefagia.PlayerAction;
+using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
-using Adefagia.SelectObject;
-using Adefagia.Collections;
 
 namespace Adefagia.RobotSystem
 {
@@ -57,7 +54,7 @@ namespace Adefagia.RobotSystem
             MaxStamina = 50;
             _health = MaxHealth;
             _stamina = StaminaInitial;
-            Damage = 15;
+            Damage = 10;
             IsDead = false;
 
             //-----------------------
@@ -83,12 +80,15 @@ namespace Adefagia.RobotSystem
         public void TakeDamage(float damage)
         {
             _health -= damage;
-            if(_health <= 0){
-               IsDead = true;
+            if (_health <= 0)
+            {
+                IsDead = true;
             }
-           
         }
 
+        /*-------------------------------------------------------
+         * Stamina method
+         *-------------------------------------------------------*/
         public void IncreaseStamina()
         {
             _stamina += StaminaRound;

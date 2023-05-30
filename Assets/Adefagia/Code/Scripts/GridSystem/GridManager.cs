@@ -22,14 +22,22 @@ namespace Adefagia.GridSystem
         [SerializeField] private Vector3 offset;
 
         private Dictionary<GridType, GridElement> _gridElements;
-        
+
         private Select _select;
 
         // List All Grid
         private Grid[,] _listGrid;
 
+        public static bool DoneGenerate = false;
+
         private void Awake()
         {
+            // Set into gameManager
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.gridManager = this;
+            }
+            
             StartCoroutine(InitializeGridManager());
             _select = GetComponent<Select>();
         }
@@ -61,17 +69,20 @@ namespace Adefagia.GridSystem
             {
                 yield return null;
             }
-            
+
             // Init gridElements
             CreateGridElements();
-            
+
             // Generate Grids
             GenerateGrids();
 
             // Set grid neighbor 
             SetNeighbors();
-            
+
             // BattleManager.ChangeGameState(GameState.Preparation);
+            
+            // Finish Generate
+            DoneGenerate = true;
         }
 
         private void CreateGridElements()
@@ -90,9 +101,9 @@ namespace Adefagia.GridSystem
                     duplicateCount++;
                 }
             }
-            
+
             // duplicate error message
-            if(duplicateCount > 0) Debug.LogWarning($"Duplicate {duplicateCount} Item.");
+            if (duplicateCount > 0) Debug.LogWarning($"Duplicate {duplicateCount} Item.");
         }
 
         /*----------------------------------------------------------------------------------
@@ -106,7 +117,7 @@ namespace Adefagia.GridSystem
             // Set all Grid by (x,y)
             // xi = x index
             // yi = y index
-            for (int yi = y-1; yi >= 0 ; yi--)
+            for (int yi = y - 1; yi >= 0; yi--)
             {
                 for (var xi = 0; xi < x; xi++)
                 {
@@ -114,7 +125,7 @@ namespace Adefagia.GridSystem
                     var gridObject = Instantiate(_gridElements[GridType.Ground].prefab, transform);
                     gridObject.transform.position = new Vector3(xi * gridLength, 0, yi * gridLength) + offset;
                     gridObject.name = $"Grid ({xi}, {yi})";
-                    
+
                     // Add Grid Controller
                     var gridController = gridObject.AddComponent<GridController>();
                     gridController.Grid = new Grid(xi, yi);
@@ -126,8 +137,8 @@ namespace Adefagia.GridSystem
         }
         private void GenerateGrids(Vector2 gridSize) => GenerateGrids((int)gridSize.x, (int)gridSize.y);
         private void GenerateGrids() => GenerateGrids(gridSizeX, gridSizeY);
-        
-        
+
+
         /*----------------------------------------------------------------------------------
          * Menyambungkan 1 grid dengan 4 grid di sebelahnya,
          * yaitu: Kanan, Atas, Kiri, Bawah.
@@ -137,14 +148,14 @@ namespace Adefagia.GridSystem
         void SetNeighbors()
         {
             // Access all grid
-            for (int yi = 0; yi < gridSizeY ; yi++)
+            for (int yi = 0; yi < gridSizeY; yi++)
             {
                 for (var xi = 0; xi < gridSizeX; xi++)
                 {
-                    _listGrid[xi,yi].AddNeighbor(GridDirection.Right, GetGrid(xi+1, yi  ));
-                    _listGrid[xi,yi].AddNeighbor(GridDirection.Up   , GetGrid(xi  , yi+1));
-                    _listGrid[xi,yi].AddNeighbor(GridDirection.Left , GetGrid(xi-1, yi  ));
-                    _listGrid[xi,yi].AddNeighbor(GridDirection.Down , GetGrid(xi  , yi-1));
+                    _listGrid[xi, yi].AddNeighbor(GridDirection.Right, GetGrid(xi + 1, yi));
+                    _listGrid[xi, yi].AddNeighbor(GridDirection.Up, GetGrid(xi, yi + 1));
+                    _listGrid[xi, yi].AddNeighbor(GridDirection.Left, GetGrid(xi - 1, yi));
+                    _listGrid[xi, yi].AddNeighbor(GridDirection.Down, GetGrid(xi, yi - 1));
                 }
             }
         }
@@ -160,17 +171,18 @@ namespace Adefagia.GridSystem
             }
             catch (IndexOutOfRangeException error)
             {
-                if(debugMessage) Debug.LogWarning(error.Message);
+                if (debugMessage) Debug.LogWarning(error.Message);
                 return null;
             }
         }
         public Grid GetGrid(Vector2 location, bool debugMessage = false)
         {
-            return GetGrid((int) location.x, (int) location.y, debugMessage);
+            return GetGrid((int)location.x, (int)location.y, debugMessage);
         }
 
         // Get Vector3 by Grid
-        public static Vector3 CellToWorld(Grid grid){
+        public static Vector3 CellToWorld(Grid grid)
+        {
             return new Vector3(grid.X, 0, grid.Y);
         }
 
@@ -208,18 +220,18 @@ namespace Adefagia.GridSystem
             //     gridQuad.transform.position = new Vector3(99, 99, 99);
             //     return;
             // }
-            
+
             gridQuad.transform.position = objectHit.transform.position - offset;
         }
 
         #endregion
 
-        
-        
+
+
         private void OnDrawGizmos()
         {
-            var center = (gridSizeX*gridLength + gridSizeY*gridLength) * 0.5f;
-            Gizmos.DrawWireCube(transform.position  + new Vector3(center*0.5f-0.5f,0, center*0.5f-0.5f), new Vector3(center,1,center));
+            var center = (gridSizeX * gridLength + gridSizeY * gridLength) * 0.5f;
+            Gizmos.DrawWireCube(transform.position + new Vector3(center * 0.5f - 0.5f, 0, center * 0.5f - 0.5f), new Vector3(center, 1, center));
         }
     }
 }

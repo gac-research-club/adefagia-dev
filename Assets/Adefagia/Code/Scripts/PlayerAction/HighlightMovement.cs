@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Adefagia.BattleMechanism;
 using Adefagia.GridSystem;
+using Adefagia.RobotSystem;
 using Grid = Adefagia.GridSystem.Grid;
 using UnityEngine;
 
@@ -15,6 +16,9 @@ namespace Adefagia.PlayerAction
         private List<Grid> _tempGrids;
         private List<GameObject> _tempHighlights;
         private GameObject _quad;
+        
+        // Event ketika robot attack
+        public static event Action<RobotController, GridController> OnRobotAttack;
 
         public void Awake()
         {
@@ -45,7 +49,6 @@ namespace Adefagia.PlayerAction
             {
                 return;
             }
-
             var xGrid = grid.X;
             var yGrid = grid.Y;
 
@@ -112,7 +115,7 @@ namespace Adefagia.PlayerAction
                 GridHighlight(xGrid + 2, yGrid + 0);
             }
         }
-        
+
         /*--------------
          *      o
          *    o o o
@@ -155,7 +158,7 @@ namespace Adefagia.PlayerAction
             GridHighlight(xGrid + 0, yGrid + 2);
             GridHighlight(xGrid + 0, yGrid - 2);
         }
-        
+
         /*--------------
          *      o
          *      o
@@ -205,15 +208,15 @@ namespace Adefagia.PlayerAction
         {
             var grid = GameManager.instance.gridManager.GetGrid(x, y);
             if (grid == null) return;
-            
+
             _tempGrids.Add(grid);
 
             var quadDup = Instantiate(_quad, transform);
             quadDup.transform.position = GridManager.CellToWorld(grid);
-            
+
             _tempHighlights.Add(quadDup);
         }
-        
+
         /*----------------------------------------------------------------------
          * Checking grid is on the list of highlight
          *----------------------------------------------------------------------*/

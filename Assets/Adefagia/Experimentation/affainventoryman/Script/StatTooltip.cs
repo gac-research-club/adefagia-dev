@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using System.Text;
 using UnityEngine.UI;
-using UnityEngine;
 using adefagia.CharacterStats;
 
 public class StatTooltip : MonoBehaviour
 {
     [SerializeField] Text StatNameText;
-    [SerializeField] Text StatModifierLabelText;
-    [SerializeField] Text StatModifierText;
+    [SerializeField] Text StatModifiersLabelText;
+    [SerializeField] Text StatModifiersText;
 
     private StringBuilder sb = new StringBuilder();
 
@@ -17,7 +17,7 @@ public class StatTooltip : MonoBehaviour
     {
         StatNameText.text = GetStatTopText(stat, statName);
 
-        StatModifierText.text = GetStatModifiersText(stat);
+        StatModifiersText.text = GetStatModifiersText(stat);
 
         gameObject.SetActive(true);
     }
@@ -41,7 +41,7 @@ public class StatTooltip : MonoBehaviour
 
             if (stat.Value > stat.BaseValue)
                 sb.Append("+");
-
+        
             sb.Append(System.Math.Round(stat.Value - stat.BaseValue, 4));
             sb.Append(")");
         }
@@ -71,7 +71,7 @@ public class StatTooltip : MonoBehaviour
                 sb.Append("%");
             }
 
-            EquippableItem item = mod.Source as EquippableItem;
+            Item item = mod.Source as Item;
 
             if (item != null)
             {
@@ -80,7 +80,7 @@ public class StatTooltip : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Modifier is null");
+                Debug.LogError("Modifier is Not an Item!");
             }
         }
 

@@ -27,7 +27,10 @@ namespace Adefagia.BattleMechanism
         private int _index;
 
         #region Properties
-        public Team Team => team;
+        public Team Team { 
+            get => team;
+            set => team = value;
+        }
         public int TotalRobot => robotControllers.Count;
         public Robot Robot => robotControllerActive.Robot;
         public RobotController RobotController => robotControllerActive;
