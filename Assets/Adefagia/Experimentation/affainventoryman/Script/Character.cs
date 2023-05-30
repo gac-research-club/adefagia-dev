@@ -247,7 +247,26 @@ public class Character : MonoBehaviour
 
     public void ChangeTeam()
     {
+        // listItem = equipmentPanel.ListItem();
+        
+        // foreach (Item item in listItem)
+        // {
+        //     if (item is EquippableItem)
+        //     {
+                
+        //         EquippableItem itemEq = (EquippableItem) item;
+
+                
+        //         if (inventory.CanAddItem(itemEq) && equipmentPanel.RemoveItem(itemEq))
+        //         {            
+        //             itemEq.Unequip(this);
+        //             statPanel.UpdateStatValues();
+        //             // inventory.AddItem(item);
+        //         }
+        //     }    
+        // }
         statPanel.ChangeTeam();
+        // inventory.AddItem(item);
     }
 
     public void ChangeRobotIndex(int index)
@@ -301,7 +320,7 @@ public class Character : MonoBehaviour
             itemCur.Equip(this);
             statPanel.UpdateStatValues();          
         }
-        
+
          
     }
 }

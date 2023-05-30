@@ -188,6 +188,17 @@ public class StatPanel : MonoBehaviour
         return statRobot;
     }
 
+    public Dictionary<String, Item> GetDetailEquipmentTeam(int count){
+        Dictionary<String, Item> statRobot = new Dictionary<String, Item>();
+        // for (int i = 0; i < equipmentSlots.Length; i++)
+        // {
+            // statRobot.Add("helmetId", _teams[count][index].helmetId);
+            // statRobot.Add("armorId", _teams[count][index].armorId);
+            // statRobot.Add("weaponId", _teams[count][index].weaponId);
+        // }
+        return statRobot;
+    }
+
 }
 
 public enum ItemState
