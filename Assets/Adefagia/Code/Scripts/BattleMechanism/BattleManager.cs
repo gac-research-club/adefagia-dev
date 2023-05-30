@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Adefagia.GridSystem;
 using Adefagia.PlayerAction;
-using Adefagia.UI;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 using Random = UnityEngine.Random;
@@ -23,7 +22,7 @@ namespace Adefagia.BattleMechanism
         public static PreparationState preparationState = PreparationState.Nothing;
         public static BattleState battleState = BattleState.Nothing;
 
-        private static HighlightMovement highlightMovement;
+        public static HighlightMovement highlightMovement;
 
         public static TeamController TeamActive { get; set; }
         public static TeamController NextTeam { get; set; }

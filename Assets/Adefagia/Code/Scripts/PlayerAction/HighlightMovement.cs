@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Adefagia.BattleMechanism;
 using Adefagia.GridSystem;
@@ -11,11 +9,15 @@ namespace Adefagia.PlayerAction
 {
     public class HighlightMovement : MonoBehaviour
     {
+        [Header("Prefab highlight with different color")]
         [SerializeField] private GameObject quadMove, quadAttack;
+        
+        [Header("Prefab highlight block when grid occupied")]
+        [SerializeField] private GameObject quadMoveBlock, quadAttackBlock;
 
         private List<Grid> _tempGrids;
         private List<GameObject> _tempHighlights;
-        private GameObject _quad;
+        private GameObject _quad, _quadBlock;
 
         public void Awake()
         {
@@ -45,18 +47,8 @@ namespace Adefagia.PlayerAction
 
             CleanHighlight();
 
-            if (BattleManager.battleState == BattleState.MoveRobot)
-            {
-                _quad = quadMove;
-            }
-            else if (BattleManager.battleState == BattleState.AttackRobot)
-            {
-                _quad = quadAttack;
-            }
-            else
-            {
-                return;
-            }
+            SetQuad();
+            
             var xGrid = grid.X;
             var yGrid = grid.Y;
 
@@ -82,18 +74,7 @@ namespace Adefagia.PlayerAction
 
             CleanHighlight();
 
-            if (BattleManager.battleState == BattleState.MoveRobot)
-            {
-                _quad = quadMove;
-            }
-            else if (BattleManager.battleState == BattleState.AttackRobot)
-            {
-                _quad = quadAttack;
-            }
-            else
-            {
-                return;
-            }
+            SetQuad();
 
             var xGrid = grid.X;
             var yGrid = grid.Y;
@@ -137,18 +118,7 @@ namespace Adefagia.PlayerAction
 
             CleanHighlight();
 
-            if (BattleManager.battleState == BattleState.MoveRobot)
-            {
-                _quad = quadMove;
-            }
-            else if (BattleManager.battleState == BattleState.AttackRobot)
-            {
-                _quad = quadAttack;
-            }
-            else
-            {
-                return;
-            }
+            SetQuad();
 
             var xGrid = grid.X;
             var yGrid = grid.Y;
@@ -180,18 +150,7 @@ namespace Adefagia.PlayerAction
 
             CleanHighlight();
 
-            if (BattleManager.battleState == BattleState.MoveRobot)
-            {
-                _quad = quadMove;
-            }
-            else if (BattleManager.battleState == BattleState.AttackRobot)
-            {
-                _quad = quadAttack;
-            }
-            else
-            {
-                return;
-            }
+            SetQuad();
 
             var xGrid = grid.X;
             var yGrid = grid.Y;
@@ -217,12 +176,40 @@ namespace Adefagia.PlayerAction
             var grid = GameManager.instance.gridManager.GetGrid(x, y);
             if (grid == null) return;
 
+            GameObject quadDup;
+
+            if (grid.Status != GridStatus.Free)
+            {
+                Debug.Log("Grid Obstacle:" + grid);
+                quadDup = Instantiate(_quadBlock, transform);
+            }
+            else
+            {
+                quadDup = Instantiate(_quad, transform);
+            }
+
             _tempGrids.Add(grid);
 
-            var quadDup = Instantiate(_quad, transform);
             quadDup.transform.position = GridManager.CellToWorld(grid);
 
             _tempHighlights.Add(quadDup);
+        }
+        
+        //
+        // Set grid
+        //
+        private void SetQuad()
+        {
+            if (BattleManager.battleState == BattleState.MoveRobot)
+            {
+                _quad = quadMove;
+                _quadBlock = quadMoveBlock;
+            }
+            else if (BattleManager.battleState == BattleState.AttackRobot)
+            {
+                _quad = quadAttack;
+                _quadBlock = quadAttackBlock;
+            }
         }
 
         /*----------------------------------------------------------------------
@@ -231,6 +218,10 @@ namespace Adefagia.PlayerAction
         public bool CheckGridOnHighlight(GridController gridController)
         {
             return _tempGrids.Contains(gridController.Grid);
+        }
+        public bool CheckGridOnHighlight(Grid grid)
+        {
+            return _tempGrids.Contains(grid);
         }
 
         public void CleanHighlight()

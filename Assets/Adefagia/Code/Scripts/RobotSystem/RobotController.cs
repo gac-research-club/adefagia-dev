@@ -127,6 +127,7 @@ namespace Adefagia.RobotSystem
             var current = 0;
             while (Vector3.Distance(transform.position, GridManager.CellToWorld(grids[^1])) > 0.01f)
             {
+
                 var step =  speed * Time.deltaTime; // calculate distance to move
                 transform.position = Vector3.MoveTowards(transform.position, GridManager.CellToWorld(grids[current]), step);
                 
