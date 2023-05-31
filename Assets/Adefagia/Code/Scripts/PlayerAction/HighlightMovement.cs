@@ -48,18 +48,13 @@ namespace Adefagia.PlayerAction
             CleanHighlight();
 
             SetQuad();
-            
-            var xGrid = grid.X;
-            var yGrid = grid.Y;
 
-            GridHighlight(xGrid + 0, yGrid + 1);
-            GridHighlight(xGrid + 0, yGrid - 1);
-            GridHighlight(xGrid - 1, yGrid + 0);
-            GridHighlight(xGrid - 1, yGrid - 1);
-            GridHighlight(xGrid - 1, yGrid + 1);
-            GridHighlight(xGrid + 1, yGrid + 0);
-            GridHighlight(xGrid + 1, yGrid - 1);
-            GridHighlight(xGrid + 1, yGrid + 1);
+            var pattern = 
+                "ooo" +
+                "oro" +
+                "ooo";
+            var origin = new Vector2Int(1, 1);
+            CreateFromPattern(pattern, 3,3, grid.Location, origin);
         }
 
         /*--------------
@@ -120,21 +115,14 @@ namespace Adefagia.PlayerAction
 
             SetQuad();
 
-            var xGrid = grid.X;
-            var yGrid = grid.Y;
-
-            GridHighlight(xGrid + 0, yGrid + 1);
-            GridHighlight(xGrid + 0, yGrid - 1);
-            GridHighlight(xGrid + 1, yGrid + 0);
-            GridHighlight(xGrid - 1, yGrid + 0);
-            GridHighlight(xGrid + 1, yGrid + 1);
-            GridHighlight(xGrid + 1, yGrid - 1);
-            GridHighlight(xGrid - 1, yGrid - 1);
-            GridHighlight(xGrid - 1, yGrid + 1);
-            GridHighlight(xGrid + 2, yGrid + 0);
-            GridHighlight(xGrid - 2, yGrid + 0);
-            GridHighlight(xGrid + 0, yGrid + 2);
-            GridHighlight(xGrid + 0, yGrid - 2);
+            var pattern = 
+                "  o  " +
+                " ooo " +
+                "ooroo" +
+                " ooo " +
+                "  o  ";
+            var origin = new Vector2Int(2, 2); // character 'r'
+            CreateFromPattern(pattern, 5,5, grid.Location, origin);
         }
 
         /*--------------
@@ -233,6 +221,26 @@ namespace Adefagia.PlayerAction
 
             _tempHighlights.Clear();
             _tempGrids.Clear();
+        }
+
+        private void CreateFromPattern(string pattern, int row, int col, Vector2Int position, Vector2Int origin)
+        {
+            int x = 0, y = row-1;
+            foreach (var character in pattern)
+            {
+                // Debug.Log($"({x},{y}): {character}");
+                if (character.Equals('o'))
+                {
+                    GridHighlight(position.x + (x-origin.x), position.y + (y-origin.y));
+                }
+                
+                x++;
+                if (x > col-1)
+                {
+                    y--;
+                    x = 0;
+                }
+            }
         }
 
         public enum TypePattern

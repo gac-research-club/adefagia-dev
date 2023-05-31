@@ -8,14 +8,15 @@ namespace Adefagia.PlayerAction
 {
     public class RobotAttack : MonoBehaviour
     {
+        public static event Action<RobotController> ThingHappened;
+        public static event Action<GridController> ObstacleHitHappened;
 
-        public static Action<RobotController> ThingHappened;
-        
         // robotController = current select
         // gridController = another select robot
         public void Attack(RobotController robotController,GridController gridController)
         {
             ThingHappened?.Invoke(robotController);
+            ObstacleHitHappened?.Invoke(gridController);
             
             if (gridController == null)
             {
@@ -29,6 +30,13 @@ namespace Adefagia.PlayerAction
             robotController.Robot.HasAttack = true;
 
             var grid = gridController.Grid;
+
+            // Attack into Obstacle
+            if (grid.Status == GridStatus.Obstacle)
+            {
+                
+                Debug.Log("Attack Obstacle");
+            }
 
             // if grid is not robot then miss
             if (grid.Status != GridStatus.Robot)

@@ -2,24 +2,26 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
-
 using Adefagia.BattleMechanism;
 using Adefagia.Collections;
 using Adefagia.SelectObject;
+using Adefagia.GridSystem;
+using Random = UnityEngine.Random;
 
-namespace Adefagia.GridSystem
+namespace Adefagia.ObstacleSystem
 {
     public class ObstacleManager : MonoBehaviour
     {
         [SerializeField] private float gridLength = 1;
         [SerializeField] private int gridSizeX, gridSizeY;
 
-        [SerializeField] private List<ObstacleElement> listObstaclePrefab;
+        [Header("ObstacleElement ScriptableObject")]
+        [SerializeField] private List<ObstacleElement> listObstacleObjects;
 
+        [Header("Offset for Obstacle Position")]
         [SerializeField] private Vector3 offset;
 
-        private Dictionary<ObstacleType, ObstacleElement> _obstacleElements;
+        private Dictionary<int, ObstacleElement> _obstacleElements;
         
         private Select _select;
         private GridManager _gridManager;
@@ -49,21 +51,21 @@ namespace Adefagia.GridSystem
             
             // Generate Grids
             GenerateObstacles();
-
             
             BattleManager.ChangeGameState(GameState.Preparation);
         }
 
         private void CreateObstacleElements()
         {
-            _obstacleElements = new Dictionary<ObstacleType, ObstacleElement>();
+            _obstacleElements = new Dictionary<int, ObstacleElement>();
+            
             var duplicateCount = 0;
-            foreach (var obstacleElement in listObstaclePrefab)
+            for (var index = 0; index < listObstacleObjects.Count; index++)
             {
                 try
                 {
-                    if (_obstacleElements.ContainsKey(obstacleElement.obstacleType)) throw new DictionaryDuplicate();
-                    _obstacleElements.Add(obstacleElement.obstacleType, obstacleElement);
+                    if (_obstacleElements.ContainsKey(index)) throw new DictionaryDuplicate();
+                    _obstacleElements.Add(index, listObstacleObjects[index]);
                 }
                 catch (DictionaryDuplicate)
                 {
@@ -81,9 +83,8 @@ namespace Adefagia.GridSystem
          *---------------------------------------------------------------------------------*/
         private void GenerateObstacles(int x, int y)
         {
-            _gridManager = GameManager.instance.gridManager;
+            _gridManager  = GameManager.instance.gridManager;
             _listObstacle = new ObstacleController[x , y];
-            
             
             int numPoints = 12; // change this to the number of points you want to generate
             List<Vector2Int> points = new List<Vector2Int>();
@@ -101,18 +102,20 @@ namespace Adefagia.GridSystem
                 }
             }
 
-
-            // Set all randmo Grid by (x,y)
+            // Set all random Grid by (x,y)
 
             foreach (Vector2Int point in points)
             {
+                var index = Random.Range(0, listObstacleObjects.Count);
+                
                 // Create gameObject of grid
-                var obstacleObject = Instantiate(_obstacleElements[ObstacleType.Solid].prefab, transform);
+                var obstacleObject = Instantiate(_obstacleElements[index].Prefab, transform);
                 obstacleObject.transform.position = new Vector3(point.x * gridLength, 0.3f , point.y * gridLength) + offset;
                 obstacleObject.name = $"Obstacle ({point.x}, {point.y})";
                 
-                // Add Grid Controller
+                // Add Obstacle Controller
                 var obstacleController = obstacleObject.AddComponent<ObstacleController>();
+                obstacleController.ObstacleElement = _obstacleElements[index];
                 obstacleController.Obstacle = new Obstacle(point.x, point.y);
                 obstacleController.Grid = _gridManager.GetGrid(point.x, point.y); 
                 obstacleController.Grid.SetObstacle();
@@ -120,7 +123,6 @@ namespace Adefagia.GridSystem
                 // Add into List grid Object
                 _listObstacle[point.x, point.y] = obstacleController;
             }
-
         }
         private void GenerateObstacles(Vector2 gridSize) => GenerateObstacles((int)gridSize.x, (int)gridSize.y);
         private void GenerateObstacles() => GenerateObstacles(gridSizeX, gridSizeY);
@@ -148,6 +150,7 @@ namespace Adefagia.GridSystem
                 return null;
             }
         }
+
         public ObstacleController GetObstacle(Vector2 location, bool debugMessage = false)
         {
             return GetObstacle((int) location.x, (int) location.y, debugMessage);
@@ -175,16 +178,6 @@ namespace Adefagia.GridSystem
                 return null;
             }
         }
-
-        #region UnityEvent
-
-        public void OnMouseHover(GameObject objectHit)
-        {
-           
-        }
-
-        #endregion
-
     }
 }
 

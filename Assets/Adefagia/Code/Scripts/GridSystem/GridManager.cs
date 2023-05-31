@@ -175,9 +175,9 @@ namespace Adefagia.GridSystem
                 return null;
             }
         }
-        public Grid GetGrid(Vector2 location, bool debugMessage = false)
+        public Grid GetGrid(Vector2Int location, bool debugMessage = false)
         {
-            return GetGrid((int)location.x, (int)location.y, debugMessage);
+            return GetGrid(location.x, location.y, debugMessage);
         }
 
         // Get Vector3 by Grid

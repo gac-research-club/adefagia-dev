@@ -595,7 +595,7 @@ MonoBehaviour:
   mouseRightClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 530493425}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
         m_MethodName: OnMouseClick
         m_Mode: 1
@@ -854,31 +854,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 530493426}
-  - component: {fileID: 530493425}
+  - component: {fileID: 530493429}
   - component: {fileID: 530493427}
   - component: {fileID: 530493428}
   m_Layer: 0
-  m_Name: BattleManager
+  m_Name: BattleManagerTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &530493425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 530493424}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1759359f04ff1764381b3a6da7a196d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  teamA: {fileID: 629306666}
-  teamB: {fileID: 769710307}
-  startingTime: 3000
 --- !u!4 &530493426
 Transform:
   m_ObjectHideFlags: 0
@@ -920,8 +905,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quadMove: {fileID: 4151748587016705385, guid: 0d6f0d69b71c8dd4e8a0b9fbfab135da, type: 3}
   quadAttack: {fileID: 4151748587016705385, guid: c2f2355339260714aa3911d7f6bf5491, type: 3}
-  quadMoveBlock: {fileID: 0}
-  quadAttackBlock: {fileID: 0}
+  quadMoveBlock: {fileID: 4151748587016705385, guid: 546edf17fc5684845891f051b8917fbb, type: 3}
+  quadAttackBlock: {fileID: 4151748587016705385, guid: d6cbdb2ebcfd9a74caf3a2a962220541, type: 3}
+--- !u!114 &530493429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530493424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fd73ec1e8dc15146b6e24d129521215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamA: {fileID: 629306666}
+  teamB: {fileID: 769710307}
+  startingTime: 10
 --- !u!1 &532834094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1934,7 +1934,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 530493425}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
         m_MethodName: SkillChildButtonClick
         m_Mode: 3
@@ -2301,7 +2301,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 530493425}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
         m_MethodName: AttackButtonClick
         m_Mode: 1
@@ -2435,7 +2435,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 530493425}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
         m_MethodName: CancelButtonClick
         m_Mode: 1
@@ -3540,7 +3540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b829ae343a3260438186dc353690e87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  battleManager: {fileID: 530493425}
+  battleManager: {fileID: 0}
   gridManager: {fileID: 164122448}
   uiManager: {fileID: 754895328}
 --- !u!4 &1842012768
@@ -3684,7 +3684,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 530493425}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
         m_MethodName: SkillChildButtonClick
         m_Mode: 3
@@ -3818,7 +3818,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 530493425}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
         m_MethodName: SkillChildButtonClick
         m_Mode: 3
@@ -3999,7 +3999,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 530493425}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
         m_MethodName: EndTurnButtonClick
         m_Mode: 1
@@ -4154,7 +4154,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 530493425}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
         m_MethodName: SkillButtonClick
         m_Mode: 1
@@ -4288,7 +4288,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 530493425}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
         m_MethodName: MoveButtonClick
         m_Mode: 1
