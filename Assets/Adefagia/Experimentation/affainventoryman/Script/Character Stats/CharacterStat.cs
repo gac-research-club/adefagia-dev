@@ -1,22 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using UnityEngine;
 
-namespace adefagia.CharacterStats
+namespace Adefagia.CharacterStats
 {
-
     [Serializable]
     public class CharacterStat
     {
         public float BaseValue;
 
-        //For final Calculate value from Stat Item
-        public virtual float Value
-        {
-            get
-            {
-                if (isDirty || BaseValue != lastBaseValue)
-                {
+        public virtual float Value { 
+            get { 
+                if (isDirty || BaseValue != lastBaseValue) {
                     lastBaseValue = BaseValue;
                     _value = CalculateFinalValue();
                     isDirty = false;
@@ -32,7 +28,6 @@ namespace adefagia.CharacterStats
         protected readonly List<StatModifier> statModifiers;
         public readonly ReadOnlyCollection<StatModifier> StatModifiers;
 
-        //To create Character stat on character panel where statmodifier its just read
         public CharacterStat()
         {
             statModifiers = new List<StatModifier>();
@@ -44,7 +39,6 @@ namespace adefagia.CharacterStats
             BaseValue = baseValue;
         }
 
-        //Add stat from items
         public virtual void AddModifier(StatModifier mod)
         {
             isDirty = true;
@@ -52,7 +46,15 @@ namespace adefagia.CharacterStats
             statModifiers.Sort(CompareModifierOrder);
         }
 
-        //Remove modifier stat from item
+        protected virtual int CompareModifierOrder(StatModifier a, StatModifier b)
+        {
+            if (a.Order < b.Order)
+                return -1;
+            else if (a.Order > b.Order)
+                return 1;
+            return 0;
+        }
+
         public virtual bool RemoveModifier(StatModifier mod)
         {
             if (statModifiers.Remove(mod))
@@ -63,8 +65,6 @@ namespace adefagia.CharacterStats
             return false;
         }
 
-
-        //Remove all modifier from source item
         public virtual bool RemoveAllModifiersFromSource(object source)
         {
             bool didRemove = false;
@@ -81,17 +81,6 @@ namespace adefagia.CharacterStats
             return didRemove;
         }
 
-        //To compare modifier item order
-        protected virtual int CompareModifierOrder(StatModifier a, StatModifier b)
-        {
-            if (a.Order < b.Order)
-                return -1;
-            else if (a.Order > b.Order)
-                return 1;
-            return 0;
-        }
-
-        //Calculate final value from any item on character panel
         protected virtual float CalculateFinalValue()
         {
             float finalValue = BaseValue;
@@ -124,5 +113,4 @@ namespace adefagia.CharacterStats
             return (float)Math.Round(finalValue, 4);
         }
     }
-
 }

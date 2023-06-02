@@ -46,22 +46,43 @@ namespace Adefagia.RobotSystem
             _startPosition = transform.position;
         }
 
+        private void Start()
+        {
+            RobotAttack.ThingHappened += OnThingHappened;
+
+            if (Robot != null)
+            {
+                Robot.Damaged += OnDamaged;
+                Robot.Dead += OnDead;
+            }
+        }
+
         private void Update()
         {
             healthPoint = Robot.CurrentHealth;
             staminaPoint = Robot.CurrentStamina;
-
-            if (Robot.IsDead){
-                Destroy(gameObject);
-            }
         }
 
-        private void OnDestroy()
+        public void OnThingHappened(RobotController robotController)
         {
-            if (_teamController != null)
-            {
-                _teamController.RemoveRobot(this);
-            }
+            if (robotController.GetInstanceID() != GetInstanceID()) return;
+            Debug.Log($"InstanceID: {GetInstanceID()}");
+            Debug.Log($"{robotController.Robot.Name} Attack");
+        }
+
+        public void OnDamaged()
+        {
+            Debug.Log($"InstanceID: {GetInstanceID()}");
+            Debug.Log($"{Robot.Name} Damaged");
+        }
+
+        public void OnDead()
+        {
+            Debug.Log($"InstanceID: {GetInstanceID()}");
+            Debug.Log($"{Robot.Name} Dead");
+            _teamController.RemoveRobot(this);
+            GridController.Grid.SetFree();
+            Destroy(gameObject);
         }
 
         public void SetTeam(TeamController teamController)
@@ -90,6 +111,7 @@ namespace Adefagia.RobotSystem
             var current = 0;
             while (Vector3.Distance(transform.position, GridManager.CellToWorld(grids[^1])) > 0.01f)
             {
+
                 var step =  speed * Time.deltaTime; // calculate distance to move
                 transform.position = Vector3.MoveTowards(transform.position, GridManager.CellToWorld(grids[current]), step);
                 

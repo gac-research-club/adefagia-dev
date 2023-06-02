@@ -15,14 +15,29 @@ namespace Adefagia.RobotSystem
         
         private TeamController _teamController;
 
-        private void Awake()
+        private List<RobotStat> robotSelected;
+        private static int count = 0;
+
+        private TeamManager teamManager;
+        private Team teamSelected;
+
+        private void Start()
         {
             _teamController = GetComponent<TeamController>();
 
             // Initiate Robots
+            teamManager = GameManager.instance.gameObject.GetComponent<TeamManager>();
+            
+            // Change team name
+            teamSelected = new Team(teamManager.teamA.teamName);
+            
+            // Use robot A first
+            robotSelected = teamManager.robotsA;
+
             SpawnRobot();
             
             _teamController.ChooseRobot(0);
+            
         }
 
         /*--------------------------------------------------------------------------------------
@@ -32,7 +47,20 @@ namespace Adefagia.RobotSystem
         private void SpawnRobot()
         {
 
+            if (count > 0)
+            {
+                // after robotA, change to robotB
+                robotSelected = teamManager.robotsB;
+                
+                // Change team name
+                teamSelected = new Team(teamManager.teamB.teamName);
+            }
+            
+            // Change team name
+            _teamController.Team = teamSelected;
+
             List<RobotController> newRobotControllers = new List<RobotController>();
+            
             for (int i = _teamController.TotalRobot-1; i >= 0 ; i--)
             {
                 var dummy = _teamController.GetRobotGameObject(i);
@@ -50,6 +78,16 @@ namespace Adefagia.RobotSystem
                 
                 // Add SkillController to attach on robot
                 var skillController = robotObject.AddComponent<SkillController>();
+                
+                // Find healthBar GameObject
+                var healthBarObject = GameObject.Find($"Robot {i}/Canvas/HealthBar");
+                healthBarObject.name = "HBar Robot " + i;
+
+                // add healthBar GameObject to healthBars List
+                BattleManager.healthBars.Add(healthBarObject);
+
+                // GetComponent<HealthBar> to input healthBar stat
+                var healthBar = healthBarObject.GetComponent<HealthBar>();
 
                 // Set robot the parent of teamController
                 robotController.SetTeam(_teamController);
@@ -57,17 +95,43 @@ namespace Adefagia.RobotSystem
                 // TODO: Make each robot dynamic edited by user
                 
                 // Manual input robot stat
-                robotController.Robot = new Robot(robotObject.name);
+                
+                // Get robot from teamManager
+                var robot = robotSelected[i];
+
+                if (robot == null) return;
+                robotController.Robot = new Robot(
+                    _teamController.Team.teamName + "-" + robotObject.name,
+                    robot.maxHealth,
+                    robot.maxStamina,
+                    robot.damage);
+                
                 robotController.Robot.ID = _teamController.TotalRobot-1 - i;
                 robotController.Robot.Speed = speed;
+                robotController.Robot.TypePattern = robot.weaponId.TypePattern;
+
+                // Skill
+                Skill skill1 = robot.weaponId.WeaponSkill[0];
+                Skill skill2 = robot.weaponId.WeaponSkill[1];
+                
+                // Ultimate Skill
+                Skill skill3 = robot.weaponId.WeaponSkill[2];
 
                 // set skill
-                skillController.Skills.Add(new Skill("FireBall", 30.0f, 30f)); 
-                skillController.Skills.Add(new Skill("Repair", 20.0f, 20f)); 
-                skillController.Skills.Add(new Skill("Nuclear", 50.0f, 80f)); 
+                skillController.Skills.Add(skill1); 
+                skillController.Skills.Add(skill2); 
+                skillController.Skills.Add(skill3); 
                 
                 robotController.SetSkill(skillController);
                 
+                robotController.Robot.healthBar = healthBar;
+
+                // Manual input HealthBar stat
+                healthBar.health = robotController.Robot.MaxHealth;
+                healthBar.maxHealth = robotController.Robot.MaxHealth;
+                healthBar.damage = robotController.Robot.Damage;
+                
+
                 // Edit name
                 // robotController.Robot.Name = robotObject.name;
                 newRobotControllers.Add(robotController);
@@ -77,6 +141,8 @@ namespace Adefagia.RobotSystem
             }
 
             _teamController.ChangeRobotController(newRobotControllers);
+
+            count++;
         }
 
     }

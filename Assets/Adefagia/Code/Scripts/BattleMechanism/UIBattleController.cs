@@ -50,8 +50,8 @@ namespace Adefagia.UI
                 robotNameText.text = robotSelected.Robot.ToString();
                 
                 if(robotSelected.Robot.CurrentStamina <= 0){
-                    DisableButton(buttonAttack);
-                    DisableButton(buttonMove);
+                    // DisableButton(buttonAttack);
+                    // DisableButton(buttonMove);
                     DisableButton(buttonSkill);
                 }else{
                     
