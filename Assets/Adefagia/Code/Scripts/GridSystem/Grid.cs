@@ -24,7 +24,8 @@ namespace Adefagia.GridSystem
         public GridStatus Status { get; private set; }
         public Dictionary<GridDirection, Grid> Neighbors { get; }
         public float Priority { get; set; }
-
+        public Vector2Int Location => new (X, Y);
+ 
         #endregion
 
         #region Constructor
@@ -48,6 +49,7 @@ namespace Adefagia.GridSystem
             {
                 if (grid == null) throw new NullReferenceException("Grid null");
                 
+                // Add neighbor by direction
                 Neighbors.Add(gridDirection, grid);
             }
             // Error null reference
@@ -70,6 +72,10 @@ namespace Adefagia.GridSystem
         public void SetOccupied()
         {
             Status = GridStatus.Robot;
+        }
+
+        public void SetObstacle(){
+            Status = GridStatus.Obstacle;
         }
 
         public void SetFree()

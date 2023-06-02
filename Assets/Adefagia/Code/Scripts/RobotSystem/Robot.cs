@@ -1,11 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
-
-using Adefagia.GridSystem;
+﻿using System;
+using Adefagia.Inventory;
 using Grid = Adefagia.GridSystem.Grid;
-using Adefagia.SelectObject;
-using Adefagia.Collections;
 
 namespace Adefagia.RobotSystem
 {
@@ -15,9 +10,17 @@ namespace Adefagia.RobotSystem
         private float _health;
         private float _stamina;
 
+        #region Constants
+
+        private const float StaminaInitial = 20;
+        private const float StaminaRound = 10;
+
+        #endregion
+
         #region Properties
         
         // Status
+        public HealthBar healthBar {get; set;}
         public int ID { get; set; }
         public string Name { get; }
         public Grid Location => _grid;
@@ -29,27 +32,37 @@ namespace Adefagia.RobotSystem
         public float CurrentStamina => _stamina;
 
         public float Damage { get; }
-        public float DelayMove { get; set; }
+        public float Speed { get; set; }
+        
+        public float Skill { get; }
+
+        public bool IsDead { get; set; }
+        
+        // Pattern Type
+        public TypePattern TypePattern { get; set; }
         
         // Step Status
         public bool HasMove { get; set; }
         public bool HasAttack { get; set; }
-        public bool HasDeffend { get; set; }
+        public bool HasSkill { get; set; }
         
         #endregion
-        
+
+        public event Action Damaged;
+        public event Action Dead;
 
         public Robot(string name)
         {
             Name = name;
             MaxHealth = 100;
-            MaxStamina = 20;
+            MaxStamina = 50;
             _health = MaxHealth;
-            Damage = 10;
-            
+            _stamina = StaminaInitial;
+            Damage = 15;
+            IsDead = false;
+
             //-----------------------
             ResetStepStat();
-            ResetStamina();
         }
         public Robot(string name, float maxHealth, float maxStamina, float damage)
         {
@@ -57,11 +70,12 @@ namespace Adefagia.RobotSystem
             MaxHealth = maxHealth;
             MaxStamina = maxStamina;
             _health = MaxHealth;
+            _stamina = StaminaInitial;
             Damage = damage;
+            IsDead = false;
             
             //-----------------------
             ResetStepStat();
-            ResetStamina();
         }
         
         /*-------------------------------------------------------
@@ -69,12 +83,20 @@ namespace Adefagia.RobotSystem
          *-------------------------------------------------------*/
         public void TakeDamage(float damage)
         {
+            Damaged?.Invoke();
+            
             _health -= damage;
+            if(_health <= 0){
+               IsDead = true;
+               Dead?.Invoke();
+            }
+           
         }
 
-        public void ResetStamina()
+        public void IncreaseStamina()
         {
-            _stamina = MaxStamina;
+            _stamina += StaminaRound;
+            if(_stamina > MaxStamina) _stamina = MaxStamina;
         }
 
         public void DecreaseStamina(float stamina)
@@ -94,18 +116,12 @@ namespace Adefagia.RobotSystem
         {
             HasMove = false;
             HasAttack = false;
-            HasDeffend = false;
+            HasSkill = false;
         }
 
         public override string ToString()
         {
             return $"{Name}";
-        }
-        
-        public enum Stamina {
-            Move = 10,
-            Attack = 10,
-            Deffend = 10
         }
     }
 }

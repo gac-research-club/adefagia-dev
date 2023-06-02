@@ -10,8 +10,11 @@ using Grid = Adefagia.GridSystem.Grid;
 namespace Adefagia.PlayerAction
 {
     public class RobotMovement : MonoBehaviour
-        {
-        public void Move(RobotController robotController, GridController gridController, float delayMove)
+    {
+        public void Move(
+            RobotController robotController, 
+            GridController gridController, 
+            float speed)
         {
             if (gridController == null)
             {
@@ -45,12 +48,13 @@ namespace Adefagia.PlayerAction
             gridController.RobotController = robotController;
 
             // Robot Decrease Stamina            
-            robotController.Robot.DecreaseStamina((float) Robot.Stamina.Move);
+            // robotController.Robot.DecreaseStamina((float) Robot.Stamina.Move);
 
             // Change robot reference to grid
             gridController.RobotController.GridController = gridController;
 
-            StartCoroutine(MovePosition(robotController, directions, delayMove));
+            // StartCoroutine(MovePosition(robotController, directions, delayMove));
+            MovePosition(robotController, directions, speed);
 
             robotController.Robot.ChangeLocation(grid);
             grid.SetOccupied();
@@ -58,18 +62,18 @@ namespace Adefagia.PlayerAction
             // means the robot is considered to move
             robotController.Robot.HasMove = true;
 
-            Debug.Log($"Move to {grid}");
+            // Debug.Log($"Move to {grid}");
+            
+            // write to log text
+            // TeamName - RobotName - Action
+            BattleManager.battleLog.LogStep($"{robotController.TeamController.Team.teamName} " +
+                                            $"- {robotController.Robot.Name} - Move to {grid}");
         }
 
-        private IEnumerator MovePosition(RobotController robotController, List<Grid> grids, float delayMove)
+        private void MovePosition(RobotController robotController, List<Grid> grids, float speed)
         {
-            foreach (var grid in grids)
-            {
-                robotController.MovePosition(grid);
-
-                yield return new WaitForSeconds(delayMove);
-            }
+            StartCoroutine(robotController.MoveRobotPosition(grids, speed));
         }
-}
+    }
  
 }

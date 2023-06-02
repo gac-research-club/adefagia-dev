@@ -8,5 +8,9 @@ namespace Adefagia.BattleMechanism
     {
         public string teamName;
 
+        public Team(string teamName)
+        {
+            this.teamName = teamName;
+        }
     }
 }

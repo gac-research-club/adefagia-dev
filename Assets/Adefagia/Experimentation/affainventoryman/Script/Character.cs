@@ -1,161 +1,211 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using adefagia.CharacterStats;
+using UnityEngine.EventSystems;
+using System;
+using System.Collections.Generic;
+using Adefagia;
+using Adefagia.BattleMechanism;
+using Adefagia.CharacterStats;
+using Adefagia.Inventory;
+using Adefagia.RobotSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class Character : MonoBehaviour
 {
-    public CharacterStat Strength;
-    public CharacterStat Agility;
-    public CharacterStat Intelligence;
-    public CharacterStat Vitality;
+    public int Health  = 100;
+
+    public CharacterStat Attack;
+    public CharacterStat Armor;
 
     [SerializeField] Inventory inventory;
     [SerializeField] EquipmentPanel equipmentPanel;
+    [SerializeField] CraftingWindow craftingWindow;
     [SerializeField] StatPanel statPanel;
     [SerializeField] ItemTooltip itemTooltip;
     [SerializeField] Image draggableItem;
 
-    private ItemSlot draggedSlot;
+    private List<EquippableItem> listItem;
 
+    private BaseItemSlot dragItemSlot;
 
-    //To find itemtooltip when any hover cursor
-    private void OnValidate()
+    // Editor-only function that Unity calls when the script is loaded or a value changes in the Inspector.
+    protected void OnValidate()
     {
         if (itemTooltip == null)
+        {
+            // Find ItemTooltip
             itemTooltip = FindObjectOfType<ItemTooltip>();
+        }
     }
 
-    private void Awake()
+    private void Start()
     {
-        statPanel.SetStats(Strength, Agility, Intelligence, Vitality);
-        statPanel.UpdateStatValue();
+        // Set Status
+        statPanel.SetStats(Attack, Armor);
+        statPanel.UpdateStatValues();
 
-        //Setup Action:
+        //Setup Event
+        inventory.OnRightClickEvent += InventoryRigthClick;
+        equipmentPanel.OnRightClickEvent += EquipmentPanelRightClick;
 
-        //Right Click for Equip and Unequip
-        inventory.OnRightClickEvent += Equip;
-        equipmentPanel.OnRightClickEvent += Unequip;
-
-        //Pointer to show tooltip
         inventory.OnPointerEnterEvent += ShowTooltip;
         equipmentPanel.OnPointerEnterEvent += ShowTooltip;
+        craftingWindow.OnPointerEnterEvent += ShowTooltip;
 
-        //Pointer to hide tooltip
         inventory.OnPointerExitEvent += HideTooltip;
         equipmentPanel.OnPointerExitEvent += HideTooltip;
+        craftingWindow.OnPointerExitEvent += HideTooltip;
 
-        //Begin to Drag object
         inventory.OnBeginDragEvent += BeginDrag;
         equipmentPanel.OnBeginDragEvent += BeginDrag;
 
-        //To end Drag object
         inventory.OnEndDragEvent += EndDrag;
         equipmentPanel.OnEndDragEvent += EndDrag;
 
-        //On Drag event
         inventory.OnDragEvent += Drag;
         equipmentPanel.OnDragEvent += Drag;
 
-        //on Drop event
         inventory.OnDropEvent += Drop;
         equipmentPanel.OnDropEvent += Drop;
+        
+        // Starting robot maxHealth value
+        var teamManager =  GameManager.instance.GetComponent<TeamManager>();
+        
+        // Robots A
+        foreach (var robot in teamManager.robotsA)
+        {
+            robot.maxHealth = Health;
+        }
+        
+        // Robots B
+        foreach (var robot in teamManager.robotsB)
+        {
+            robot.maxHealth = Health;
+        }
+
+        // set variable
+        listItem = new List<EquippableItem>();
     }
 
-    //Equip item for action on item slot
-    private void Equip(ItemSlot itemSlot)
+    private void InventoryRigthClick(BaseItemSlot itemSlot)
     {
-        EquippableItem equippableItem = itemSlot.Item as EquippableItem;
-        if (equippableItem != null)
+        if (itemSlot.Item is EquippableItem)
         {
-            Equip(equippableItem);
+            Equip((EquippableItem)itemSlot.Item);
+            
+        }
+        else if (itemSlot.Item is UsableItem)
+        {
+            UsableItem usableItem = (UsableItem)itemSlot.Item;
+            usableItem.Use(this);
+
+            if (usableItem.IsConsumable)
+            {
+                inventory.RemoveItem(usableItem);
+                usableItem.Destroy();
+            }
         }
     }
 
-    //Unequip item for action on item slot
-    private void Unequip(ItemSlot itemSlot)
+    private void EquipmentPanelRightClick(BaseItemSlot itemSlot)
     {
-        EquippableItem equippableItem = itemSlot.Item as EquippableItem;
-        if (equippableItem != null)
+        if (itemSlot.Item is EquippableItem)
         {
-            Unequip(equippableItem);
+            Unequip((EquippableItem)itemSlot.Item);
         }
     }
 
-    //Show tooltip when cursor hover on item 
-    private void ShowTooltip(ItemSlot itemSlot)
-    {
-        EquippableItem equippableItem = itemSlot.Item as EquippableItem;
-        if (equippableItem != null)
-        {
-            itemTooltip.ShowTooltip(equippableItem);
-        }
-    }
-
-    //When cursor no hit item Tooltip not show
-    private void HideTooltip(ItemSlot itemSlot)
-    {
-        itemTooltip.HideTooltip();
-    }
-
-    //Begin to any able drag Item
-    private void BeginDrag(ItemSlot itemSlot)
+    private void ShowTooltip(BaseItemSlot itemSlot)
     {
         if (itemSlot.Item != null)
         {
-            draggedSlot = itemSlot;
+            itemTooltip.ShowTooltip(itemSlot.Item);
+        }
+    }
+
+    private void HideTooltip(BaseItemSlot itemSlot)
+    {
+        if (itemTooltip.gameObject.activeSelf)
+        {
+            itemTooltip.HideTooltip();
+        }
+    }
+
+    private void BeginDrag(BaseItemSlot itemSlot)
+    {
+        if (itemSlot.Item != null)
+        {
+            dragItemSlot = itemSlot;
             draggableItem.sprite = itemSlot.Item.Icon;
             draggableItem.transform.position = Input.mousePosition;
-            draggableItem.enabled = true;
+            draggableItem.gameObject.SetActive(true);
         }
     }
 
-    //When item dont drag again
-    private void EndDrag(ItemSlot itemSlot)
+    private void Drag(BaseItemSlot itemSlot)
     {
-        draggedSlot = null;
-        draggableItem.enabled = false;
+        draggableItem.transform.position = Input.mousePosition;
     }
 
-    //Item to drag while its clicked
-    private void Drag(ItemSlot itemSlot)
+    private void EndDrag(BaseItemSlot itemSlot)
     {
-        if (draggableItem.enabled)
+        dragItemSlot = null;
+        draggableItem.gameObject.SetActive(false);
+    }
+
+    private void Drop(BaseItemSlot dropItemSlot)
+    {
+        if (dragItemSlot == null) return;
+
+        if (dropItemSlot.CanAddStack(dragItemSlot.Item))
         {
-            draggableItem.transform.position = Input.mousePosition;
-        }
-    }
-
-    //For item while its drop
-    private void Drop(ItemSlot dropItemSlot)
-    {
-        if (dropItemSlot.CanReceiveItem(draggedSlot.Item) && draggedSlot.CanReceiveItem(dropItemSlot.Item))
+            AddStacks(dropItemSlot);
+        }       
+        else if (dropItemSlot.CanReceiveItem(dragItemSlot.Item) && dragItemSlot.CanReceiveItem(dropItemSlot.Item))
         {
-            EquippableItem dragItem = draggedSlot.Item as EquippableItem;
-            EquippableItem dropItem = dropItemSlot.Item as EquippableItem;
-
-            if (draggedSlot is EquipmentSlot)
-            {
-                if (dragItem != null) dragItem.Unequip(this);
-                if (dropItem != null) dropItem.Equip(this);
-            }
-
-            if (dropItemSlot is EquipmentSlot)
-            {
-                if (dragItem != null) dragItem.Equip(this);
-                if (dropItem != null) dropItem.Unequip(this);
-            }
-            statPanel.UpdateStatValue();
-
-            Item draggedItem = draggedSlot.Item;
-            draggedSlot.Item = dropItemSlot.Item;
-            dropItemSlot.Item = draggedItem;
+            SwapItems(dropItemSlot);
         }
     }
 
+    public void SwapItems(BaseItemSlot dropItemSlot)
+    {
+        EquippableItem dragEquipItem  = dragItemSlot.Item as EquippableItem;
+        EquippableItem dropEquipItem  = dropItemSlot.Item as EquippableItem;
 
-    //To equip item or move item from inventory to charcter panel where item type its equippable item
+        if (dragItemSlot is EquipmentSlot)
+        {
+            if (dragEquipItem  != null) dragEquipItem .Unequip(this);
+            if (dropEquipItem  != null) dropEquipItem .Equip(this);
+        }
+
+        if (dropItemSlot is EquipmentSlot)
+        {
+            if (dragEquipItem  != null) dragEquipItem .Equip(this);
+            if (dropEquipItem  != null) dropEquipItem .Unequip(this);
+        }
+        statPanel.UpdateStatValues();
+
+        Item draggedItem = dragItemSlot.Item;
+        int draggedItemAmount = dragItemSlot.Amount;
+
+        dragItemSlot.Item = dropItemSlot.Item;
+        dragItemSlot.Amount = dropItemSlot.Amount;
+
+        dropItemSlot.Item = draggedItem;
+        dropItemSlot.Amount = draggedItemAmount;
+    }
+
+    public void AddStacks(BaseItemSlot dropItemSlot)
+    {
+        int numAddableStacks = dropItemSlot.Item.MaximumStacks - dropItemSlot.Amount;
+        int stacksToAdd = Mathf.Min(numAddableStacks, dragItemSlot.Amount);
+
+        dragItemSlot.Amount -= stacksToAdd;
+        dropItemSlot.RemoveStack(stacksToAdd); 
+    }
+
+    //Check items is Equippable item or not from inventory to place on equipment panel
     public void Equip(EquippableItem item)
     {
         if (inventory.RemoveItem(item))
@@ -167,26 +217,131 @@ public class Character : MonoBehaviour
                 {
                     inventory.AddItem(previousItem);
                     previousItem.Unequip(this);
-                    statPanel.UpdateStatValue();
+                    statPanel.UpdateStatValues();
                 }
                 item.Equip(this);
-                statPanel.UpdateStatValue();
-            }
-            else
+                statPanel.UpdateEquipmentId(item, item.GetItemType());
+                statPanel.UpdateStatValues();
+            } 
+            else 
             {
                 inventory.AddItem(item);
             }
         }
     }
 
-    ////To unequip item from charcter panel where item type its equippable item
     public void Unequip(EquippableItem item)
-    {
-        if (!inventory.IsFull() && equipmentPanel.RemoveItem(item))
-        {
+    {        
+        if (inventory.CanAddItem(item) && equipmentPanel.RemoveItem(item))
+        {            
             item.Unequip(this);
-            statPanel.UpdateStatValue();
+            statPanel.UpdateStatValues();
             inventory.AddItem(item);
+            statPanel.UnequipId(item.GetItemType());
         }
+    }
+
+    public void UpdateStatValues()
+    {
+        statPanel.UpdateStatValues();
+    }
+
+    public void ChangeTeam()
+    {
+        int countTeam = statPanel.GetCurrentTeam();
+
+        List<Dictionary<String, EquippableItem>> listEquipRobot = statPanel.GetDetailEquipmentTeam(countTeam);
+
+        statPanel.ChangeTeam();
+        
+        foreach (Dictionary<String, EquippableItem> equipRobot in listEquipRobot)
+        {
+            if (equipRobot["armorId"] is EquippableItem && inventory.CanAddItem(equipRobot["armorId"]))
+            {
+                EquippableItem armorEquip = (EquippableItem) equipRobot["armorId"];
+                if(equipmentPanel.RemoveItem(armorEquip)){
+                    armorEquip.Unequip(this);
+                    statPanel.UpdateStatValues();
+                };
+                inventory.AddItem(equipRobot["armorId"]);
+            }
+
+            if (equipRobot["weaponId"] is EquippableItem && inventory.CanAddItem(equipRobot["weaponId"]))
+            {   
+                EquippableItem weaponEquip = (EquippableItem) equipRobot["weaponId"];
+                if(equipmentPanel.RemoveItem(weaponEquip)){
+                    weaponEquip.Unequip(this);
+                    statPanel.UpdateStatValues();
+                };
+                inventory.AddItem(equipRobot["weaponId"]);        
+            }
+
+            if (equipRobot["helmetId"] is EquippableItem && inventory.CanAddItem(equipRobot["helmetId"]))
+            {
+                EquippableItem helmetEquip = (EquippableItem) equipRobot["helmetId"];
+                if(equipmentPanel.RemoveItem(helmetEquip)){
+                    helmetEquip.Unequip(this);
+                    statPanel.UpdateStatValues();
+                };
+                inventory.AddItem(equipRobot["helmetId"]);          
+            }
+        }    
+    }
+
+    
+
+    public void ChangeRobotIndex(int index)
+    {
+        listItem = equipmentPanel.ListItem();
+        Dictionary<String, EquippableItem> statRobot = statPanel.GetDetailEquipment(index);
+        statPanel.ChangeRobotIndex(index);
+
+        foreach (EquippableItem item in listItem)
+        {
+            if (item is EquippableItem)
+            {
+                
+                EquippableItem itemEq = (EquippableItem) item;
+
+                
+                if (inventory.CanAddItem(itemEq) && equipmentPanel.RemoveItem(itemEq))
+                {            
+                    itemEq.Unequip(this);
+                    statPanel.UpdateStatValues();
+                    // inventory.AddItem(item);
+                }
+            }    
+        }
+
+        if (statRobot["armorId"] is EquippableItem)
+        {
+    
+            EquippableItem itemCur = (EquippableItem) statRobot["armorId"];
+
+            equipmentPanel.AddItem(itemCur);
+            itemCur.Equip(this);
+            statPanel.UpdateStatValues();          
+        }
+
+        if (statRobot["weaponId"] is EquippableItem)
+        {
+            EquippableItem itemCur = (EquippableItem) statRobot["weaponId"];
+
+            equipmentPanel.AddItem(itemCur);
+            itemCur.Equip(this);
+            statPanel.UpdateStatValues();          
+        }
+
+        if (statRobot["helmetId"] is EquippableItem)
+        {
+
+            EquippableItem itemCur = (EquippableItem) statRobot["helmetId"];
+
+            equipmentPanel.AddItem(itemCur);
+            itemCur.Equip(this);
+            statPanel.UpdateStatValues();          
+        }
+
+         
     }
 }

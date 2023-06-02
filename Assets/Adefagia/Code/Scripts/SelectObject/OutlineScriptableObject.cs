@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using QuickOutline.Outline;
 
 namespace Adefagia.SelectObject
 {

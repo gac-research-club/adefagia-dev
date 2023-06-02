@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-
+using Adefagia.BattleMechanism;
 using UnityEngine;
 
 using Adefagia.GridSystem;
@@ -72,6 +72,9 @@ namespace Adefagia.Collections
                     
                     // neighbor is must grid free
                     if (neighbor.Status != GridStatus.Free) continue;
+                    
+                    // Check if grid out of highlight boundaries
+                    if (!BattleManager.highlightMovement.CheckGridOnHighlight(neighbor)) continue;
                     
                     // Neighbor have not reached, grid ground and not occupied
                     // GridManager.CheckGround(neighbor) && !Reached.Contains(neighbor) && !neighbor.IsOccupied
