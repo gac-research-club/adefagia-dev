@@ -1,97 +1,115 @@
 using UnityEngine;
-using adefagia.CharacterStats;
+using System.Collections.Generic;
+using Adefagia.CharacterStats;
+using Adefagia.RobotSystem;
 
-public enum EquipmentType
+namespace Adefagia.Inventory
 {
-    Top,
-    Body,
-    Weapon,
-}
-
-[CreateAssetMenu(menuName = "Items/Equippable Item")]
-public class EquippableItem : Item
-{
-    // Item stats
-    public int AttackBonus;
-    public int ArmorBonus;
-
-    [Space]
-    public float AttackPercentBonus;
-    public float ArmorPercentBonus;
-    [Space]
-    
-    // Item Type
-    public EquipmentType EquipmentType;
-
-    public override Item GetCopy()
+    public enum EquipmentType
     {
-        // Generate this prefab
-        return Instantiate(this);
+        Top,
+        Body,
+        Weapon,
     }
 
-    public override void Destroy()
+    public enum TypePattern
     {
-        Destroy(this);
+        Surround,
+        Diamond,
+        SmallDiamond,
+        Cross,
     }
 
-    public void Equip(Character c)
+    [CreateAssetMenu(menuName = "Items/Equippable Item")]
+    public class EquippableItem : Item
     {
-        if (AttackBonus != 0)
-            c.Attack.AddModifier(new StatModifier(AttackBonus, StatModType.Flat, this));
-        if (ArmorBonus != 0)
-            c.Armor.AddModifier(new StatModifier(ArmorBonus, StatModType.Flat, this));
+        // Item stats
+        public int AttackBonus;
+        public int ArmorBonus;
 
-        if (AttackPercentBonus != 0)
-            c.Attack.AddModifier(new StatModifier(AttackPercentBonus, StatModType.PercentMult, this));
-        if (ArmorPercentBonus != 0)
-            c.Armor.AddModifier(new StatModifier(ArmorPercentBonus, StatModType.PercentMult, this));
-    }
+        [Space]
+        public float AttackPercentBonus;
+        public float ArmorPercentBonus;
+        [Space]
+        
+        // Item Type
+        public EquipmentType EquipmentType;
 
-    public void Unequip(Character c)
-    {
-        c.Attack.RemoveAllModifiersFromSource(this);
-        c.Armor.RemoveAllModifiersFromSource(this);
-    }
+        public TypePattern TypePattern;
 
-    public override string GetItemType()
-    {
-        return EquipmentType.ToString();
-    }
+        // Skill Type 
+        public List<Skill> WeaponSkill;
 
-
-    public override string GetDescription()
-    {
-        sb.Length = 0;
-        AddStat(AttackBonus, "Attack");
-        AddStat(ArmorBonus, "Armor");
-
-        AddStat(AttackPercentBonus, "Attack", isPercent: true);
-        AddStat(ArmorPercentBonus, "Armor", isPercent: true);
-
-        return sb.ToString();
-    }
-
-    private void AddStat(float value, string statName, bool isPercent = false)
-    {
-        if (value != 0)
+        public override Item GetCopy()
         {
-            if (sb.Length > 0)
-                sb.AppendLine();
+            // Generate this prefab
+            return Instantiate(this);
+        }
 
-            if (value > 0)
-                sb.Append("+");
-            
-            if (isPercent)
+        public override void Destroy()
+        {
+            Destroy(this);
+        }
+
+        public void Equip(Character c)
+        {
+            if (AttackBonus != 0)
+                c.Attack.AddModifier(new StatModifier(AttackBonus, StatModType.Flat, this));
+            if (ArmorBonus != 0)
+                c.Armor.AddModifier(new StatModifier(ArmorBonus, StatModType.Flat, this));
+
+            if (AttackPercentBonus != 0)
+                c.Attack.AddModifier(new StatModifier(AttackPercentBonus, StatModType.PercentMult, this));
+            if (ArmorPercentBonus != 0)
+                c.Armor.AddModifier(new StatModifier(ArmorPercentBonus, StatModType.PercentMult, this));
+        }
+
+        public void Unequip(Character c)
+        {
+            c.Attack.RemoveAllModifiersFromSource(this);
+            c.Armor.RemoveAllModifiersFromSource(this);
+        }
+
+        public override string GetItemType()
+        {
+            return EquipmentType.ToString();
+        }
+
+
+        public override string GetDescription()
+        {
+            sb.Length = 0;
+            AddStat(AttackBonus, "Attack");
+            AddStat(ArmorBonus, "Armor");
+
+            AddStat(AttackPercentBonus, "Attack", isPercent: true);
+            AddStat(ArmorPercentBonus, "Armor", isPercent: true);
+
+            return sb.ToString();
+        }
+
+        private void AddStat(float value, string statName, bool isPercent = false)
+        {
+            if (value != 0)
             {
-                sb.Append(value * 100);
-                sb.Append("% ");
-            } 
-            else 
-            {
-                sb.Append(value);
-                sb.Append(" ");
+                if (sb.Length > 0)
+                    sb.AppendLine();
+
+                if (value > 0)
+                    sb.Append("+");
+                
+                if (isPercent)
+                {
+                    sb.Append(value * 100);
+                    sb.Append("% ");
+                } 
+                else 
+                {
+                    sb.Append(value);
+                    sb.Append(" ");
+                }
+                sb.Append(statName);
             }
-            sb.Append(statName);
         }
     }
 }

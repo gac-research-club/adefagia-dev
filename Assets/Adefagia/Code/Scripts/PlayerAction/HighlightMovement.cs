@@ -204,6 +204,75 @@ namespace Adefagia.PlayerAction
 
         }
 
+
+        /*--------------
+         *      
+         *      o 
+         *    o r o 
+         *      o 
+         *      
+         --------------*/
+        public void SetSmallDiamondMove(Grid grid)
+        {
+            if (grid == null) return;
+
+            CleanHighlight();
+
+            if (BattleManager.battleState == BattleState.MoveRobot)
+            {
+                _quad = quadMove;
+            }
+            else if (BattleManager.battleState == BattleState.AttackRobot)
+            {
+                _quad = quadAttack;
+            }
+            else
+            {
+                return;
+            }
+
+            var xGrid = grid.X;
+            var yGrid = grid.Y;
+
+            GridHighlight(xGrid + 0, yGrid + 1);
+            GridHighlight(xGrid + 0, yGrid - 1);
+            GridHighlight(xGrid + 1, yGrid + 0);
+            GridHighlight(xGrid - 1, yGrid + 0);
+        }
+
+        public void SetCrossMove(Grid grid)
+        {
+            if (grid == null) return;
+
+            CleanHighlight();
+
+            if (BattleManager.battleState == BattleState.MoveRobot)
+            {
+                _quad = quadMove;
+            }
+            else if (BattleManager.battleState == BattleState.AttackRobot)
+            {
+                _quad = quadAttack;
+            }
+            else
+            {
+                return;
+            }
+
+            var xGrid = grid.X;
+            var yGrid = grid.Y;
+
+            GridHighlight(xGrid + 0, yGrid + 1);
+            GridHighlight(xGrid + 0, yGrid - 1);
+            GridHighlight(xGrid + 1, yGrid + 0);
+            GridHighlight(xGrid - 1, yGrid + 0);
+            GridHighlight(xGrid + 2, yGrid + 0);
+            GridHighlight(xGrid - 2, yGrid + 0);
+            GridHighlight(xGrid + 0, yGrid + 2);
+            GridHighlight(xGrid + 0, yGrid - 2);
+        }
+
+
         private void GridHighlight(int x, int y)
         {
             var grid = GameManager.instance.gridManager.GetGrid(x, y);
@@ -216,6 +285,7 @@ namespace Adefagia.PlayerAction
 
             _tempHighlights.Add(quadDup);
         }
+
 
         /*----------------------------------------------------------------------
          * Checking grid is on the list of highlight
@@ -236,11 +306,7 @@ namespace Adefagia.PlayerAction
             _tempGrids.Clear();
         }
 
-        public enum TypePattern
-        {
-            Surround,
-            Diamond,
-        }
+        
     }
 }
 

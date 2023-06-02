@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using adefagia.CharacterStats;
+using Adefagia.CharacterStats;
 
 public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {

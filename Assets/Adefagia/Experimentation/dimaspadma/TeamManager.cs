@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Adefagia.Inventory;
 using Adefagia.BattleMechanism;
 using Adefagia.RobotSystem;
 using UnityEngine;
@@ -24,10 +25,10 @@ public class RobotStat
     public float damage;
     public float armor;
 
-    public Item armorId;
+    public EquippableItem armorId;
 
-    public Item helmetId;
+    public EquippableItem helmetId;
     
-    public Item weaponId;
+    public EquippableItem weaponId;
     
 }

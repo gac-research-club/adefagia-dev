@@ -32,10 +32,10 @@ namespace Adefagia.PlayerAction
                 return;
             }
             
-            robotController.Robot.DecreaseStamina(skill.StaminaReq);
+            robotController.Robot.DecreaseStamina(skill.StaminaRequirement);
 
             // a robot at other grid attacked by the current robot
-            gridController.RobotController.Robot.TakeDamage(skill.Damage);
+            gridController.RobotController.Robot.TakeDamage(skill.Value);
             gridController.RobotController.Robot.healthBar.UpdateHealthBar(gridController.RobotController.Robot.CurrentHealth);
             
             // if grid is robot ally then friendly fire

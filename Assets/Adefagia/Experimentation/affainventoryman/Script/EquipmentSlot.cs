@@ -1,4 +1,6 @@
 
+using Adefagia.Inventory;
+
 public class EquipmentSlot : ItemSlot
 {
 	public EquipmentType EquipmentType;
