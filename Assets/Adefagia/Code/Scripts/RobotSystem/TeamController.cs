@@ -17,6 +17,7 @@ namespace Adefagia.BattleMechanism
         [SerializeField] private List<RobotController> robotControllers;
         [SerializeField] private RobotController robotControllerActive;
         [SerializeField] private RobotController robotControllerSelect;
+        
         [SerializeField] private List<int> _robotDeployed;
 
         // Bound Area
@@ -26,7 +27,10 @@ namespace Adefagia.BattleMechanism
         private int _index;
 
         #region Properties
-        public Team Team => team;
+        public Team Team { 
+            get => team;
+            set => team = value;
+        }
         public int TotalRobot => robotControllers.Count;
         public Robot Robot => robotControllerActive.Robot;
         public RobotController RobotController => robotControllerActive;
@@ -139,12 +143,16 @@ namespace Adefagia.BattleMechanism
         {
             robotControllerActive = robotController;
         }
-
         
-
         public void DeployRobot()
         {
             _robotDeployed.Add(_index);
+            
+            // Disable button select
+            GameManager.instance.uiManager.DisableButtonSelect(_index);
+            
+            // Show ui character select
+            GameManager.instance.uiManager.ShowCharacterSelectCanvas();
         }
 
         public bool IsHasDeployed(Robot robot)
@@ -173,15 +181,20 @@ namespace Adefagia.BattleMechanism
             }
         }
 
-        public void ResetRobotStamina()
+        public void IncreaseRobotStamina()
         {
             robotControllerSelect = null;
             
             // Reset step status each robot
             foreach (var robot in robotControllers)
             {
-                robot.Robot.ResetStamina();
+                robot.Robot.IncreaseStamina();
             }
+        }
+
+        public void RemoveRobot(RobotController inputRobotController)
+        {
+            robotControllers.Remove(inputRobotController);
         }
         
         

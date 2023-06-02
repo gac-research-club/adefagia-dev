@@ -1,102 +1,53 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 using UnityEngine.EventSystems;
+using System;
 
-public class Inventory : MonoBehaviour
+public class Inventory : ItemContainer
 {
-    [SerializeField] List<Item> startingItems;
-    [SerializeField] Transform itemsParent;
-    [SerializeField] ItemSlot[] itemSlots;
+    [SerializeField] private Item[] startingItems;
+    [SerializeField] private Transform itemsParent;
 
-    //Action for itemslot where its any command like below this
-    public event Action<ItemSlot> OnPointerEnterEvent;
-    public event Action<ItemSlot> OnPointerExitEvent;
-    public event Action<ItemSlot> OnRightClickEvent;
-    public event Action<ItemSlot> OnBeginDragEvent;
-    public event Action<ItemSlot> OnEndDragEvent;
-    public event Action<ItemSlot> OnDragEvent;
-    public event Action<ItemSlot> OnDropEvent;
+    public event Action<BaseItemSlot> OnPointerEnterEvent;
+    public event Action<BaseItemSlot> OnPointerExitEvent;
+    public event Action<BaseItemSlot> OnRightClickEvent;
+    public event Action<BaseItemSlot> OnBeginDragEvent;
+    public event Action<BaseItemSlot> OnEndDragEvent;
+    public event Action<BaseItemSlot> OnDragEvent;
+    public event Action<BaseItemSlot> OnDropEvent;
 
-    //For checkin Itemslot where its able to control like ini below command 
     private void Start()
     {
-        for (int i = 0; i < itemSlots.Length; i++)
+        foreach (var itemSlot in itemSlots)
         {
-            itemSlots[i].OnPointerEnterEvent += OnPointerEnterEvent;
-            itemSlots[i].OnPointerExitEvent += OnPointerExitEvent;
-            itemSlots[i].OnRightClickEvent += OnRightClickEvent;
-            itemSlots[i].OnBeginDragEvent += OnBeginDragEvent;
-            itemSlots[i].OnEndDragEvent += OnEndDragEvent;
-            itemSlots[i].OnDragEvent += OnDragEvent;
-            itemSlots[i].OnDropEvent += OnDropEvent;
+            itemSlot.OnPointerEnterEvent += slot => OnPointerEnterEvent?.Invoke(slot);
+            itemSlot.OnPointerExitEvent  += slot => OnPointerExitEvent(slot);
+            itemSlot.OnRightClickEvent   += slot => OnRightClickEvent(slot);
+            itemSlot.OnBeginDragEvent    += slot => OnBeginDragEvent(slot);
+            itemSlot.OnEndDragEvent      += slot => OnEndDragEvent(slot);
+            itemSlot.OnDragEvent         += slot => OnDragEvent(slot);
+            itemSlot.OnDropEvent         += slot => OnDropEvent(slot);
         }
+
         SetStartingItems();
     }
 
-    //For validate where items its in item slot
     private void OnValidate()
     {
         if (itemsParent != null)
+        {
             itemSlots = itemsParent.GetComponentsInChildren<ItemSlot>();
-
+        }
+        
         SetStartingItems();
     }
 
-    //Items ready at start
     private void SetStartingItems()
     {
-        int i = 0;
-        for (; i < startingItems.Count && i < itemSlots.Length; i++)
+        Clear();
+        foreach (var startingItem in startingItems)
         {
-            itemSlots[i].Item = startingItems[i];
+            AddItem(startingItem.GetCopy());
         }
-
-        for (; i < itemSlots.Length; i++)
-        {
-            itemSlots[i].Item = null;
-        }
-    }
-
-    //For adding Item on item slot a.k.a inventory
-    public bool AddItem(Item item)
-    {
-        for (int i = 0; i < itemSlots.Length; i++)
-        {
-            if (itemSlots[i].Item == null)
-            {
-                itemSlots[i].Item = item;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //For Remove item from inventory
-    public bool RemoveItem(Item item)
-    {
-        for (int i = 0; i < itemSlots.Length; i++)
-        {
-            if (itemSlots[i].Item == item)
-            {
-                itemSlots[i].Item = null;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //To check inventory is full or not
-    public bool IsFull()
-    {
-        for (int i = 0; i < itemSlots.Length; i++)
-        {
-            if (itemSlots[i].Item == null)
-            {
-                return false;
-            }
-        }
-        return true;
     }
 }

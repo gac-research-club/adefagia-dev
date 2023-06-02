@@ -1,4 +1,5 @@
-﻿using Adefagia.BattleMechanism;
+﻿using System;
+using Adefagia.BattleMechanism;
 using Adefagia.PlayerAction;
 using Adefagia.GridSystem;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Adefagia.RobotSystem
 {
     [RequireComponent(typeof(RobotMovement))]
     [RequireComponent(typeof(RobotAttack))]
+    [RequireComponent(typeof(RobotSkill))]
     public class RobotController : MonoBehaviour
     {
         [SerializeField] private float healthPoint;
@@ -19,21 +21,45 @@ namespace Adefagia.RobotSystem
         private Vector3 _startPosition;
         private TeamController _teamController;
         
+        private SkillController _skillController;
+
         private RobotMovement _robotMovement;
         private RobotAttack _robotAttack;
+
+        private RobotSkill _robotSkill;
         
         public Robot Robot { get; set; }
+        
         public TeamController TeamController => _teamController;
+        public SkillController SkillController => _skillController;
         public RobotMovement RobotMovement => _robotMovement;
         public RobotAttack RobotAttack => _robotAttack;
+        public RobotSkill RobotSkill => _robotSkill;
         public GridController GridController { get; set; }
 
         private void Awake()
         {
             _robotMovement = GetComponent<RobotMovement>();
             _robotAttack   = GetComponent<RobotAttack>();
+            _robotSkill    = GetComponent<RobotSkill>();
             
             _startPosition = transform.position;
+        }
+
+        private void Start()
+        {
+            // var robotAttack = GetComponent<RobotAttack>();
+            // if (robotAttack != null)
+            // {
+            //     RobotAttack.ThingHappened += OnThingHappened;
+            // }
+            RobotAttack.ThingHappened += OnThingHappened;
+
+            if (Robot != null)
+            {
+                Robot.Damaged += OnDamaged;
+                Robot.Dead += OnDead;
+            }
         }
 
         private void Update()
@@ -41,22 +67,47 @@ namespace Adefagia.RobotSystem
             healthPoint = Robot.CurrentHealth;
             staminaPoint = Robot.CurrentStamina;
 
-            if(Robot.IsDead){
-                Destroy(gameObject);
-            }
-            // If the team is teamActive
-            // if (_teamController == BattleManager.TeamActive && this == _teamController.RobotControllerSelected)
-            // {
-            //     if (Input.GetMouseButtonDown(0))
-            //     {
-            //         Debug.Log(this);
-            //     }
+            // if (Robot.IsDead){
+            //     
+            //     Destroy(gameObject);
             // }
+        }
+
+        private void OnDestroy()
+        {
+            if (_teamController != null)
+            {
+                _teamController.RemoveRobot(this);
+            }
+        }
+
+        public void OnThingHappened(RobotController robotController)
+        {
+            if (robotController.GetInstanceID() != GetInstanceID()) return;
+            Debug.Log($"InstanceID: {GetInstanceID()}");
+            Debug.Log($"{robotController.Robot.Name} Attack");
+        }
+
+        public void OnDamaged()
+        {
+            Debug.Log($"InstanceID: {GetInstanceID()}");
+            Debug.Log($"{Robot.Name} Damaged");
+        }
+
+        public void OnDead()
+        {
+            GridController.Grid.SetObstacle();
+            Debug.Log($"InstanceID: {GetInstanceID()}");
+            Debug.Log($"{Robot.Name} Dead");
         }
 
         public void SetTeam(TeamController teamController)
         {
             _teamController = teamController;
+        }
+
+        public void SetSkill(SkillController skillController){
+            _skillController = skillController;
         }
 
         public void MovePosition(Grid grid)
@@ -76,6 +127,7 @@ namespace Adefagia.RobotSystem
             var current = 0;
             while (Vector3.Distance(transform.position, GridManager.CellToWorld(grids[^1])) > 0.01f)
             {
+
                 var step =  speed * Time.deltaTime; // calculate distance to move
                 transform.position = Vector3.MoveTowards(transform.position, GridManager.CellToWorld(grids[current]), step);
                 
