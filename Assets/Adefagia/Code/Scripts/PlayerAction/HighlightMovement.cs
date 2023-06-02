@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace Adefagia.PlayerAction
 {
+    // TODO : Optimization Highlight Per Pattern By Text Provement, Mechanism
     public class HighlightMovement : MonoBehaviour
     {
         [SerializeField] private GameObject quadMove, quadAttack;
@@ -240,6 +241,13 @@ namespace Adefagia.PlayerAction
             GridHighlight(xGrid - 1, yGrid + 0);
         }
 
+        /*--------------
+         *        o
+         *        o 
+         *    o o r o o
+         *        o 
+         *        o
+         --------------*/
         public void SetCrossMove(Grid grid)
         {
             if (grid == null) return;
