@@ -1,11 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
-
-using Adefagia.GridSystem;
+﻿using System;
+using Adefagia.Inventory;
 using Grid = Adefagia.GridSystem.Grid;
-using Adefagia.SelectObject;
-using Adefagia.Collections;
 
 namespace Adefagia.RobotSystem
 {
@@ -42,13 +37,19 @@ namespace Adefagia.RobotSystem
         public float Skill { get; }
 
         public bool IsDead { get; set; }
+        
+        // Pattern Type
+        public TypePattern TypePattern { get; set; }
+        
         // Step Status
         public bool HasMove { get; set; }
         public bool HasAttack { get; set; }
         public bool HasSkill { get; set; }
         
         #endregion
-        
+
+        public event Action Damaged;
+        public event Action Dead;
 
         public Robot(string name)
         {
@@ -82,9 +83,12 @@ namespace Adefagia.RobotSystem
          *-------------------------------------------------------*/
         public void TakeDamage(float damage)
         {
+            Damaged?.Invoke();
+            
             _health -= damage;
             if(_health <= 0){
                IsDead = true;
+               Dead?.Invoke();
             }
            
         }

@@ -7,5 +7,10 @@ namespace Adefagia.BattleMechanism
     public class Team
     {
         public string teamName;
+
+        public Team(string teamName)
+        {
+            this.teamName = teamName;
+        }
     }
 }

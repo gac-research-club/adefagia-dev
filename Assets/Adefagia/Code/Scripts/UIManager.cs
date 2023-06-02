@@ -16,6 +16,12 @@ namespace Adefagia
 
         private void Awake()
         {
+            // Set into gameManager
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.uiManager = this;
+            }
+            
             HideCanvasUI(finishCanvas);
             HideBattleUI();
             
