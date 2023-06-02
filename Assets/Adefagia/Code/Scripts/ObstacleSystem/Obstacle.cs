@@ -1,20 +1,11 @@
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-
-using Adefagia.SelectObject;
-using Adefagia.RobotSystem;
-
-namespace Adefagia.GridSystem
+namespace Adefagia.ObstacleSystem
 {
-  
     public class Obstacle
     {
         #region Properties
-        
         public int X { get; }
         public int Y { get; }
-    
+        
         #endregion
 
         #region Constructor
@@ -30,10 +21,11 @@ namespace Adefagia.GridSystem
 
         #endregion
 
+        
 
         public override string ToString()
         {
-            return $"Obstacle (,)";
+            return $"Obstacle ({X},{Y})";
         }
     }
 

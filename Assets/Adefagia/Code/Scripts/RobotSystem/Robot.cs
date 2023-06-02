@@ -1,8 +1,5 @@
 ﻿using System;
-using Adefagia.Code.Scripts.BattleMechanism;
-using Adefagia.PlayerAction;
 using Adefagia.Inventory;
-using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 
 namespace Adefagia.RobotSystem
@@ -50,7 +47,10 @@ namespace Adefagia.RobotSystem
         public bool HasSkill { get; set; }
         
         #endregion
-        
+
+        public event Action Damaged;
+        public event Action Dead;
+
         public Robot(string name)
         {
             Name = name;
@@ -83,16 +83,16 @@ namespace Adefagia.RobotSystem
          *-------------------------------------------------------*/
         public void TakeDamage(float damage)
         {
+            Damaged?.Invoke();
+            
             _health -= damage;
-            if (_health <= 0)
-            {
-                IsDead = true;
+            if(_health <= 0){
+               IsDead = true;
+               Dead?.Invoke();
             }
+           
         }
 
-        /*-------------------------------------------------------
-         * Stamina method
-         *-------------------------------------------------------*/
         public void IncreaseStamina()
         {
             _stamina += StaminaRound;

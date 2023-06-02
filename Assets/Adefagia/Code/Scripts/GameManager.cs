@@ -17,6 +17,9 @@ namespace Adefagia
         public GridManager gridManager;
         public UIManager uiManager;
 
+        [Header("For testing only")] 
+        public BattleManagerTest BattleManagerTest;
+
         private void Awake()
         {
             Singleton();
