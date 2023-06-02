@@ -49,29 +49,23 @@ public class Character : MonoBehaviour
         inventory.OnRightClickEvent += InventoryRigthClick;
         equipmentPanel.OnRightClickEvent += EquipmentPanelRightClick;
 
-        //Pointer to show tooltip
         inventory.OnPointerEnterEvent += ShowTooltip;
         equipmentPanel.OnPointerEnterEvent += ShowTooltip;
         craftingWindow.OnPointerEnterEvent += ShowTooltip;
 
-        //Pointer to hide tooltip
         inventory.OnPointerExitEvent += HideTooltip;
         equipmentPanel.OnPointerExitEvent += HideTooltip;
         craftingWindow.OnPointerExitEvent += HideTooltip;
 
-        //Begin to Drag object
         inventory.OnBeginDragEvent += BeginDrag;
         equipmentPanel.OnBeginDragEvent += BeginDrag;
 
-        //To end Drag object
         inventory.OnEndDragEvent += EndDrag;
         equipmentPanel.OnEndDragEvent += EndDrag;
 
-        //On Drag event
         inventory.OnDragEvent += Drag;
         equipmentPanel.OnDragEvent += Drag;
 
-        //on Drop event
         inventory.OnDropEvent += Drop;
         equipmentPanel.OnDropEvent += Drop;
         
@@ -236,7 +230,6 @@ public class Character : MonoBehaviour
         }
     }
 
-    ////To unequip item from charcter panel where item type its equippable item
     public void Unequip(EquippableItem item)
     {        
         if (inventory.CanAddItem(item) && equipmentPanel.RemoveItem(item))
