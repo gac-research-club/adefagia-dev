@@ -24,7 +24,8 @@ namespace Adefagia.GridSystem
         public GridStatus Status { get; private set; }
         public Dictionary<GridDirection, Grid> Neighbors { get; }
         public float Priority { get; set; }
-
+        public Vector2Int Location => new (X, Y);
+ 
         #endregion
 
         #region Constructor

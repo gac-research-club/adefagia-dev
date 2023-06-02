@@ -11,7 +11,10 @@ namespace Adefagia.PlayerAction
 {
     public class RobotMovement : MonoBehaviour
     {
-        public void Move(RobotController robotController, GridController gridController, float speed)
+        public void Move(
+            RobotController robotController, 
+            GridController gridController, 
+            float speed)
         {
             if (gridController == null)
             {
@@ -59,7 +62,7 @@ namespace Adefagia.PlayerAction
             // means the robot is considered to move
             robotController.Robot.HasMove = true;
 
-            Debug.Log($"Move to {grid}");
+            // Debug.Log($"Move to {grid}");
             
             // write to log text
             // TeamName - RobotName - Action
