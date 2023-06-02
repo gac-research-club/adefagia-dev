@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Adefagia.GridSystem;
 using Adefagia.PlayerAction;
+using Adefagia.RobotSystem;
+using Adefagia.Inventory;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 using Random = UnityEngine.Random;
@@ -11,8 +13,6 @@ namespace Adefagia.BattleMechanism
 {
     public class BattleManager : MonoBehaviour
     {
-        private const string DataKey = "GameData";
-
         [SerializeField] private TeamController teamA, teamB;
         [SerializeField] private float startingTime = 10f;
         public static List<GameObject> healthBars;
@@ -80,13 +80,7 @@ namespace Adefagia.BattleMechanism
 
                     // Change team Active
                     ChangeTeam();
-                    Dictionary<string, string> statRobot = LoadData();
-                    // Debug.Log("Total data: " + statRobot.Count);
-                    foreach (var stat in statRobot)
-                    {
-                        Debug.Log(stat.Key + ": " + stat.Value);
-                    }
-
+                    
                     // If 2 team has finishing deploy
                     if (TeamActive.IsHasFinishDeploy())
                     {
@@ -271,8 +265,7 @@ namespace Adefagia.BattleMechanism
         public void TeamWin(TeamController teamController)
         {
             Debug.Log($"Team {teamController.Team.teamName} is Winning");
-
-
+            
             ChangeBattleState(BattleState.Nothing);
             ChangeGameState(GameState.Finish);
 
@@ -454,15 +447,18 @@ namespace Adefagia.BattleMechanism
             // change to move robot
             ChangeBattleState(BattleState.MoveRobot);
 
-            // highlight grid movement
-            //highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            //highlightMovement.ThreeFrontRow(TeamActive);
-            highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            //highlightMovement.SetTankRow(TeamActive);
+            // highlight grid movement  by weapon type pattern
+            Robot robot = TeamActive.RobotControllerSelected.Robot;
+            if(robot.TypePattern == TypePattern.Cross){
+                highlightMovement.SetSmallDiamondMove(robot.Location);
+            }else if(robot.TypePattern == TypePattern.SmallDiamond){
+                highlightMovement.SetCrossMove(robot.Location);
+            }else{
+                highlightMovement.SetSurroundMove(robot.Location);
+            };
 
             // Running Function Move from RobotMovement.cs
-
-            // Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Move");
+            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Move");
         }
 
         /*----------------------------------------------------------------------
@@ -473,15 +469,18 @@ namespace Adefagia.BattleMechanism
             // change to move robot
             ChangeBattleState(BattleState.AttackRobot);
 
-            // highlight grid movement
-            highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            //highlightMovement.ThreeFrontRow(TeamActive);
-            //highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            //highlightMovement.SetTankRow(TeamActive);
+            
+            // highlight grid attack  by weapon type pattern
+            Robot robot = TeamActive.RobotControllerSelected.Robot;
+            if(robot.TypePattern == TypePattern.Cross){
+                highlightMovement.SetSmallDiamondMove(robot.Location);
+            }else if(robot.TypePattern == TypePattern.SmallDiamond){
+                highlightMovement.SetCrossMove(robot.Location);
+            }else{
+                highlightMovement.SetSurroundMove(robot.Location);
+            };
 
-            // Running Function Attack from RobotAttack.cs
-            // Debug.Log("17.6");
-            // Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
+            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
         }
 
         public void SkillButtonClick()
@@ -529,20 +528,6 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.SelectRobot);
 
             highlightMovement.CleanHighlight();
-        }
-
-        // Mengambil data dari PlayerPrefs
-        public static Dictionary<string, string> LoadData()
-        {
-            if (PlayerPrefs.HasKey(DataKey))
-            {
-                string jsonData = PlayerPrefs.GetString(DataKey);
-                return JsonUtility.FromJson<Dictionary<string, string>>(jsonData);
-            }
-            else
-            {
-                return new Dictionary<string, string>();
-            }
         }
 
         #endregion
