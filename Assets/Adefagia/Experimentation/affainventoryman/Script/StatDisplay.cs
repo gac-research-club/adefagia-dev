@@ -3,35 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using adefagia.CharacterStats;
+using Adefagia.CharacterStats;
 
 public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    private const string DataKey = "GameData";
     private CharacterStat _stat;
-    public CharacterStat Stat
-    {
+    public CharacterStat Stat {
         get { return _stat; }
-        set
-        {
+        set {
             _stat = value;
             UpdateStatValue();
         }
     }
 
+    public string robotSelect = "0";
+    
+
     private string _name;
-    public string Name
-    {
+    public string Name {
         get { return _name; }
-        set
-        {
+        set {
             _name = value;
             nameText.text = _name.ToLower();
         }
     }
 
-    [SerializeField] Text nameText;
-    [SerializeField] Text valueText;
-    [SerializeField] StatTooltip tooltip;
+    [SerializeField] private Text nameText;
+    [SerializeField] private Text valueText;
+    [SerializeField] private StatTooltip tooltip;
+
+    public void setRobotSelect(string idRobot){
+        robotSelect = idRobot;
+    }
 
     private void OnValidate()
     {
@@ -45,9 +49,7 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-
         tooltip.ShowTooltip(Stat, Name);
-
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -58,7 +60,15 @@ public class StatDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void UpdateStatValue()
     {
         valueText.text = _stat.Value.ToString();
+        
     }
+
+    
 }
 
-
+class DataState : MonoBehaviour
+{
+    public string robot;
+    public string type;
+    public string value;
+}
