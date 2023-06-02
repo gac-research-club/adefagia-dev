@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using adefagia.CharacterStats;
+using Adefagia.CharacterStats;
 
 [CreateAssetMenu(menuName = "Item Effects/Stat Buff")]
 public class StatBuffItemEffect : UsableItemEffect

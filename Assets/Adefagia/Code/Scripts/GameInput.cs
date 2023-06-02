@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace adefagia.Adefgia.Code.Scripts
+namespace Adefagia.Adefgia.Code.Scripts
 {
     public class GameInput : MonoBehaviour
     {

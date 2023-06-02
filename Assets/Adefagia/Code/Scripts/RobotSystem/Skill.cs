@@ -1,33 +1,36 @@
 using UnityEngine;
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-
-using Adefagia.GridSystem;
-using Grid = Adefagia.GridSystem.Grid;
-using Adefagia.SelectObject;
-using Adefagia.Collections;
 
 namespace Adefagia.RobotSystem
 {
+    [Serializable]    
     public class Skill
     {
        
         #region Properties
         
         // Status
-        public string Name { get; }
+        public string Name;
         
-        public float StaminaReq { get; }
+        public float StaminaRequirement;
         
-        public float Damage { get; }
+        public float Value;
+
+        public bool IsUltimate;
+
+        public SkillType skillType;
 
         #endregion
 
-        public Skill(string name, float staminaReq, float damage){
-            Name = name;
-            StaminaReq = staminaReq;
-            Damage = damage;
+        public enum SkillType{
+            Damage,
+            Heal,
+            AttackBuff,
+            DeffendBuff,
         }
 
+        
     }
 }

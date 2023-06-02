@@ -1,6 +1,7 @@
 ﻿using System;
 using Adefagia.Code.Scripts.BattleMechanism;
 using Adefagia.PlayerAction;
+using Adefagia.Inventory;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 
@@ -39,6 +40,10 @@ namespace Adefagia.RobotSystem
         public float Skill { get; }
 
         public bool IsDead { get; set; }
+        
+        // Pattern Type
+        public TypePattern TypePattern { get; set; }
+        
         // Step Status
         public bool HasMove { get; set; }
         public bool HasAttack { get; set; }
@@ -46,7 +51,6 @@ namespace Adefagia.RobotSystem
         
         #endregion
         
-
         public Robot(string name)
         {
             Name = name;

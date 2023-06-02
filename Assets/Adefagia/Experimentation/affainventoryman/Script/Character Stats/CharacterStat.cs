@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
-namespace adefagia.CharacterStats
+namespace Adefagia.CharacterStats
 {
     [Serializable]
     public class CharacterStat

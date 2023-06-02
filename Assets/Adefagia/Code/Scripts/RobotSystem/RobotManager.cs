@@ -108,11 +108,19 @@ namespace Adefagia.RobotSystem
                 
                 robotController.Robot.ID = _teamController.TotalRobot-1 - i;
                 robotController.Robot.Speed = speed;
+                robotController.Robot.TypePattern = robot.weaponId.TypePattern;
+
+                // Skill
+                Skill skill1 = robot.weaponId.WeaponSkill[0];
+                Skill skill2 = robot.weaponId.WeaponSkill[1];
+                
+                // Ultimate Skill
+                Skill skill3 = robot.weaponId.WeaponSkill[2];
 
                 // set skill
-                skillController.Skills.Add(new Skill("FireBall", 30.0f, 30f)); 
-                skillController.Skills.Add(new Skill("Repair", 20.0f, 20f)); 
-                skillController.Skills.Add(new Skill("Nuclear", 50.0f, 80f)); 
+                skillController.Skills.Add(skill1); 
+                skillController.Skills.Add(skill2); 
+                skillController.Skills.Add(skill3); 
                 
                 robotController.SetSkill(skillController);
                 

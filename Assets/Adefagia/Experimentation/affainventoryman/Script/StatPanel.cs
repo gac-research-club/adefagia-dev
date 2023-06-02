@@ -2,9 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Adefagia;
+using Adefagia.Inventory;
 using Adefagia.BattleMechanism;
 using UnityEngine;
-using adefagia.CharacterStats;
+using Adefagia.CharacterStats;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -117,7 +118,7 @@ public class StatPanel : MonoBehaviour
         }
     }
     
-    public void UpdateEquipmentId(Item item, string type){    
+    public void UpdateEquipmentId(EquippableItem item, string type){    
         if(type == EquipmentType.Top.ToString()){
             
             // Update helmet id
@@ -169,7 +170,10 @@ public class StatPanel : MonoBehaviour
             SceneManager.LoadScene("DimasTesting");
         }
         
-        
+    }
+
+    public int GetCurrentTeam(){
+        return countTeam;
     }
 
     public void ChangeRobotIndex(int index)
@@ -178,8 +182,8 @@ public class StatPanel : MonoBehaviour
         characterName.text = "Robot " + indexRobot.ToString() + " | Team " + GetTeamName() ;
     }
 
-    public Dictionary<String, Item> GetDetailEquipment(int index){
-        Dictionary<String, Item> statRobot = new Dictionary<String, Item>();
+    public Dictionary<String, EquippableItem> GetDetailEquipment(int index){
+        Dictionary<String, EquippableItem> statRobot = new Dictionary<String, EquippableItem>();
         
         statRobot.Add("helmetId", _teams[countTeam][index].helmetId);
         statRobot.Add("armorId", _teams[countTeam][index].armorId);
@@ -188,15 +192,22 @@ public class StatPanel : MonoBehaviour
         return statRobot;
     }
 
-    public Dictionary<String, Item> GetDetailEquipmentTeam(int count){
-        Dictionary<String, Item> statRobot = new Dictionary<String, Item>();
-        // for (int i = 0; i < equipmentSlots.Length; i++)
-        // {
-            // statRobot.Add("helmetId", _teams[count][index].helmetId);
-            // statRobot.Add("armorId", _teams[count][index].armorId);
-            // statRobot.Add("weaponId", _teams[count][index].weaponId);
-        // }
-        return statRobot;
+    public List<Dictionary<String, EquippableItem>> GetDetailEquipmentTeam(int count){
+        
+        List<Dictionary<String, EquippableItem>> listStatRobot = new List<Dictionary<String, EquippableItem>>();
+        
+        for (int index = 0; index < 3; index++)
+        {
+            Dictionary<String, EquippableItem> statRobot = new Dictionary<String, EquippableItem>();
+            
+            statRobot.Add("helmetId", _teams[count][index].helmetId);
+            statRobot.Add("armorId", _teams[count][index].armorId);
+            statRobot.Add("weaponId", _teams[count][index].weaponId);
+
+            listStatRobot.Add(statRobot);
+        }
+
+        return listStatRobot;
     }
 
 }

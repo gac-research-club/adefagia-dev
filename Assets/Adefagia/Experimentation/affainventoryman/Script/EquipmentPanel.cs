@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Adefagia.Inventory;
 using UnityEngine;
 using System;
 
@@ -63,13 +64,14 @@ public class EquipmentPanel : MonoBehaviour
         return false;
     }
 
-    public List<Item> ListItem(){
-        List<Item> listItem = new List<Item>();
+    public List<EquippableItem> ListItem(){
+        List<EquippableItem> listItem = new List<EquippableItem>();
         for (int i = 0; i < equipmentSlots.Length; i++)
         {
             if (equipmentSlots[i].Item)
             {
-                listItem.Add(equipmentSlots[i].Item);
+                EquippableItem equipItem = (EquippableItem) equipmentSlots[i].Item;
+                listItem.Add(equipItem);
             }
         }
         return listItem;

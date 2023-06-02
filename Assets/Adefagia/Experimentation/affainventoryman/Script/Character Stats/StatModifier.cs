@@ -1,4 +1,4 @@
-namespace adefagia.CharacterStats
+namespace Adefagia.CharacterStats
 {
 public enum StatModType
     {

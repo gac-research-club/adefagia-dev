@@ -5,6 +5,7 @@ using Adefagia.Code.Scripts.BattleMechanism;
 using Adefagia.GridSystem;
 using Adefagia.PlayerAction;
 using Adefagia.RobotSystem;
+using Adefagia.Inventory;
 using Adefagia.UI;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
@@ -455,14 +456,17 @@ namespace Adefagia.BattleMechanism
             // change to move robot
             ChangeBattleState(BattleState.MoveRobot);
 
-            // highlight grid movement
-            // highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            // highlightMovement.ThreeFrontRow(TeamActive);
-            highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            // highlightMovement.SetTankRow(TeamActive);
+            // highlight grid movement  by weapon type pattern
+            Robot robot = TeamActive.RobotControllerSelected.Robot;
+            if(robot.TypePattern == TypePattern.Cross){
+                highlightMovement.SetSmallDiamondMove(robot.Location);
+            }else if(robot.TypePattern == TypePattern.SmallDiamond){
+                highlightMovement.SetCrossMove(robot.Location);
+            }else{
+                highlightMovement.SetSurroundMove(robot.Location);
+            };
 
             // Running Function Move from RobotMovement.cs
-
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Move");
         }
 
@@ -474,16 +478,20 @@ namespace Adefagia.BattleMechanism
             // change to move robot
             ChangeBattleState(BattleState.AttackRobot);
 
-            // highlight grid movement
-            highlightMovement.SetSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            // highlightMovement.ThreeFrontRow(TeamActive);
-            // highlightMovement.SetDiamondSurroundMove(TeamActive.RobotControllerSelected.Robot.Location);
-            // highlightMovement.SetTankRow(TeamActive);
+            
+            // highlight grid attack  by weapon type pattern
+            Robot robot = TeamActive.RobotControllerSelected.Robot;
+            if(robot.TypePattern == TypePattern.Cross){
+                highlightMovement.SetSmallDiamondMove(robot.Location);
+            }else if(robot.TypePattern == TypePattern.SmallDiamond){
+                highlightMovement.SetCrossMove(robot.Location);
+            }else{
+                highlightMovement.SetSurroundMove(robot.Location);
+            };
 
-            // Running Function Attack from RobotAttack.cs
-            // Debug.Log("17.6");
-            // Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
+            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");
         }
+        
         public void SkillButtonClick()
         {
             // change to defend robot
