@@ -48,11 +48,6 @@ namespace Adefagia.RobotSystem
 
         private void Start()
         {
-            // var robotAttack = GetComponent<RobotAttack>();
-            // if (robotAttack != null)
-            // {
-            //     RobotAttack.ThingHappened += OnThingHappened;
-            // }
             RobotAttack.ThingHappened += OnThingHappened;
 
             if (Robot != null)
@@ -66,19 +61,6 @@ namespace Adefagia.RobotSystem
         {
             healthPoint = Robot.CurrentHealth;
             staminaPoint = Robot.CurrentStamina;
-
-            // if (Robot.IsDead){
-            //     
-            //     Destroy(gameObject);
-            // }
-        }
-
-        private void OnDestroy()
-        {
-            if (_teamController != null)
-            {
-                _teamController.RemoveRobot(this);
-            }
         }
 
         public void OnThingHappened(RobotController robotController)
@@ -96,9 +78,11 @@ namespace Adefagia.RobotSystem
 
         public void OnDead()
         {
-            GridController.Grid.SetObstacle();
             Debug.Log($"InstanceID: {GetInstanceID()}");
             Debug.Log($"{Robot.Name} Dead");
+            _teamController.RemoveRobot(this);
+            GridController.Grid.SetFree();
+            Destroy(gameObject);
         }
 
         public void SetTeam(TeamController teamController)
