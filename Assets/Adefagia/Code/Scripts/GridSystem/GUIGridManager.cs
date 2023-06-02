@@ -19,7 +19,8 @@ namespace Adefagia.UI
             {
                 // Show what grid is hover
                 var grid = _gridManager.GetGrid();
-                text = $"Grid ({grid.X}, {grid.Y})";
+                text = $"Grid ({grid.X}, {grid.Y})\n" +
+                       $"{grid.Status.ToString()}";
             }
             catch (NullReferenceException)
             {

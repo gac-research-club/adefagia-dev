@@ -1,5 +1,6 @@
 ﻿using System;
 using Adefagia.BattleMechanism;
+using Adefagia.RobotSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,9 +14,10 @@ namespace Adefagia.UI
         
         [SerializeField] private Button buttonMove;
         [SerializeField] private Button buttonAttack;
-        [SerializeField] private Button buttonDeffend;
+        [SerializeField] private Button buttonSkill;
         [SerializeField] private Button cancelButton;
         
+        [SerializeField] private GameObject listSkill;
         
         // TODO: disable button Move
         private void Update()
@@ -24,14 +26,21 @@ namespace Adefagia.UI
             {
 
                 if (BattleManager.battleState == BattleState.MoveRobot ||
-                    BattleManager.battleState == BattleState.AttackRobot)
+                    BattleManager.battleState == BattleState.AttackRobot || 
+                    BattleManager.battleState == BattleState.SkillRobot ||
+                    BattleManager.battleState == BattleState.SkillSelectionRobot)
                 {
                     ShowButton(cancelButton);
+                    if (BattleManager.battleState == BattleState.SkillRobot || BattleManager.battleState == BattleState.SkillSelectionRobot){
+                        ShowButton(listSkill);
+                    }
                 }
                 else
                 {
                     HideButton(cancelButton);
+                    HideButton(listSkill);
                 }
+
 
                 var robotSelected = BattleManager.TeamActive.RobotControllerSelected;
                 
@@ -41,9 +50,9 @@ namespace Adefagia.UI
                 robotNameText.text = robotSelected.Robot.ToString();
                 
                 if(robotSelected.Robot.CurrentStamina <= 0){
-                    DisableButton(buttonAttack);
-                    DisableButton(buttonMove);
-                    DisableButton(buttonDeffend);
+                    // DisableButton(buttonAttack);
+                    // DisableButton(buttonMove);
+                    DisableButton(buttonSkill);
                 }else{
                     
                     // Disable if robot has moved
@@ -66,13 +75,13 @@ namespace Adefagia.UI
                         EnableButton(buttonAttack);
                     }
 
-                    if (robotSelected.Robot.HasDeffend)
+                    if (robotSelected.Robot.HasSkill)
                     {
-                        DisableButton(buttonDeffend);
+                        DisableButton(buttonSkill);
                     }
                     else
                     {
-                        EnableButton(buttonDeffend);
+                        EnableButton(buttonSkill);
                     }
                     
                 }
@@ -105,6 +114,33 @@ namespace Adefagia.UI
         {
             button.gameObject.SetActive(false);
         }
+
+        private void ShowButton(GameObject buttonList)
+        {
+            buttonList.SetActive(true);
+            var robotSelected = BattleManager.TeamActive.RobotControllerSelected;
+
+                
+            // if Robot haven't selected than return
+            if (robotSelected == null) return;
+
+            for (int i = 0; i < 3 ; i++){
+                Button buttonSkill = buttonList.transform.GetChild(i).GetComponent<Button>();
+                TextMeshProUGUI buttonText = buttonSkill.GetComponentInChildren<TextMeshProUGUI>();
+
+                Skill _skill = robotSelected.SkillController.ChooseSkill(i);
+            
+
+                // TODO : Change button text;
+                buttonText.text = _skill.Name;
+            }
+        }
+        
+        private void HideButton(GameObject buttonList)
+        {
+            buttonList.SetActive(false);
+        }
+
         
     }
 }

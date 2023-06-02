@@ -1,4 +1,5 @@
 ﻿using System;
+using Adefagia.ObstacleSystem;
 using UnityEngine;
 
 using Adefagia.RobotSystem;

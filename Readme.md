@@ -1,7 +1,5 @@
 # Adefagia
 
-[![GitHub Super-Linter](https://github.com/gac-research-club/adefagia-dev/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
-
 Adefagia is a tactical grid strategy RPG game. Players control a party of characters on a grid-based battlefield, using turn-based combat to defeat enemies and complete objectives.
 
 ## Getting Started
@@ -22,3 +20,5 @@ Adefagia is licensed under the [MIT License](https://opensource.org/licenses/MIT
 
 ## Credits
 Adefagia was created by [alifianadexe](https://github.com/alifianadexe) and [dimaspadma](https://github.com/dimaspadma) with contributions from [kertaskids](https://github.com/kertaskids) and [akuanaksehat](https://github.com/akuanaksehat). The game uses the Unity engine and RPG Core Combat Creator asset from the Unity Asset Store.
+
+Supported By Unity
