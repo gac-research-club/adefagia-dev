@@ -5,8 +5,8 @@ using System;
 
 public class Inventory : ItemContainer
 {
-    [SerializeField] Item[] startingItems;
-    [SerializeField] Transform itemsParent;
+    [SerializeField] private Item[] startingItems;
+    [SerializeField] private Transform itemsParent;
 
     public event Action<BaseItemSlot> OnPointerEnterEvent;
     public event Action<BaseItemSlot> OnPointerExitEvent;
@@ -18,15 +18,15 @@ public class Inventory : ItemContainer
 
     private void Start()
     {
-        for (int i = 0; i < itemSlots.Length; i++)
+        foreach (var itemSlot in itemSlots)
         {
-            itemSlots[i].OnPointerEnterEvent += slot => OnPointerEnterEvent(slot);
-            itemSlots[i].OnPointerExitEvent += slot => OnPointerExitEvent(slot);
-            itemSlots[i].OnRightClickEvent += slot => OnRightClickEvent(slot);
-            itemSlots[i].OnBeginDragEvent += slot => OnBeginDragEvent(slot);
-            itemSlots[i].OnEndDragEvent += slot => OnEndDragEvent(slot);
-            itemSlots[i].OnDragEvent += slot => OnDragEvent(slot);
-            itemSlots[i].OnDropEvent += slot => OnDropEvent(slot);
+            itemSlot.OnPointerEnterEvent += slot => OnPointerEnterEvent?.Invoke(slot);
+            itemSlot.OnPointerExitEvent  += slot => OnPointerExitEvent(slot);
+            itemSlot.OnRightClickEvent   += slot => OnRightClickEvent(slot);
+            itemSlot.OnBeginDragEvent    += slot => OnBeginDragEvent(slot);
+            itemSlot.OnEndDragEvent      += slot => OnEndDragEvent(slot);
+            itemSlot.OnDragEvent         += slot => OnDragEvent(slot);
+            itemSlot.OnDropEvent         += slot => OnDropEvent(slot);
         }
 
         SetStartingItems();
@@ -34,8 +34,10 @@ public class Inventory : ItemContainer
 
     private void OnValidate()
     {
-        if (itemsParent != null)    
+        if (itemsParent != null)
+        {
             itemSlots = itemsParent.GetComponentsInChildren<ItemSlot>();
+        }
         
         SetStartingItems();
     }
@@ -43,9 +45,9 @@ public class Inventory : ItemContainer
     private void SetStartingItems()
     {
         Clear();
-        for (int i = 0; i < startingItems.Length; i++)
+        foreach (var startingItem in startingItems)
         {
-            AddItem(startingItems[i].GetCopy());
+            AddItem(startingItem.GetCopy());
         }
     }
 }

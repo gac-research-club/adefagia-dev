@@ -158,7 +158,56 @@ namespace Adefagia.PlayerAction
             }
 
         }
+        
+        /*--------------
+         *      
+         *      o 
+         *    o r o 
+         *      o 
+         *      
+         --------------*/
+        public void SetSmallDiamondMove(Grid grid)
+        {
+            if (grid == null) return;
 
+            CleanHighlight();
+
+            SetQuad();
+
+            var pattern = 
+                " o " +
+                "oro" +
+                " o ";
+            var origin = new Vector2Int(1, 1);
+            CreateFromPattern(pattern, 3,3, grid.Location, origin);
+        }
+
+        /*--------------
+         *        o
+         *        o 
+         *    o o r o o
+         *        o 
+         *        o
+         --------------*/
+        public void SetCrossMove(Grid grid)
+        {
+            if (grid == null) return;
+
+            CleanHighlight();
+
+            SetQuad();
+
+            var pattern = 
+                "  o  " +
+                "  o  " +
+                "ooroo" +
+                "  o  " +
+                "  o  ";
+            var origin = new Vector2Int(2, 2); // character 'r'
+            CreateFromPattern(pattern, 5,5, grid.Location, origin);
+        }
+
+        
         private void GridHighlight(int x, int y)
         {
             var grid = GameManager.instance.gridManager.GetGrid(x, y);
@@ -182,6 +231,7 @@ namespace Adefagia.PlayerAction
 
             _tempHighlights.Add(quadDup);
         }
+        
         
         //
         // Set grid

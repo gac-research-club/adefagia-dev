@@ -1,12 +1,6 @@
 ﻿using System;
-using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
-
-using Adefagia.GridSystem;
+using Adefagia.Inventory;
 using Grid = Adefagia.GridSystem.Grid;
-using Adefagia.SelectObject;
-using Adefagia.Collections;
 
 namespace Adefagia.RobotSystem
 {
@@ -43,6 +37,10 @@ namespace Adefagia.RobotSystem
         public float Skill { get; }
 
         public bool IsDead { get; set; }
+        
+        // Pattern Type
+        public TypePattern TypePattern { get; set; }
+        
         // Step Status
         public bool HasMove { get; set; }
         public bool HasAttack { get; set; }

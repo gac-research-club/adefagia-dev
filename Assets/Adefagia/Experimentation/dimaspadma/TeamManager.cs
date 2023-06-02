@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Adefagia.Inventory;
 using Adefagia.BattleMechanism;
 using Adefagia.RobotSystem;
 using UnityEngine;
@@ -23,4 +24,11 @@ public class RobotStat
     public float maxStamina;
     public float damage;
     public float armor;
+
+    public EquippableItem armorId;
+
+    public EquippableItem helmetId;
+    
+    public EquippableItem weaponId;
+    
 }

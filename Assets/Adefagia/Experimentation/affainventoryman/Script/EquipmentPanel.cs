@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Adefagia.Inventory;
 using UnityEngine;
 using System;
 
@@ -35,6 +36,19 @@ public class EquipmentPanel : MonoBehaviour
         equipmentSlots = equipmentSlotsParent.GetComponentsInChildren<EquipmentSlot>();
     }
 
+    public bool AddItem(EquippableItem item)
+    {
+        for (int i = 0; i < equipmentSlots.Length; i++)
+        {
+            if (equipmentSlots[i].EquipmentType == item.EquipmentType)
+            {
+                equipmentSlots[i].Item = item;
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public bool AddItem(EquippableItem item, out EquippableItem previousItem)
     {
         for (int i = 0; i < equipmentSlots.Length; i++)
@@ -48,6 +62,19 @@ public class EquipmentPanel : MonoBehaviour
         }
         previousItem = null;
         return false;
+    }
+
+    public List<EquippableItem> ListItem(){
+        List<EquippableItem> listItem = new List<EquippableItem>();
+        for (int i = 0; i < equipmentSlots.Length; i++)
+        {
+            if (equipmentSlots[i].Item)
+            {
+                EquippableItem equipItem = (EquippableItem) equipmentSlots[i].Item;
+                listItem.Add(equipItem);
+            }
+        }
+        return listItem;
     }
 
     public bool RemoveItem(EquippableItem item)
