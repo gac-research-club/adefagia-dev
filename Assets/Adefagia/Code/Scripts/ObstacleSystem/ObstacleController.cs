@@ -15,6 +15,7 @@ namespace Adefagia.ObstacleSystem
         private int _hitCount = 0;
 
         public static event Action<Vector3> ObstacleDestroyed;
+        public static event Action<Vector3> ObstacleHit;
 
         private void Start()
         {
@@ -36,6 +37,8 @@ namespace Adefagia.ObstacleSystem
         {
             // Only run on affected obstacle
             if (gridController.Grid != Grid) return;
+            
+            ObstacleHit?.Invoke(transform.position);
             
             // Only for obstacle destructible
             if (ObstacleElement.ObstacleType == ObstacleType.Destructible)

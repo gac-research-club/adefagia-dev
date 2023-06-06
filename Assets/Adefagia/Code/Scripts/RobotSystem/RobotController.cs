@@ -37,6 +37,8 @@ namespace Adefagia.RobotSystem
         public RobotSkill RobotSkill => _robotSkill;
         public GridController GridController { get; set; }
 
+        public static event Action<Vector3> TakeDamageHappened; 
+
         private void Awake()
         {
             _robotMovement = GetComponent<RobotMovement>();
@@ -74,6 +76,8 @@ namespace Adefagia.RobotSystem
         {
             Debug.Log($"InstanceID: {GetInstanceID()}");
             Debug.Log($"{Robot.Name} Damaged");
+            
+            TakeDamageHappened?.Invoke(transform.position);
         }
 
         public void OnDead()

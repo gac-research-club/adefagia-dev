@@ -52,7 +52,15 @@ namespace Adefagia.PlayerAction
 
             // Change robot reference to grid
             gridController.RobotController.GridController = gridController;
+            
+            // Look At Grid
+            gridController.RobotController.transform.LookAt(gridController.transform);
 
+            gridController.RobotController.transform.eulerAngles = new Vector3(
+                0,
+                gridController.RobotController.transform.eulerAngles.y,
+                0);
+                 
             // StartCoroutine(MovePosition(robotController, directions, delayMove));
             MovePosition(robotController, directions, speed);
 

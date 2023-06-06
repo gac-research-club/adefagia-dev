@@ -1,10 +1,15 @@
 using System;
 using Adefagia.ObstacleSystem;
+using Adefagia.RobotSystem;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ParticleManager : MonoBehaviour
 {
-    public ParticleSystem GlobalParticle;
+    [Header("List of Particles Global")]
+    public ParticleSystem globalObstacleParticleDestroyed;
+
+    public ParticleSystem globalObstacleHit;
 
     public float timeRemaining = 5;
 
@@ -13,7 +18,9 @@ public class ParticleManager : MonoBehaviour
     
     private void Start()
     {
-        ObstacleController.ObstacleDestroyed += PlayParticle;
+        ObstacleController.ObstacleDestroyed += OnPlayParticleDestroyed;
+        ObstacleController.ObstacleHit += OnPlayParticleHit;
+        RobotController.TakeDamageHappened += OnPlayParticleHit;
     }
 
     private void Update()
@@ -25,15 +32,23 @@ public class ParticleManager : MonoBehaviour
             {
                 _timer -= timeRemaining;
                 _timerRunning = false;
-                GlobalParticle.Stop();
+                globalObstacleParticleDestroyed.Stop();
             }
         }
     }
 
-    private void PlayParticle(Vector3 position)
+    private void OnPlayParticleDestroyed(Vector3 position)
     {
-        GlobalParticle.transform.position = position;
-        GlobalParticle.Play();
+        globalObstacleParticleDestroyed.transform.position = position;
+        globalObstacleParticleDestroyed.Play();
+
+        _timerRunning = true;
+    }
+    
+    private void OnPlayParticleHit(Vector3 position)
+    {
+        globalObstacleHit.transform.position = position;
+        globalObstacleHit.Play();
 
         _timerRunning = true;
     }
