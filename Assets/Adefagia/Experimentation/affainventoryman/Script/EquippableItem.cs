@@ -10,6 +10,8 @@ namespace Adefagia.Inventory
         Top,
         Body,
         Weapon,
+        Item1,
+        Item2,
     }
 
     public enum TypePattern
