@@ -10,8 +10,8 @@ namespace Adefagia.Inventory
         Top,
         Body,
         Weapon,
-        Item1,
-        Item2,
+        BuffItem1,
+        BuffItem2,
     }
 
     public enum TypePattern
@@ -33,7 +33,7 @@ namespace Adefagia.Inventory
         public float AttackPercentBonus;
         public float ArmorPercentBonus;
         [Space]
-        
+
         // Item Type
         public EquipmentType EquipmentType;
 
@@ -99,13 +99,13 @@ namespace Adefagia.Inventory
 
                 if (value > 0)
                     sb.Append("+");
-                
+
                 if (isPercent)
                 {
                     sb.Append(value * 100);
                     sb.Append("% ");
-                } 
-                else 
+                }
+                else
                 {
                     sb.Append(value);
                     sb.Append(" ");

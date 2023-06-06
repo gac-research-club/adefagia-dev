@@ -2,17 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UseableItemEffect : MonoBehaviour
+public abstract class UsableItemEffect : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public abstract void ExecuteEffect(UsableItem parentItem, Character character);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public abstract string GetDescription();
 }

@@ -10,11 +10,11 @@ public class TeamManager : MonoBehaviour
 {
     // TeamA
     public Team teamA;
-    public List<RobotStat> robotsA; 
+    public List<RobotStat> robotsA;
 
     // TeamB
     public Team teamB;
-    public List<RobotStat> robotsB; 
+    public List<RobotStat> robotsB;
 }
 
 [Serializable]
@@ -28,7 +28,11 @@ public class RobotStat
     public EquippableItem armorId;
 
     public EquippableItem helmetId;
-    
+
     public EquippableItem weaponId;
-    
+
+    public Item buffItem1;
+
+    public Item buffItem2;
+
 }
