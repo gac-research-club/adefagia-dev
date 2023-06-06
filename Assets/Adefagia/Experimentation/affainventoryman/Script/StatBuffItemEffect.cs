@@ -6,25 +6,40 @@ using Adefagia.CharacterStats;
 public class StatBuffItemEffect : UsableItemEffect
 {
     public int AttackBuff;
+    public int ArmorBuff;
     public float Duration;
 
     public override void ExecuteEffect(UsableItem parentItem, Character character)
     {
-        StatModifier statModifier = new StatModifier(AttackBuff, StatModType.Flat, parentItem);
-        character.Attack.AddModifier(statModifier);
-        character.StartCoroutine(RemoveBuff(character, statModifier, Duration));
+        StatModifier statModifierAttack = new StatModifier(AttackBuff, StatModType.Flat, parentItem);
+        character.Attack.AddModifier(statModifierAttack);
+
+        StatModifier statModifierArmor = new StatModifier(ArmorBuff, StatModType.Flat, parentItem);
+        character.Armor.AddModifier(statModifierArmor);
+
+        character.StartCoroutine(RemoveBuff(character, statModifierAttack, Duration));
+        character.StartCoroutine(RemoveBuff(character, statModifierArmor, Duration));
+
         character.UpdateStatValues();
     }
 
     public override string GetDescription()
     {
-        return "Grants " + AttackBuff + " Attack for " + Duration + " seconds";
+        if (AttackBuff > 0)
+        {
+            return "Grants " + AttackBuff + " Attack for " + Duration + " seconds";
+        }
+        else
+        {
+            return "Grants " + ArmorBuff + " Armor for " + Duration + " seconds";
+        }
     }
 
     private static IEnumerator RemoveBuff(Character character, StatModifier statModifier, float duration)
     {
         yield return new WaitForSeconds(duration);
         character.Attack.RemoveModifier(statModifier);
+        character.Armor.RemoveModifier(statModifier);
         character.UpdateStatValues();
     }
 }

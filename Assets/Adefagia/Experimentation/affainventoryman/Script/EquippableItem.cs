@@ -10,6 +10,8 @@ namespace Adefagia.Inventory
         Top,
         Body,
         Weapon,
+        BuffItem1,
+        BuffItem2,
     }
 
     public enum TypePattern
@@ -28,10 +30,12 @@ namespace Adefagia.Inventory
         public int ArmorBonus;
 
         [Space]
+        
         public float AttackPercentBonus;
         public float ArmorPercentBonus;
-        [Space]
         
+        [Space]
+
         // Item Type
         public EquipmentType EquipmentType;
 
@@ -51,23 +55,33 @@ namespace Adefagia.Inventory
             Destroy(this);
         }
 
-        public void Equip(Character c)
+        public void Equip(Character character)
         {
             if (AttackBonus != 0)
-                c.Attack.AddModifier(new StatModifier(AttackBonus, StatModType.Flat, this));
+            {
+                character.Attack.AddModifier(new StatModifier(AttackBonus, StatModType.Flat, this));
+            }
+
             if (ArmorBonus != 0)
-                c.Armor.AddModifier(new StatModifier(ArmorBonus, StatModType.Flat, this));
+            {
+                character.Armor.AddModifier(new StatModifier(ArmorBonus, StatModType.Flat, this));
+            }
 
             if (AttackPercentBonus != 0)
-                c.Attack.AddModifier(new StatModifier(AttackPercentBonus, StatModType.PercentMult, this));
+            {
+                character.Attack.AddModifier(new StatModifier(AttackPercentBonus, StatModType.PercentMult, this));
+            }
+
             if (ArmorPercentBonus != 0)
-                c.Armor.AddModifier(new StatModifier(ArmorPercentBonus, StatModType.PercentMult, this));
+            {
+                character.Armor.AddModifier(new StatModifier(ArmorPercentBonus, StatModType.PercentMult, this));
+            }
         }
 
-        public void Unequip(Character c)
+        public void UnEquip(Character character)
         {
-            c.Attack.RemoveAllModifiersFromSource(this);
-            c.Armor.RemoveAllModifiersFromSource(this);
+            character.Attack.RemoveAllModifiersFromSource(this);
+            character.Armor.RemoveAllModifiersFromSource(this);
         }
 
         public override string GetItemType()
@@ -78,37 +92,37 @@ namespace Adefagia.Inventory
 
         public override string GetDescription()
         {
-            sb.Length = 0;
+            Sb.Length = 0;
             AddStat(AttackBonus, "Attack");
             AddStat(ArmorBonus, "Armor");
 
             AddStat(AttackPercentBonus, "Attack", isPercent: true);
             AddStat(ArmorPercentBonus, "Armor", isPercent: true);
 
-            return sb.ToString();
+            return Sb.ToString();
         }
 
         private void AddStat(float value, string statName, bool isPercent = false)
         {
             if (value != 0)
             {
-                if (sb.Length > 0)
-                    sb.AppendLine();
+                if (Sb.Length > 0)
+                    Sb.AppendLine();
 
                 if (value > 0)
-                    sb.Append("+");
-                
+                    Sb.Append("+");
+
                 if (isPercent)
                 {
-                    sb.Append(value * 100);
-                    sb.Append("% ");
-                } 
-                else 
-                {
-                    sb.Append(value);
-                    sb.Append(" ");
+                    Sb.Append(value * 100);
+                    Sb.Append("% ");
                 }
-                sb.Append(statName);
+                else
+                {
+                    Sb.Append(value);
+                    Sb.Append(" ");
+                }
+                Sb.Append(statName);
             }
         }
     }
