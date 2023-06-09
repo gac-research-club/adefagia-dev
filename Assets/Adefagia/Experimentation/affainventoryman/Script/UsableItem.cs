@@ -24,13 +24,13 @@ public class UsableItem : Item
     
     public override string GetDescription()
     {
-        sb.Length = 0;
+        Sb.Length = 0;
 
         foreach (UsableItemEffect effect in Effects)
         {
-            sb.AppendLine(effect.GetDescription());
+            Sb.AppendLine(effect.GetDescription());
         }
 
-        return sb.ToString();
+        return Sb.ToString();
     }
 }
