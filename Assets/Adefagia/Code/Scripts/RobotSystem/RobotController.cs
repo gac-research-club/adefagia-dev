@@ -23,6 +23,7 @@ namespace Adefagia.RobotSystem
         
         private SkillController _skillController;
 
+        private PotionController _potionController;
         private RobotMovement _robotMovement;
         private RobotAttack _robotAttack;
 
@@ -32,6 +33,8 @@ namespace Adefagia.RobotSystem
         
         public TeamController TeamController => _teamController;
         public SkillController SkillController => _skillController;
+        public PotionController PotionController => _potionController;
+
         public RobotMovement RobotMovement => _robotMovement;
         public RobotAttack RobotAttack => _robotAttack;
         public RobotSkill RobotSkill => _robotSkill;

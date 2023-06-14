@@ -117,7 +117,19 @@ public class StatPanel : MonoBehaviour
             statDisplays[i].Name = statNames[i];
         }
     }
-    
+    public void UpdateUsableItemId(UsableItem item, string type){    
+        if(type == EquipmentType.BuffItem1.ToString()){
+
+            // Update Buff Item 1 id
+            _teams[countTeam][indexRobot].buffItem1 = item;
+            
+        }else if(type == EquipmentType.BuffItem2.ToString()){
+
+            // Update Buff Item 2 id
+            _teams[countTeam][indexRobot].buffItem2 = item;
+        }    
+    }
+
     public void UpdateEquipmentId(EquippableItem item, string type){    
         if(type == EquipmentType.Top.ToString()){
             
@@ -133,8 +145,10 @@ public class StatPanel : MonoBehaviour
 
             // Update weapon id
             _teams[countTeam][indexRobot].weaponId = item;
-        }    
+        } 
     }
+
+    
 
     public void UnequipId(string type){    
         if(type == EquipmentType.Top.ToString()){
@@ -192,6 +206,15 @@ public class StatPanel : MonoBehaviour
         return statRobot;
     }
 
+    public Dictionary<String, UsableItem> GetDetailItemEquip(int index){
+        Dictionary<String, UsableItem> statRobot = new Dictionary<String, UsableItem>();
+        
+        statRobot.Add("itemBuff1", _teams[countTeam][index].buffItem1);
+        statRobot.Add("itemBuff2", _teams[countTeam][index].buffItem2);
+
+        return statRobot;
+    }
+
     public List<Dictionary<String, EquippableItem>> GetDetailEquipmentTeam(int count){
         
         List<Dictionary<String, EquippableItem>> listStatRobot = new List<Dictionary<String, EquippableItem>>();
@@ -203,6 +226,23 @@ public class StatPanel : MonoBehaviour
             statRobot.Add("helmetId", _teams[count][index].helmetId);
             statRobot.Add("armorId", _teams[count][index].armorId);
             statRobot.Add("weaponId", _teams[count][index].weaponId);
+
+            listStatRobot.Add(statRobot);
+        }
+
+        return listStatRobot;
+    }
+
+    public List<Dictionary<String, UsableItem>> GetDetailItemTeam(int count){
+        
+        List<Dictionary<String, UsableItem>> listStatRobot = new List<Dictionary<String, UsableItem>>();
+        
+        for (int index = 0; index < 3; index++)
+        {
+            Dictionary<String, UsableItem> statRobot = new Dictionary<String, UsableItem>();
+            
+            statRobot.Add("itemBuff1", _teams[count][index].buffItem1);
+            statRobot.Add("itemBuff2", _teams[count][index].buffItem2);
 
             listStatRobot.Add(statRobot);
         }
