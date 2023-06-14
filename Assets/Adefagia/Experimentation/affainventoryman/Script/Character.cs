@@ -173,14 +173,14 @@ public class Character : MonoBehaviour
 
         if (dragItemSlot is EquipmentSlot)
         {
-            if (dragEquipItem  != null) dragEquipItem .Unequip(this);
+            if (dragEquipItem  != null) dragEquipItem .UnEquip(this);
             if (dropEquipItem  != null) dropEquipItem .Equip(this);
         }
 
         if (dropItemSlot is EquipmentSlot)
         {
             if (dragEquipItem  != null) dragEquipItem .Equip(this);
-            if (dropEquipItem  != null) dropEquipItem .Unequip(this);
+            if (dropEquipItem  != null) dropEquipItem .UnEquip(this);
         }
         statPanel.UpdateStatValues();
 
@@ -214,7 +214,7 @@ public class Character : MonoBehaviour
                 if (previousItem != null)
                 {
                     inventory.AddItem(previousItem);
-                    previousItem.Unequip(this);
+                    previousItem.UnEquip(this);
                     statPanel.UpdateStatValues();
                 }
                 item.Equip(this);
@@ -232,7 +232,7 @@ public class Character : MonoBehaviour
     {        
         if (inventory.CanAddItem(item) && equipmentPanel.RemoveItem(item))
         {            
-            item.Unequip(this);
+            item.UnEquip(this);
             statPanel.UpdateStatValues();
             inventory.AddItem(item);
             statPanel.UnequipId(item.GetItemType());
@@ -259,7 +259,7 @@ public class Character : MonoBehaviour
             {
                 EquippableItem armorEquip = (EquippableItem) equipRobot["armorId"];
                 if(equipmentPanel.RemoveItem(armorEquip)){
-                    armorEquip.Unequip(this);
+                    armorEquip.UnEquip(this);
                     statPanel.UpdateStatValues();
                 };
                 inventory.AddItem(equipRobot["armorId"]);
@@ -269,7 +269,7 @@ public class Character : MonoBehaviour
             {   
                 EquippableItem weaponEquip = (EquippableItem) equipRobot["weaponId"];
                 if(equipmentPanel.RemoveItem(weaponEquip)){
-                    weaponEquip.Unequip(this);
+                    weaponEquip.UnEquip(this);
                     statPanel.UpdateStatValues();
                 };
                 inventory.AddItem(equipRobot["weaponId"]);        
@@ -279,7 +279,7 @@ public class Character : MonoBehaviour
             {
                 EquippableItem helmetEquip = (EquippableItem) equipRobot["helmetId"];
                 if(equipmentPanel.RemoveItem(helmetEquip)){
-                    helmetEquip.Unequip(this);
+                    helmetEquip.UnEquip(this);
                     statPanel.UpdateStatValues();
                 };
                 inventory.AddItem(equipRobot["helmetId"]);          
@@ -326,7 +326,7 @@ public class Character : MonoBehaviour
                 EquippableItem itemEq = (EquippableItem) item;
                 if (inventory.CanAddItem(itemEq) && equipmentPanel.RemoveItem(itemEq))
                 {            
-                    itemEq.Unequip(this);
+                    itemEq.UnEquip(this);
                     statPanel.UpdateStatValues();
                     // inventory.AddItem(item);
                 }

@@ -70,7 +70,7 @@ public class EquipmentPanel : MonoBehaviour
         }
         return false;
     }
-    
+
     public bool AddItem(EquippableItem item, out EquippableItem previousItem)
     {
         for (int i = 0; i < equipmentSlots.Length; i++)
@@ -86,13 +86,14 @@ public class EquipmentPanel : MonoBehaviour
         return false;
     }
 
-    public List<EquippableItem> ListItem(){
+    public List<EquippableItem> ListItem()
+    {
         List<EquippableItem> listItem = new List<EquippableItem>();
         for (int i = 0; i < equipmentSlots.Length; i++)
         {
             if (equipmentSlots[i].Item && equipmentSlots[i].Item is EquippableItem)
             {
-                EquippableItem equipItem = (EquippableItem) equipmentSlots[i].Item;
+                EquippableItem equipItem = (EquippableItem)equipmentSlots[i].Item;
                 listItem.Add(equipItem);
             }
         }

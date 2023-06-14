@@ -26,9 +26,7 @@ public class RobotStat
     public float armor;
 
     public EquippableItem armorId;
-
     public EquippableItem helmetId;
-
     public EquippableItem weaponId;
 
     public UsableItem buffItem1;
