@@ -5,13 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class Sceneload : MonoBehaviour
 {
-    public void Play()
+    public void PlaytoMainMode()
     {
         SceneManager.LoadScene("MainMode");
     }
 
-    public void VS3()
+    public void Play3VS3()
     {
         SceneManager.LoadScene("Inventory");
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void LoadStore()
+    {
+        SceneManager.LoadScene("Store");
     }
 }
