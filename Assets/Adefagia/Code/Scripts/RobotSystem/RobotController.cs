@@ -94,7 +94,8 @@ namespace Adefagia.RobotSystem
             _teamController = teamController;
         }
 
-        public void SetSkill(SkillController skillController){
+        public void SetSkill(SkillController skillController)
+        {
             _skillController = skillController;
         }
 

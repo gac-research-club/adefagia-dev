@@ -2,7 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Adefagia.BattleMechanism;
+using Adefagia.Experimentation.dimaspadma;
+using Adefagia.Inventory;
 using UnityEngine;
+using UIBattleController = Adefagia.UI.UIBattleController;
 
 
 namespace Adefagia.RobotSystem
@@ -108,22 +111,33 @@ namespace Adefagia.RobotSystem
                 
                 robotController.Robot.ID = _teamController.TotalRobot-1 - i;
                 robotController.Robot.Speed = speed;
-                robotController.Robot.TypePattern = robot.weaponId.TypePattern;
+                
+                // If robot hasn't used weapon set to default
+                if (robot.weaponId != null)
+                {
+                    robotController.Robot.TypePattern = robot.weaponId.TypePattern;
+                    
+                    // Skill
+                    Skill skill1 = robot.weaponId.WeaponSkill[0];
+                    Skill skill2 = robot.weaponId.WeaponSkill[1];
+                
+                    // Ultimate Skill
+                    Skill skill3 = robot.weaponId.WeaponSkill[2];
+                    
+                    // set skill
+                    skillController.Skills.Add(skill1); 
+                    skillController.Skills.Add(skill2); 
+                    skillController.Skills.Add(skill3);
+                    
+                    robotController.SetSkill(skillController);
+                }
+                else
+                {
+                    Debug.Log("Not have weapon");
+                    
+                    robotController.Robot.TypePattern = TypePattern.Surround;
+                }
 
-                // Skill
-                Skill skill1 = robot.weaponId.WeaponSkill[0];
-                Skill skill2 = robot.weaponId.WeaponSkill[1];
-                
-                // Ultimate Skill
-                Skill skill3 = robot.weaponId.WeaponSkill[2];
-
-                // set skill
-                skillController.Skills.Add(skill1); 
-                skillController.Skills.Add(skill2); 
-                skillController.Skills.Add(skill3); 
-                
-                robotController.SetSkill(skillController);
-                
                 robotController.Robot.healthBar = healthBar;
 
                 // Manual input HealthBar stat

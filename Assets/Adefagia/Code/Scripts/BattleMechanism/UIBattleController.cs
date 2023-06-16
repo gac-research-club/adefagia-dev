@@ -10,15 +10,19 @@ namespace Adefagia.UI
     public class UIBattleController : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI robotNameText;
-        
-        
+
         [SerializeField] private Button buttonMove;
         [SerializeField] private Button buttonAttack;
         [SerializeField] private Button buttonSkill;
         [SerializeField] private Button cancelButton;
         
         [SerializeField] private GameObject listSkill;
-        
+
+        private void Start()
+        {
+            BattleManager.RobotNotHaveSkill += HideSkillButton;
+        }
+
         // TODO: disable button Move
         private void Update()
         {
@@ -31,7 +35,8 @@ namespace Adefagia.UI
                     BattleManager.battleState == BattleState.SkillSelectionRobot)
                 {
                     ShowButton(cancelButton);
-                    if (BattleManager.battleState == BattleState.SkillRobot || BattleManager.battleState == BattleState.SkillSelectionRobot){
+                    if (BattleManager.battleState == BattleState.SkillRobot ||
+                        BattleManager.battleState == BattleState.SkillSelectionRobot){
                         ShowButton(listSkill);
                     }
                 }
@@ -115,6 +120,22 @@ namespace Adefagia.UI
             button.gameObject.SetActive(false);
         }
 
+        public void HideSkillButton(RobotController robotController)
+        {
+            if (robotController == null) return;
+            
+            // Check if robot has weapon
+            if (robotController.SkillController == null)
+            {
+                Debug.Log("Hide button");
+                HideButton(buttonSkill);
+            }
+            else
+            {
+                ShowButton(buttonSkill);
+            }
+        }
+
         private void ShowButton(GameObject buttonList)
         {
             buttonList.SetActive(true);
@@ -124,15 +145,20 @@ namespace Adefagia.UI
             // if Robot haven't selected than return
             if (robotSelected == null) return;
 
-            for (int i = 0; i < 3 ; i++){
+            for (int i = 0; i < 3 ; i++)
+            {
                 Button buttonSkill = buttonList.transform.GetChild(i).GetComponent<Button>();
                 TextMeshProUGUI buttonText = buttonSkill.GetComponentInChildren<TextMeshProUGUI>();
 
-                Skill _skill = robotSelected.SkillController.ChooseSkill(i);
-            
-
-                // TODO : Change button text;
-                buttonText.text = _skill.Name;
+                // If robot hasn't used weapon
+                if (robotSelected.SkillController != null)
+                {
+                    Skill _skill = robotSelected.SkillController.ChooseSkill(i);
+                    
+                    // TODO : Change button text;
+                    buttonText.text = _skill.Name;
+                }
+                
             }
         }
         
