@@ -183,7 +183,9 @@ namespace Adefagia.BattleMechanism
                 if (battleState == BattleState.MoveRobot ||
                     battleState == BattleState.AttackRobot ||
                     battleState == BattleState.SkillRobot ||
-                    battleState == BattleState.SkillSelectionRobot)
+                    battleState == BattleState.SkillSelectionRobot ||
+                    battleState == BattleState.ItemRobot ||
+                    battleState == BattleState.ItemSelectionRobot)
                 {
                     // Exit to select another Robot
                     if (Input.GetKeyDown(KeyCode.Escape))
@@ -489,7 +491,18 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.SkillRobot);
 
             // means the robot is considered to move
-            TeamActive.RobotControllerSelected.Robot.HasSkill = true;
+            // TeamActive.RobotControllerSelected.Robot.HasSkill = true;
+
+            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} List Skill Active");
+        }
+
+        public void ItemButtonClick()
+        {
+            // change to defend robot
+            ChangeBattleState(BattleState.ItemRobot);
+
+            // means the robot is considered to move
+            // TeamActive.RobotControllerSelected.Robot.HasSkill = true;
 
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} List Skill Active");
         }
@@ -558,6 +571,8 @@ namespace Adefagia.BattleMechanism
         AttackRobot,
         SkillRobot,
         SkillSelectionRobot,
+        ItemRobot,
+        ItemSelectionRobot
     }
 }
 

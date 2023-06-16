@@ -97,6 +97,10 @@ namespace Adefagia.RobotSystem
             _skillController = skillController;
         }
 
+        public void SetPotion(PotionController potionController){
+            _potionController = potionController;
+        }
+
         public void MovePosition(Grid grid)
         {
             var position = new Vector3(grid.X, 0, grid.Y);

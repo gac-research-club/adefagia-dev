@@ -135,6 +135,8 @@ namespace Adefagia.RobotSystem
                 potionController.Potions.Add(item1);
                 potionController.Potions.Add(item2);
 
+                robotController.SetPotion(potionController);
+                
                 robotController.Robot.healthBar = healthBar;
 
                 // Manual input HealthBar stat

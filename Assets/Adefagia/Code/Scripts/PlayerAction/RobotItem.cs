@@ -18,8 +18,10 @@ namespace Adefagia.PlayerAction
             }
             
             var potionController = robotController.PotionController;
-            var skill = potionController.ChoosePotion(itemChoosed);
+            Potion potion = potionController.ChoosePotion(itemChoosed);
             
+            // potion.Effects;
+
             // means the robot is considered to move
             // robotController.Robot.HasSkill = true;
             
