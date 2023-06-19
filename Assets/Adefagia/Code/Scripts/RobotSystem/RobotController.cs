@@ -13,6 +13,8 @@ namespace Adefagia.RobotSystem
     [RequireComponent(typeof(RobotMovement))]
     [RequireComponent(typeof(RobotAttack))]
     [RequireComponent(typeof(RobotSkill))]
+    [RequireComponent(typeof(RobotItem))]
+
     public class RobotController : MonoBehaviour
     {
         [SerializeField] private float healthPoint;
@@ -26,9 +28,8 @@ namespace Adefagia.RobotSystem
         private PotionController _potionController;
         private RobotMovement _robotMovement;
         private RobotAttack _robotAttack;
-
         private RobotSkill _robotSkill;
-        
+        private RobotItem _robotItem;
         public Robot Robot { get; set; }
         
         public TeamController TeamController => _teamController;
@@ -38,6 +39,7 @@ namespace Adefagia.RobotSystem
         public RobotMovement RobotMovement => _robotMovement;
         public RobotAttack RobotAttack => _robotAttack;
         public RobotSkill RobotSkill => _robotSkill;
+        public RobotItem RobotItem => _robotItem;
         public GridController GridController { get; set; }
 
         private void Awake()
@@ -45,6 +47,7 @@ namespace Adefagia.RobotSystem
             _robotMovement = GetComponent<RobotMovement>();
             _robotAttack   = GetComponent<RobotAttack>();
             _robotSkill    = GetComponent<RobotSkill>();
+            _robotItem     = GetComponent<RobotItem>();
             
             _startPosition = transform.position;
         }

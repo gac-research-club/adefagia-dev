@@ -13,13 +13,25 @@ namespace Adefagia.PlayerAction
         {
             if (gridController == null)
             {
-                Debug.LogWarning("Skill failed");
+                Debug.LogWarning("Use Item Failed");
                 return;
             }
             
             var potionController = robotController.PotionController;
             Potion potion = potionController.ChoosePotion(itemChoosed);
             
+            foreach (UsableItemEffect val in potion.Effects)
+            {
+                if(val is HealItemEffect){
+                    HealItemEffect heal = (HealItemEffect) val;
+                    Debug.Log(heal.HealthAmount);
+                }
+                
+                if(val is StatBuffItemEffect){
+                    StatBuffItemEffect stat = (StatBuffItemEffect) val;
+                    Debug.Log(stat.AttackBuff);
+                }
+            }
             // potion.Effects;
 
             // means the robot is considered to move
@@ -49,7 +61,7 @@ namespace Adefagia.PlayerAction
                 // return;
             // }
 
-            Debug.Log($"Skill {skill.Name} launched to {gridController.RobotController.Robot}");
+            // Debug.Log($"Skill {skill.Name} launched to {gridController.RobotController.Robot}");
         }
     }
 }

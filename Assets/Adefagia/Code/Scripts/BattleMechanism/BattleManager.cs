@@ -29,6 +29,7 @@ namespace Adefagia.BattleMechanism
 
         public static float currentTime = -1;
         private int skillChoosed = 0;
+        private int itemChoosed = 0;
 
         public static Logging battleLog;
 
@@ -427,10 +428,28 @@ namespace Adefagia.BattleMechanism
                         skillChoosed: skillChoosed
                     );
                     
-                    if (highlightMovement.CheckGridOnHighlight(gridController))
-                    {
-                    }
+                    // change to selecting state
+                    ChangeBattleState(BattleState.SelectRobot);
 
+                    // Clear highlight
+                    highlightMovement.CleanHighlight();
+                }
+
+                /*---------------------------------------------------------------
+                 * Item Robot
+                 *---------------------------------------------------------------*/
+                if (battleState == BattleState.ItemSelectionRobot)
+                {
+                    // Get current grid click
+                    var gridController = GameManager.instance.gridManager.GetGridController();
+
+                    // Click on the grid highlighted
+                    TeamActive.RobotControllerSelected.RobotItem.Item(
+                        robotController: TeamActive.RobotControllerSelected,
+                        gridController: gridController,
+                        itemChoosed: itemChoosed
+                    );
+                    
                     // change to selecting state
                     ChangeBattleState(BattleState.SelectRobot);
 
@@ -513,6 +532,18 @@ namespace Adefagia.BattleMechanism
             // change to skill selection robot
             ChangeBattleState(BattleState.SkillSelectionRobot);
             skillChoosed = skill;
+            // means the robot is considered to move
+            TeamActive.RobotControllerSelected.Robot.HasSkill = true;
+
+            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Skill Active");
+        }
+
+        public void ItemChildButtonClick(int item)
+        {
+
+            // change to skill selection robot
+            ChangeBattleState(BattleState.SkillSelectionRobot);
+            itemChoosed = item;
             // means the robot is considered to move
             TeamActive.RobotControllerSelected.Robot.HasSkill = true;
 
