@@ -26,6 +26,7 @@ public class Character : MonoBehaviour
     [SerializeField] Image draggableItem;
 
     private List<EquippableItem> listItem;
+    private List<UsableItem> listUsableItem;
 
     private BaseItemSlot dragItemSlot;
 
@@ -92,19 +93,16 @@ public class Character : MonoBehaviour
     {
         if (itemSlot.Item is EquippableItem)
         {
-            Equip((EquippableItem)itemSlot.Item);
-
+            Equip((EquippableItem) itemSlot.Item);
+            
         }
         else if (itemSlot.Item is UsableItem)
         {
-            UsableItem usableItem = (UsableItem)itemSlot.Item;
-            usableItem.Use(this);
-
-            if (usableItem.IsConsumable)
+            UsableItem usableItem = (UsableItem) itemSlot.Item;
+            if (equipmentPanel.AddItem(usableItem))
             {
-                inventory.RemoveItem(usableItem);
-                usableItem.Destroy();
-            }
+                statPanel.UpdateUsableItemId(usableItem, usableItem.EquipmentType.ToString());
+            } 
         }
     }
 
@@ -259,6 +257,7 @@ public class Character : MonoBehaviour
         int countTeam = statPanel.GetCurrentTeam();
 
         List<Dictionary<String, EquippableItem>> listEquipRobot = statPanel.GetDetailEquipmentTeam(countTeam);
+        List<Dictionary<String, UsableItem>> listUsableItem = statPanel.GetDetailItemTeam(countTeam);
 
         statPanel.ChangeTeam();
 
@@ -297,27 +296,62 @@ public class Character : MonoBehaviour
                 inventory.AddItem(equipRobot["helmetId"]);
             }
         }
-    }
+        
+        foreach (Dictionary<String, UsableItem> itemRobot in listUsableItem)
+        {
+            if (itemRobot["itemBuff1"] is UsableItem)
+            {
+                
+                if(equipmentPanel.RemoveItem(itemRobot["itemBuff1"])){
+                    statPanel.UpdateStatValues();
+                }
+            }
 
+            if (itemRobot["itemBuff2"] is UsableItem)
+            {
+                if(equipmentPanel.RemoveItem(itemRobot["itemBuff2"])){
+                    statPanel.UpdateStatValues();
+                }
+            }
+
+        }
+            
+    }
 
 
     public void ChangeRobotIndex(int index)
     {
         listItem = equipmentPanel.ListItem();
+        listUsableItem = equipmentPanel.ListUsableItem();
+        
         Dictionary<String, EquippableItem> statRobot = statPanel.GetDetailEquipment(index);
+        Dictionary<String, UsableItem> itemRobot = statPanel.GetDetailItemEquip(index);
+
         statPanel.ChangeRobotIndex(index);
 
         foreach (EquippableItem item in listItem)
         {
             if (item is EquippableItem)
             {
-
-                EquippableItem itemEq = (EquippableItem)item;
-
-
+                
+                EquippableItem itemEq = (EquippableItem) item;
                 if (inventory.CanAddItem(itemEq) && equipmentPanel.RemoveItem(itemEq))
                 {
                     itemEq.UnEquip(this);
+                    statPanel.UpdateStatValues();
+                    // inventory.AddItem(item);
+                }
+            }
+        }
+
+        foreach (UsableItem itemUs in listUsableItem)
+        {
+            if (itemUs is UsableItem)
+            {
+                
+                UsableItem itemUsable = (UsableItem) itemUs;
+                if (inventory.CanAddItem(itemUsable) && equipmentPanel.RemoveItem(itemUsable))
+                {            
                     statPanel.UpdateStatValues();
                     // inventory.AddItem(item);
                 }
@@ -353,6 +387,23 @@ public class Character : MonoBehaviour
             statPanel.UpdateStatValues();
         }
 
+        if (itemRobot["itemBuff1"] is UsableItem)
+        {
+            UsableItem itemCur = (UsableItem) itemRobot["itemBuff1"];
 
+            equipmentPanel.AddItem(itemCur);
+            statPanel.UpdateStatValues();          
+        }
+
+
+        if (itemRobot["itemBuff2"] is UsableItem)
+        {
+            UsableItem itemCur = (UsableItem) itemRobot["itemBuff2"];
+
+            equipmentPanel.AddItem(itemCur);
+            statPanel.UpdateStatValues();          
+        }
+
+         
     }
 }
