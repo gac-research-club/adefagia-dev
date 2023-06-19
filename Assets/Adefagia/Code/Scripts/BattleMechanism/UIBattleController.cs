@@ -19,6 +19,9 @@ namespace Adefagia.UI
         
         [SerializeField] private GameObject listSkill;
         
+        [SerializeField] private GameObject listItem;
+        
+
         // TODO: disable button Move
         private void Update()
         {
@@ -28,17 +31,23 @@ namespace Adefagia.UI
                 if (BattleManager.battleState == BattleState.MoveRobot ||
                     BattleManager.battleState == BattleState.AttackRobot || 
                     BattleManager.battleState == BattleState.SkillRobot ||
-                    BattleManager.battleState == BattleState.SkillSelectionRobot)
+                    BattleManager.battleState == BattleState.SkillSelectionRobot ||
+                    BattleManager.battleState == BattleState.ItemRobot ||
+                    BattleManager.battleState == BattleState.ItemSelectionRobot)
                 {
                     ShowButton(cancelButton);
                     if (BattleManager.battleState == BattleState.SkillRobot || BattleManager.battleState == BattleState.SkillSelectionRobot){
                         ShowButton(listSkill);
+                    }
+                    if (BattleManager.battleState == BattleState.ItemRobot || BattleManager.battleState == BattleState.ItemSelectionRobot){
+                        ShowButton(listItem);
                     }
                 }
                 else
                 {
                     HideButton(cancelButton);
                     HideButton(listSkill);
+                    HideButton(listItem);
                 }
 
 
@@ -124,16 +133,28 @@ namespace Adefagia.UI
             // if Robot haven't selected than return
             if (robotSelected == null) return;
 
-            for (int i = 0; i < 3 ; i++){
-                Button buttonSkill = buttonList.transform.GetChild(i).GetComponent<Button>();
-                TextMeshProUGUI buttonText = buttonSkill.GetComponentInChildren<TextMeshProUGUI>();
+            if (BattleManager.battleState == BattleState.SkillRobot || BattleManager.battleState == BattleState.SkillSelectionRobot){
+                for (int i = 0; i < 3 ; i++){
+                    Button buttonSkill = buttonList.transform.GetChild(i).GetComponent<Button>();
+                    TextMeshProUGUI buttonText = buttonSkill.GetComponentInChildren<TextMeshProUGUI>();
 
-                Skill _skill = robotSelected.SkillController.ChooseSkill(i);
-            
+                    Skill _skill = robotSelected.SkillController.ChooseSkill(i);
+                
+                    // TODO : Change button text;
+                    buttonText.text = _skill.Name;
+                }
+            }else if (BattleManager.battleState == BattleState.ItemRobot || BattleManager.battleState == BattleState.ItemSelectionRobot){
+                for (int i = 0; i < 2 ; i++){
+                    Button buttonItem = buttonList.transform.GetChild(i).GetComponent<Button>();
+                    TextMeshProUGUI buttonText = buttonItem.GetComponentInChildren<TextMeshProUGUI>();
 
-                // TODO : Change button text;
-                buttonText.text = _skill.Name;
+                    Potion _potion = robotSelected.PotionController.ChoosePotion(i);
+                
+                    // TODO : Change button text;
+                    buttonText.text = _potion.Name;
+                }
             }
+            
         }
         
         private void HideButton(GameObject buttonList)
