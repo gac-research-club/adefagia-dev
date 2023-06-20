@@ -20,6 +20,9 @@ namespace Adefagia.GridSystem
         [SerializeField] private List<GridElement> listGridPrefab;
 
         [SerializeField] private Vector3 offset;
+        
+        // mainCamera return selected camera
+        public Camera mainCamera => GetComponent<Select>().GetActiveCamera();
 
         private Dictionary<GridType, GridElement> _gridElements;
 

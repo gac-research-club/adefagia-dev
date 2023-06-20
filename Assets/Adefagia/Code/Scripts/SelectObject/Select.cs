@@ -127,7 +127,14 @@ namespace Adefagia.SelectObject
             // Hide previous camera
             lastCamera.enabled = false;
         }
+        
+        public Camera GetActiveCamera()
+        {
+            return _cameraSelected;
+        }
     }
+    
+    
     
     [System.Serializable]
     public class UnityGameObjectEvent : UnityEvent<GameObject> {}

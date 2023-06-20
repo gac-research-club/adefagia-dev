@@ -142,14 +142,21 @@ namespace Adefagia.RobotSystem
                 robotController.Robot.healthBar = healthBar;
                 
                 // Add Potion
-                Potion item1 = new Potion(robot.buffItem1.ItemName, robot.buffItem1.Effects);
-                Potion item2 = new Potion(robot.buffItem2.ItemName, robot.buffItem2.Effects);
-
-                potionController.Potions.Add(item1);
-                potionController.Potions.Add(item2);
-
+                // Check potion null
+                if (robot.buffItem1 != null)
+                {
+                    Potion item1 = new Potion(robot.buffItem1.ItemName, robot.buffItem1.Effects);
+                    potionController.Potions.Add(item1);
+                }
+                
+                if (robot.buffItem1 != null)
+                {
+                    Potion item2 = new Potion(robot.buffItem2.ItemName, robot.buffItem2.Effects);
+                    potionController.Potions.Add(item2);
+                }
                 robotController.SetPotion(potionController);
 
+                
                 // Manual input HealthBar stat
                 healthBar.health = robotController.Robot.MaxHealth;
                 healthBar.maxHealth = robotController.Robot.MaxHealth;
