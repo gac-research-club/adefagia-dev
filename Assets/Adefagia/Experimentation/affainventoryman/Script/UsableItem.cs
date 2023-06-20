@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Adefagia.Inventory;
 
 [CreateAssetMenu(menuName = "Items/Usable Item")]
 public class UsableItem : Item
 {
     public bool IsConsumable;
 
+    public EquipmentType EquipmentType;
+    
     public List<UsableItemEffect> Effects;
 
     public virtual void Use(Character character)
