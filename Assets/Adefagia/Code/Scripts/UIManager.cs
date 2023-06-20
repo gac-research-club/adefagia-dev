@@ -110,7 +110,10 @@ namespace Adefagia
 
         public void ShowCharacterSelectCanvas()
         {
-            deployRobotCanvas.SetActive(true);
+            if (!GameManager.instance.battleManager.onevsone)
+            {
+                deployRobotCanvas.SetActive(true);
+            }
             BattleManager.ChangePreparationState(PreparationState.DeploySelect);
         }
 

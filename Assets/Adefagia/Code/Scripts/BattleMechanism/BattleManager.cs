@@ -17,6 +17,8 @@ namespace Adefagia.BattleMechanism
         [SerializeField] private float startingTime = 10f;
         public static List<GameObject> healthBars;
 
+        public bool onevsone;
+
         // Before Battle start
         public static GameState gameState = GameState.Initialize;
         public static PreparationState preparationState = PreparationState.Nothing;
@@ -81,6 +83,7 @@ namespace Adefagia.BattleMechanism
             if (gameState == GameState.Preparation &&
                 preparationState == PreparationState.DeploySelect)
             {
+                
                 // Change Team Activate if has deployed all the robot
                 if (TeamActive.IsHasFinishDeploy())
                 {
@@ -109,6 +112,10 @@ namespace Adefagia.BattleMechanism
                         // Enable healthbars when both teams deployed
                         GameManager.instance.uiManager.EnableHealthBars(TeamActive.IsHasFinishDeploy());
                     }
+                }
+                else
+                {
+                    ChangePreparationState(PreparationState.DeployRobot);
                 }
             }
 
@@ -270,6 +277,7 @@ namespace Adefagia.BattleMechanism
                 // Reset character select
                 // ChangePreparationState(PreparationState.DeploySelect);
                 GameManager.instance.uiManager.ResetButtonSelect();
+
                 GameManager.instance.uiManager.ShowCharacterSelectCanvas();
             }
         }
@@ -291,8 +299,12 @@ namespace Adefagia.BattleMechanism
         
         public void Test(GridController gridController)
         {
-            Debug.Log("test");
-            localHighlight.SetSurroundMove(gridController.Grid);
+            // Click on the grid highlighted
+            if (highlightMovement.CheckGridOnHighlight(gridController))
+            {
+                Debug.Log("test");
+                // localHighlight.SetSurroundMove(gridController.Grid);
+            }
         }
 
         #region ChangeState
