@@ -1,14 +1,17 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace Adefagia.SelectObject
 {
     public class Select : MonoBehaviour
     {
-        public Camera mainCamera;
-        public LayerMask layerMask;
+        public List<Camera> cameras;
+        public LayerMask gridMask;
         
         public GameObject objectHit;
 
@@ -16,12 +19,28 @@ namespace Adefagia.SelectObject
         public UnityEvent mouseHoverNotHit;
         public UnityGameObjectEvent mouseRightClick;
 
+        private Camera _cameraSelected;
+        private int _cameraSelectedIndex;
+
+        private void Start()
+        {
+            // Initialize camera
+            _cameraSelected = cameras[0];
+        }
+
         void Update()
         {
+            // Check if the mouse was clicked over a UI element
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+                // Debug.Log("Clicked on the UI");
+            }
+            
             // Hover Event
             mouseHover.Invoke(objectHit);
-            
-            if (RayHitObject(CameraRay()))
+
+            if (RayHitObject(CameraRay(_cameraSelected), gridMask, _cameraSelected))
             {
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -50,9 +69,9 @@ namespace Adefagia.SelectObject
         /*------------------------------------------------------------------------------------
          * Shot ray from mouse pointer position to relative main camera
          *------------------------------------------------------------------------------------*/
-        private Ray CameraRay()
+        private Ray CameraRay(Camera cameraSelect)
         {
-            return mainCamera.ScreenPointToRay(Input.mousePosition);
+            return cameraSelect.ScreenPointToRay(Input.mousePosition);
         }
 
         /*------------------------------------------------------------------------------------
@@ -60,10 +79,10 @@ namespace Adefagia.SelectObject
          * true if hit gameObject
          * false if not
          *------------------------------------------------------------------------------------*/
-        private bool RayHitObject(Ray ray)
+        private bool RayHitObject(Ray ray, LayerMask mask, Camera cameraSelect)
         {
             // If ray hit gameObject, set to Highlight
-            if (Physics.Raycast(ray, out var hit, mainCamera.farClipPlane, layerMask))
+            if (Physics.Raycast(ray, out var hit, cameraSelect.farClipPlane, mask))
             {
                 objectHit = hit.transform.gameObject;
                 return true;
@@ -83,6 +102,30 @@ namespace Adefagia.SelectObject
             if (gameObjectSelected.IsUnityNull()) return;
 
             mouseRightClick.Invoke(gameObjectSelected);
+        }
+        
+        //=======================================
+        // Change camera
+        public void ChangeCamera()
+        {
+            // save last camera
+            var lastCamera = cameras[_cameraSelectedIndex];
+                
+            // Increment camera index
+            _cameraSelectedIndex++;
+
+            // index must not greater then array
+            if (_cameraSelectedIndex >= cameras.Count)
+            {
+                _cameraSelectedIndex = 0;
+            }
+            
+            // Change camera
+            _cameraSelected = cameras[_cameraSelectedIndex];
+            _cameraSelected.enabled = true;
+            
+            // Hide previous camera
+            lastCamera.enabled = false;
         }
     }
     
