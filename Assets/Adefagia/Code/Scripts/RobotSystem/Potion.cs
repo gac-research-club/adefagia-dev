@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace Adefagia.RobotSystem
 {
-    [Serializable]    
+    [Serializable]
     public class Potion
     {
-       
+
         #region Properties
-        
+
         // Status
         public string Name;
 
@@ -24,17 +24,18 @@ namespace Adefagia.RobotSystem
         {
             Name = name;
             Effects = effects;
-           
+
         }
 
-        public enum PotionType{
+        public enum PotionType
+        {
             Heal,
 
             AttackBuff,
-            
+
             DeffendBuff,
         }
 
-        
+
     }
 }

@@ -45,13 +45,15 @@ public class EquipmentPanel : MonoBehaviour
                 equipmentSlots[i].Item = item;
                 item.EquipmentType = EquipmentType.BuffItem1;
                 return true;
-            
-            }else if(equipmentSlots[i].EquipmentType == EquipmentType.BuffItem2 && equipmentSlots[i].Item == null){
-                
+
+            }
+            else if (equipmentSlots[i].EquipmentType == EquipmentType.BuffItem2 && equipmentSlots[i].Item == null)
+            {
+
                 equipmentSlots[i].Item = item;
                 item.EquipmentType = EquipmentType.BuffItem2;
                 return true;
-            
+
             }
 
         }
@@ -100,13 +102,14 @@ public class EquipmentPanel : MonoBehaviour
         return listItem;
     }
 
-     public List<UsableItem> ListUsableItem(){
+    public List<UsableItem> ListUsableItem()
+    {
         List<UsableItem> listItem = new List<UsableItem>();
         for (int i = 0; i < equipmentSlots.Length; i++)
         {
             if (equipmentSlots[i].Item && equipmentSlots[i].Item is UsableItem)
             {
-                UsableItem equipItem = (UsableItem) equipmentSlots[i].Item;
+                UsableItem equipItem = (UsableItem)equipmentSlots[i].Item;
                 listItem.Add(equipItem);
             }
         }

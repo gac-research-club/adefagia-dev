@@ -23,6 +23,7 @@ namespace Adefagia.BattleMechanism
         public static BattleState battleState = BattleState.Nothing;
 
         public static HighlightMovement highlightMovement;
+        private HighlightMovement localHighlight;
 
         public static TeamController TeamActive { get; set; }
         public static TeamController NextTeam { get; set; }
@@ -32,6 +33,8 @@ namespace Adefagia.BattleMechanism
         private int itemChoosed = 0;
 
         public static Logging battleLog;
+        
+        public static event Action<RobotController> RobotNotHaveSkill; 
 
         private void Awake()
         {
@@ -58,11 +61,17 @@ namespace Adefagia.BattleMechanism
             teamB.SetPreparationArea(0, 0, 9, 3);
 
             highlightMovement = GetComponent<HighlightMovement>();
+            localHighlight = GetComponent<HighlightMovement>();
 
             // Initialize current Time
             currentTime = startingTime;
 
             StartCoroutine(PreparationBattle());
+        }
+
+        private void Start()
+        {
+            GridManager.GridHover += Test;
         }
 
         private void Update()
@@ -279,6 +288,12 @@ namespace Adefagia.BattleMechanism
 
             GameManager.instance.uiManager.ShowFinishUI(teamController.Team.teamName);
         }
+        
+        public void Test(GridController gridController)
+        {
+            Debug.Log("test");
+            localHighlight.SetSurroundMove(gridController.Grid);
+        }
 
         #region ChangeState
 
@@ -349,6 +364,9 @@ namespace Adefagia.BattleMechanism
                 if (battleState == BattleState.SelectRobot)
                 {
                     TeamActive.RobotControllerSelected = TeamActive.RobotController;
+                    
+                    // Hide skill button
+                    RobotNotHaveSkill?.Invoke(TeamActive.RobotControllerSelected);
 
                     // Show or Hide Battle UI
                     if (TeamActive.RobotControllerSelected != null)
@@ -606,4 +624,3 @@ namespace Adefagia.BattleMechanism
         ItemSelectionRobot
     }
 }
-
