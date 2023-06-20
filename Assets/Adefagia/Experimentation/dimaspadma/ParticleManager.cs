@@ -1,19 +1,33 @@
 using System;
+using System.Collections.Generic;
 using Adefagia.ObstacleSystem;
+using Adefagia.RobotSystem;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ParticleManager : MonoBehaviour
 {
-    public ParticleSystem GlobalParticle;
+    [Header("List of Particles Global")]
+    public ParticleSystem globalObstacleParticleDestroyed;
+
+    public ParticleSystem globalObstacleHit;
 
     public float timeRemaining = 5;
 
     private float _timer;
     private bool _timerRunning;
-    
+
     private void Start()
     {
-        ObstacleController.ObstacleDestroyed += PlayParticle;
+        CheckParticles(new List<ParticleSystem>
+        {
+            globalObstacleParticleDestroyed, 
+            globalObstacleHit
+        });
+
+        ObstacleController.ObstacleDestroyed += OnPlayParticleDestroyed;
+        ObstacleController.ObstacleHit += OnPlayParticleHit;
+        RobotController.TakeDamageHappened += OnPlayParticleHit;
     }
 
     private void Update()
@@ -25,16 +39,39 @@ public class ParticleManager : MonoBehaviour
             {
                 _timer -= timeRemaining;
                 _timerRunning = false;
-                GlobalParticle.Stop();
+                globalObstacleParticleDestroyed.Stop();
             }
         }
     }
 
-    private void PlayParticle(Vector3 position)
+    private void OnPlayParticleDestroyed(Vector3 position)
     {
-        GlobalParticle.transform.position = position;
-        GlobalParticle.Play();
+        globalObstacleParticleDestroyed.transform.position = position;
+        globalObstacleParticleDestroyed.Play();
 
         _timerRunning = true;
+    }
+    
+    private void OnPlayParticleHit(Vector3 position)
+    {
+        globalObstacleHit.transform.position = position;
+        globalObstacleHit.Play();
+
+        _timerRunning = true;
+    }
+    
+    // CheckParticles check is particles available, if particles empty than
+    // close app
+    private void CheckParticles(List<ParticleSystem> particles)
+    {
+        foreach (var particle in particles)
+        {
+            if (particle == null)
+            {
+                var errText = "Particle {0} Not available, Please import first";
+                Debug.LogFormat(errText, particle.name);
+                Application.Quit();
+            }
+        }
     }
 }

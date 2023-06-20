@@ -25,6 +25,13 @@ namespace Adefagia.GridSystem
 
         private Select _select;
 
+        public static event Action<GridController> GridHover;
+        
+        // Grid state
+        public GridController gridSelect;
+        public GridController gridTemp;
+        public GridController gridLast;
+
         // List All Grid
         private Grid[,] _listGrid;
 
@@ -213,6 +220,20 @@ namespace Adefagia.GridSystem
             {
                 gridQuad.transform.position = new Vector3(99, 99, 99);
                 return;
+            }
+
+            gridSelect = GetGridController();
+
+            if (gridSelect != gridTemp)
+            {
+                gridLast = gridTemp;
+                gridTemp = gridSelect;
+                
+                // Debug.Log("Current: " + gridSelect);
+                if (gridSelect != null && BattleManager.battleState == BattleState.AttackRobot)
+                {
+                    GridHover?.Invoke(gridSelect);
+                }
             }
 
             // var _grid = GetGrid(); 

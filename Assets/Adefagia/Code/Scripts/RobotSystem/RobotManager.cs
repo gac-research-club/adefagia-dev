@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Adefagia.BattleMechanism;
-using Adefagia.RobotSystem;
+using Adefagia.Inventory;
 using UnityEngine;
 
 
@@ -112,21 +112,34 @@ namespace Adefagia.RobotSystem
                 
                 robotController.Robot.ID = _teamController.TotalRobot-1 - i;
                 robotController.Robot.Speed = speed;
-                robotController.Robot.TypePattern = robot.weaponId.TypePattern;
-
-                // Skill
-                Skill skill1 = robot.weaponId.WeaponSkill[0];
-                Skill skill2 = robot.weaponId.WeaponSkill[1];
                 
-                // Ultimate Skill
-                Skill skill3 = robot.weaponId.WeaponSkill[2];
-
-                // Set skill
-                skillController.Skills.Add(skill1); 
-                skillController.Skills.Add(skill2); 
-                skillController.Skills.Add(skill3); 
+                // If robot hasn't used weapon set to default
+                if (robot.weaponId != null)
+                {
+                    robotController.Robot.TypePattern = robot.weaponId.TypePattern;
+                    
+                    // Skill
+                    Skill skill1 = robot.weaponId.WeaponSkill[0];
+                    Skill skill2 = robot.weaponId.WeaponSkill[1];
                 
-                robotController.SetSkill(skillController);
+                    // Ultimate Skill
+                    Skill skill3 = robot.weaponId.WeaponSkill[2];
+                    
+                    // set skill
+                    skillController.Skills.Add(skill1); 
+                    skillController.Skills.Add(skill2); 
+                    skillController.Skills.Add(skill3);
+                    
+                    robotController.SetSkill(skillController);
+                }
+                else
+                {
+                    Debug.Log("Not have weapon");
+                    
+                    robotController.Robot.TypePattern = TypePattern.Surround;
+                }
+
+                robotController.Robot.healthBar = healthBar;
                 
                 // Add Potion
                 Potion item1 = new Potion(robot.buffItem1.ItemName, robot.buffItem1.Effects);
@@ -136,13 +149,12 @@ namespace Adefagia.RobotSystem
                 potionController.Potions.Add(item2);
 
                 robotController.SetPotion(potionController);
-                
-                robotController.Robot.healthBar = healthBar;
 
                 // Manual input HealthBar stat
                 healthBar.health = robotController.Robot.MaxHealth;
                 healthBar.maxHealth = robotController.Robot.MaxHealth;
                 healthBar.damage = robotController.Robot.Damage;
+                
 
                 // Edit name
                 // robotController.Robot.Name = robotObject.name;

@@ -19,6 +19,8 @@ namespace Adefagia.PlayerAction
         private List<GameObject> _tempHighlights;
         private GameObject _quad, _quadBlock;
 
+        
+
         public void Awake()
         {
             _tempHighlights = new List<GameObject>();
@@ -292,6 +294,8 @@ namespace Adefagia.PlayerAction
                 }
             }
         }
+
+        
 
         public enum TypePattern
         {
