@@ -16,7 +16,7 @@ public class UsableItem : Item
     {
         foreach (UsableItemEffect effect in Effects)
         {   
-            effect.ExecuteEffect(this, character);
+            // effect.ExecuteEffect(this, character);
         }
     }
 

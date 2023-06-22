@@ -52,6 +52,7 @@ namespace Adefagia.UI
                 {
                     HideButton(cancelButton);
                     HideButton(listSkill);
+                    HideButton(listItem);
                 }
 
 

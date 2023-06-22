@@ -14,23 +14,27 @@ namespace Adefagia.PlayerAction
             if (gridController == null)
             {
                 Debug.LogWarning("Use Item Failed");
-                return;
+                return; 
             }
             
             var potionController = robotController.PotionController;
             Potion potion = potionController.ChoosePotion(itemChoosed);
             
-            foreach (UsableItemEffect val in potion.Effects)
+            foreach (UsableItemEffect effect in potion.Effects)
             {
-                if(val is HealItemEffect){
-                    HealItemEffect heal = (HealItemEffect) val;
-                    Debug.Log(heal.HealthAmount);
-                }
+            
+                effect.ExecuteEffect(robotController.Robot);
+        
+                // Debug.Log("anjiaidsnaisd");
+                // if(val is HealItemEffect){
+                //     HealItemEffect heal = (HealItemEffect) val;
+                //     Debug.Log(heal.HealthAmount);
+                // }
                 
-                if(val is StatBuffItemEffect){
-                    StatBuffItemEffect stat = (StatBuffItemEffect) val;
-                    Debug.Log(stat.AttackBuff);
-                }
+                // if(val is StatBuffItemEffect){
+                //     StatBuffItemEffect stat = (StatBuffItemEffect) val;
+                //     Debug.Log(stat.AttackBuff);
+                // }
             }
             // potion.Effects;
 

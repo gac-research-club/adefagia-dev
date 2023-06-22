@@ -551,7 +551,7 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.SkillSelectionRobot);
             skillChoosed = skill;
             // means the robot is considered to move
-            TeamActive.RobotControllerSelected.Robot.HasSkill = true;
+            // TeamActive.RobotControllerSelected.Robot.HasSkill = true;
 
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Skill Active");
         }
@@ -560,12 +560,12 @@ namespace Adefagia.BattleMechanism
         {
 
             // change to skill selection robot
-            ChangeBattleState(BattleState.SkillSelectionRobot);
+            ChangeBattleState(BattleState.ItemSelectionRobot);
             itemChoosed = item;
             // means the robot is considered to move
-            TeamActive.RobotControllerSelected.Robot.HasSkill = true;
+            // TeamActive.RobotControllerSelected.Robot.HasSkill = true;
 
-            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Skill Active");
+            Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Item Active");
         }
 
         public void EndTurnButtonClick()

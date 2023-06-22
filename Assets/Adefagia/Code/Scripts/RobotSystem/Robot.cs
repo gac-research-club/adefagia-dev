@@ -31,10 +31,9 @@ namespace Adefagia.RobotSystem
 
         public float CurrentStamina => _stamina;
 
-        public float Damage { get; }
+        public float Damage { get; set; }
         public float Speed { get; set; }
-        
-        public float Skill { get; }
+        public float Defend { get; set; }
 
         public bool IsDead { get; set; }
         
@@ -45,7 +44,8 @@ namespace Adefagia.RobotSystem
         public bool HasMove { get; set; }
         public bool HasAttack { get; set; }
         public bool HasSkill { get; set; }
-        
+        public bool HasEffect { get; set; }
+
         #endregion
 
         public event Action Damaged;
@@ -92,6 +92,23 @@ namespace Adefagia.RobotSystem
             }
            
         }
+
+        public void Healing(float heal)
+        {
+            _health += heal;
+            if(_health >= MaxHealth){
+               _health = MaxHealth;
+            }
+        }
+
+        public void IncreaseDamage(float damage){
+            Damage = Damage + (Damage * damage);
+        }
+        
+        public void IncreaseArmor(float armor){
+            Defend = Defend + (Defend * armor);
+        }
+        
 
         public void IncreaseStamina()
         {
