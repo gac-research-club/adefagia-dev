@@ -173,10 +173,17 @@ namespace Adefagia.UI
                     Button buttonItem = buttonList.transform.GetChild(i).GetComponent<Button>();
                     TextMeshProUGUI buttonText = buttonItem.GetComponentInChildren<TextMeshProUGUI>();
 
-                    Potion _potion = robotSelected.PotionController.ChoosePotion(i);
-
-                    // TODO : Change button text;
-                    buttonText.text = _potion.Name;
+                    try
+                    {
+                        var potion = robotSelected.PotionController.ChoosePotion(i);
+                        buttonItem.gameObject.SetActive(true);
+                        buttonText.text = potion.Name;
+                    }
+                    catch (Exception)
+                    {
+                        buttonItem.gameObject.SetActive(false);
+                    }
+                    
                 }
             }
         }
