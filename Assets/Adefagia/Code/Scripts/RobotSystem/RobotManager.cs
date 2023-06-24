@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Adefagia.BattleMechanism;
+using Adefagia.Inventory;
 using UnityEngine;
 
 
@@ -78,6 +79,9 @@ namespace Adefagia.RobotSystem
                 
                 // Add SkillController to attach on robot
                 var skillController = robotObject.AddComponent<SkillController>();
+
+                // Add Potion Controller to attach on robot
+                var potionController = robotObject.AddComponent<PotionController>();
                 
                 // Find healthBar GameObject
                 var healthBarObject = GameObject.Find($"Robot {i}/Canvas/HealthBar");
@@ -108,23 +112,43 @@ namespace Adefagia.RobotSystem
                 
                 robotController.Robot.ID = _teamController.TotalRobot-1 - i;
                 robotController.Robot.Speed = speed;
-                robotController.Robot.TypePattern = robot.weaponId.TypePattern;
+                
+                // If robot hasn't used weapon set to default
+                if (robot.weaponId != null)
+                {
+                    robotController.Robot.TypePattern = robot.weaponId.TypePattern;
+                    
+                    // Skill
+                    Skill skill1 = robot.weaponId.WeaponSkill[0];
+                    Skill skill2 = robot.weaponId.WeaponSkill[1];
+                
+                    // Ultimate Skill
+                    Skill skill3 = robot.weaponId.WeaponSkill[2];
+                    
+                    // set skill
+                    skillController.Skills.Add(skill1); 
+                    skillController.Skills.Add(skill2); 
+                    skillController.Skills.Add(skill3);
+                    
+                    robotController.SetSkill(skillController);
+                }
+                else
+                {
+                    Debug.Log("Not have weapon");
+                    
+                    robotController.Robot.TypePattern = TypePattern.Surround;
+                }
 
-                // Skill
-                Skill skill1 = robot.weaponId.WeaponSkill[0];
-                Skill skill2 = robot.weaponId.WeaponSkill[1];
-                
-                // Ultimate Skill
-                Skill skill3 = robot.weaponId.WeaponSkill[2];
-
-                // set skill
-                skillController.Skills.Add(skill1); 
-                skillController.Skills.Add(skill2); 
-                skillController.Skills.Add(skill3); 
-                
-                robotController.SetSkill(skillController);
-                
                 robotController.Robot.healthBar = healthBar;
+                
+                // Add Potion
+                Potion item1 = new Potion(robot.buffItem1.ItemName, robot.buffItem1.Effects);
+                Potion item2 = new Potion(robot.buffItem2.ItemName, robot.buffItem2.Effects);
+
+                potionController.Potions.Add(item1);
+                potionController.Potions.Add(item2);
+
+                robotController.SetPotion(potionController);
 
                 // Manual input HealthBar stat
                 healthBar.health = robotController.Robot.MaxHealth;

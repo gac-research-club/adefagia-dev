@@ -29,6 +29,8 @@ public class RobotStat
     public EquippableItem helmetId;
     public EquippableItem weaponId;
 
-    public Item buffItem1;
-    public Item buffItem2;
+    public UsableItem buffItem1;
+
+    public UsableItem buffItem2;
+
 }

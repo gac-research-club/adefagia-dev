@@ -13,7 +13,7 @@ using UnityEngine.Serialization;
 
 public class Character : MonoBehaviour
 {
-    public int Health  = 100;
+    public int Health = 100;
 
     public CharacterStat Attack;
     public CharacterStat Armor;
@@ -26,6 +26,7 @@ public class Character : MonoBehaviour
     [SerializeField] Image draggableItem;
 
     private List<EquippableItem> listItem;
+    private List<UsableItem> listUsableItem;
 
     private BaseItemSlot dragItemSlot;
 
@@ -68,16 +69,16 @@ public class Character : MonoBehaviour
 
         inventory.OnDropEvent += Drop;
         equipmentPanel.OnDropEvent += Drop;
-        
+
         // Starting robot maxHealth value
-        var teamManager =  GameManager.instance.GetComponent<TeamManager>();
-        
+        var teamManager = GameManager.instance.GetComponent<TeamManager>();
+
         // Robots A
         foreach (var robot in teamManager.robotsA)
         {
             robot.maxHealth = Health;
         }
-        
+
         // Robots B
         foreach (var robot in teamManager.robotsB)
         {
@@ -92,19 +93,16 @@ public class Character : MonoBehaviour
     {
         if (itemSlot.Item is EquippableItem)
         {
-            Equip((EquippableItem)itemSlot.Item);
+            Equip((EquippableItem) itemSlot.Item);
             
         }
         else if (itemSlot.Item is UsableItem)
         {
-            UsableItem usableItem = (UsableItem)itemSlot.Item;
-            usableItem.Use(this);
-
-            if (usableItem.IsConsumable)
+            UsableItem usableItem = (UsableItem) itemSlot.Item;
+            if (equipmentPanel.AddItem(usableItem))
             {
-                inventory.RemoveItem(usableItem);
-                usableItem.Destroy();
-            }
+                statPanel.UpdateUsableItemId(usableItem, usableItem.EquipmentType.ToString());
+            } 
         }
     }
 
@@ -161,7 +159,7 @@ public class Character : MonoBehaviour
         if (dropItemSlot.CanAddStack(dragItemSlot.Item))
         {
             AddStacks(dropItemSlot);
-        }       
+        }
         else if (dropItemSlot.CanReceiveItem(dragItemSlot.Item) && dragItemSlot.CanReceiveItem(dropItemSlot.Item))
         {
             SwapItems(dropItemSlot);
@@ -170,19 +168,19 @@ public class Character : MonoBehaviour
 
     public void SwapItems(BaseItemSlot dropItemSlot)
     {
-        EquippableItem dragEquipItem  = dragItemSlot.Item as EquippableItem;
-        EquippableItem dropEquipItem  = dropItemSlot.Item as EquippableItem;
+        EquippableItem dragEquipItem = dragItemSlot.Item as EquippableItem;
+        EquippableItem dropEquipItem = dropItemSlot.Item as EquippableItem;
 
         if (dragItemSlot is EquipmentSlot)
         {
-            if (dragEquipItem  != null) dragEquipItem .UnEquip(this);
-            if (dropEquipItem  != null) dropEquipItem .Equip(this);
+            if (dragEquipItem != null) dragEquipItem.UnEquip(this);
+            if (dropEquipItem != null) dropEquipItem.Equip(this);
         }
 
         if (dropItemSlot is EquipmentSlot)
         {
-            if (dragEquipItem  != null) dragEquipItem .Equip(this);
-            if (dropEquipItem  != null) dropEquipItem .UnEquip(this);
+            if (dragEquipItem != null) dragEquipItem.Equip(this);
+            if (dropEquipItem != null) dropEquipItem.UnEquip(this);
         }
         statPanel.UpdateStatValues();
 
@@ -202,7 +200,7 @@ public class Character : MonoBehaviour
         int stacksToAdd = Mathf.Min(numAddableStacks, dragItemSlot.Amount);
 
         dragItemSlot.Amount -= stacksToAdd;
-        dropItemSlot.RemoveStack(stacksToAdd); 
+        dropItemSlot.RemoveStack(stacksToAdd);
     }
 
     //Check items is Equippable item or not from inventory to place on equipment panel
@@ -220,10 +218,18 @@ public class Character : MonoBehaviour
                     statPanel.UpdateStatValues();
                 }
                 item.Equip(this);
-                statPanel.UpdateEquipmentId(item, item.GetItemType());
+
+                try
+                {
+                    statPanel.UpdateEquipmentId(item, item.GetItemType());
+                }
+                catch (System.Exception)
+                {
+                }
+
                 statPanel.UpdateStatValues();
-            } 
-            else 
+            }
+            else
             {
                 inventory.AddItem(item);
             }
@@ -231,9 +237,9 @@ public class Character : MonoBehaviour
     }
 
     public void Unequip(EquippableItem item)
-    {        
+    {
         if (inventory.CanAddItem(item) && equipmentPanel.RemoveItem(item))
-        {            
+        {
             item.UnEquip(this);
             statPanel.UpdateStatValues();
             inventory.AddItem(item);
@@ -251,15 +257,17 @@ public class Character : MonoBehaviour
         int countTeam = statPanel.GetCurrentTeam();
 
         List<Dictionary<String, EquippableItem>> listEquipRobot = statPanel.GetDetailEquipmentTeam(countTeam);
+        List<Dictionary<String, UsableItem>> listUsableItem = statPanel.GetDetailItemTeam(countTeam);
 
         statPanel.ChangeTeam();
-        
+
         foreach (Dictionary<String, EquippableItem> equipRobot in listEquipRobot)
         {
             if (equipRobot["armorId"] is EquippableItem && inventory.CanAddItem(equipRobot["armorId"]))
             {
-                EquippableItem armorEquip = (EquippableItem) equipRobot["armorId"];
-                if(equipmentPanel.RemoveItem(armorEquip)){
+                EquippableItem armorEquip = (EquippableItem)equipRobot["armorId"];
+                if (equipmentPanel.RemoveItem(armorEquip))
+                {
                     armorEquip.UnEquip(this);
                     statPanel.UpdateStatValues();
                 };
@@ -267,33 +275,58 @@ public class Character : MonoBehaviour
             }
 
             if (equipRobot["weaponId"] is EquippableItem && inventory.CanAddItem(equipRobot["weaponId"]))
-            {   
-                EquippableItem weaponEquip = (EquippableItem) equipRobot["weaponId"];
-                if(equipmentPanel.RemoveItem(weaponEquip)){
+            {
+                EquippableItem weaponEquip = (EquippableItem)equipRobot["weaponId"];
+                if (equipmentPanel.RemoveItem(weaponEquip))
+                {
                     weaponEquip.UnEquip(this);
                     statPanel.UpdateStatValues();
                 };
-                inventory.AddItem(equipRobot["weaponId"]);        
+                inventory.AddItem(equipRobot["weaponId"]);
             }
 
             if (equipRobot["helmetId"] is EquippableItem && inventory.CanAddItem(equipRobot["helmetId"]))
             {
-                EquippableItem helmetEquip = (EquippableItem) equipRobot["helmetId"];
-                if(equipmentPanel.RemoveItem(helmetEquip)){
+                EquippableItem helmetEquip = (EquippableItem)equipRobot["helmetId"];
+                if (equipmentPanel.RemoveItem(helmetEquip))
+                {
                     helmetEquip.UnEquip(this);
                     statPanel.UpdateStatValues();
                 };
-                inventory.AddItem(equipRobot["helmetId"]);          
+                inventory.AddItem(equipRobot["helmetId"]);
             }
-        }    
+        }
+        
+        foreach (Dictionary<String, UsableItem> itemRobot in listUsableItem)
+        {
+            if (itemRobot["itemBuff1"] is UsableItem)
+            {
+                
+                if(equipmentPanel.RemoveItem(itemRobot["itemBuff1"])){
+                    statPanel.UpdateStatValues();
+                }
+            }
+
+            if (itemRobot["itemBuff2"] is UsableItem)
+            {
+                if(equipmentPanel.RemoveItem(itemRobot["itemBuff2"])){
+                    statPanel.UpdateStatValues();
+                }
+            }
+
+        }
+            
     }
 
-    
 
     public void ChangeRobotIndex(int index)
     {
         listItem = equipmentPanel.ListItem();
+        listUsableItem = equipmentPanel.ListUsableItem();
+        
         Dictionary<String, EquippableItem> statRobot = statPanel.GetDetailEquipment(index);
+        Dictionary<String, UsableItem> itemRobot = statPanel.GetDetailItemEquip(index);
+
         statPanel.ChangeRobotIndex(index);
 
         foreach (EquippableItem item in listItem)
@@ -302,43 +335,72 @@ public class Character : MonoBehaviour
             {
                 
                 EquippableItem itemEq = (EquippableItem) item;
-
-                
                 if (inventory.CanAddItem(itemEq) && equipmentPanel.RemoveItem(itemEq))
-                {            
+                {
                     itemEq.UnEquip(this);
                     statPanel.UpdateStatValues();
                     // inventory.AddItem(item);
                 }
-            }    
+            }
+        }
+
+        foreach (UsableItem itemUs in listUsableItem)
+        {
+            if (itemUs is UsableItem)
+            {
+                
+                UsableItem itemUsable = (UsableItem) itemUs;
+                if (inventory.CanAddItem(itemUsable) && equipmentPanel.RemoveItem(itemUsable))
+                {            
+                    statPanel.UpdateStatValues();
+                    // inventory.AddItem(item);
+                }
+            }
         }
 
         if (statRobot["armorId"] is EquippableItem)
         {
-    
-            EquippableItem itemCur = (EquippableItem) statRobot["armorId"];
+
+            EquippableItem itemCur = (EquippableItem)statRobot["armorId"];
 
             equipmentPanel.AddItem(itemCur);
             itemCur.Equip(this);
-            statPanel.UpdateStatValues();          
+            statPanel.UpdateStatValues();
         }
 
         if (statRobot["weaponId"] is EquippableItem)
         {
-            EquippableItem itemCur = (EquippableItem) statRobot["weaponId"];
+            EquippableItem itemCur = (EquippableItem)statRobot["weaponId"];
 
             equipmentPanel.AddItem(itemCur);
             itemCur.Equip(this);
-            statPanel.UpdateStatValues();          
+            statPanel.UpdateStatValues();
         }
 
         if (statRobot["helmetId"] is EquippableItem)
         {
 
-            EquippableItem itemCur = (EquippableItem) statRobot["helmetId"];
+            EquippableItem itemCur = (EquippableItem)statRobot["helmetId"];
 
             equipmentPanel.AddItem(itemCur);
             itemCur.Equip(this);
+            statPanel.UpdateStatValues();
+        }
+
+        if (itemRobot["itemBuff1"] is UsableItem)
+        {
+            UsableItem itemCur = (UsableItem) itemRobot["itemBuff1"];
+
+            equipmentPanel.AddItem(itemCur);
+            statPanel.UpdateStatValues();          
+        }
+
+
+        if (itemRobot["itemBuff2"] is UsableItem)
+        {
+            UsableItem itemCur = (UsableItem) itemRobot["itemBuff2"];
+
+            equipmentPanel.AddItem(itemCur);
             statPanel.UpdateStatValues();          
         }
 

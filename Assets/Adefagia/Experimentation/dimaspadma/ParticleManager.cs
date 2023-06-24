@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Adefagia.ObstacleSystem;
 using Adefagia.RobotSystem;
 using UnityEngine;
@@ -18,6 +19,12 @@ public class ParticleManager : MonoBehaviour
     
     private void Start()
     {
+        CheckParticles(new List<ParticleSystem>
+        {
+            globalObstacleParticleDestroyed, 
+            globalObstacleHit
+        });
+
         ObstacleController.ObstacleDestroyed += OnPlayParticleDestroyed;
         ObstacleController.ObstacleHit += OnPlayParticleHit;
         RobotController.TakeDamageHappened += OnPlayParticleHit;
@@ -51,5 +58,20 @@ public class ParticleManager : MonoBehaviour
         globalObstacleHit.Play();
 
         _timerRunning = true;
+    }
+    
+    // CheckParticles check is particles available, if particles empty than
+    // close app
+    private void CheckParticles(List<ParticleSystem> particles)
+    {
+        foreach (var particle in particles)
+        {
+            if (particle == null)
+            {
+                var errText = "Particle {0} Not available, Please import first";
+                Debug.LogFormat(errText, particle.name);
+                Application.Quit();
+            }
+        }
     }
 }
