@@ -1,6 +1,13 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Adefagia.GridSystem;
+using Adefagia.PlayerAction;
+using Adefagia.RobotSystem;
 using Adefagia.Inventory;
+using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
+using Random = UnityEngine.Random;
 
 namespace Adefagia.RobotSystem
 {
@@ -27,14 +34,17 @@ namespace Adefagia.RobotSystem
         public float MaxHealth { get; }
         public float MaxStamina { get; }
 
+        
         public float CurrentHealth => _health;
 
         public float CurrentStamina => _stamina;
 
         public float Damage { get; set; }
+        public float TempDamage {get; set;}
         public float Speed { get; set; }
         public float Defend { get; set; }
-
+        public float TempDefend {get; set;}
+        
         public bool IsDead { get; set; }
         
         // Pattern Type
@@ -99,16 +109,27 @@ namespace Adefagia.RobotSystem
             if(_health >= MaxHealth){
                _health = MaxHealth;
             }
+            Debug.Log("_health");
+            Debug.Log(_health);
         }
 
         public void IncreaseDamage(float damage){
-            Damage = Damage + (Damage * damage);
+            TempDamage = (Damage * damage);
+            Damage = Damage + TempDamage;
+            
         }
         
         public void IncreaseArmor(float armor){
-            Defend = Defend + (Defend * armor);
+            TempDefend = (Defend * armor);
+            Defend = Defend + TempDefend;
+
         }
         
+        public void Normalize(){
+            if(TempDamage > 0){
+                Damage = Damage - TempDamage;
+            }
+        }
 
         public void IncreaseStamina()
         {

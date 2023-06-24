@@ -9,32 +9,15 @@ namespace Adefagia.PlayerAction
     {
         // robotController = current select
         // gridController = another select robot
-        public void Item(RobotController robotController, GridController gridController, int itemChoosed)
-        {
-            if (gridController == null)
-            {
-                Debug.LogWarning("Use Item Failed");
-                return; 
-            }
-            
+        public void Item(RobotController robotController, int itemChoosed)
+        {   
             var potionController = robotController.PotionController;
             Potion potion = potionController.ChoosePotion(itemChoosed);
             
             foreach (UsableItemEffect effect in potion.Effects)
-            {
-            
-                effect.ExecuteEffect(robotController.Robot);
-        
-                // Debug.Log("anjiaidsnaisd");
-                // if(val is HealItemEffect){
-                //     HealItemEffect heal = (HealItemEffect) val;
-                //     Debug.Log(heal.HealthAmount);
-                // }
+            {   
                 
-                // if(val is StatBuffItemEffect){
-                //     StatBuffItemEffect stat = (StatBuffItemEffect) val;
-                //     Debug.Log(stat.AttackBuff);
-                // }
+                effect.ExecuteEffect(robotController.Robot);
             }
             // potion.Effects;
 
