@@ -110,6 +110,7 @@ namespace Adefagia.SelectObject
         {
             // save last camera
             var lastCamera = cameras[_cameraSelectedIndex];
+            lastCamera.tag = "Untagged";
                 
             // Increment camera index
             _cameraSelectedIndex++;
@@ -123,6 +124,7 @@ namespace Adefagia.SelectObject
             // Change camera
             _cameraSelected = cameras[_cameraSelectedIndex];
             _cameraSelected.enabled = true;
+            _cameraSelected.tag = "MainCamera";
             
             // Hide previous camera
             lastCamera.enabled = false;

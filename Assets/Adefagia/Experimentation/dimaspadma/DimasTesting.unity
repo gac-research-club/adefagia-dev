@@ -163,8 +163,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -304.0039, y: 24.478577}
-  m_SizeDelta: {x: -646.99994, y: -407.3429}
+  m_AnchoredPosition: {x: -260, y: 53}
+  m_SizeDelta: {x: -1685.7046, y: -1044.3062}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &46186958
 CanvasRenderer:
@@ -423,6 +423,7 @@ GameObject:
   - component: {fileID: 96379017}
   - component: {fileID: 96379018}
   - component: {fileID: 96379019}
+  - component: {fileID: 96379020}
   m_Layer: 0
   m_Name: DummyRobot1
   m_TagString: Untagged
@@ -505,6 +506,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18e66c0bb846668499e9b5f91189efa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &96379020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 96379012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a281d20839398644abb56e989d407d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &97876272
@@ -1075,6 +1088,7 @@ GameObject:
   - component: {fileID: 248517908}
   - component: {fileID: 248517909}
   - component: {fileID: 248517910}
+  - component: {fileID: 248517911}
   m_Layer: 0
   m_Name: DummyRobot2
   m_TagString: Untagged
@@ -1157,6 +1171,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18e66c0bb846668499e9b5f91189efa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &248517911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248517903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a281d20839398644abb56e989d407d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &304325453
@@ -1940,6 +1966,7 @@ MonoBehaviour:
   quadAttack: {fileID: 4151748587016705385, guid: c2f2355339260714aa3911d7f6bf5491, type: 3}
   quadMoveBlock: {fileID: 4151748587016705385, guid: 546edf17fc5684845891f051b8917fbb, type: 3}
   quadAttackBlock: {fileID: 4151748587016705385, guid: d6cbdb2ebcfd9a74caf3a2a962220541, type: 3}
+  quadImpact: {fileID: 0}
 --- !u!1 &532834094
 GameObject:
   m_ObjectHideFlags: 0
@@ -2364,6 +2391,7 @@ GameObject:
   - component: {fileID: 656425231}
   - component: {fileID: 656425232}
   - component: {fileID: 656425233}
+  - component: {fileID: 656425234}
   m_Layer: 0
   m_Name: DummyRobot1
   m_TagString: Untagged
@@ -2446,6 +2474,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18e66c0bb846668499e9b5f91189efa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &656425234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656425226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a281d20839398644abb56e989d407d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &697901347
@@ -2540,6 +2580,7 @@ GameObject:
   - component: {fileID: 709075312}
   - component: {fileID: 709075313}
   - component: {fileID: 709075314}
+  - component: {fileID: 709075315}
   m_Layer: 0
   m_Name: DummyRobot3
   m_TagString: Untagged
@@ -2622,6 +2663,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18e66c0bb846668499e9b5f91189efa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &709075315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709075307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a281d20839398644abb56e989d407d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &709408101
@@ -3518,6 +3571,7 @@ GameObject:
   - component: {fileID: 967812013}
   - component: {fileID: 967812014}
   - component: {fileID: 967812015}
+  - component: {fileID: 967812016}
   m_Layer: 0
   m_Name: DummyRobot3
   m_TagString: Untagged
@@ -3600,6 +3654,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a656746ba975fb439e57b43646f7cf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &967812016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967812008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a281d20839398644abb56e989d407d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1021715221
@@ -5286,6 +5352,7 @@ GameObject:
   - component: {fileID: 1634554117}
   - component: {fileID: 1634554118}
   - component: {fileID: 1634554119}
+  - component: {fileID: 1634554120}
   m_Layer: 0
   m_Name: DummyRobot2
   m_TagString: Untagged
@@ -5370,6 +5437,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18e66c0bb846668499e9b5f91189efa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1634554120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634554112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a281d20839398644abb56e989d407d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1689452389
 GameObject:
   m_ObjectHideFlags: 0
@@ -5413,7 +5492,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3, y: 0}
+  m_AnchoredPosition: {x: -437, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1689452391
@@ -5434,6 +5513,7 @@ MonoBehaviour:
   buttonSkill: {fileID: 2124797459}
   cancelButton: {fileID: 1089501040}
   listSkill: {fileID: 1772865758}
+  listItem: {fileID: 0}
 --- !u!114 &1689452392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11473,7 +11553,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 273, y: -114}
+  m_AnchoredPosition: {x: 687, y: -114}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2113302944
@@ -11701,7 +11781,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 290.1703, y: -158}
+  m_AnchoredPosition: {x: 689, y: -158}
   m_SizeDelta: {x: 119.6595, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2124797457
