@@ -1,26 +1,22 @@
 using UnityEngine;
 using System.Collections;
 using Adefagia.CharacterStats;
+using Adefagia.RobotSystem;
 
 [CreateAssetMenu(menuName = "Item Effects/Stat Buff")]
 public class StatBuffItemEffect : UsableItemEffect
 {
-    public int AttackBuff;
-    public int ArmorBuff;
+    public float AttackBuff;
+    public float ArmorBuff;
     public float Duration;
 
-    public override void ExecuteEffect(UsableItem parentItem, Character character)
+    public override void ExecuteEffect(Robot character)
     {
-        StatModifier statModifierAttack = new StatModifier(AttackBuff, StatModType.Flat, parentItem);
-        character.Attack.AddModifier(statModifierAttack);
-
-        StatModifier statModifierArmor = new StatModifier(ArmorBuff, StatModType.Flat, parentItem);
-        character.Armor.AddModifier(statModifierArmor);
-
-        character.StartCoroutine(RemoveBuff(character, statModifierAttack, Duration));
-        character.StartCoroutine(RemoveBuff(character, statModifierArmor, Duration));
-
-        character.UpdateStatValues();
+        Debug.Log(AttackBuff);
+        
+        Debug.Log(ArmorBuff);
+        character.IncreaseDamage(AttackBuff);
+        character.IncreaseArmor(ArmorBuff);
     }
 
     public override string GetDescription()
