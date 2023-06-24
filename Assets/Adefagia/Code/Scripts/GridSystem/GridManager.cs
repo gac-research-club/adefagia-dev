@@ -37,6 +37,8 @@ namespace Adefagia.GridSystem
 
         public static bool DoneGenerate = false;
 
+        public static event Action<GridController> SkillHappened; 
+
         private void Awake()
         {
             // Set into gameManager
@@ -234,6 +236,11 @@ namespace Adefagia.GridSystem
                 {
                     GridHover?.Invoke(gridSelect);
                 }
+            }
+
+            if (BattleManager.battleState == BattleState.SkillSelectionRobot)
+            {
+                SkillHappened?.Invoke(GetGridController());
             }
 
             // var _grid = GetGrid(); 
