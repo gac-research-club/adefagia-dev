@@ -108,7 +108,8 @@ namespace Adefagia.RobotSystem
                     _teamController.Team.teamName + "-" + robotObject.name,
                     robot.maxHealth,
                     robot.maxStamina,
-                    robot.damage);
+                    robot.damage,
+                    robot.armor);
                 
                 robotController.Robot.ID = _teamController.TotalRobot-1 - i;
                 robotController.Robot.Speed = speed;
