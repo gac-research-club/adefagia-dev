@@ -25,10 +25,6 @@ namespace Adefagia.UI
             BattleManager.RobotNotHaveSkill += HideSkillButton;
         }
 
-
-        [SerializeField] private GameObject listItem;
-
-
         // TODO: disable button Move
         private void Update()
         {
