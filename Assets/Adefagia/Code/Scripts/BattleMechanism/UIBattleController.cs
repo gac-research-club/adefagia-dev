@@ -66,13 +66,13 @@ namespace Adefagia.UI
                 if(robotSelected.Robot.CurrentStamina <= 0){
                     // DisableButton(buttonAttack);
                     // DisableButton(buttonMove);
-                    DisableButton(buttonSkill);
+                    //DisableButton(buttonSkill);
                 }else{
                     
                     // Disable if robot has moved
                     if (robotSelected.Robot.HasMove)
                     {
-                        DisableButton(buttonMove);
+                        // DisableButton(buttonMove);
                     }
                     else
                     {
