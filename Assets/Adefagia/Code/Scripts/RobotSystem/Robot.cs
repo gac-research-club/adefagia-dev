@@ -1,6 +1,13 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Adefagia.GridSystem;
+using Adefagia.PlayerAction;
+using Adefagia.RobotSystem;
 using Adefagia.Inventory;
+using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
+using Random = UnityEngine.Random;
 
 namespace Adefagia.RobotSystem
 {
@@ -27,15 +34,17 @@ namespace Adefagia.RobotSystem
         public float MaxHealth { get; }
         public float MaxStamina { get; }
 
+        
         public float CurrentHealth => _health;
 
         public float CurrentStamina => _stamina;
 
-        public float Damage { get; }
+        public float Damage { get; set; }
+        public float TempDamage {get; set;}
         public float Speed { get; set; }
+        public float Defend { get; set; }
+        public float TempDefend {get; set;}
         
-        public float Skill { get; }
-
         public bool IsDead { get; set; }
         
         // Pattern Type
@@ -45,7 +54,8 @@ namespace Adefagia.RobotSystem
         public bool HasMove { get; set; }
         public bool HasAttack { get; set; }
         public bool HasSkill { get; set; }
-        
+        public bool HasEffect { get; set; }
+
         #endregion
 
         public event Action Damaged;
@@ -91,6 +101,34 @@ namespace Adefagia.RobotSystem
                Dead?.Invoke();
             }
            
+        }
+
+        public void Healing(float heal)
+        {
+            _health += heal;
+            if(_health >= MaxHealth){
+               _health = MaxHealth;
+            }
+            Debug.Log("_health");
+            Debug.Log(_health);
+        }
+
+        public void IncreaseDamage(float damage){
+            TempDamage = (Damage * damage);
+            Damage = Damage + TempDamage;
+            
+        }
+        
+        public void IncreaseArmor(float armor){
+            TempDefend = (Defend * armor);
+            Defend = Defend + TempDefend;
+
+        }
+        
+        public void Normalize(){
+            if(TempDamage > 0){
+                Damage = Damage - TempDamage;
+            }
         }
 
         public void IncreaseStamina()

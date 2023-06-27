@@ -141,12 +141,22 @@ namespace Adefagia.RobotSystem
 
                 robotController.Robot.healthBar = healthBar;
                 
-                // Add Potion
-                Potion item1 = new Potion(robot.buffItem1.ItemName, robot.buffItem1.Effects);
-                Potion item2 = new Potion(robot.buffItem2.ItemName, robot.buffItem2.Effects);
+                // Potion null checker
+                if (robot.buffItem1 != null)
+                {
+                    // Add Potion
+                    Potion item1 = new Potion(robot.buffItem1.ItemName, robot.buffItem1.Effects);
+                    
+                    potionController.Potions.Add(item1);
+                }
 
-                potionController.Potions.Add(item1);
-                potionController.Potions.Add(item2);
+                if (robot.buffItem2 != null)
+                {
+                    // Add Potion
+                    Potion item2 = new Potion(robot.buffItem2.ItemName, robot.buffItem2.Effects);
+                    
+                    potionController.Potions.Add(item2);
+                }
 
                 robotController.SetPotion(potionController);
 

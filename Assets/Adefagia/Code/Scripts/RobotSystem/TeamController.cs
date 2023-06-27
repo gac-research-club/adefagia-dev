@@ -178,6 +178,7 @@ namespace Adefagia.BattleMechanism
             foreach (var robot in robotControllers)
             {
                 robot.Robot.ResetStepStat();
+                robot.Robot.Normalize();
             }
         }
 

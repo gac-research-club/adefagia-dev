@@ -49,5 +49,12 @@ namespace Adefagia.PlayerAction
 
             Debug.Log($"Skill {skill.Name} launched to {gridController.RobotController.Robot}");
         }
+
+        public static Skill GetSkill(RobotController robotController, int index)
+        {
+            var skillController = robotController.SkillController;
+            return skillController.ChooseSkill(index);
+        }
     }
+    
 }

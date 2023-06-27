@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Adefagia.BattleMechanism;
 using Adefagia.GridSystem;
 using Adefagia.RobotSystem;
@@ -14,8 +15,12 @@ namespace Adefagia.PlayerAction
         
         [Header("Prefab highlight block when grid occupied")]
         [SerializeField] private GameObject quadMoveBlock, quadAttackBlock;
+        
+        [SerializeField] private GameObject quadImpact;
+        
 
         private List<Grid> _tempGrids;
+
         private List<GameObject> _tempHighlights;
         private GameObject _quad, _quadBlock;
 
@@ -30,6 +35,7 @@ namespace Adefagia.PlayerAction
         private void Start()
         {
             RobotAttack.ThingHappened += OnThingHappened;
+            GridManager.SkillHappened += OnSkillHappened;
         }
 
         public void OnThingHappened(RobotController robotController)
@@ -57,6 +63,17 @@ namespace Adefagia.PlayerAction
                 "ooo";
             var origin = new Vector2Int(1, 1);
             CreateFromPattern(pattern, 3,3, grid.Location, origin);
+        }
+
+        public void CreateHighlight(Grid grid, string pattern, Vector2Int origin)
+        {
+            if (grid == null) return;
+
+            CleanHighlight();
+
+            SetQuad();
+
+            CreateFromPattern(pattern, 7,7, grid.Location, origin);
         }
 
         /*--------------
@@ -245,7 +262,8 @@ namespace Adefagia.PlayerAction
                 _quad = quadMove;
                 _quadBlock = quadMoveBlock;
             }
-            else if (BattleManager.battleState == BattleState.AttackRobot)
+            else if (BattleManager.battleState == BattleState.AttackRobot ||
+                     BattleManager.battleState == BattleState.SkillSelectionRobot)
             {
                 _quad = quadAttack;
                 _quadBlock = quadAttackBlock;
@@ -277,8 +295,9 @@ namespace Adefagia.PlayerAction
 
         private void CreateFromPattern(string pattern, int row, int col, Vector2Int position, Vector2Int origin)
         {
+            string replacement = Regex.Replace(pattern, @"\t|\n|\r", "");
             int x = 0, y = row-1;
-            foreach (var character in pattern)
+            foreach (var character in replacement)
             {
                 // Debug.Log($"({x},{y}): {character}");
                 if (character.Equals('o'))
@@ -296,6 +315,11 @@ namespace Adefagia.PlayerAction
         }
 
         
+
+        private void OnSkillHappened(GridController gridController)
+        {
+            Debug.Log(gridController.Grid);
+        }
 
         public enum TypePattern
         {

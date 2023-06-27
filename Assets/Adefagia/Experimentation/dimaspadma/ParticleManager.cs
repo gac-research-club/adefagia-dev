@@ -16,7 +16,7 @@ public class ParticleManager : MonoBehaviour
 
     private float _timer;
     private bool _timerRunning;
-
+    
     private void Start()
     {
         CheckParticles(new List<ParticleSystem>
