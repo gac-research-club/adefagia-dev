@@ -65,6 +65,13 @@ namespace Adefagia.PlayerAction
             CreateFromPattern(pattern, 3,3, grid.Location, origin);
         }
 
+        public void SetSurroundImpact(Grid grid)
+        {
+            if (grid == null) return;
+            
+            
+        }
+
         public void CreateHighlight(Grid grid, string pattern, Vector2Int origin)
         {
             if (grid == null) return;

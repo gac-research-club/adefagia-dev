@@ -293,8 +293,14 @@ namespace Adefagia.BattleMechanism
         
         public void Test(GridController gridController)
         {
-            Debug.Log("test");
-            localHighlight.SetSurroundMove(gridController.Grid);
+            // Click on the grid highlighted
+            if (highlightMovement.CheckGridOnHighlight(gridController))
+            {
+                // run AStar Pathfinding
+                Debug.Log("test");
+            }
+            
+            localHighlight.SetSurroundImpact(gridController.Grid);
         }
 
         #region ChangeState
