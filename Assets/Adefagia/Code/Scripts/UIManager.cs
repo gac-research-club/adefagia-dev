@@ -70,7 +70,7 @@ namespace Adefagia
          *-------------------------------------------------------------*/
         private void ShowCanvasUI(Canvas canvas)
         {
-            canvas.enabled = true;
+            canvas.gameObject.SetActive(true);
         }
 
         /*-------------------------------------------------------------
@@ -78,7 +78,7 @@ namespace Adefagia
          *-------------------------------------------------------------*/
         private void HideCanvasUI(Canvas canvas)
         {
-            canvas.enabled = false;
+            canvas.gameObject.SetActive(false);
         }
 
         /*-------------------------------------------------------------

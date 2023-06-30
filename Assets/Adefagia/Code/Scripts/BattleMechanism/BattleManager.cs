@@ -104,8 +104,10 @@ namespace Adefagia.BattleMechanism
                         ChangeGameState(GameState.Battle);
                         ChangeBattleState(BattleState.SelectRobot);
                         
+                        
                         GameManager.instance.uiManager.HideCharacterSelectCanvas();
-
+                        GameManager.instance.uiManager.ShowBattleUI();
+                        
                         // Enable healthbars when both teams deployed
                         GameManager.instance.uiManager.EnableHealthBars(TeamActive.IsHasFinishDeploy());
                     }
@@ -369,14 +371,14 @@ namespace Adefagia.BattleMechanism
                     RobotNotHaveSkill?.Invoke(TeamActive.RobotControllerSelected);
 
                     // Show or Hide Battle UI
-                    if (TeamActive.RobotControllerSelected != null)
-                    {
-                        GameManager.instance.uiManager.ShowBattleUI();
-                    }
-                    else
-                    {
-                        GameManager.instance.uiManager.HideBattleUI();
-                    }
+                    // if (TeamActive.RobotControllerSelected != null)
+                    // {
+                    //     GameManager.instance.uiManager.ShowBattleUI();
+                    // }
+                    // else
+                    // {
+                    //     GameManager.instance.uiManager.HideBattleUI();
+                    // }
                 }
 
                 /*---------------------------------------------------------------

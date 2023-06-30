@@ -111,7 +111,7 @@ namespace Adefagia.RobotSystem
 
         public void MovePosition(Grid grid)
         {
-            var position = new Vector3(grid.X, 0, grid.Y);
+            var position = new Vector3(grid.X * GridManager.GridLength, 0, grid.Y * GridManager.GridLength);
             transform.position = position;
             
             // TODO: move to position with some transition

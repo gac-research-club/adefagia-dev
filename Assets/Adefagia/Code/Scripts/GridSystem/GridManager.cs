@@ -25,6 +25,7 @@ namespace Adefagia.GridSystem
 
         private Select _select;
 
+        public static float GridLength;
         public static event Action<GridController> GridHover;
         
         // Grid state
@@ -41,6 +42,9 @@ namespace Adefagia.GridSystem
 
         private void Awake()
         {
+
+            GridLength = gridLength;
+            
             // Set into gameManager
             if (GameManager.instance != null)
             {
@@ -130,8 +134,11 @@ namespace Adefagia.GridSystem
             {
                 for (var xi = 0; xi < x; xi++)
                 {
+                    var prefab = _gridElements[GridType.Ground].prefab;
+                    prefab.transform.localScale = new Vector3(gridLength, gridLength, gridLength);
+                    
                     // Create gameObject of grid
-                    var gridObject = Instantiate(_gridElements[GridType.Ground].prefab, transform);
+                    var gridObject = Instantiate(prefab, transform);
                     gridObject.transform.position = new Vector3(xi * gridLength, 0, yi * gridLength) + offset;
                     gridObject.name = $"Grid ({xi}, {yi})";
 
