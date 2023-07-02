@@ -116,7 +116,7 @@ namespace Adefagia.RobotSystem
             
             // Y angle is 0 & 180
             // Look at center grid (4,4)
-            var center = new Vector3(grid.X,0,4);
+            var center = new Vector3(grid.X * GridManager.GridLength,0,4 * GridManager.GridLength);
             transform.LookAt(center);
 
             var fixAngle = Math.Clamp(transform.eulerAngles.y, 0, 180);

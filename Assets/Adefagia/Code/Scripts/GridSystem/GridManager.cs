@@ -135,10 +135,12 @@ namespace Adefagia.GridSystem
                 for (var xi = 0; xi < x; xi++)
                 {
                     var prefab = _gridElements[GridType.Ground].prefab;
-                    prefab.transform.localScale = new Vector3(gridLength, gridLength, gridLength);
                     
                     // Create gameObject of grid
                     var gridObject = Instantiate(prefab, transform);
+
+                    gridObject.transform.localScale = UpdateScale(gridObject.transform);
+                    
                     gridObject.transform.position = new Vector3(xi * gridLength, 0, yi * gridLength) + offset;
                     gridObject.name = $"Grid ({xi}, {yi})";
 
@@ -199,7 +201,7 @@ namespace Adefagia.GridSystem
         // Get Vector3 by Grid
         public static Vector3 CellToWorld(Grid grid)
         {
-            return new Vector3(grid.X, 0, grid.Y);
+            return new Vector3(grid.X * GridLength, 0, grid.Y * GridLength);
         }
 
         // Grid hover 
@@ -218,6 +220,14 @@ namespace Adefagia.GridSystem
             {
                 return null;
             }
+        }
+
+        public GridController GetGridController(Grid grid)
+        {
+            // with find object
+            var obj = GameObject.Find(grid.ToString());
+
+            return obj.GetComponent<GridController>();
         }
 
         #region UnityEvent
@@ -239,15 +249,16 @@ namespace Adefagia.GridSystem
                 gridTemp = gridSelect;
                 
                 // Debug.Log("Current: " + gridSelect);
-                if (gridSelect != null && BattleManager.battleState == BattleState.AttackRobot)
-                {
-                    GridHover?.Invoke(gridSelect);
-                }
+                // if (gridSelect != null && BattleManager.battleState == BattleState.AttackRobot)
+                // {
+                //     GridHover?.Invoke(gridSelect);
+                // }
             }
 
             if (BattleManager.battleState == BattleState.SkillSelectionRobot)
             {
-                SkillHappened?.Invoke(GetGridController());
+                // SkillHappened?.Invoke(GetGridController());
+                GridHover?.Invoke(gridSelect);
             }
 
             // var _grid = GetGrid(); 
@@ -262,7 +273,18 @@ namespace Adefagia.GridSystem
         #endregion
 
 
-
+        public static Vector3 UpdateScale(Transform original)
+        {
+            var defaultScale = original.localScale;
+            
+            var result = new Vector3(
+                defaultScale.x * GridLength,
+                defaultScale.y * GridLength, 
+                defaultScale.z * GridLength);
+            
+            return result;
+        }
+        
         private void OnDrawGizmos()
         {
             var center = (gridSizeX * gridLength + gridSizeY * gridLength) * 0.5f;

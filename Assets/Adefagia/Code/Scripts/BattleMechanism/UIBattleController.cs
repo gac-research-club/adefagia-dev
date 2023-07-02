@@ -40,10 +40,10 @@ namespace Adefagia.UI
                     BattleManager.battleState == BattleState.ItemSelectionRobot)
                 {
                     ShowButton(cancelButton);
-                    if (BattleManager.battleState == BattleState.SkillRobot ||
-                        BattleManager.battleState == BattleState.SkillSelectionRobot){
-                        ShowButton(listSkill);
-                    }
+                    ShowButton(listSkill);
+                    // if (BattleManager.battleState == BattleState.SkillRobot ||
+                    //     BattleManager.battleState == BattleState.SkillSelectionRobot){
+                    // }
                     if (BattleManager.battleState == BattleState.ItemRobot || BattleManager.battleState == BattleState.ItemSelectionRobot){
                         ShowButton(listItem);
                     }
@@ -51,7 +51,7 @@ namespace Adefagia.UI
                 else
                 {
                     HideButton(cancelButton);
-                    HideButton(listSkill);
+                    // HideButton(listSkill);
                     HideButton(listItem);
                 }
 
@@ -61,7 +61,7 @@ namespace Adefagia.UI
                 // if Robot haven't selected than return
                 if (robotSelected == null) return;
 
-                robotNameText.text = robotSelected.Robot.ToString();
+                // robotNameText.text = robotSelected.Robot.ToString();
                 
                 if(robotSelected.Robot.CurrentStamina <= 0){
                     // DisableButton(buttonAttack);
@@ -89,14 +89,14 @@ namespace Adefagia.UI
                         EnableButton(buttonAttack);
                     }
 
-                    if (robotSelected.Robot.HasSkill)
-                    {
-                        DisableButton(buttonSkill);
-                    }
-                    else
-                    {
-                        EnableButton(buttonSkill);
-                    }
+                    // if (robotSelected.Robot.HasSkill)
+                    // {
+                    //     DisableButton(buttonSkill);
+                    // }
+                    // else
+                    // {
+                    //     EnableButton(buttonSkill);
+                    // }
                     
                 }
 
@@ -137,11 +137,11 @@ namespace Adefagia.UI
             if (robotController.SkillController == null)
             {
                 Debug.Log("Hide button");
-                HideButton(buttonSkill);
+                // HideButton(buttonSkill);
             }
             else
             {
-                ShowButton(buttonSkill);
+                // ShowButton(buttonSkill);
             }
         }
 
@@ -156,10 +156,10 @@ namespace Adefagia.UI
 
             if (BattleManager.battleState == BattleState.SkillRobot || BattleManager.battleState == BattleState.SkillSelectionRobot)
             {          
-                for (int i = 0; i < 3 ; i++)
+                for (int i = 0; i < 2 ; i++)
                 {
                     Button buttonSkill = buttonList.transform.GetChild(i).GetComponent<Button>();
-                    TextMeshProUGUI buttonText = buttonSkill.GetComponentInChildren<TextMeshProUGUI>();
+                    var buttonText = buttonSkill.GetComponentInChildren<Text>();
 
                     Skill _skill = robotSelected.SkillController.ChooseSkill(i);
                     

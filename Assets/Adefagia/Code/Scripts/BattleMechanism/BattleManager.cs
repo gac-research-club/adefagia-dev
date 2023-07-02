@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Adefagia.GridSystem;
 using Adefagia.PlayerAction;
 using Adefagia.RobotSystem;
@@ -32,6 +33,8 @@ namespace Adefagia.BattleMechanism
         private int skillChoosed = 0;
         private int itemChoosed = 0;
 
+        private Dictionary<Grid, RobotController> _robotImpacts;
+
         public static Logging battleLog;
         
         public static event Action<RobotController> RobotNotHaveSkill; 
@@ -46,6 +49,8 @@ namespace Adefagia.BattleMechanism
             
             healthBars = new List<GameObject>();
             battleLog = new Logging();
+
+            _robotImpacts = new Dictionary<Grid, RobotController>();
 
             /* Team A deploying Area
              *  #  ........ 9,9
@@ -72,6 +77,8 @@ namespace Adefagia.BattleMechanism
         private void Start()
         {
             GridManager.GridHover += Test;
+            HighlightMovement.RobotOnImpact += OnRobotImpacted;
+            HighlightMovement.RobotOnImpactClear += OnRobotClearImpacted;
         }
 
         private void Update()
@@ -260,7 +267,7 @@ namespace Adefagia.BattleMechanism
             if (gameState == GameState.Battle)
             {
                 // Hide PlayerActionHUD
-                GameManager.instance.uiManager.HideBattleUI();
+                // GameManager.instance.uiManager.HideBattleUI();
 
                 TeamActive.IncreaseRobotStamina();
                 highlightMovement.CleanHighlight();
@@ -297,10 +304,12 @@ namespace Adefagia.BattleMechanism
             if (highlightMovement.CheckGridOnHighlight(gridController))
             {
                 // run AStar Pathfinding
-                Debug.Log("test");
+                // Debug.Log("test");
+
+                highlightMovement.SetSurroundImpact(gridController.Grid);
             }
             
-            localHighlight.SetSurroundImpact(gridController.Grid);
+            // localHighlight.SetSurroundImpact(gridController.Grid);
         }
 
         #region ChangeState
@@ -451,7 +460,8 @@ namespace Adefagia.BattleMechanism
                     TeamActive.RobotControllerSelected.RobotSkill.Skill(
                         robotController: TeamActive.RobotControllerSelected,
                         gridController: gridController,
-                        skillChoosed: skillChoosed
+                        skillChoosed: skillChoosed,
+                        robotImpacts: _robotImpacts
                     );
                     
                     // change to selecting state
@@ -459,6 +469,7 @@ namespace Adefagia.BattleMechanism
 
                     // Clear highlight
                     highlightMovement.CleanHighlight();
+                    highlightMovement.CleanHighlightImpact();
                 }
 
                 
@@ -536,6 +547,11 @@ namespace Adefagia.BattleMechanism
 
         public void SkillChildButtonClick(int indexSkill)
         {
+            
+            // highlight grid attack  by weapon type pattern
+            Robot robot = TeamActive.RobotControllerSelected.Robot;
+            
+            highlightMovement.SetDiamondSurroundMove(robot.Location);
 
             // change to skill selection robot
             ChangeBattleState(BattleState.SkillSelectionRobot);
@@ -564,7 +580,7 @@ namespace Adefagia.BattleMechanism
                 
             // change to selecting state
             ChangeBattleState(BattleState.SelectRobot);
-              
+
             // means the robot is considered to move
             // TeamActive.RobotControllerSelected.Robot.HasSkill = true;
 
@@ -593,9 +609,29 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.SelectRobot);
 
             highlightMovement.CleanHighlight();
+            highlightMovement.CleanHighlightImpact();
         }
 
         #endregion
+
+        public void OnRobotImpacted(Grid grid)
+        {
+            var gridCtrl = GameManager.instance.gridManager.GetGridController(grid);
+
+            _robotImpacts[grid] = gridCtrl.RobotController;
+        }
+
+        public void OnRobotClearImpacted(List<Grid> tempGridImpact)
+        {
+            var listGrid = _robotImpacts.Keys.ToList();
+            for (int i = listGrid.Count-1; i >= 0; i--)
+            {
+                if (!tempGridImpact.Contains(listGrid[i]))
+                {
+                    _robotImpacts.Remove(listGrid[i]);
+                }
+            }
+        }
     }
 
 

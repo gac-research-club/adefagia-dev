@@ -84,7 +84,8 @@ namespace Adefagia.RobotSystem
                 var potionController = robotObject.AddComponent<PotionController>();
                 
                 // Find healthBar GameObject
-                var healthBarObject = GameObject.Find($"Robot {i}/Canvas/HealthBar");
+                var healthBarObject = GameObject.Find($"Robot {i}/Cube/Canvas/HealthBar");
+                
                 healthBarObject.name = "HBar Robot " + i;
 
                 // add healthBar GameObject to healthBars List

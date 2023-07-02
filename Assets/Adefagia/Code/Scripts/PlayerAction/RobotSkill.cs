@@ -1,7 +1,9 @@
-﻿using Adefagia.BattleMechanism;
+﻿using System.Collections.Generic;
+using Adefagia.BattleMechanism;
 using Adefagia.GridSystem;
 using Adefagia.RobotSystem;
 using UnityEngine;
+using Grid = Adefagia.GridSystem.Grid;
 
 namespace Adefagia.PlayerAction
 {
@@ -9,7 +11,11 @@ namespace Adefagia.PlayerAction
     {
         // robotController = current select
         // gridController = another select robot
-        public void Skill(RobotController robotController, GridController gridController, int skillChoosed)
+        public void Skill(
+            RobotController robotController, 
+            GridController gridController, 
+            int skillChoosed,
+            Dictionary<Grid, RobotController> robotImpacts)
         {
             if (gridController == null)
             {
@@ -24,6 +30,16 @@ namespace Adefagia.PlayerAction
             robotController.Robot.HasSkill = true;
             
             var grid = gridController.Grid;
+
+            // Take impact
+            foreach (var robotCtrl in robotImpacts.Values)
+            {
+                if (robotCtrl != null)
+                {
+                    robotCtrl.Robot.TakeDamage(skill.Value * 0.2f);
+                    robotCtrl.Robot.healthBar.UpdateHealthBar(robotCtrl.Robot.CurrentHealth);
+                }
+            }
 
             // if grid is not robot then miss
             if (grid.Status != GridStatus.Robot)

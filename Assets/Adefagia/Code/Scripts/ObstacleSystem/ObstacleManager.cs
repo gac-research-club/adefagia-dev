@@ -109,7 +109,7 @@ namespace Adefagia.ObstacleSystem
                 
                 // Create gameObject of grid
                 var obstacleObject = Instantiate(_obstacleElements[index].Prefab, transform);
-                obstacleObject.transform.position = new Vector3(point.x * GridManager.GridLength, 0.3f , point.y * GridManager.GridLength) + offset;
+                obstacleObject.transform.position = new Vector3(point.x * GridManager.GridLength, 0f , point.y * GridManager.GridLength) + offset;
                 obstacleObject.name = $"Obstacle ({point.x}, {point.y})";
                 
                 // Add Obstacle Controller
