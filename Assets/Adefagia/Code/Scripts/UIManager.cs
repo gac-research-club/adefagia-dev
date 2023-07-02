@@ -10,6 +10,8 @@ namespace Adefagia
     public class UIManager : MonoBehaviour
     {
         [SerializeField] private Canvas battleCanvas;
+        public UIBattleController uiBattleController;
+        
         [SerializeField] private Button buttonEndTurn;
         [SerializeField] private Canvas finishCanvas;
         [SerializeField] private GameObject deployRobotCanvas;

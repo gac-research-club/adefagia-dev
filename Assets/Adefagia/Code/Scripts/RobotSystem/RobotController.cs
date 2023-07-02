@@ -7,6 +7,7 @@ using Grid = Adefagia.GridSystem.Grid;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using UnityEngine.UI;
 
 namespace Adefagia.RobotSystem
 {
@@ -63,6 +64,7 @@ namespace Adefagia.RobotSystem
                 Robot.Damaged += OnDamaged;
                 Robot.Dead += OnDead;
             }
+
         }
 
         private void Update()

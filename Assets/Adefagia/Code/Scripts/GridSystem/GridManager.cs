@@ -26,7 +26,6 @@ namespace Adefagia.GridSystem
         private Select _select;
 
         public static float GridLength;
-        public static event Action<GridController> GridHover;
         
         // Grid state
         public GridController gridSelect;
@@ -37,6 +36,8 @@ namespace Adefagia.GridSystem
         private Grid[,] _listGrid;
 
         public static bool DoneGenerate = false;
+        public static event Action<GridController> GridHover;
+        public static event Action<GridController> GridHoverInfo;
 
         public static event Action<GridController> SkillHappened; 
 
@@ -247,6 +248,8 @@ namespace Adefagia.GridSystem
             {
                 gridLast = gridTemp;
                 gridTemp = gridSelect;
+                
+                GridHoverInfo?.Invoke(gridSelect);
                 
                 // Debug.Log("Current: " + gridSelect);
                 // if (gridSelect != null && BattleManager.battleState == BattleState.AttackRobot)

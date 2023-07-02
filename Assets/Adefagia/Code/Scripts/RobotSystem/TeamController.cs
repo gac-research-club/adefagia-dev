@@ -212,10 +212,14 @@ namespace Adefagia.BattleMechanism
          *----------------------------------------------------------------------*/
         public GameObject GetRobotGameObject(int index)
         {
+            return GetRobotController(index).gameObject;
+        }
+        public RobotController GetRobotController(int index)
+        {
             // Out of range index is returning null
             if (index >= TotalRobot || index < 0) return null;
 
-            return robotControllers[index].gameObject;
+            return robotControllers[index];
         }
 
         public override string ToString()

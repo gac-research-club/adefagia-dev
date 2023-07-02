@@ -217,6 +217,8 @@ namespace Adefagia.BattleMechanism
                 {
                     currentTime -= 1 * Time.deltaTime; // seconds
 
+                    GameManager.instance.uiManager.uiBattleController.timer.text = (int)currentTime + " Second";
+
                     if (currentTime <= 0)
                     {
                         EndTurnButtonClick();
@@ -263,6 +265,8 @@ namespace Adefagia.BattleMechanism
         {
             // Swap via destruction
             (TeamActive, NextTeam) = (NextTeam, TeamActive);
+            
+            UpdateSlider();
             
             if (gameState == GameState.Battle)
             {
@@ -331,6 +335,26 @@ namespace Adefagia.BattleMechanism
             if (gameState == GameState.Battle)
             {
                 battleState = state;
+            }
+        }
+
+        private void UpdateSlider()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                var slider = GameManager.instance.uiManager.uiBattleController.healthBarSliders[i];
+                var robot = TeamActive.GetRobotController(i);
+
+                if (robot == null)
+                {
+                    slider.maxValue = 1;
+                    slider.value = 0;
+                }
+                else
+                {
+                    slider.maxValue = robot.Robot.MaxHealth;
+                    slider.value = robot.Robot.CurrentHealth;
+                }
             }
         }
 
@@ -440,6 +464,8 @@ namespace Adefagia.BattleMechanism
                         );
                     }
 
+                    UpdateSlider();
+
                     // change to selecting state
                     ChangeBattleState(BattleState.SelectRobot);
 
@@ -463,6 +489,8 @@ namespace Adefagia.BattleMechanism
                         skillChoosed: skillChoosed,
                         robotImpacts: _robotImpacts
                     );
+
+                    UpdateSlider();
                     
                     // change to selecting state
                     ChangeBattleState(BattleState.SelectRobot);
@@ -610,6 +638,14 @@ namespace Adefagia.BattleMechanism
 
             highlightMovement.CleanHighlight();
             highlightMovement.CleanHighlightImpact();
+        }
+
+        public void ChangeRobotSelect(int index)
+        {
+            TeamActive.RobotControllerSelected = TeamActive.GetRobotController(index);
+            
+            // Hide skill button
+            RobotNotHaveSkill?.Invoke(TeamActive.RobotControllerSelected);
         }
 
         #endregion

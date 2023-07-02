@@ -324,7 +324,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &70945109
 RectTransform:
   m_ObjectHideFlags: 0
@@ -512,8 +512,8 @@ RectTransform:
   m_Father: {fileID: 1128249358}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.43, y: 0}
+  m_AnchorMax: {x: 0.43, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -763,7 +763,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &142435568
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1553,7 +1553,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.43, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2021,8 +2021,8 @@ RectTransform:
   m_Father: {fileID: 2009338769}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.43, y: 0}
+  m_AnchorMax: {x: 0.43, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4706,6 +4706,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battleCanvas: {fileID: 2050246253}
+  uiBattleController: {fileID: 2050246255}
   buttonEndTurn: {fileID: 1238969734}
   finishCanvas: {fileID: 0}
   deployRobotCanvas: {fileID: 2133424992}
@@ -5223,7 +5224,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 878500284}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 530493425}
+        m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
+        m_MethodName: ChangeRobotSelect
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &878500284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6300,7 +6313,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.43, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6494,7 +6507,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1071229975}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 530493425}
+        m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
+        m_MethodName: ChangeRobotSelect
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1071229975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7214,7 +7239,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1130877658
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8092,7 +8117,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1279402892}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 530493425}
+        m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
+        m_MethodName: ChangeRobotSelect
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1279402892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10232,7 +10269,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.43, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10461,8 +10498,8 @@ RectTransform:
   m_Father: {fileID: 438385540}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.43, y: 0}
+  m_AnchorMax: {x: 0.43, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -15864,7 +15901,7 @@ MonoBehaviour:
     armor: 0
     armorId: {fileID: 11400000, guid: 21d66ec63f688aa458ee2abeedb1e1c8, type: 2}
     helmetId: {fileID: 11400000, guid: e8f3c63531a2b3a4dbe092b4d6eade5d, type: 2}
-    weaponId: {fileID: 0}
+    weaponId: {fileID: 11400000, guid: 27c05251a0b94d741a18974e3a666b45, type: 2}
     buffItem1: {fileID: 0}
     buffItem2: {fileID: 0}
   - maxHealth: 10
@@ -15873,7 +15910,7 @@ MonoBehaviour:
     armor: 0
     armorId: {fileID: 11400000, guid: 21d66ec63f688aa458ee2abeedb1e1c8, type: 2}
     helmetId: {fileID: 11400000, guid: e8f3c63531a2b3a4dbe092b4d6eade5d, type: 2}
-    weaponId: {fileID: 11400000, guid: 27c05251a0b94d741a18974e3a666b45, type: 2}
+    weaponId: {fileID: 0}
     buffItem1: {fileID: 0}
     buffItem2: {fileID: 0}
   - maxHealth: 10
@@ -15882,7 +15919,7 @@ MonoBehaviour:
     armor: 0
     armorId: {fileID: 11400000, guid: 4d9f7c0442e2eed4d8528bad8edd0cb9, type: 2}
     helmetId: {fileID: 11400000, guid: e8f3c63531a2b3a4dbe092b4d6eade5d, type: 2}
-    weaponId: {fileID: 11400000, guid: 27c05251a0b94d741a18974e3a666b45, type: 2}
+    weaponId: {fileID: 0}
     buffItem1: {fileID: 0}
     buffItem2: {fileID: 0}
   teamB:
@@ -15894,6 +15931,15 @@ MonoBehaviour:
     armor: 0
     armorId: {fileID: 11400000, guid: 4d9f7c0442e2eed4d8528bad8edd0cb9, type: 2}
     helmetId: {fileID: 11400000, guid: e8f3c63531a2b3a4dbe092b4d6eade5d, type: 2}
+    weaponId: {fileID: 11400000, guid: 27c05251a0b94d741a18974e3a666b45, type: 2}
+    buffItem1: {fileID: 0}
+    buffItem2: {fileID: 0}
+  - maxHealth: 10
+    maxStamina: 10
+    damage: 10
+    armor: 0
+    armorId: {fileID: 11400000, guid: 4d9f7c0442e2eed4d8528bad8edd0cb9, type: 2}
+    helmetId: {fileID: 11400000, guid: e8f3c63531a2b3a4dbe092b4d6eade5d, type: 2}
     weaponId: {fileID: 0}
     buffItem1: {fileID: 0}
     buffItem2: {fileID: 0}
@@ -15903,16 +15949,7 @@ MonoBehaviour:
     armor: 0
     armorId: {fileID: 11400000, guid: 4d9f7c0442e2eed4d8528bad8edd0cb9, type: 2}
     helmetId: {fileID: 11400000, guid: e8f3c63531a2b3a4dbe092b4d6eade5d, type: 2}
-    weaponId: {fileID: 11400000, guid: 27c05251a0b94d741a18974e3a666b45, type: 2}
-    buffItem1: {fileID: 0}
-    buffItem2: {fileID: 0}
-  - maxHealth: 10
-    maxStamina: 10
-    damage: 10
-    armor: 0
-    armorId: {fileID: 11400000, guid: 4d9f7c0442e2eed4d8528bad8edd0cb9, type: 2}
-    helmetId: {fileID: 11400000, guid: e8f3c63531a2b3a4dbe092b4d6eade5d, type: 2}
-    weaponId: {fileID: 11400000, guid: 27c05251a0b94d741a18974e3a666b45, type: 2}
+    weaponId: {fileID: 0}
     buffItem1: {fileID: 0}
     buffItem2: {fileID: 0}
 --- !u!1 &1846949025
@@ -16759,6 +16796,14 @@ MonoBehaviour:
   cancelButton: {fileID: 1029995297}
   listSkill: {fileID: 968819482}
   listItem: {fileID: 319675504}
+  gridInfo: {fileID: 1946405357}
+  timer: {fileID: 666585243}
+  robotSelectPanel: {fileID: 1846949025}
+  robotNotSelectPanel: {fileID: 548628142}
+  healthBarSliders:
+  - {fileID: 1867438403}
+  - {fileID: 783097458}
+  - {fileID: 173291284}
 --- !u!1 &2069626612
 GameObject:
   m_ObjectHideFlags: 0

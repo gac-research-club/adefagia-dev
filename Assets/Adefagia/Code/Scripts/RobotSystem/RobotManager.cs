@@ -125,12 +125,12 @@ namespace Adefagia.RobotSystem
                     Skill skill2 = robot.weaponId.WeaponSkill[1];
                 
                     // Ultimate Skill
-                    Skill skill3 = robot.weaponId.WeaponSkill[2];
+                    // Skill skill3 = robot.weaponId.WeaponSkill[2];
                     
                     // set skill
                     skillController.Skills.Add(skill1); 
                     skillController.Skills.Add(skill2); 
-                    skillController.Skills.Add(skill3);
+                    // skillController.Skills.Add(skill3);
                     
                     robotController.SetSkill(skillController);
                 }

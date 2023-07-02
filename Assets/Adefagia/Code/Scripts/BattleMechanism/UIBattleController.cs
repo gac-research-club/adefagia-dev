@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Adefagia.BattleMechanism;
+using Adefagia.GridSystem;
 using Adefagia.RobotSystem;
 using TMPro;
 using UnityEngine;
@@ -19,10 +21,21 @@ namespace Adefagia.UI
         
         [SerializeField] private GameObject listSkill;
         [SerializeField] private GameObject listItem;
+
+        [SerializeField] private GameObject gridInfo;
+        public Text timer;
+
+        [SerializeField] private GameObject robotSelectPanel;
+        [SerializeField] private GameObject robotNotSelectPanel;
         
+
+        public List<Slider> healthBarSliders;
+        public Slider staminaSlider;
+
         private void Start()
         {
             BattleManager.RobotNotHaveSkill += HideSkillButton;
+            GridManager.GridHoverInfo += OnGridInfo;
         }
 
         
@@ -39,27 +52,35 @@ namespace Adefagia.UI
                     BattleManager.battleState == BattleState.ItemRobot ||
                     BattleManager.battleState == BattleState.ItemSelectionRobot)
                 {
-                    ShowButton(cancelButton);
-                    ShowButton(listSkill);
+                    ShowUI(cancelButton);
+                    ShowUI(listSkill);
                     // if (BattleManager.battleState == BattleState.SkillRobot ||
                     //     BattleManager.battleState == BattleState.SkillSelectionRobot){
                     // }
                     if (BattleManager.battleState == BattleState.ItemRobot || BattleManager.battleState == BattleState.ItemSelectionRobot){
-                        ShowButton(listItem);
+                        ShowUI(listItem);
                     }
                 }
                 else
                 {
-                    HideButton(cancelButton);
+                    HideUI(cancelButton);
                     // HideButton(listSkill);
-                    HideButton(listItem);
+                    HideUI(listItem);
                 }
 
 
                 var robotSelected = BattleManager.TeamActive.RobotControllerSelected;
                 
                 // if Robot haven't selected than return
-                if (robotSelected == null) return;
+                if (robotSelected == null)
+                {
+                    HideUI(robotSelectPanel);
+                    ShowUI(robotNotSelectPanel);
+                    return;
+                }
+                
+                ShowUI(robotSelectPanel);
+                HideUI(robotNotSelectPanel);
 
                 // robotNameText.text = robotSelected.Robot.ToString();
                 
@@ -119,12 +140,12 @@ namespace Adefagia.UI
             button.interactable = true;
         }
 
-        private void ShowButton(Button button)
+        private void ShowUI(Button button)
         {
             button.gameObject.SetActive(true);
         }
         
-        private void HideButton(Button button)
+        private void HideUI(Button button)
         {
             button.gameObject.SetActive(false);
         }
@@ -137,62 +158,69 @@ namespace Adefagia.UI
             if (robotController.SkillController == null)
             {
                 Debug.Log("Hide button");
-                // HideButton(buttonSkill);
+                HideUI(listSkill);
             }
             else
             {
-                // ShowButton(buttonSkill);
-            }
-        }
-
-        private void ShowButton(GameObject buttonList)
-        {
-            buttonList.SetActive(true);
-            var robotSelected = BattleManager.TeamActive.RobotControllerSelected;
-
-                
-            // if Robot haven't selected than return
-            if (robotSelected == null) return;
-
-            if (BattleManager.battleState == BattleState.SkillRobot || BattleManager.battleState == BattleState.SkillSelectionRobot)
-            {          
+                // 2 skill
                 for (int i = 0; i < 2 ; i++)
                 {
-                    Button buttonSkill = buttonList.transform.GetChild(i).GetComponent<Button>();
+                    var buttonSkill = listSkill.transform.GetChild(i).GetComponent<Button>();
                     var buttonText = buttonSkill.GetComponentInChildren<Text>();
 
-                    Skill _skill = robotSelected.SkillController.ChooseSkill(i);
+                    Skill _skill = robotController.SkillController.ChooseSkill(i);
                     
                     // TODO : Change button text;
                     buttonText.text = _skill.Name;
                 }
-            }else if (BattleManager.battleState == BattleState.ItemRobot || BattleManager.battleState == BattleState.ItemSelectionRobot)
-            {
-                for (int i = 0; i < 2 ; i++)
-                {
-                    Button buttonItem = buttonList.transform.GetChild(i).GetComponent<Button>();
-                    TextMeshProUGUI buttonText = buttonItem.GetComponentInChildren<TextMeshProUGUI>();
-
-                    try
-                    {
-                        var potion = robotSelected.PotionController.ChoosePotion(i);
-                        buttonItem.gameObject.SetActive(true);
-                        buttonText.text = potion.Name;
-                    }
-                    catch (Exception)
-                    {
-                        buttonItem.gameObject.SetActive(false);
-                    }
-                    
-                }
+                ShowUI(listSkill);
             }
         }
+
+        private void ShowUI(GameObject buttonList)
+        {
+            buttonList.SetActive(true);
+            // var robotSelected = BattleManager.TeamActive.RobotControllerSelected;
+            //
+            // // if Robot haven't selected than return
+            // if (robotSelected == null) return;
+            //
+            // if (BattleManager.battleState == BattleState.ItemRobot || BattleManager.battleState == BattleState.ItemSelectionRobot)
+            // {
+            //     for (int i = 0; i < 2 ; i++)
+            //     {
+            //         Button buttonItem = buttonList.transform.GetChild(i).GetComponent<Button>();
+            //         TextMeshProUGUI buttonText = buttonItem.GetComponentInChildren<TextMeshProUGUI>();
+            //
+            //         try
+            //         {
+            //             var potion = robotSelected.PotionController.ChoosePotion(i);
+            //             buttonItem.gameObject.SetActive(true);
+            //             buttonText.text = potion.Name;
+            //         }
+            //         catch (Exception)
+            //         {
+            //             buttonItem.gameObject.SetActive(false);
+            //         }
+            //         
+            //     }
+            // }
+        }
         
-        private void HideButton(GameObject buttonList)
+        private void HideUI(GameObject buttonList)
         {
             buttonList.SetActive(false);
         }
 
-        
+        private void OnGridInfo(GridController gridController)
+        {
+            if(gridController == null) return;
+            
+            // Title
+            gridInfo.transform.GetChild(1).GetComponent<Text>().text = gridController.Grid.Status.ToString();
+            
+            // Description
+            gridInfo.transform.GetChild(2).GetComponent<Text>().text = "Ini adalah grid";
+        }
     }
 }
