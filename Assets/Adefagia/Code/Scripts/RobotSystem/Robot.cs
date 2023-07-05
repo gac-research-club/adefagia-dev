@@ -104,9 +104,11 @@ namespace Adefagia.RobotSystem
             /* 30 * 0.3 - 0.5 = 15 
             /* calculation absorption */ 
             float absorption = Random.Range(0.3f, 0.5f);
+            float txt1 = (critical * damage);
+            float txt2 = (absorption * Defend);
 
-            float TotalDamage = ((critical * damage) - (absorption * Defend));
-            _health -= TotalDamage;
+            float TotalDamage = (txt1 - txt2);
+            _health -= Math.Abs(TotalDamage);
          
             if(_health <= 0){
                IsDead = true;

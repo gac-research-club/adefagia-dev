@@ -16,7 +16,7 @@ MonoBehaviour:
   ItemName: Weapon3
   Icon: {fileID: 21300000, guid: 5a8c30e40f0cae448811c30d5a64f880, type: 3}
   MaximumStacks: 1
-  AttackBonus: 3
+  AttackBonus: 11
   ArmorBonus: 2
   AttackPercentBonus: 0.02
   ArmorPercentBonus: 0.02
@@ -25,16 +25,17 @@ MonoBehaviour:
   WeaponSkill:
   - Name: Sniper
     StaminaRequirement: 10
-    Value: 20
+    Value: 50
     IsUltimate: 0
     skillType: 0
+    patternAttack: 
+    patternImpact: 
+    origin: {x: 0, y: 0}
   - Name: Rocket
     StaminaRequirement: 10
-    Value: 30
+    Value: 50
     IsUltimate: 0
     skillType: 0
-  - Name: Relocation
-    StaminaRequirement: 30
-    Value: 40
-    IsUltimate: 1
-    skillType: 0
+    patternAttack: 
+    patternImpact: 
+    origin: {x: 0, y: 0}

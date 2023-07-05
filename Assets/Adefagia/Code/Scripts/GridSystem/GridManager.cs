@@ -260,7 +260,7 @@ namespace Adefagia.GridSystem
 
             if (BattleManager.battleState == BattleState.SkillSelectionRobot)
             {
-                // SkillHappened?.Invoke(GetGridController());
+                SkillHappened?.Invoke(GetGridController());
                 GridHover?.Invoke(gridSelect);
             }
 

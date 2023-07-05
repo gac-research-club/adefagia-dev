@@ -25,7 +25,7 @@ namespace Adefagia.PlayerAction
             
             var skillController = robotController.SkillController;
             var skill = skillController.ChooseSkill(skillChoosed);
-            
+          
             // means the robot is considered to move
             robotController.Robot.HasSkill = true;
             
@@ -36,7 +36,7 @@ namespace Adefagia.PlayerAction
             {
                 if (robotCtrl != null)
                 {
-                    robotCtrl.Robot.TakeDamage(skill.Value * 0.2f);
+                    robotCtrl.Robot.TakeDamage(skill.Value * 0.5f);
                     robotCtrl.Robot.healthBar.UpdateHealthBar(robotCtrl.Robot.CurrentHealth);
                 }
             }
