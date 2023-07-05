@@ -35,6 +35,7 @@ namespace Adefagia.UI
         private void Start()
         {
             BattleManager.RobotNotHaveSkill += HideSkillButton;
+            BattleManager.RobotNotHaveSkill += HideItemButton;
             GridManager.GridHoverInfo += OnGridInfo;
         }
 
@@ -54,18 +55,19 @@ namespace Adefagia.UI
                 {
                     ShowUI(cancelButton);
                     ShowUI(listSkill);
+                    ShowUI(listItem);
                     // if (BattleManager.battleState == BattleState.SkillRobot ||
                     //     BattleManager.battleState == BattleState.SkillSelectionRobot){
                     // }
-                    if (BattleManager.battleState == BattleState.ItemRobot || BattleManager.battleState == BattleState.ItemSelectionRobot){
-                        ShowUI(listItem);
-                    }
+                    // if (BattleManager.battleState == BattleState.ItemRobot || BattleManager.battleState == BattleState.ItemSelectionRobot){
+                    //     ShowUI(listItem);
+                    // }
                 }
                 else
                 {
                     HideUI(cancelButton);
                     // HideButton(listSkill);
-                    HideUI(listItem);
+                    // HideUI(listItem);
                 }
 
 
@@ -205,6 +207,33 @@ namespace Adefagia.UI
             //         
             //     }
             // }
+        }
+
+        public void HideItemButton(RobotController robotController)
+        {
+            if (robotController == null) return;
+            
+            // Check if robot has weapon
+            if (robotController.PotionController == null)
+            {
+                Debug.Log("Hide potion");
+                HideUI(listItem);
+            }
+            else
+            {
+                // 2 skill
+                for (int i = 0; i < 2 ; i++)
+                {
+                    var buttonSkill = listItem.transform.GetChild(i).GetComponent<Button>();
+                    var buttonText = buttonSkill.GetComponentInChildren<Text>();
+
+                    Potion _potion = robotController.PotionController.ChoosePotion(i);
+                    
+                    // TODO : Change button text;
+                    buttonText.text = _potion.Name;
+                }
+                ShowUI(listItem);
+            }
         }
         
         private void HideUI(GameObject buttonList)

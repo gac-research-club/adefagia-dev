@@ -123,8 +123,6 @@ namespace Adefagia.RobotSystem
             if(_health >= MaxHealth){
                _health = MaxHealth;
             }
-            Debug.Log("_health");
-            Debug.Log(_health);
         }
 
         public void IncreaseDamage(float damage){
