@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Adefagia.BattleMechanism;
 using Adefagia.GridSystem;
 using Adefagia.RobotSystem;
@@ -9,13 +10,15 @@ namespace Adefagia.PlayerAction
 {
     public class RobotSkill : MonoBehaviour
     {
+        public static event Action<GridController> ObstacleHitHappened;
+        
         // robotController = current select
         // gridController = another select robot
         public void Skill(
             RobotController robotController, 
             GridController gridController, 
             int skillChoosed,
-            Dictionary<Grid, RobotController> robotImpacts)
+            Dictionary<Grid, GridController> gridImpacts)
         {
             if (gridController == null)
             {
@@ -32,12 +35,18 @@ namespace Adefagia.PlayerAction
             var grid = gridController.Grid;
 
             // Take impact
-            foreach (var robotCtrl in robotImpacts.Values)
+            foreach (var gridCtrl in gridImpacts.Values)
             {
-                if (robotCtrl != null)
+                if (gridCtrl == null) return;
+                
+                if (gridCtrl.Grid.Status == GridStatus.Obstacle)
                 {
-                    robotCtrl.Robot.TakeDamage(skill.Value * 0.5f);
-                    robotCtrl.Robot.healthBar.UpdateHealthBar(robotCtrl.Robot.CurrentHealth);
+                    ObstacleHitHappened?.Invoke(gridController);
+                }
+                else if (gridCtrl.Grid.Status == GridStatus.Robot)
+                {
+                    gridCtrl.RobotController.Robot.TakeDamage(skill.Value * 0.5f);
+                    gridCtrl.RobotController.Robot.healthBar.UpdateHealthBar(gridCtrl.RobotController.Robot.CurrentHealth);
                 }
             }
 

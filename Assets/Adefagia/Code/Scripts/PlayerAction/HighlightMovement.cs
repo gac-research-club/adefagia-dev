@@ -424,7 +424,7 @@ namespace Adefagia.PlayerAction
         private void OnSkillHappened(GridController gridController)
         {
             var grid = gridController.Grid;
-            Debug.Log(grid);
+            // Debug.Log(grid);
             // GridImpact(grid.X, grid.Y);
         }
 

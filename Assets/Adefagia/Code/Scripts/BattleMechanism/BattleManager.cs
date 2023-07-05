@@ -33,7 +33,7 @@ namespace Adefagia.BattleMechanism
         private int skillChoosed = 0;
         private int itemChoosed = 0;
 
-        private Dictionary<Grid, RobotController> _robotImpacts;
+        private Dictionary<Grid, GridController> _gridImpacts;
 
         public static Logging battleLog;
         
@@ -50,7 +50,7 @@ namespace Adefagia.BattleMechanism
             healthBars = new List<GameObject>();
             battleLog = new Logging();
 
-            _robotImpacts = new Dictionary<Grid, RobotController>();
+            _gridImpacts = new Dictionary<Grid, GridController>();
 
             /* Team A deploying Area
              *  #  ........ 9,9
@@ -487,7 +487,7 @@ namespace Adefagia.BattleMechanism
                         robotController: TeamActive.RobotControllerSelected,
                         gridController: gridController,
                         skillChoosed: skillChoosed,
-                        robotImpacts: _robotImpacts
+                        gridImpacts: _gridImpacts
                     );
 
                     UpdateSlider();
@@ -645,7 +645,7 @@ namespace Adefagia.BattleMechanism
             TeamActive.RobotControllerSelected = TeamActive.GetRobotController(index);
             
             // Hide skill button
-            RobotNotHaveSkill?.Invoke(TeamActive.RobotControllerSelected);
+            // RobotNotHaveSkill?.Invoke(TeamActive.RobotControllerSelected);
         }
 
         #endregion
@@ -654,17 +654,20 @@ namespace Adefagia.BattleMechanism
         {
             var gridCtrl = GameManager.instance.gridManager.GetGridController(grid);
 
-            _robotImpacts[grid] = gridCtrl.RobotController;
+            if (gridCtrl.Grid.Status != GridStatus.Free)
+            {
+                _gridImpacts[grid] = gridCtrl;
+            }
         }
 
         public void OnRobotClearImpacted(List<Grid> tempGridImpact)
         {
-            var listGrid = _robotImpacts.Keys.ToList();
+            var listGrid = _gridImpacts.Keys.ToList();
             for (int i = listGrid.Count-1; i >= 0; i--)
             {
                 if (!tempGridImpact.Contains(listGrid[i]))
                 {
-                    _robotImpacts.Remove(listGrid[i]);
+                    _gridImpacts.Remove(listGrid[i]);
                 }
             }
         }

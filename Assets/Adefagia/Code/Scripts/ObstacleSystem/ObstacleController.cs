@@ -20,6 +20,7 @@ namespace Adefagia.ObstacleSystem
         private void Start()
         {
             RobotAttack.ObstacleHitHappened += OnObstacleHitHappened;
+            RobotSkill.ObstacleHitHappened += OnObstacleHitAreaHappened;
         }
 
         private void Update()
@@ -37,6 +38,23 @@ namespace Adefagia.ObstacleSystem
         {
             // Only run on affected obstacle
             if (gridController.Grid != Grid) return;
+
+            ObstacleHit?.Invoke(transform.position);
+            
+            // Only for obstacle destructible
+            if (ObstacleElement.ObstacleType == ObstacleType.Destructible)
+            {
+                // increase hit count
+                _hitCount += 1;
+            }
+        }
+        
+        private void OnObstacleHitAreaHappened(GridController gridController)
+        {
+            // Only run on affected obstacle
+            if (gridController.Grid != Grid) return;
+            
+            Debug.Log("Grid controller hit: " + gridController.Grid);
             
             ObstacleHit?.Invoke(transform.position);
             
