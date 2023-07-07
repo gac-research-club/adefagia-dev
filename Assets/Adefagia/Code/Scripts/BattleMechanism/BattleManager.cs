@@ -645,7 +645,7 @@ namespace Adefagia.BattleMechanism
             TeamActive.RobotControllerSelected = TeamActive.GetRobotController(index);
             
             // Hide skill button
-            // RobotNotHaveSkill?.Invoke(TeamActive.RobotControllerSelected);
+            RobotNotHaveSkill?.Invoke(TeamActive.RobotControllerSelected);
         }
 
         #endregion
