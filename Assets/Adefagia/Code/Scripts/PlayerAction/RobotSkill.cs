@@ -41,7 +41,8 @@ namespace Adefagia.PlayerAction
                 
                 if (gridCtrl.Grid.Status == GridStatus.Obstacle)
                 {
-                    ObstacleHitHappened?.Invoke(gridController);
+                    // Debug.Log("Obstacle Hit: " + gridCtrl.Grid);
+                    ObstacleHitHappened?.Invoke(gridCtrl);
                 }
                 else if (gridCtrl.Grid.Status == GridStatus.Robot)
                 {
