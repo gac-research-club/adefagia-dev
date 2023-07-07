@@ -33,6 +33,9 @@ namespace Adefagia.PlayerAction
             robotController.Robot.HasSkill = true;
             
             var grid = gridController.Grid;
+            
+            // Debug.Log("Obstacle Hit: " + gridCtrl.Grid);
+            ObstacleHitHappened?.Invoke(gridController);
 
             // Take impact
             foreach (var gridCtrl in gridImpacts.Values)
