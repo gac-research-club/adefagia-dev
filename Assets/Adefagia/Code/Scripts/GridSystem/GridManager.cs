@@ -25,7 +25,7 @@ namespace Adefagia.GridSystem
 
         private Select _select;
 
-        public static event Action<GridController> GridHover;
+        public static float GridLength;
         
         // Grid state
         public GridController gridSelect;
@@ -36,11 +36,16 @@ namespace Adefagia.GridSystem
         private Grid[,] _listGrid;
 
         public static bool DoneGenerate = false;
+        public static event Action<GridController> GridHover;
+        public static event Action<GridController> GridHoverInfo;
 
         public static event Action<GridController> SkillHappened; 
 
         private void Awake()
         {
+
+            GridLength = gridLength;
+            
             // Set into gameManager
             if (GameManager.instance != null)
             {
@@ -130,8 +135,13 @@ namespace Adefagia.GridSystem
             {
                 for (var xi = 0; xi < x; xi++)
                 {
+                    var prefab = _gridElements[GridType.Ground].prefab;
+                    
                     // Create gameObject of grid
-                    var gridObject = Instantiate(_gridElements[GridType.Ground].prefab, transform);
+                    var gridObject = Instantiate(prefab, transform);
+
+                    gridObject.transform.localScale = UpdateScale(gridObject.transform);
+                    
                     gridObject.transform.position = new Vector3(xi * gridLength, 0, yi * gridLength) + offset;
                     gridObject.name = $"Grid ({xi}, {yi})";
 
@@ -192,7 +202,7 @@ namespace Adefagia.GridSystem
         // Get Vector3 by Grid
         public static Vector3 CellToWorld(Grid grid)
         {
-            return new Vector3(grid.X, 0, grid.Y);
+            return new Vector3(grid.X * GridLength, 0, grid.Y * GridLength);
         }
 
         // Grid hover 
@@ -213,6 +223,14 @@ namespace Adefagia.GridSystem
             }
         }
 
+        public GridController GetGridController(Grid grid)
+        {
+            // with find object
+            var obj = GameObject.Find(grid.ToString());
+
+            return obj.GetComponent<GridController>();
+        }
+
         #region UnityEvent
 
         public void OnMouseHover(GameObject objectHit)
@@ -231,16 +249,19 @@ namespace Adefagia.GridSystem
                 gridLast = gridTemp;
                 gridTemp = gridSelect;
                 
+                GridHoverInfo?.Invoke(gridSelect);
+                
                 // Debug.Log("Current: " + gridSelect);
-                if (gridSelect != null && BattleManager.battleState == BattleState.AttackRobot)
-                {
-                    GridHover?.Invoke(gridSelect);
-                }
+                // if (gridSelect != null && BattleManager.battleState == BattleState.AttackRobot)
+                // {
+                //     GridHover?.Invoke(gridSelect);
+                // }
             }
 
             if (BattleManager.battleState == BattleState.SkillSelectionRobot)
             {
                 SkillHappened?.Invoke(GetGridController());
+                GridHover?.Invoke(gridSelect);
             }
 
             // var _grid = GetGrid(); 
@@ -255,7 +276,18 @@ namespace Adefagia.GridSystem
         #endregion
 
 
-
+        public static Vector3 UpdateScale(Transform original)
+        {
+            var defaultScale = original.localScale;
+            
+            var result = new Vector3(
+                defaultScale.x * GridLength,
+                defaultScale.y * GridLength, 
+                defaultScale.z * GridLength);
+            
+            return result;
+        }
+        
         private void OnDrawGizmos()
         {
             var center = (gridSizeX * gridLength + gridSizeY * gridLength) * 0.5f;

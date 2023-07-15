@@ -7,6 +7,7 @@ using Grid = Adefagia.GridSystem.Grid;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using UnityEngine.UI;
 
 namespace Adefagia.RobotSystem
 {
@@ -63,6 +64,7 @@ namespace Adefagia.RobotSystem
                 Robot.Damaged += OnDamaged;
                 Robot.Dead += OnDead;
             }
+
         }
 
         private void Update()
@@ -111,9 +113,18 @@ namespace Adefagia.RobotSystem
 
         public void MovePosition(Grid grid)
         {
-            var position = new Vector3(grid.X, 0, grid.Y);
+            var position = new Vector3(grid.X * GridManager.GridLength, 0, grid.Y * GridManager.GridLength);
             transform.position = position;
             
+            // Y angle is 0 & 180
+            // Look at center grid (4,4)
+            var center = new Vector3(grid.X * GridManager.GridLength,0,4 * GridManager.GridLength);
+            transform.LookAt(center);
+
+            var fixAngle = Math.Clamp(transform.eulerAngles.y, 0, 180);
+            transform.eulerAngles = new Vector3(0, fixAngle, 0);
+
+
             // TODO: move to position with some transition
             // move with lerp
         }
@@ -129,6 +140,9 @@ namespace Adefagia.RobotSystem
 
                 var step =  speed * Time.deltaTime; // calculate distance to move
                 transform.position = Vector3.MoveTowards(transform.position, GridManager.CellToWorld(grids[current]), step);
+                
+                // Look At Grid
+                transform.LookAt(GridManager.CellToWorld(grids[current]));
                 
                 if (Vector3.Distance(transform.position, GridManager.CellToWorld(grids[current])) < 0.01f)
                 {

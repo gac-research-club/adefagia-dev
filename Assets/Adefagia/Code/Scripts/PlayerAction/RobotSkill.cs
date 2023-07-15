@@ -1,15 +1,24 @@
-﻿using Adefagia.BattleMechanism;
+﻿using System;
+using System.Collections.Generic;
+using Adefagia.BattleMechanism;
 using Adefagia.GridSystem;
 using Adefagia.RobotSystem;
 using UnityEngine;
+using Grid = Adefagia.GridSystem.Grid;
 
 namespace Adefagia.PlayerAction
 {
     public class RobotSkill : MonoBehaviour
     {
+        public static event Action<GridController> ObstacleHitHappened;
+        
         // robotController = current select
         // gridController = another select robot
-        public void Skill(RobotController robotController, GridController gridController, int skillChoosed)
+        public void Skill(
+            RobotController robotController, 
+            GridController gridController, 
+            int skillChoosed,
+            Dictionary<Grid, GridController> gridImpacts)
         {
             if (gridController == null)
             {
@@ -19,11 +28,31 @@ namespace Adefagia.PlayerAction
             
             var skillController = robotController.SkillController;
             var skill = skillController.ChooseSkill(skillChoosed);
-            
+          
             // means the robot is considered to move
             robotController.Robot.HasSkill = true;
             
             var grid = gridController.Grid;
+            
+            // Debug.Log("Obstacle Hit: " + gridCtrl.Grid);
+            ObstacleHitHappened?.Invoke(gridController);
+
+            // Take impact
+            foreach (var gridCtrl in gridImpacts.Values)
+            {
+                if (gridCtrl == null) return;
+                
+                if (gridCtrl.Grid.Status == GridStatus.Obstacle)
+                {
+                    // Debug.Log("Obstacle Hit: " + gridCtrl.Grid);
+                    ObstacleHitHappened?.Invoke(gridCtrl);
+                }
+                else if (gridCtrl.Grid.Status == GridStatus.Robot)
+                {
+                    gridCtrl.RobotController.Robot.TakeDamage(skill.Value * 0.5f);
+                    gridCtrl.RobotController.Robot.healthBar.UpdateHealthBar(gridCtrl.RobotController.Robot.CurrentHealth);
+                }
+            }
 
             // if grid is not robot then miss
             if (grid.Status != GridStatus.Robot)

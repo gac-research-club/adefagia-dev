@@ -52,9 +52,6 @@ namespace Adefagia.PlayerAction
 
             // Change robot reference to grid
             gridController.RobotController.GridController = gridController;
-            
-            // Look At Grid
-            gridController.RobotController.transform.LookAt(gridController.transform);
 
             gridController.RobotController.transform.eulerAngles = new Vector3(
                 0,

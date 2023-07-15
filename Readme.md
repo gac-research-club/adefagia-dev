@@ -15,6 +15,11 @@ The game features turn-based combat, where players take turns moving and attacki
 ## Contributing
 If you would like to contribute to Adefagia, you can do so by [forking the repository](https://github.com/gac-research-club/adefagia-dev/fork) and submitting a pull request with your changes. Before making any major changes, please open an issue to discuss your ideas with the project maintainers.
 
+## Assets
+
+### Character
+- [Slava.Z](https://assetstore.unity.com/publishers/12193)
+
 ## License
 Adefagia is licensed under the [MIT License](https://opensource.org/licenses/MIT). You are free to use, modify, and distribute the game as you see fit, as long as you include the license file in your distribution.
 

@@ -193,7 +193,7 @@ public class StatPanel : MonoBehaviour
         if (countTeam > _teams.Count - 1)
         {
             _itemState = ItemState.Finish;
-            SceneManager.LoadScene("DimasTesting");
+            SceneManager.LoadScene("Battle");
         }
 
     }
