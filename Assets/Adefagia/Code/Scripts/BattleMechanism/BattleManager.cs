@@ -405,6 +405,11 @@ namespace Adefagia.BattleMechanism
                 {
                     TeamActive.RobotControllerSelected = TeamActive.RobotController;
                     
+                    // Update healthbar slider
+                    var slider = GameManager.instance.uiManager.uiBattleController.healthSlider;
+                    slider.maxValue = TeamActive.RobotController.Robot.MaxHealth;
+                    slider.value = TeamActive.RobotController.Robot.CurrentHealth;
+                    
                     // Hide skill button
                     RobotNotHaveSkill?.Invoke(TeamActive.RobotControllerSelected);
 
@@ -511,6 +516,8 @@ namespace Adefagia.BattleMechanism
         {
             // change to move robot
             ChangeBattleState(BattleState.MoveRobot);
+            
+            highlightMovement.CleanHighlightImpact();
 
             // highlight grid movement  by weapon type pattern
             Robot robot = TeamActive.RobotControllerSelected.Robot;
@@ -533,8 +540,9 @@ namespace Adefagia.BattleMechanism
         {
             // change to move robot
             ChangeBattleState(BattleState.AttackRobot);
-
             
+            highlightMovement.CleanHighlightImpact();
+
             // highlight grid attack  by weapon type pattern
             Robot robot = TeamActive.RobotControllerSelected.Robot;
             if(robot.TypePattern == TypePattern.Cross){
@@ -551,9 +559,11 @@ namespace Adefagia.BattleMechanism
         public void SkillButtonClick()
         {
             highlightMovement.CleanHighlight();
+            highlightMovement.CleanHighlightImpact();
             
             // change to defend robot
-            ChangeBattleState(BattleState.SkillRobot);
+            // ChangeBattleState(BattleState.SkillRobot);
+            
 
             // means the robot is considered to move
             // TeamActive.RobotControllerSelected.Robot.HasSkill = true;

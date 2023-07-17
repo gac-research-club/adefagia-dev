@@ -5,6 +5,7 @@ using Adefagia.GridSystem;
 using Adefagia.RobotSystem;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Adefagia.UI
@@ -25,11 +26,12 @@ namespace Adefagia.UI
         [SerializeField] private GameObject gridInfo;
         public Text timer;
 
-        [SerializeField] private GameObject robotSelectPanel;
-        [SerializeField] private GameObject robotNotSelectPanel;
+        [SerializeField] private List<GameObject> robotSelectPanels;
+        [SerializeField] private List<GameObject> robotNotSelectPanels;
         
 
         public List<Slider> healthBarSliders;
+        public Slider healthSlider;
         public Slider staminaSlider;
 
         private void Start()
@@ -76,13 +78,27 @@ namespace Adefagia.UI
                 // if Robot haven't selected than return
                 if (robotSelected == null)
                 {
-                    HideUI(robotSelectPanel);
-                    ShowUI(robotNotSelectPanel);
+                    foreach (var robotSelectPanel in robotSelectPanels)
+                    {
+                        HideUI(robotSelectPanel);
+                    }
+                    
+                    foreach (var robotNotSelectPanel in robotNotSelectPanels)
+                    {
+                        ShowUI(robotNotSelectPanel);
+                    }
                     return;
                 }
                 
-                ShowUI(robotSelectPanel);
-                HideUI(robotNotSelectPanel);
+                foreach (var robotSelectPanel in robotSelectPanels)
+                {
+                    ShowUI(robotSelectPanel);
+                }
+                    
+                foreach (var robotNotSelectPanel in robotNotSelectPanels)
+                {
+                    HideUI(robotNotSelectPanel);
+                }
 
                 // robotNameText.text = robotSelected.Robot.ToString();
                 

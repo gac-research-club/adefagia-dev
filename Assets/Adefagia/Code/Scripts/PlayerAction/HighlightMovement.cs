@@ -333,8 +333,8 @@ namespace Adefagia.PlayerAction
         
         private void SetQuadImpact()
         {
-            _quadImpact = quadMove;
-            _quadBlockImpact = quadMoveBlock;
+            _quadImpact = quadImpact;
+            _quadBlockImpact = quadImpact;
         }
 
         /*----------------------------------------------------------------------

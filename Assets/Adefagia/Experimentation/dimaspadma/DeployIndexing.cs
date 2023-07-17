@@ -27,8 +27,8 @@ namespace Adefagia.UI
         {
             try
             {
-                // Index 1 = button
-                return gameObjects.transform.GetChild(1).GetComponent<Button>();
+                // Index 0 = button
+                return gameObjects.transform.GetChild(0).GetComponent<Button>();
             }
             catch (NullReferenceException err)
             {
