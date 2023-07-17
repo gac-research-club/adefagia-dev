@@ -35,7 +35,7 @@ namespace Adefagia.BattleMechanism
 
         private Dictionary<Grid, GridController> _gridImpacts;
 
-        public static Logging battleLog;
+        // public static Logging GameManager.instance.logManager;
         
         public static event Action<RobotController> RobotNotHaveSkill; 
 
@@ -48,7 +48,7 @@ namespace Adefagia.BattleMechanism
             }
             
             healthBars = new List<GameObject>();
-            battleLog = new Logging();
+            // GameManager.instance.logManager = new Logging();
 
             _gridImpacts = new Dictionary<Grid, GridController>();
 
@@ -294,7 +294,7 @@ namespace Adefagia.BattleMechanism
             ChangeBattleState(BattleState.Nothing);
             ChangeGameState(GameState.Finish);
 
-            battleLog.LogStep($"{teamController.Team.teamName} is Winning");
+            GameManager.instance.logManager.LogStep($"{teamController.Team.teamName} is Winning");
 
             // reset timer
             currentTime = -1;
@@ -391,8 +391,7 @@ namespace Adefagia.BattleMechanism
                 // Occupied the grid
                 TeamActive.Robot.Location.SetOccupied();
 
-                battleLog.LogStep($"{TeamActive.Team.teamName} - {TeamActive.RobotController.Robot} " +
-                                                $"- Deploy to {TeamActive.GridController.Grid}");
+                GameManager.instance.logManager.LogStep($"{TeamActive.Team.teamName} - {TeamActive.RobotController.Robot} - Deploy to {TeamActive.GridController.Grid}");
 
                 // change to the next robot index
                 TeamActive.IncrementIndex();
@@ -623,8 +622,7 @@ namespace Adefagia.BattleMechanism
             TeamActive.ResetRobotSelected();
 
             // Logging
-            battleLog.LogStep($"{TeamActive.Team.teamName} " +
-                              "- End Turn");
+            GameManager.instance.logManager.LogStep($"{TeamActive.Team.teamName} - End Turn");
 
             ChangeTeam();
 

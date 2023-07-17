@@ -19,71 +19,75 @@ namespace Adefagia.PlayerAction
             GridController gridController, 
             int skillChoosed,
             Dictionary<Grid, GridController> gridImpacts)
-        {
-            if (gridController == null)
             {
-                Debug.LogWarning("Skill failed");
-                return;
-            }
-            
-            var skillController = robotController.SkillController;
-            var skill = skillController.ChooseSkill(skillChoosed);
-          
-            // means the robot is considered to move
-            robotController.Robot.HasSkill = true;
-            
-            var grid = gridController.Grid;
-            
-            // Debug.Log("Obstacle Hit: " + gridCtrl.Grid);
-            ObstacleHitHappened?.Invoke(gridController);
-
-            // Take impact
-            foreach (var gridCtrl in gridImpacts.Values)
-            {
-                if (gridCtrl == null) return;
                 
-                if (gridCtrl.Grid.Status == GridStatus.Obstacle)
+                
+                if (gridController == null)
                 {
-                    // Debug.Log("Obstacle Hit: " + gridCtrl.Grid);
-                    ObstacleHitHappened?.Invoke(gridCtrl);
+                    Debug.LogWarning("Skill failed");
+                    return;
                 }
-                else if (gridCtrl.Grid.Status == GridStatus.Robot)
+                
+                var skillController = robotController.SkillController;
+                var skill = skillController.ChooseSkill(skillChoosed);
+            
+                // means the robot is considered to move
+                robotController.Robot.HasSkill = true;
+                
+                var grid = gridController.Grid;
+                
+                // Debug.Log("Obstacle Hit: " + gridCtrl.Grid);
+                ObstacleHitHappened?.Invoke(gridController);
+
+                // Take impact
+                foreach (var gridCtrl in gridImpacts.Values)
                 {
-                    gridCtrl.RobotController.Robot.TakeDamage(skill.Value * 0.5f);
-                    gridCtrl.RobotController.Robot.healthBar.UpdateHealthBar(gridCtrl.RobotController.Robot.CurrentHealth);
+                    if (gridCtrl == null) return;
+                    
+                    if (gridCtrl.Grid.Status == GridStatus.Obstacle)
+                    {
+                        // Debug.Log("Obstacle Hit: " + gridCtrl.Grid);
+                        ObstacleHitHappened?.Invoke(gridCtrl);
+                    }
+                    else if (gridCtrl.Grid.Status == GridStatus.Robot)
+                    {
+                        gridCtrl.RobotController.Robot.TakeDamage(skill.Value * 0.5f);
+                        gridCtrl.RobotController.Robot.healthBar.UpdateHealthBar(gridCtrl.RobotController.Robot.CurrentHealth);
+                    }
                 }
+
+                // if grid is not robot then miss
+                if (grid.Status != GridStatus.Robot)
+                {
+                    GameManager.instance.logManager.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} - Skill {skill.Name} Launched");
+                    Debug.Log("Skill Miss");
+                    return;
+                }
+                
+                robotController.Robot.DecreaseStamina(skill.StaminaRequirement);
+
+                // a robot at other grid attacked by the current robot
+                gridController.RobotController.Robot.TakeDamage(skill.Value);
+                gridController.RobotController.Robot.healthBar.UpdateHealthBar(gridController.RobotController.Robot.CurrentHealth);
+                
+                // if grid is robot ally then friendly fire
+                var teamController = gridController.RobotController.TeamController;
+                
+                if (teamController == BattleManager.TeamActive)
+                {
+                    Debug.Log($"Friendly fire to {gridController.RobotController.Robot}");
+                    return;
+                }
+
+                GameManager.instance.logManager.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} - Skill {skill.Name} launched to {gridController.RobotController.Robot}");
+                Debug.Log($"Skill {skill.Name} launched to {gridController.RobotController.Robot}");
             }
 
-            // if grid is not robot then miss
-            if (grid.Status != GridStatus.Robot)
+            public static Skill GetSkill(RobotController robotController, int index)
             {
-                Debug.Log("Attack Miss");
-                return;
+                var skillController = robotController.SkillController;
+                return skillController.ChooseSkill(index);
             }
-            
-            robotController.Robot.DecreaseStamina(skill.StaminaRequirement);
-
-            // a robot at other grid attacked by the current robot
-            gridController.RobotController.Robot.TakeDamage(skill.Value);
-            gridController.RobotController.Robot.healthBar.UpdateHealthBar(gridController.RobotController.Robot.CurrentHealth);
-            
-            // if grid is robot ally then friendly fire
-            var teamController = gridController.RobotController.TeamController;
-            
-            if (teamController == BattleManager.TeamActive)
-            {
-                Debug.Log($"Friendly fire to {gridController.RobotController.Robot}");
-                return;
-            }
-
-            Debug.Log($"Skill {skill.Name} launched to {gridController.RobotController.Robot}");
-        }
-
-        public static Skill GetSkill(RobotController robotController, int index)
-        {
-            var skillController = robotController.SkillController;
-            return skillController.ChooseSkill(index);
-        }
     }
     
 }
