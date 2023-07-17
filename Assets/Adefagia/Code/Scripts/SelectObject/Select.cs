@@ -30,6 +30,10 @@ namespace Adefagia.SelectObject
 
         void Update()
         {
+            if (Input.GetMouseButton(3))
+            {
+                Debug.Log("Test");
+            }
             // Check if the mouse was clicked over a UI element
             // if (EventSystem.current.IsPointerOverGameObject())
             // {

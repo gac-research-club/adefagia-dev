@@ -71,8 +71,7 @@ namespace Adefagia.PlayerAction
             
             // write to log text
             // TeamName - RobotName - Action
-            BattleManager.battleLog.LogStep($"{robotController.TeamController.Team.teamName} " +
-                                            $"- {robotController.Robot.Name} - Move to {grid}");
+            GameManager.instance.logManager.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} - Move to {grid}");
         }
 
         private void MovePosition(RobotController robotController, List<Grid> grids, float speed)

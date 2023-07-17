@@ -270,7 +270,7 @@ namespace Adefagia.GridSystem
             //     return;
             // }
 
-            gridQuad.transform.position = objectHit.transform.position - offset;
+            gridQuad.transform.position = objectHit.transform.position - offset + new Vector3(0,0.05f,0);
         }
 
         #endregion
