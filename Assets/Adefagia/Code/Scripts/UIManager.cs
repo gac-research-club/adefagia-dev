@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Adefagia.BattleMechanism;
 using Adefagia.UI;
 using UnityEngine;
@@ -63,7 +65,16 @@ namespace Adefagia
 
         public void ShowFinishUI(string teamName)
         {
+            Dictionary<string, List<float>> statistic = GameManager.instance.logManager.GetDamageCalculation();
             finishCanvas.GetComponent<UIFinishController>().ChangeName(teamName);
+
+            int index = 0;
+            foreach (string key in statistic.Keys){
+                float totalDamage = statistic[key].Sum();
+                finishCanvas.GetComponent<UIFinishController>().ChangeTotalDamage(totalDamage, key, index);
+                index += 1;
+            }
+
             ShowCanvasUI(finishCanvas);
         }
 

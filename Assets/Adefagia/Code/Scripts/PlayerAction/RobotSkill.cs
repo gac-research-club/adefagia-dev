@@ -80,7 +80,10 @@ namespace Adefagia.PlayerAction
                 }
 
                 GameManager.instance.logManager.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} - Skill {skill.Name} launched to {gridController.RobotController.Robot}");
+                GameManager.instance.logManager.DamageCalculation(robotController.TeamController.Team.teamName, skill.Value);
+                
                 Debug.Log($"Skill {skill.Name} launched to {gridController.RobotController.Robot}");
+
             }
 
             public static Skill GetSkill(RobotController robotController, int index)

@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using Adefagia.RobotSystem;
 using System.Collections.Generic;
 using System.IO;
 using Adefagia;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,9 +13,12 @@ public class LogManager : MonoBehaviour {
 
     public int maxLog = 10;
     [SerializeField] private GameObject logPanel; 
-    [SerializeField] private GameObject textObject; 
+    [SerializeField] private GameObject textObject;     
     private static string _path;
-    
+    private static List<Robot> _listRobot;
+
+    private Dictionary<string, List<float>> _totalDamage = new Dictionary<string, List<float>>();
+
     List<Log> logList = new List<Log>();
 
     private void Awake()
@@ -28,8 +33,6 @@ public class LogManager : MonoBehaviour {
     public void Start()
     {
         DateTime currentTime = DateTime.Now;
-        Debug.Log(logPanel);
-        Debug.Log(textObject);
 
         // Create Logs directory
         Directory.CreateDirectory(Path.Combine(Application.dataPath, "Logs"));
@@ -56,8 +59,6 @@ public class LogManager : MonoBehaviour {
         newTextComponent.text = newLog.text;
         newLog.textObject = newTextComponent;
 
-        // newLog.textObject.text = ;
-
         logList.Add(newLog);
 
         using (StreamWriter sw = File.AppendText(_path))
@@ -65,6 +66,24 @@ public class LogManager : MonoBehaviour {
             sw.WriteLine(text);
         }	   
     }
+
+    public void DamageCalculation(string team, float damage){
+        if (_totalDamage.ContainsKey(team)){
+            
+            _totalDamage[team].Add(damage);
+        
+        } else {
+            List<float> newDamage = new List<float>();
+            newDamage.Add(damage);
+
+            _totalDamage.Add(team, newDamage);
+        }
+    }
+
+    public Dictionary<string, List<float>> GetDamageCalculation(){
+        return _totalDamage;
+    }
+
 
     private string ReadFile(string pathFile)
     {
@@ -86,10 +105,6 @@ public class LogManager : MonoBehaviour {
             Debug.LogWarning("File Map not found"); 
         }
         
-
-        // Serialize string
-        // Debug.Log(map.Length);
-        // return CleanInput(text);
         return text;
     }
 }
