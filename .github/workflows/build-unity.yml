@@ -1,0 +1,28 @@
+﻿# Desc
+name: Unity Build Game
+run-name: ${{ github.actor }} is building Game
+
+# Event nothing
+on: workflow_dispatch
+
+# Job
+jobs:
+  build:
+    # Runner
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+          
+      # Cache
+      - name: Cache Assets, Packages, ProjectSettings
+        uses: actions/cache@v3
+        with:
+          path: Librari
+          key: ${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+            
+      - run: ls Librari
