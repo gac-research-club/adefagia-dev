@@ -43,7 +43,7 @@ jobs:
   build:
     name: Unity Building
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: windows-2019
     
     steps:
       # Checkout
