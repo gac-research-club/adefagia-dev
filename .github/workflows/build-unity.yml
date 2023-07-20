@@ -3,6 +3,7 @@ name: Build Unity
 run-name: ${{ github.actor }} is building Game
 
 # Event nothing
+on: workflow_dispatch
 
 # Job
 jobs:
