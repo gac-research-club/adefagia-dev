@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Adefagia;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,15 @@ public class LogManager : MonoBehaviour {
     private static string _path;
     
     List<Log> logList = new List<Log>();
+
+    private void Awake()
+    {
+        // Set into gameManager
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.logManager = this;
+        }
+    }
 
     public void Start()
     {
