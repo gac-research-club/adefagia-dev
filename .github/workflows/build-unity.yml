@@ -28,4 +28,10 @@ jobs:
             ./ProjectSettings
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }} 
             
-      - run: ls
+      # Unity unit testing
+      - name: Unity Testing Play mode & Edit mode
+        uses: game-ci/unity-test-runner@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
