@@ -46,21 +46,21 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - # Checkout
-        - name: Checkout
-          uses: actions/checkout@v3
-          with:
-            lfs: true
+      # Checkout
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          lfs: true
 
-        # Cache
-        - name: Cache Assets, Packages, ProjectSettings
-          uses: actions/cache@v3
-          with:
-            path: |
-              ./Assets
-              ./Packages
-              ./ProjectSettings
-            key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+      # Cache
+      - name: Cache Assets, Packages, ProjectSettings
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./Assets
+            ./Packages
+            ./ProjectSettings
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
       
       # Build Windows 64
       - name: Build Project
