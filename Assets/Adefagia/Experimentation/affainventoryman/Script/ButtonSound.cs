@@ -14,10 +14,17 @@ public class ButtonSound : MonoBehaviour
 
     private void Start()
     {
-        defaultVolume = PlayerPrefs.GetFloat("Volume", audioSource.volume);
-        volumeSlider.value = defaultVolume;
-        audioSource.volume = defaultVolume;
-        volumeSlider.onValueChanged.AddListener(UpdateVolume);
+        if (audioSource != null)
+        {
+            defaultVolume = PlayerPrefs.GetFloat("Volume", audioSource.volume);
+            audioSource.volume = defaultVolume;
+        }
+
+        if (volumeSlider != null)
+        {
+            volumeSlider.value = defaultVolume;
+            volumeSlider.onValueChanged.AddListener(UpdateVolume);
+        }
     }
 
     public void HoverSound()
@@ -39,7 +46,7 @@ public class ButtonSound : MonoBehaviour
     public void ResetVolume()
     {
         audioSource.volume = defaultVolume;
-        volumeSlider.value = defaultVolume;
+        // volumeSlider.value = defaultVolume;
         PlayerPrefs.SetFloat("Volume", defaultVolume);
     }
 }
