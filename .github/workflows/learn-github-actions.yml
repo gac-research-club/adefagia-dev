@@ -3,7 +3,8 @@ name: Learn Github Action
 run-name: ${{ github.actor }} is learning Github Actions
 
 # Events
-on: [push]
+#on: [push]
+on: workflow_dispatch
 
 # Job
 jobs:
