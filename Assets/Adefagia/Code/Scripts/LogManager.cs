@@ -3,6 +3,7 @@ using System.Collections;
 using Adefagia.RobotSystem;
 using System.Collections.Generic;
 using System.IO;
+using Adefagia;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -19,6 +20,15 @@ public class LogManager : MonoBehaviour {
     private Dictionary<string, List<float>> _totalDamage = new Dictionary<string, List<float>>();
 
     List<Log> logList = new List<Log>();
+
+    private void Awake()
+    {
+        // Set into gameManager
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.logManager = this;
+        }
+    }
 
     public void Start()
     {

@@ -1,21 +1,32 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class VolumeController : MonoBehaviour
 {
-    public Slider volumeSlider;
+    public Slider masterMusicSlider;
+    public Slider soundFxSlider;
     public AudioSource musicAudioSource;
 
     private void Start()
     {
-        // Mengatur nilai awal slider dengan volume yang disimpan sebelumnya
-        volumeSlider.value = PlayerPrefs.GetFloat("Volume", 1f);
+        if (masterMusicSlider != null)
+        {
+            // Mengatur nilai awal slider dengan volume yang disimpan sebelumnya
+            masterMusicSlider.value = PlayerPrefs.GetFloat("Volume", 1f);
+            // float volume = PlayerPrefs.GetFloat("Volume", 1f);
 
-        // Menetapkan nilai volume ke AudioSource saat memulai
-        SetMusicVolume(volumeSlider.value);
+            // Menetapkan nilai volume ke AudioSource saat memulai
+            SetMusicVolume(masterMusicSlider.value);
 
-        // Menambahkan listener saat nilai slider berubah
-        volumeSlider.onValueChanged.AddListener(SetMusicVolume);
+            // Menambahkan listener saat nilai slider berubah
+            masterMusicSlider.onValueChanged.AddListener(SetMusicVolume);
+        }
+        else
+        {
+            // Menetapkan nilai volume ke AudioSource saat memulai
+            SetMusicVolume(PlayerPrefs.GetFloat("Volume", 1f));
+        }
     }
 
     private void SetMusicVolume(float value)
