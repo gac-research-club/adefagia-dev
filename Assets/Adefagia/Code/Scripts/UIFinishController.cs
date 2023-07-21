@@ -1,6 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
+
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -8,6 +12,10 @@ using UnityEngine.UI;
 public class UIFinishController : MonoBehaviour
 {
     [SerializeField] private Text textTeamName;
+    [SerializeField] private Text textTeam1;
+    [SerializeField] private Text textTeam2;
+    [SerializeField] private Text textTotalDamage1;
+    [SerializeField] private Text textTotalDamage2;
     [SerializeField] private CanvasGroup canvasFinish;
 
     [SerializeField] private bool fadeIn;
@@ -51,5 +59,15 @@ public class UIFinishController : MonoBehaviour
     public void ChangeName(string teamName)
     {
         textTeamName.text = $"Team {teamName} Win";
+    }
+
+    public void ChangeTotalDamage(float totalDamage, string nameTeam, int index){
+        if(index == 0){
+            textTotalDamage1.text = $"Total Damage : {totalDamage}";
+            textTeam1.text = $"{nameTeam}";
+        }else{
+            textTotalDamage2.text = $"Total Damage : {totalDamage}";
+            textTeam2.text = $"{nameTeam}";
+        }
     }
 }
