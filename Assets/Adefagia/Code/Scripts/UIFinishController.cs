@@ -18,6 +18,8 @@ public class UIFinishController : MonoBehaviour
     [SerializeField] private Text textTotalDamage2;
     [SerializeField] private CanvasGroup canvasFinish;
 
+    [SerializeField] private float lifespan;
+    
     [SerializeField] private bool fadeIn;
     [SerializeField] private float scaleSpeed = 1;
     
@@ -40,7 +42,7 @@ public class UIFinishController : MonoBehaviour
                     fadeIn = false;
                     
                     // 3 second
-                    Invoke("ChangeScene", 3);
+                    Invoke("ChangeScene", lifespan);
                 }
             }
             else
