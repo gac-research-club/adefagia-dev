@@ -44,6 +44,12 @@ jobs:
     name: Unity Building
     needs: test
     runs-on: windows-2019
+    strategy:
+      matrix:
+        unityVersion:
+          - 2021.3.17f1
+        targetPlatform:
+          - StandaloneWindows64
     
     steps:
       # Checkout
@@ -70,7 +76,9 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: StandaloneWindows64
+          unityVersion: ${{ matrix.unityVersion }}
+          targetPlatform: ${{ matrix.targetPlatform }}
+          allowDirtyBuild: true
           
       # Upload to Registry
       - uses: actions/upload-artifact@v3
