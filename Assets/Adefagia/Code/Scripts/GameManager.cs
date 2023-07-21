@@ -35,7 +35,7 @@ namespace Adefagia
             // to make sure only one
             else
             {
-                Destroy(gameObject);
+                Destroy(this);
             }
             
             // Can access from any scene

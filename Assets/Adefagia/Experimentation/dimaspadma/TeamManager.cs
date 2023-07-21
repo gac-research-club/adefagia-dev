@@ -16,11 +16,6 @@ public class TeamManager : MonoBehaviour
     // TeamB
     public Team teamB;
     public List<RobotStat> robotsB;
-
-    private void Awake()
-    {
-        GameManager.instance.gameObject.AddComponent<TeamManager>();
-    }
 }
 
 [Serializable]
