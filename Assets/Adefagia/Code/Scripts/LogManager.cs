@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Adefagia;
 using Adefagia.RobotSystem;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +20,12 @@ public class LogManager : MonoBehaviour {
     private Dictionary<string, List<float>> _totalDamage = new Dictionary<string, List<float>>();
 
     List<Log> logList = new List<Log>();
+
+    public void Awake(){
+        if(GameManager.instance != null){
+            GameManager.instance.logManager = this;
+        }
+    }
 
     public void Start()
     {
