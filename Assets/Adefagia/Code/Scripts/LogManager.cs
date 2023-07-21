@@ -4,6 +4,7 @@ using Adefagia;
 using Adefagia.RobotSystem;
 using System.Collections.Generic;
 using System.IO;
+using Adefagia;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -21,8 +22,11 @@ public class LogManager : MonoBehaviour {
 
     List<Log> logList = new List<Log>();
 
-    public void Awake(){
-        if(GameManager.instance != null){
+    private void Awake()
+    {
+        // Set into gameManager
+        if (GameManager.instance != null)
+        {
             GameManager.instance.logManager = this;
         }
     }
