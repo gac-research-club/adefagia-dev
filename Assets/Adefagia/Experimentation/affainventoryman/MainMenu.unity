@@ -719,6 +719,7 @@ GameObject:
   m_Component:
   - component: {fileID: 106200886}
   - component: {fileID: 106200885}
+  - component: {fileID: 106200887}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -757,6 +758,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &106200887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106200884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5991c4604ef7594186d665f5ab8657e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamA:
+    teamName: 
+  robotsA: []
+  teamB:
+    teamName: 
+  robotsB: []
 --- !u!1 &407355216
 GameObject:
   m_ObjectHideFlags: 0
@@ -3030,7 +3049,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad1bb1c8231ee6c44a84de5a68947dc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeSlider: {fileID: 0}
+  masterMusicSlider: {fileID: 0}
+  soundFxSlider: {fileID: 0}
   musicAudioSource: {fileID: 93842722}
 --- !u!1 &1979110025
 GameObject:

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Adefagia;
 using Adefagia.Inventory;
 using Adefagia.BattleMechanism;
 using Adefagia.RobotSystem;
@@ -15,6 +16,11 @@ public class TeamManager : MonoBehaviour
     // TeamB
     public Team teamB;
     public List<RobotStat> robotsB;
+
+    private void Awake()
+    {
+        GameManager.instance.gameObject.AddComponent<TeamManager>();
+    }
 }
 
 [Serializable]
