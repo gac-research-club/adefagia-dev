@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Adefagia;
 using Adefagia.Inventory;
 using Adefagia.BattleMechanism;
 using Adefagia.RobotSystem;
