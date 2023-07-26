@@ -3,7 +3,7 @@
 Adefagia is a tactical grid strategy RPG game. Players control a party of characters on a grid-based battlefield, using turn-based combat to defeat enemies and complete objectives.
 
 ## Getting Started
-To play Adefagia, you will need to download and install the game. You can do this by [downloading the latest release](https://github.com/gac-research-club/adefagia-dev/releases) from the GitHub releases page.
+To play Adefagia, you will need to download and install the game. ~You can do this by [downloading the latest release](https://github.com/gac-research-club/adefagia-dev/releases) from the GitHub releases page.~
 
 Once you have downloaded the game, extract the files and run the game executable to launch Adefagia.
 
