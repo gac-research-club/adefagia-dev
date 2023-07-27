@@ -113,6 +113,8 @@ namespace Adefagia.RobotSystem
             if(_health <= 0){
                IsDead = true;
                Dead?.Invoke();
+               
+               GameManager.instance.logManager.AddDeadRobot(this);
             }
            
         }
