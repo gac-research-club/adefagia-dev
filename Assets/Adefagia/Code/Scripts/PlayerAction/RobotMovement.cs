@@ -5,12 +5,15 @@ using Adefagia.Collections;
 using Adefagia.GridSystem;
 using Adefagia.RobotSystem;
 using UnityEngine;
+using UnityEngine.Events;
 using Grid = Adefagia.GridSystem.Grid;
 
 namespace Adefagia.PlayerAction
 {
     public class RobotMovement : MonoBehaviour
     {
+        public static event UnityAction<bool> MoveAnimation;
+
         public void Move(
             RobotController robotController, 
             GridController gridController, 
@@ -52,15 +55,15 @@ namespace Adefagia.PlayerAction
 
             // Change robot reference to grid
             gridController.RobotController.GridController = gridController;
-            
-            // Look At Grid
-            gridController.RobotController.transform.LookAt(gridController.transform);
 
             gridController.RobotController.transform.eulerAngles = new Vector3(
                 0,
                 gridController.RobotController.transform.eulerAngles.y,
                 0);
                  
+            // Invoke Animation
+            MoveAnimation?.Invoke(true);
+            
             // StartCoroutine(MovePosition(robotController, directions, delayMove));
             MovePosition(robotController, directions, speed);
 
@@ -74,8 +77,7 @@ namespace Adefagia.PlayerAction
             
             // write to log text
             // TeamName - RobotName - Action
-            BattleManager.battleLog.LogStep($"{robotController.TeamController.Team.teamName} " +
-                                            $"- {robotController.Robot.Name} - Move to {grid}");
+            GameManager.instance.logManager.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} - Move to {grid}");
         }
 
         private void MovePosition(RobotController robotController, List<Grid> grids, float speed)

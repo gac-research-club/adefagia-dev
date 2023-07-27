@@ -1,8 +1,9 @@
 name: GameCI 🎮
 
-on:
-  push:
-    branches: [main]
+#on:
+#  push:
+#    branches: [main]
+on: workflow_dispatch
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}

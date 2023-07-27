@@ -11,6 +11,7 @@ public class HealItemEffect : UsableItemEffect
     public override void ExecuteEffect(Robot character)
     {
         character.Healing(HealthAmount);
+        character.healthBar.UpdateHealthBar(character.CurrentHealth);
     }
 
     public override string GetDescription()

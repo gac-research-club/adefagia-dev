@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Adefagia.BattleMechanism;
@@ -20,16 +21,23 @@ namespace Adefagia.PlayerAction
         
 
         private List<Grid> _tempGrids;
+        private List<Grid> _tempGridsImpact;
 
         private List<GameObject> _tempHighlights;
-        private GameObject _quad, _quadBlock;
+        private List<GameObject> _tempHighlightsImpact;
+        private GameObject _quad, _quadBlock, _quadImpact, _quadBlockImpact;
 
-        
+
+        public static event Action<Grid> RobotOnImpact;
+        public static event Action<List<Grid>> RobotOnImpactClear;
 
         public void Awake()
         {
             _tempHighlights = new List<GameObject>();
             _tempGrids = new List<Grid>();
+            
+            _tempHighlightsImpact = new List<GameObject>();
+            _tempGridsImpact = new List<Grid>();
         }
 
         private void Start()
@@ -63,6 +71,22 @@ namespace Adefagia.PlayerAction
                 "ooo";
             var origin = new Vector2Int(1, 1);
             CreateFromPattern(pattern, 3,3, grid.Location, origin);
+        }
+
+        public void SetSurroundImpact(Grid grid)
+        {
+            if (grid == null) return;
+            
+            CleanHighlightImpact();
+            
+            SetQuadImpact();
+
+            var pattern = 
+                "ooo" +
+                "oro" +
+                "ooo";
+            var origin = new Vector2Int(1, 1);
+            CreateFromPatternImpact(pattern, 3,3, grid.Location, origin);
         }
 
         public void CreateHighlight(Grid grid, string pattern, Vector2Int origin)
@@ -238,6 +262,7 @@ namespace Adefagia.PlayerAction
             {
                 Debug.Log("Grid Obstacle:" + grid);
                 quadDup = Instantiate(_quadBlock, transform);
+                
             }
             else
             {
@@ -247,8 +272,38 @@ namespace Adefagia.PlayerAction
             _tempGrids.Add(grid);
 
             quadDup.transform.position = GridManager.CellToWorld(grid);
+            quadDup.transform.localScale = GridManager.UpdateScale(quadDup.transform);
 
             _tempHighlights.Add(quadDup);
+        }
+        
+        private void GridImpact(int x, int y)
+        {
+            var grid = GameManager.instance.gridManager.GetGrid(x, y);
+            if (grid == null) return;
+
+            GameObject quadDup;
+
+            if (grid.Status != GridStatus.Free)
+            {
+                // Debug.Log("Grid Obstacle:" + grid);
+                quadDup = Instantiate(_quadBlockImpact, transform);
+                
+                RobotOnImpact?.Invoke(grid);
+            }
+            else
+            {
+                quadDup = Instantiate(_quadImpact, transform);
+            }
+
+            _tempGridsImpact.Add(grid);
+            
+            RobotOnImpactClear?.Invoke(_tempGridsImpact);
+
+            quadDup.transform.position = GridManager.CellToWorld(grid);
+            quadDup.transform.localScale = GridManager.UpdateScale(quadDup.transform);
+
+            _tempHighlightsImpact.Add(quadDup);
         }
         
         
@@ -268,6 +323,18 @@ namespace Adefagia.PlayerAction
                 _quad = quadAttack;
                 _quadBlock = quadAttackBlock;
             }
+            // Skill
+            else
+            {
+                _quad = quadAttack;
+                _quadBlock = quadAttackBlock;
+            }
+        }
+        
+        private void SetQuadImpact()
+        {
+            _quadImpact = quadImpact;
+            _quadBlockImpact = quadImpact;
         }
 
         /*----------------------------------------------------------------------
@@ -281,6 +348,11 @@ namespace Adefagia.PlayerAction
         {
             return _tempGrids.Contains(grid);
         }
+        
+        public bool CheckGridOnHighlightImpact(GridController gridController)
+        {
+            return _tempGridsImpact.Contains(gridController.Grid);
+        }
 
         public void CleanHighlight()
         {
@@ -291,6 +363,17 @@ namespace Adefagia.PlayerAction
 
             _tempHighlights.Clear();
             _tempGrids.Clear();
+        }
+        
+        public void CleanHighlightImpact()
+        {
+            foreach (var temp in _tempHighlightsImpact)
+            {
+                Destroy(temp);
+            }
+
+            _tempHighlightsImpact.Clear();
+            _tempGridsImpact.Clear();
         }
 
         private void CreateFromPattern(string pattern, int row, int col, Vector2Int position, Vector2Int origin)
@@ -313,12 +396,36 @@ namespace Adefagia.PlayerAction
                 }
             }
         }
+        
+        private void CreateFromPatternImpact(string pattern, int row, int col, Vector2Int position, Vector2Int origin)
+        {
+            string replacement = Regex.Replace(pattern, @"\t|\n|\r", "");
+            int x = 0, y = row-1;
+            foreach (var character in replacement)
+            {
+                // Debug.Log($"({x},{y}): {character}");
+                if (character.Equals('o'))
+                {
+                    GridImpact(position.x + (x-origin.x), position.y + (y-origin.y));
+                }
+                
+                x++;
+                if (x > col-1)
+                {
+                    y--;
+                    x = 0;
+                }
+            }
+        }
 
+        
         
 
         private void OnSkillHappened(GridController gridController)
         {
-            Debug.Log(gridController.Grid);
+            var grid = gridController.Grid;
+            // Debug.Log(grid);
+            // GridImpact(grid.X, grid.Y);
         }
 
         public enum TypePattern

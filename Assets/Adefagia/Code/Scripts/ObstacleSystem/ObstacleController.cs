@@ -20,6 +20,7 @@ namespace Adefagia.ObstacleSystem
         private void Start()
         {
             RobotAttack.ObstacleHitHappened += OnObstacleHitHappened;
+            RobotSkill.ObstacleHitHappened += OnObstacleHitHappened;
         }
 
         private void Update()
@@ -37,7 +38,7 @@ namespace Adefagia.ObstacleSystem
         {
             // Only run on affected obstacle
             if (gridController.Grid != Grid) return;
-            
+
             ObstacleHit?.Invoke(transform.position);
             
             // Only for obstacle destructible
@@ -47,5 +48,6 @@ namespace Adefagia.ObstacleSystem
                 _hitCount += 1;
             }
         }
+        
     }
 }

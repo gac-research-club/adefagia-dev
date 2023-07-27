@@ -84,7 +84,8 @@ namespace Adefagia.RobotSystem
                 var potionController = robotObject.AddComponent<PotionController>();
                 
                 // Find healthBar GameObject
-                var healthBarObject = GameObject.Find($"Robot {i}/Canvas/HealthBar");
+                var healthBarObject = GameObject.Find($"Robot {i}/Cube/Canvas/HealthBar");
+                
                 healthBarObject.name = "HBar Robot " + i;
 
                 // add healthBar GameObject to healthBars List
@@ -108,7 +109,8 @@ namespace Adefagia.RobotSystem
                     _teamController.Team.teamName + "-" + robotObject.name,
                     robot.maxHealth,
                     robot.maxStamina,
-                    robot.damage);
+                    robot.damage,
+                    robot.armor);
                 
                 robotController.Robot.ID = _teamController.TotalRobot-1 - i;
                 robotController.Robot.Speed = speed;
@@ -123,12 +125,12 @@ namespace Adefagia.RobotSystem
                     Skill skill2 = robot.weaponId.WeaponSkill[1];
                 
                     // Ultimate Skill
-                    Skill skill3 = robot.weaponId.WeaponSkill[2];
+                    // Skill skill3 = robot.weaponId.WeaponSkill[2];
                     
                     // set skill
                     skillController.Skills.Add(skill1); 
                     skillController.Skills.Add(skill2); 
-                    skillController.Skills.Add(skill3);
+                    // skillController.Skills.Add(skill3);
                     
                     robotController.SetSkill(skillController);
                 }
