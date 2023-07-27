@@ -5,12 +5,15 @@ using Adefagia.Collections;
 using Adefagia.GridSystem;
 using Adefagia.RobotSystem;
 using UnityEngine;
+using UnityEngine.Events;
 using Grid = Adefagia.GridSystem.Grid;
 
 namespace Adefagia.PlayerAction
 {
     public class RobotMovement : MonoBehaviour
     {
+        public static event UnityAction<bool> MoveAnimation;
+
         public void Move(
             RobotController robotController, 
             GridController gridController, 
@@ -58,6 +61,9 @@ namespace Adefagia.PlayerAction
                 gridController.RobotController.transform.eulerAngles.y,
                 0);
                  
+            // Invoke Animation
+            MoveAnimation?.Invoke(true);
+            
             // StartCoroutine(MovePosition(robotController, directions, delayMove));
             MovePosition(robotController, directions, speed);
 
