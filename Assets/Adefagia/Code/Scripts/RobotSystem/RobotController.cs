@@ -7,6 +7,7 @@ using Grid = Adefagia.GridSystem.Grid;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Adefagia.RobotSystem
@@ -44,6 +45,8 @@ namespace Adefagia.RobotSystem
         public GridController GridController { get; set; }
 
         public static event Action<Vector3> TakeDamageHappened; 
+        public static event UnityAction<bool> TurnAnimation;
+        public static event UnityAction<bool> MoveAnimation;
 
         private void Awake()
         {
@@ -141,11 +144,17 @@ namespace Adefagia.RobotSystem
                 var step =  speed * Time.deltaTime; // calculate distance to move
                 transform.position = Vector3.MoveTowards(transform.position, GridManager.CellToWorld(grids[current]), step);
                 
-                // Look At Grid
-                transform.LookAt(GridManager.CellToWorld(grids[current]));
                 
                 if (Vector3.Distance(transform.position, GridManager.CellToWorld(grids[current])) < 0.01f)
                 {
+                    MoveAnimation?.Invoke(false);
+                    TurnAnimation?.Invoke(true);
+                    // yield return new WaitForSeconds(1);
+                    transform.forward = TurnArround(GridManager.CellToWorld(grids[current]));
+                    TurnAnimation?.Invoke(false);
+                    MoveAnimation?.Invoke(true);
+                    // Look At Grid
+                    // transform.LookAt();
                     current++;
                 }
 
@@ -153,6 +162,15 @@ namespace Adefagia.RobotSystem
             }
 
             transform.position = GridManager.CellToWorld(grids[^1]);
+            
+            MoveAnimation?.Invoke(false);
+        }
+
+        private Vector3 TurnArround(Vector3 targetPosition)
+        {
+            var result = (targetPosition - transform.position).normalized;
+            Debug.Log(result);
+            return result;
         }
 
         public void MoveWithDoTween(List<Grid> grids)
