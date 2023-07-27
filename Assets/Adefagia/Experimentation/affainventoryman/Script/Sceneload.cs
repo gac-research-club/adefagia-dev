@@ -24,4 +24,14 @@ public class Sceneload : MonoBehaviour
     {
         SceneManager.LoadScene("Store");
     }
+    
+    public void LoadOptions()
+    {
+        SceneManager.LoadScene("Options");
+    }
+
+    public void ExitApplication()
+    {
+        Application.Quit();
+    }
 }

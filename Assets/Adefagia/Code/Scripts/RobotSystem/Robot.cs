@@ -74,7 +74,7 @@ namespace Adefagia.RobotSystem
             //-----------------------
             ResetStepStat();
         }
-        public Robot(string name, float maxHealth, float maxStamina, float damage)
+        public Robot(string name, float maxHealth, float maxStamina, float damage, float defend)
         {
             Name = name;
             MaxHealth = maxHealth;
@@ -82,6 +82,7 @@ namespace Adefagia.RobotSystem
             _health = MaxHealth;
             _stamina = StaminaInitial;
             Damage = damage;
+            Defend = defend;
             IsDead = false;
             
             //-----------------------
@@ -95,7 +96,20 @@ namespace Adefagia.RobotSystem
         {
             Damaged?.Invoke();
             
-            _health -= damage;
+            /* 100 * 0.9 = 90
+
+            /* calculation damage */
+            float critical = Random.Range(0.8f, 1.0f);
+
+            /* 30 * 0.3 - 0.5 = 15 
+            /* calculation absorption */ 
+            float absorption = Random.Range(0.3f, 0.5f);
+            float txt1 = (critical * damage);
+            float txt2 = (absorption * Defend);
+
+            float TotalDamage = (txt1 - txt2);
+            _health -= Math.Abs(TotalDamage);
+         
             if(_health <= 0){
                IsDead = true;
                Dead?.Invoke();
@@ -109,8 +123,6 @@ namespace Adefagia.RobotSystem
             if(_health >= MaxHealth){
                _health = MaxHealth;
             }
-            Debug.Log("_health");
-            Debug.Log(_health);
         }
 
         public void IncreaseDamage(float damage){

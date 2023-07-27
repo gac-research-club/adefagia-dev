@@ -109,7 +109,8 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData != null && eventData.button == PointerEventData.InputButton.Right)
+        if (eventData != null && eventData.button == PointerEventData.InputButton.Right ||
+            eventData.button == PointerEventData.InputButton.Left)
         {
             if (OnRightClickEvent != null)
                 OnRightClickEvent(this);

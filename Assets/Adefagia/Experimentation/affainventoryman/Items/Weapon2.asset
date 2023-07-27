@@ -16,7 +16,7 @@ MonoBehaviour:
   ItemName: Weapon 2
   Icon: {fileID: 21300000, guid: 9c12454dff77d05429a5a0f8498ea532, type: 3}
   MaximumStacks: 1
-  AttackBonus: 6
+  AttackBonus: 13
   ArmorBonus: 1
   AttackPercentBonus: 0
   ArmorPercentBonus: 0.05
@@ -25,7 +25,7 @@ MonoBehaviour:
   WeaponSkill:
   - Name: Laser Beam
     StaminaRequirement: 20
-    Value: 30
+    Value: 50
     IsUltimate: 0
     skillType: 0
     patternAttack: '---o---
@@ -43,31 +43,11 @@ MonoBehaviour:
       ---o---'
     patternImpact: 
     origin: {x: 3, y: 3}
-  - Name: Juminten
+  - Name: Necropolish
     StaminaRequirement: 10
-    Value: 30
+    Value: 50
     IsUltimate: 0
-    skillType: 1
-    patternAttack: '---o---
-
-      --ooo--
-
-      -ooooo-
-
-      ooorooo
-
-      -ooooo-
-
-      --ooo--
-
-      ---o---'
-    patternImpact: 
-    origin: {x: 3, y: 3}
-  - Name: Recovery
-    StaminaRequirement: 30
-    Value: 100
-    IsUltimate: 1
-    skillType: 1
+    skillType: 0
     patternAttack: '---o---
 
       --ooo--

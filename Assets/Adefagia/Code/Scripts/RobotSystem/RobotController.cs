@@ -7,6 +7,8 @@ using Grid = Adefagia.GridSystem.Grid;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Adefagia.RobotSystem
 {
@@ -43,6 +45,8 @@ namespace Adefagia.RobotSystem
         public GridController GridController { get; set; }
 
         public static event Action<Vector3> TakeDamageHappened; 
+        public static event UnityAction<bool> TurnAnimation;
+        public static event UnityAction<bool> MoveAnimation;
 
         private void Awake()
         {
@@ -63,6 +67,7 @@ namespace Adefagia.RobotSystem
                 Robot.Damaged += OnDamaged;
                 Robot.Dead += OnDead;
             }
+
         }
 
         private void Update()
@@ -111,9 +116,18 @@ namespace Adefagia.RobotSystem
 
         public void MovePosition(Grid grid)
         {
-            var position = new Vector3(grid.X, 0, grid.Y);
+            var position = new Vector3(grid.X * GridManager.GridLength, 0, grid.Y * GridManager.GridLength);
             transform.position = position;
             
+            // Y angle is 0 & 180
+            // Look at center grid (4,4)
+            var center = new Vector3(grid.X * GridManager.GridLength,0,4 * GridManager.GridLength);
+            transform.LookAt(center);
+
+            var fixAngle = Math.Clamp(transform.eulerAngles.y, 0, 180);
+            transform.eulerAngles = new Vector3(0, fixAngle, 0);
+
+
             // TODO: move to position with some transition
             // move with lerp
         }
@@ -130,8 +144,17 @@ namespace Adefagia.RobotSystem
                 var step =  speed * Time.deltaTime; // calculate distance to move
                 transform.position = Vector3.MoveTowards(transform.position, GridManager.CellToWorld(grids[current]), step);
                 
+                
                 if (Vector3.Distance(transform.position, GridManager.CellToWorld(grids[current])) < 0.01f)
                 {
+                    MoveAnimation?.Invoke(false);
+                    TurnAnimation?.Invoke(true);
+                    // yield return new WaitForSeconds(1);
+                    transform.forward = TurnArround(GridManager.CellToWorld(grids[current]));
+                    TurnAnimation?.Invoke(false);
+                    MoveAnimation?.Invoke(true);
+                    // Look At Grid
+                    // transform.LookAt();
                     current++;
                 }
 
@@ -139,6 +162,15 @@ namespace Adefagia.RobotSystem
             }
 
             transform.position = GridManager.CellToWorld(grids[^1]);
+            
+            MoveAnimation?.Invoke(false);
+        }
+
+        private Vector3 TurnArround(Vector3 targetPosition)
+        {
+            var result = (targetPosition - transform.position).normalized;
+            Debug.Log(result);
+            return result;
         }
 
         public void MoveWithDoTween(List<Grid> grids)

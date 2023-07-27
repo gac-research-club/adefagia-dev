@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Adefagia.BattleMechanism;
 using Adefagia.UI;
 using UnityEngine;
@@ -10,6 +12,8 @@ namespace Adefagia
     public class UIManager : MonoBehaviour
     {
         [SerializeField] private Canvas battleCanvas;
+        public UIBattleController uiBattleController;
+        
         [SerializeField] private Button buttonEndTurn;
         [SerializeField] private Canvas finishCanvas;
         [SerializeField] private GameObject deployRobotCanvas;
@@ -61,7 +65,16 @@ namespace Adefagia
 
         public void ShowFinishUI(string teamName)
         {
+            Dictionary<string, List<float>> statistic = GameManager.instance.logManager.GetDamageCalculation();
             finishCanvas.GetComponent<UIFinishController>().ChangeName(teamName);
+
+            int index = 0;
+            foreach (string key in statistic.Keys){
+                float totalDamage = statistic[key].Sum();
+                finishCanvas.GetComponent<UIFinishController>().ChangeTotalDamage(totalDamage, key, index);
+                index += 1;
+            }
+
             ShowCanvasUI(finishCanvas);
         }
 
@@ -70,7 +83,7 @@ namespace Adefagia
          *-------------------------------------------------------------*/
         private void ShowCanvasUI(Canvas canvas)
         {
-            canvas.enabled = true;
+            canvas.gameObject.SetActive(true);
         }
 
         /*-------------------------------------------------------------
@@ -78,7 +91,7 @@ namespace Adefagia
          *-------------------------------------------------------------*/
         private void HideCanvasUI(Canvas canvas)
         {
-            canvas.enabled = false;
+            canvas.gameObject.SetActive(false);
         }
 
         /*-------------------------------------------------------------
