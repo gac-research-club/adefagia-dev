@@ -7,7 +7,7 @@ public class Sceneload : MonoBehaviour
 {
     public void PlaytoMainMode()
     {
-        SceneManager.LoadScene("MainMode");
+        SceneManager.LoadScene("ChooseMode");
     }
 
     public void Play3VS3()
