@@ -918,23 +918,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 146321439}
   m_CullTransparentMesh: 1
---- !u!1 &159382117 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6569809545591938618, guid: adc9a5ca539a10044b1d4b21359b0c5d, type: 3}
-  m_PrefabInstance: {fileID: 8066364870778825700}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &159382120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 159382117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec3fc75c62f360640ac9589ef2a1c33c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &160999997
 GameObject:
   m_ObjectHideFlags: 0
@@ -4870,8 +4853,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   robotPrefab:
   - {fileID: 5874310583349145085, guid: adc9a5ca539a10044b1d4b21359b0c5d, type: 3}
-  - {fileID: 1402568622631739376, guid: 24cf8fe2d398cb849a025127ed3f8d6d, type: 3}
-  - {fileID: 1402568622631739376, guid: 24cf8fe2d398cb849a025127ed3f8d6d, type: 3}
+  - {fileID: 5874310583349145085, guid: adc9a5ca539a10044b1d4b21359b0c5d, type: 3}
+  - {fileID: 5874310583349145085, guid: adc9a5ca539a10044b1d4b21359b0c5d, type: 3}
   speed: 2
 --- !u!1 &635770029
 GameObject:
@@ -11044,7 +11027,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 803771618322690072, guid: b6502d2c367ddbe44a8dee0390c24ead, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 234.12534
+      value: 234.12537
       objectReference: {fileID: 0}
     - target: {fileID: 803771618624276049, guid: b6502d2c367ddbe44a8dee0390c24ead, type: 3}
       propertyPath: m_RootOrder

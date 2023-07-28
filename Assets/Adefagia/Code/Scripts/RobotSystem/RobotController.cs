@@ -45,9 +45,8 @@ namespace Adefagia.RobotSystem
         public GridController GridController { get; set; }
 
         public static event Action<Vector3> TakeDamageHappened; 
-        public static event UnityAction<bool> TurnAnimation;
-        public static event UnityAction<bool> MoveAnimation;
-
+        public static event UnityAction<int, bool> TurnAnimation;
+        public static event UnityAction<int, bool> MoveAnimation;
         private void Awake()
         {
             _robotMovement = GetComponent<RobotMovement>();
@@ -137,25 +136,58 @@ namespace Adefagia.RobotSystem
          *--------------------------------------------------------------------------------------*/
         public IEnumerator MoveRobotPosition(List<Grid> grids, float speed)
         {
-            var current = 0;
+            var current = 1;
+            var turn = true;
+            var interpolationFramesCount = 120; // Number of frames to completely interpolate between the 2 positions
+            var elapsedFrames = 0;
+
+            var body = transform.GetChild(2).gameObject;
+            var id = body.GetInstanceID();
+
             while (Vector3.Distance(transform.position, GridManager.CellToWorld(grids[^1])) > 0.01f)
             {
 
+                if (turn)
+                {
+                    var dir = TurnArround(GridManager.CellToWorld(grids[current]));
+                    var start = transform.forward;
+                    
+                    Debug.Log("Direction :" + dir);
+                    Debug.Log("Start:" + start);
+
+                    if (dir != Vector3.zero && dir != start)
+                    {
+                        MoveAnimation?.Invoke(id, false);
+                        TurnAnimation?.Invoke(id, true);
+                        
+                        while (elapsedFrames < interpolationFramesCount)
+                        {
+                            var interpolationRatio = (float)elapsedFrames / interpolationFramesCount;
+                            transform.forward = Vector3.Slerp(start, dir, interpolationRatio);
+                            yield return null;
+                            elapsedFrames += 1;
+                        }
+
+                        TurnAnimation?.Invoke(id, false);
+                        
+                        transform.forward = dir;
+                    }
+
+                    turn = false;
+                    elapsedFrames = 0;
+                }
+                
+                MoveAnimation?.Invoke(id, true);
+                
                 var step =  speed * Time.deltaTime; // calculate distance to move
                 transform.position = Vector3.MoveTowards(transform.position, GridManager.CellToWorld(grids[current]), step);
-                
-                
+
                 if (Vector3.Distance(transform.position, GridManager.CellToWorld(grids[current])) < 0.01f)
                 {
-                    MoveAnimation?.Invoke(false);
-                    TurnAnimation?.Invoke(true);
-                    // yield return new WaitForSeconds(1);
-                    transform.forward = TurnArround(GridManager.CellToWorld(grids[current]));
-                    TurnAnimation?.Invoke(false);
-                    MoveAnimation?.Invoke(true);
                     // Look At Grid
-                    // transform.LookAt();
+                    body.transform.DOLocalMove(Vector3.zero, 0.2f); 
                     current++;
+                    turn = true;
                 }
 
                 yield return null;
@@ -163,13 +195,13 @@ namespace Adefagia.RobotSystem
 
             transform.position = GridManager.CellToWorld(grids[^1]);
             
-            MoveAnimation?.Invoke(false);
+            MoveAnimation?.Invoke(id, false);
         }
 
         private Vector3 TurnArround(Vector3 targetPosition)
         {
-            var result = (targetPosition - transform.position).normalized;
-            Debug.Log(result);
+            var root = transform.position;  
+            var result = (targetPosition - root).normalized;
             return result;
         }
 
