@@ -183,7 +183,9 @@ namespace Adefagia.UI
                 // 2 skill
                 for (int i = 0; i < 2 ; i++)
                 {
+                    Debug.Log(listSkill);
                     var buttonSkill = listSkill.transform.GetChild(i).GetComponent<Button>();
+                    Debug.Log(buttonSkill);
                     var buttonText = buttonSkill.GetComponentInChildren<Text>();
 
                     Skill _skill = robotController.SkillController.ChooseSkill(i);
