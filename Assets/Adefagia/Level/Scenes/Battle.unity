@@ -3921,7 +3921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.36043477, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4619,7 +4619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6918,7 +6918,7 @@ GameObject:
   - component: {fileID: 776676898}
   - component: {fileID: 776676897}
   m_Layer: 0
-  m_Name: Panel
+  m_Name: Current_Robot_Stat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20577,6 +20577,7 @@ MonoBehaviour:
   listItem: {fileID: 319675504}
   gridInfo: {fileID: 1946405357}
   robotStat: {fileID: 398623720}
+  currentRobotStat: {fileID: 776676895}
   timer: {fileID: 666585243}
   robotSelectPanels:
   - {fileID: 1846949025}

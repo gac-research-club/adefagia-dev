@@ -25,6 +25,8 @@ namespace Adefagia.UI
 
         [SerializeField] private GameObject gridInfo;
         [SerializeField] private GameObject robotStat;
+        [SerializeField] private GameObject currentRobotStat;
+
         public Text timer;
 
         [SerializeField] private List<GameObject> robotSelectPanels;
@@ -59,6 +61,7 @@ namespace Adefagia.UI
                     ShowUI(cancelButton);
                     ShowUI(listSkill);
                     ShowUI(listItem);
+                    
                     // if (BattleManager.battleState == BattleState.SkillRobot ||
                     //     BattleManager.battleState == BattleState.SkillSelectionRobot){
                     // }
@@ -74,7 +77,7 @@ namespace Adefagia.UI
                 }
 
 
-                var robotSelected = BattleManager.TeamActive.RobotControllerSelected;
+                RobotController robotSelected = BattleManager.TeamActive.RobotControllerSelected;
                 
                 // if Robot haven't selected than return
                 if (robotSelected == null)
@@ -89,6 +92,9 @@ namespace Adefagia.UI
                         ShowUI(robotNotSelectPanel);
                     }
                     return;
+                }else{
+                    currentRobotStat.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = $"{robotSelected.Robot.Damage}";
+                    currentRobotStat.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = $"{robotSelected.Robot.Defend}";
                 }
                 
                 foreach (var robotSelectPanel in robotSelectPanels)
