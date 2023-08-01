@@ -24,6 +24,9 @@ namespace Adefagia.UI
         [SerializeField] private GameObject listItem;
 
         [SerializeField] private GameObject gridInfo;
+        [SerializeField] private GameObject robotStat;
+        [SerializeField] private GameObject currentRobotStat;
+
         public Text timer;
 
         [SerializeField] private List<GameObject> robotSelectPanels;
@@ -58,6 +61,7 @@ namespace Adefagia.UI
                     ShowUI(cancelButton);
                     ShowUI(listSkill);
                     ShowUI(listItem);
+                    
                     // if (BattleManager.battleState == BattleState.SkillRobot ||
                     //     BattleManager.battleState == BattleState.SkillSelectionRobot){
                     // }
@@ -73,7 +77,7 @@ namespace Adefagia.UI
                 }
 
 
-                var robotSelected = BattleManager.TeamActive.RobotControllerSelected;
+                RobotController robotSelected = BattleManager.TeamActive.RobotControllerSelected;
                 
                 // if Robot haven't selected than return
                 if (robotSelected == null)
@@ -88,6 +92,9 @@ namespace Adefagia.UI
                         ShowUI(robotNotSelectPanel);
                     }
                     return;
+                }else{
+                    currentRobotStat.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = $"{robotSelected.Robot.Damage}";
+                    currentRobotStat.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = $"{robotSelected.Robot.Defend}";
                 }
                 
                 foreach (var robotSelectPanel in robotSelectPanels)
@@ -198,31 +205,6 @@ namespace Adefagia.UI
         private void ShowUI(GameObject buttonList)
         {
             buttonList.SetActive(true);
-            // var robotSelected = BattleManager.TeamActive.RobotControllerSelected;
-            //
-            // // if Robot haven't selected than return
-            // if (robotSelected == null) return;
-            //
-            // if (BattleManager.battleState == BattleState.ItemRobot || BattleManager.battleState == BattleState.ItemSelectionRobot)
-            // {
-            //     for (int i = 0; i < 2 ; i++)
-            //     {
-            //         Button buttonItem = buttonList.transform.GetChild(i).GetComponent<Button>();
-            //         TextMeshProUGUI buttonText = buttonItem.GetComponentInChildren<TextMeshProUGUI>();
-            //
-            //         try
-            //         {
-            //             var potion = robotSelected.PotionController.ChoosePotion(i);
-            //             buttonItem.gameObject.SetActive(true);
-            //             buttonText.text = potion.Name;
-            //         }
-            //         catch (Exception)
-            //         {
-            //             buttonItem.gameObject.SetActive(false);
-            //         }
-            //         
-            //     }
-            // }
         }
 
         public void HideItemButton(RobotController robotController)
@@ -266,6 +248,24 @@ namespace Adefagia.UI
             
             // Description
             gridInfo.transform.GetChild(2).GetComponent<Text>().text = "Ini adalah grid";
+            
+            if(gridController.RobotController == null){
+                
+                robotStat.SetActive(false); 
+                return;
+
+            }else{
+                
+                robotStat.SetActive(true);
+
+                robotStat.transform.GetChild(0).GetComponent<Text>().text = gridController.RobotController.Robot.Name;
+                robotStat.transform.GetChild(2).GetComponent<Text>().text = "Ini adalah robot";
+                
+                robotStat.transform.GetChild(3).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.CurrentHealth}/{gridController.RobotController.Robot.MaxHealth}";
+                robotStat.transform.GetChild(4).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.CurrentStamina}/{gridController.RobotController.Robot.MaxStamina}";
+                robotStat.transform.GetChild(5).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.Damage}";
+                robotStat.transform.GetChild(6).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.Defend}";
+            }
         }
     }
 }
