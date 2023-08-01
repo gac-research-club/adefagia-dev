@@ -17,6 +17,8 @@ public class StatPanel : MonoBehaviour
 
     [SerializeField] Text characterName;
 
+    [SerializeField] private Button buttonBattle;
+
     private CharacterStat[] stats;
 
     private List<RobotStat> robotSelected;
@@ -190,10 +192,10 @@ public class StatPanel : MonoBehaviour
         indexRobot = 0;
 
         // Make sure 2 team have been selected equipment
-        if (countTeam > _teams.Count - 1)
+        if (countTeam > _teams.Count - 2)
         {
             _itemState = ItemState.Finish;
-            SceneManager.LoadScene("Battle");
+            buttonBattle.gameObject.SetActive(true);
         }
 
     }
