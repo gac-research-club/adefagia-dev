@@ -60,6 +60,8 @@ namespace Adefagia.RobotSystem
         private void Start()
         {
             RobotAttack.ThingHappened += OnThingHappened;
+            RobotMovement.RobotBotMove += OnRobotBotMove;
+            RobotAttack.RobotBotAttack += OnRobotBotAttack;
 
             if (Robot != null)
             {
@@ -203,6 +205,27 @@ namespace Adefagia.RobotSystem
             var root = transform.position;  
             var result = (targetPosition - root).normalized;
             return result;
+        }
+
+        private void OnRobotBotMove(List<RobotController> robotControllers, Team team)
+        {
+            // Find enemy robot
+            if(this == null) return;
+            
+            if(_teamController.Team == team) return;
+            
+            robotControllers.Add(this);
+
+        }
+
+        private void OnRobotBotAttack(List<RobotController> robotControllers, Team team)
+        {
+            // Find enemy robot
+            if(this == null) return;
+            
+            if(_teamController.Team == team) return;
+            
+            robotControllers.Add(this);
         }
 
         public void MoveWithDoTween(List<Grid> grids)
