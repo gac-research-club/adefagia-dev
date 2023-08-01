@@ -59,13 +59,13 @@ namespace Adefagia.PlayerAction
             if (teamController == BattleManager.TeamActive)
             {
                 Debug.Log($"Friendly fire to {gridController.RobotController.Robot}");
-                GameManager.instance.logManager.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} - Friendly fire to {gridController.RobotController.Robot}");
+                GameManager.instance.logManager.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} - Friendly fire to {gridController.RobotController.Robot} with {robotController.Robot.Damage} damage!");
                 GameManager.instance.logManager.DamageCalculation(robotController.TeamController.Team.teamName, robotController.Robot.Damage);
                 return;
             }
 
             // Debug.Log($"Attack to {gridController.RobotController.Robot}");
-            GameManager.instance.logManager.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} - Attack to {gridController.RobotController.Robot}");
+            GameManager.instance.logManager.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} - Attack to {gridController.RobotController.Robot} with {robotController.Robot.Damage} damage!");
             GameManager.instance.logManager.DamageCalculation(robotController.TeamController.Team.teamName, robotController.Robot.Damage);
         }
     }

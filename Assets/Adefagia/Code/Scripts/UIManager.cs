@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Adefagia.BattleMechanism;
 using Adefagia.UI;
+using Adefagia.RobotSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -66,6 +67,8 @@ namespace Adefagia
         public void ShowFinishUI(string teamName)
         {
             Dictionary<string, List<float>> statistic = GameManager.instance.logManager.GetDamageCalculation();
+            List<Robot> listRobot = GameManager.instance.logManager.GetListRobot();
+            
             finishCanvas.GetComponent<UIFinishController>().ChangeName(teamName);
 
             int index = 0;
@@ -74,6 +77,13 @@ namespace Adefagia
                 finishCanvas.GetComponent<UIFinishController>().ChangeTotalDamage(totalDamage, key, index);
                 index += 1;
             }
+
+            string txtRobotList = "";
+            foreach (Robot robot in listRobot){
+                txtRobotList += robot.Name + "\n";
+            }
+
+            finishCanvas.GetComponent<UIFinishController>().ChangeRobotDead(txtRobotList);
 
             ShowCanvasUI(finishCanvas);
         }
