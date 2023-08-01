@@ -182,7 +182,7 @@ namespace Adefagia.UI
             // Check if robot has weapon
             if (robotController.SkillController == null)
             {
-                Debug.Log("Hide button");
+                // Debug.Log("Hide button");
                 HideUI(listSkill);
             }
             else
@@ -190,9 +190,9 @@ namespace Adefagia.UI
                 // 2 skill
                 for (int i = 0; i < 2 ; i++)
                 {
-                    Debug.Log(listSkill);
                     var buttonSkill = listSkill.transform.GetChild(i).GetComponent<Button>();
-                    Debug.Log(buttonSkill);
+                    if(buttonSkill == null) return;
+                    
                     var buttonText = buttonSkill.GetComponentInChildren<Text>();
 
                     Skill _skill = robotController.SkillController.ChooseSkill(i);
@@ -228,6 +228,7 @@ namespace Adefagia.UI
                     var buttonText = buttonSkill.GetComponentInChildren<Text>();
 
                     Potion _potion = robotController.PotionController.ChoosePotion(i);
+                    if(_potion == null) continue;
                     
                     // TODO : Change button text;
                     buttonText.text = _potion.Name;

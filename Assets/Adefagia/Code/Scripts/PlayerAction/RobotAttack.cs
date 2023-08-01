@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Adefagia.BattleMechanism;
 using Adefagia.GridSystem;
+using Adefagia.ObstacleSystem;
 using Adefagia.RobotSystem;
 using UnityEngine;
 
@@ -8,6 +10,8 @@ namespace Adefagia.PlayerAction
 {
     public class RobotAttack : MonoBehaviour
     {
+        public static event Action<List<RobotController>, Team> RobotBotAttack; 
+        public static event Action<List<ObstacleController>> RobotBotAttackObstacle; 
         public static event Action<RobotController> ThingHappened;
         public static event Action<GridController> ObstacleHitHappened;
 
@@ -67,6 +71,26 @@ namespace Adefagia.PlayerAction
             // Debug.Log($"Attack to {gridController.RobotController.Robot}");
             GameManager.instance.logManager.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} - Attack to {gridController.RobotController.Robot} with {robotController.Robot.Damage} damage!");
             GameManager.instance.logManager.DamageCalculation(robotController.TeamController.Team.teamName, robotController.Robot.Damage);
+        }
+
+        public void AttackBot(RobotController robotController)
+        {
+            var test = new List<RobotController>();
+            
+            RobotBotAttack?.Invoke(test, robotController.TeamController.Team);
+
+            var attack = false;
+            foreach (var vaRobotController in test)
+            {
+                if (!attack)
+                {
+                    if (BattleManager.highlightMovement.CheckGridOnHighlight(vaRobotController.GridController))
+                    {
+                        Attack(robotController, vaRobotController.GridController);
+                        attack = true;
+                    }
+                }
+            }
         }
     }
 }

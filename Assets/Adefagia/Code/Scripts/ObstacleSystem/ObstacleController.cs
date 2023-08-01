@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Adefagia.GridSystem;
 using Adefagia.PlayerAction;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace Adefagia.ObstacleSystem
         {
             RobotAttack.ObstacleHitHappened += OnObstacleHitHappened;
             RobotSkill.ObstacleHitHappened += OnObstacleHitHappened;
+            RobotAttack.RobotBotAttackObstacle += OnRobotBotAttackObstacle;
         }
 
         private void Update()
@@ -48,6 +50,11 @@ namespace Adefagia.ObstacleSystem
                 // increase hit count
                 _hitCount += 1;
             }
+        }
+
+        private void OnRobotBotAttackObstacle(List<ObstacleController> obstacleControllers)
+        {
+            
         }
         
     }

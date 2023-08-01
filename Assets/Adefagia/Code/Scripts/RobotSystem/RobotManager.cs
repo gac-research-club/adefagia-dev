@@ -136,7 +136,7 @@ namespace Adefagia.RobotSystem
                 }
                 else
                 {
-                    Debug.Log("Not have weapon");
+                    // Debug.Log("Not have weapon");
                     
                     robotController.Robot.TypePattern = TypePattern.Surround;
                 }

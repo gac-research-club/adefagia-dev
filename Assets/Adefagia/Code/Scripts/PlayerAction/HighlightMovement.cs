@@ -260,7 +260,7 @@ namespace Adefagia.PlayerAction
 
             if (grid.Status != GridStatus.Free)
             {
-                Debug.Log("Grid Obstacle:" + grid);
+                // Debug.Log("Grid Obstacle:" + grid);
                 quadDup = Instantiate(_quadBlock, transform);
                 
             }

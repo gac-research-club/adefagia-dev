@@ -33,6 +33,7 @@ namespace Adefagia.RobotSystem
         public Grid Location => _grid;
         public float MaxHealth { get; }
         public float MaxStamina { get; }
+        public Vector2Int Look { get; set; }
 
         
         public float CurrentHealth => _health;

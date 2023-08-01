@@ -14,7 +14,7 @@ namespace Adefagia.BattleMechanism
         
         // Must be not SerializedField
         // But for debugging, this is important to show in inspector
-        [SerializeField] private List<RobotController> robotControllers;
+        public List<RobotController> robotControllers;
         [SerializeField] private RobotController robotControllerActive;
         [SerializeField] private RobotController robotControllerSelect;
         
@@ -22,6 +22,8 @@ namespace Adefagia.BattleMechanism
 
         // Bound Area
         private Vector2 _startArea, _endArea;
+
+        public int count = 0;
         
         // Index Robot
         private int _index;
@@ -220,6 +222,15 @@ namespace Adefagia.BattleMechanism
             if (index >= TotalRobot || index < 0) return null;
 
             return robotControllers[index];
+        }
+
+        public void IncrementCount()
+        {
+            count++;
+            if (count >= robotControllers.Count)
+            {
+                count = 0;
+            }
         }
 
         public override string ToString()
