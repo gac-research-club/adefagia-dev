@@ -9,7 +9,6 @@ public class ItemTooltip : MonoBehaviour
     [SerializeField] Text ItemNameText;
     [SerializeField] Text ItemTypeText;
     [SerializeField] Text ItemDescriptionText;
-    [SerializeField] Canvas canvas;
 
     private void Awake()
 	{
@@ -39,9 +38,7 @@ public class ItemTooltip : MonoBehaviour
             offsetY = -tipWindow.sizeDelta.y - 10; else offsetY = 10;
         
         transform.position =  new Vector2(mousePos.x + offsetX, mousePos.y + offsetY); //Change tooltip position according to your mouseposition and overdraw/correction values
-        // transform.position =  new Vector2(mousePos.x + 10, mousePos.y  + 10); //Change tooltip position according to your mouseposition and overdraw/correction values
-        // x = -25
-        // y = -213
+
     }
 
     public void HideTooltip()

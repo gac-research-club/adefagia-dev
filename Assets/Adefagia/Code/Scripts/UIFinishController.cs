@@ -14,6 +14,7 @@ public class UIFinishController : MonoBehaviour
     [SerializeField] private Text textTeamName;
     [SerializeField] private Text textTeam1;
     [SerializeField] private Text textTeam2;
+    [SerializeField] private Text textRobotDead;
     [SerializeField] private Text textTotalDamage1;
     [SerializeField] private Text textTotalDamage2;
     [SerializeField] private CanvasGroup canvasFinish;
@@ -61,6 +62,11 @@ public class UIFinishController : MonoBehaviour
     public void ChangeName(string teamName)
     {
         textTeamName.text = $"Team {teamName} Win";
+    }
+
+    public void ChangeRobotDead(string robotDead)
+    {
+        textRobotDead.text = $"Robot Dead : \n \n {robotDead} Win";
     }
 
     public void ChangeTotalDamage(float totalDamage, string nameTeam, int index){

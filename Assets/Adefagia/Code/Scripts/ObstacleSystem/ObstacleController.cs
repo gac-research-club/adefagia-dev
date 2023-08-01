@@ -42,7 +42,8 @@ namespace Adefagia.ObstacleSystem
             if (gridController.Grid != Grid) return;
 
             ObstacleHit?.Invoke(transform.position);
-            
+            GameManager.instance.logManager.LogStep($"An Obstacle has been hit!", LogManager.LogText.Warning);
+                
             // Only for obstacle destructible
             if (ObstacleElement.ObstacleType == ObstacleType.Destructible)
             {

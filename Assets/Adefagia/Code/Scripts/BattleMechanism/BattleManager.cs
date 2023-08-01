@@ -393,7 +393,7 @@ namespace Adefagia.BattleMechanism
                 // Occupied the grid
                 TeamActive.Robot.Location.SetOccupied();
 
-                GameManager.instance.logManager.LogStep($"{TeamActive.Team.teamName} - {TeamActive.RobotController.Robot} - Deploy to {TeamActive.GridController.Grid}");
+                GameManager.instance.logManager.LogStep($"{TeamActive.Team.teamName} - {TeamActive.RobotController.Robot} - Deploy to {TeamActive.GridController.Grid}", LogManager.LogText.Info);
 
                 // change to the next robot index
                 TeamActive.IncrementIndex();
@@ -635,7 +635,7 @@ namespace Adefagia.BattleMechanism
             TeamActive.ResetRobotSelected();
 
             // Logging
-            GameManager.instance.logManager.LogStep($"{TeamActive.Team.teamName} - End Turn");
+            GameManager.instance.logManager.LogStep($"{TeamActive.Team.teamName} - End Turn", LogManager.LogText.Info);
 
             ChangeTeam();
 
