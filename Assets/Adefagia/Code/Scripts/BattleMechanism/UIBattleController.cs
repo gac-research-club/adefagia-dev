@@ -261,13 +261,13 @@ namespace Adefagia.UI
                 
                 robotStat.SetActive(true);
 
-                robotStat.transform.GetChild(0).GetComponent<Text>().text = gridController.RobotController.Robot.Name;
-                robotStat.transform.GetChild(2).GetComponent<Text>().text = "Ini adalah robot";
-                
-                robotStat.transform.GetChild(3).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.CurrentHealth}/{gridController.RobotController.Robot.MaxHealth}";
-                robotStat.transform.GetChild(4).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.CurrentStamina}/{gridController.RobotController.Robot.MaxStamina}";
-                robotStat.transform.GetChild(5).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.Damage}";
-                robotStat.transform.GetChild(6).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.Defend}";
+                // robotStat.transform.GetChild(0).GetComponent<Text>().text = gridController.RobotController.Robot.Name;
+                // robotStat.transform.GetChild(2).GetComponent<Text>().text = "Ini adalah robot";
+                //
+                // robotStat.transform.GetChild(3).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.CurrentHealth}/{gridController.RobotController.Robot.MaxHealth}";
+                // robotStat.transform.GetChild(4).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.CurrentStamina}/{gridController.RobotController.Robot.MaxStamina}";
+                // robotStat.transform.GetChild(5).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.Damage}";
+                // robotStat.transform.GetChild(6).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.Defend}";
             }
         }
     }

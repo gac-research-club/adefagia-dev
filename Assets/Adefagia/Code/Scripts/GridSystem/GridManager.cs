@@ -38,6 +38,7 @@ namespace Adefagia.GridSystem
         public static bool DoneGenerate = false;
         public static event Action<GridController> GridHover;
         public static event Action<GridController> GridHoverInfo;
+        public static event Action<GridController, bool> GridRobotHoverInfo;
 
         public static event Action<GridController> SkillHappened; 
 
@@ -251,6 +252,17 @@ namespace Adefagia.GridSystem
                 
                 GridHoverInfo?.Invoke(gridSelect);
                 
+                // Hover grid robot
+                if (gridSelect.Grid.Status == GridStatus.Robot)
+                {
+                    Debug.Log("Test");
+                    GridRobotHoverInfo?.Invoke(gridSelect, true);
+                }
+                else
+                {
+                    GridRobotHoverInfo?.Invoke(gridSelect, false);
+                }
+
                 // Debug.Log("Current: " + gridSelect);
                 // if (gridSelect != null && BattleManager.battleState == BattleState.AttackRobot)
                 // {
