@@ -2020,7 +2020,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 438668117}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6826,9 +6826,25 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -237
       objectReference: {fileID: 0}
+    - target: {fileID: 7595253069994975809, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 530493425}
+    - target: {fileID: 7595253069994975809, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AttackButtonClick
+      objectReference: {fileID: 0}
     - target: {fileID: 7595253070057644662, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -124
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595253070057644663, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 530493425}
+    - target: {fileID: 7595253070057644663, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MoveButtonClick
       objectReference: {fileID: 0}
     - target: {fileID: 7595253070130601173, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
       propertyPath: m_AnchorMax.y
@@ -6897,6 +6913,14 @@ PrefabInstance:
     - target: {fileID: 7595253070875997022, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -350
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595253070875997023, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 530493425}
+    - target: {fileID: 7595253070875997023, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CancelButtonClick
       objectReference: {fileID: 0}
     - target: {fileID: 7595253071060990518, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
       propertyPath: m_Name
@@ -6985,6 +7009,18 @@ PrefabInstance:
     - target: {fileID: 7595253071060990519, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595253071072945656, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 530493425}
+    - target: {fileID: 7595253071072945656, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: EndTurnButtonClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595253071659768453, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_Text
+      value: Backpack
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
@@ -7627,7 +7663,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1176007863
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9541,7 +9577,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 803771618322690072, guid: b6502d2c367ddbe44a8dee0390c24ead, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 234.12534
+      value: 234.12535
       objectReference: {fileID: 0}
     - target: {fileID: 803771618624276049, guid: b6502d2c367ddbe44a8dee0390c24ead, type: 3}
       propertyPath: m_RootOrder
@@ -10616,7 +10652,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!223 &1633140622
 Canvas:
   m_ObjectHideFlags: 0
@@ -10665,7 +10701,7 @@ MonoBehaviour:
   textTeamName: {fileID: 204341684}
   textTeam1: {fileID: 2002074411}
   textTeam2: {fileID: 694654957}
-  textRobotDead: {fileID: 0}
+  textRobotDead: {fileID: 438668119}
   textTotalDamage1: {fileID: 1207110091}
   textTotalDamage2: {fileID: 145750773}
   canvasFinish: {fileID: 1633140623}
