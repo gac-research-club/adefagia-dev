@@ -405,16 +405,17 @@ namespace Adefagia.BattleMechanism
                 // Select Robot
                 if (battleState == BattleState.SelectRobot)
                 {
-                    TeamActive.RobotControllerSelected = TeamActive.RobotController;
-                    
-                    // Update healthbar slider
-                    var slider = GameManager.instance.uiManager.uiBattleController.healthSlider;
-                    slider.maxValue = TeamActive.RobotControllerSelected.Robot.MaxHealth;
-                    slider.value = TeamActive.RobotControllerSelected.Robot.CurrentHealth;
-                    
-                    // Hide skill button
-                    RobotNotHaveSkill?.Invoke(TeamActive.RobotControllerSelected);
-
+                    if(TeamActive.RobotController){
+                        TeamActive.RobotControllerSelected = TeamActive.RobotController;
+                        
+                        // Update healthbar slider
+                        var slider = GameManager.instance.uiManager.uiBattleController.healthSlider;
+                        slider.maxValue = TeamActive.RobotControllerSelected.Robot.MaxHealth;
+                        slider.value = TeamActive.RobotControllerSelected.Robot.CurrentHealth;
+                        
+                        // Hide skill button
+                        RobotNotHaveSkill?.Invoke(TeamActive.RobotControllerSelected);
+                    }   
                     // Show or Hide Battle UI
                     // if (TeamActive.RobotControllerSelected != null)
                     // {
@@ -522,16 +523,18 @@ namespace Adefagia.BattleMechanism
             highlightMovement.CleanHighlightImpact();
 
             // highlight grid movement  by weapon type pattern
-            Robot robot = TeamActive.RobotControllerSelected.Robot;
+            if(TeamActive.RobotControllerSelected.Robot != null){
+                Robot robot = TeamActive.RobotControllerSelected.Robot;
             
-            if(robot.TypePattern == TypePattern.Cross){
-                highlightMovement.SetSmallDiamondMove(robot.Location);
-            }else if(robot.TypePattern == TypePattern.SmallDiamond){
-                highlightMovement.SetCrossMove(robot.Location);
-            }else{
-                highlightMovement.SetSurroundMove(robot.Location);
-            };
-
+                if(robot.TypePattern == TypePattern.Cross){
+                    highlightMovement.SetSmallDiamondMove(robot.Location);
+                }else if(robot.TypePattern == TypePattern.SmallDiamond){
+                    highlightMovement.SetCrossMove(robot.Location);
+                }else{
+                    highlightMovement.SetSurroundMove(robot.Location);
+                };
+            }
+        
             // Running Function Move from RobotMovement.cs
             // Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Move");
         }
