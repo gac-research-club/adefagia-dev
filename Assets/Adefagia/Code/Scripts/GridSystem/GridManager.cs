@@ -240,18 +240,14 @@ namespace Adefagia.GridSystem
             if (objectHit == null)
             {
                 gridQuad.transform.position = new Vector3(99, 99, 99);
+                GridRobotHoverInfo?.Invoke(gridSelect, false);
                 return;
             }
 
             gridSelect = GetGridController();
-
-            if (gridSelect != gridTemp)
+            
+            if (BattleManager.gameState == GameState.Battle)
             {
-                gridLast = gridTemp;
-                gridTemp = gridSelect;
-                
-                GridHoverInfo?.Invoke(gridSelect);
-                
                 // Hover grid robot
                 if (gridSelect.Grid.Status == GridStatus.Robot)
                 {
@@ -262,6 +258,14 @@ namespace Adefagia.GridSystem
                 {
                     GridRobotHoverInfo?.Invoke(gridSelect, false);
                 }
+            }
+
+            if (gridSelect != gridTemp)
+            {
+                gridLast = gridTemp;
+                gridTemp = gridSelect;
+                
+                GridHoverInfo?.Invoke(gridSelect);
 
                 // Debug.Log("Current: " + gridSelect);
                 // if (gridSelect != null && BattleManager.battleState == BattleState.AttackRobot)
