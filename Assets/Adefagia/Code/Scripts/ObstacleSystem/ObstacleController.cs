@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Adefagia.GridSystem;
 using Adefagia.PlayerAction;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace Adefagia.ObstacleSystem
         {
             RobotAttack.ObstacleHitHappened += OnObstacleHitHappened;
             RobotSkill.ObstacleHitHappened += OnObstacleHitHappened;
+            RobotAttack.RobotBotAttackObstacle += OnRobotBotAttackObstacle;
         }
 
         private void Update()
@@ -40,13 +42,19 @@ namespace Adefagia.ObstacleSystem
             if (gridController.Grid != Grid) return;
 
             ObstacleHit?.Invoke(transform.position);
-            
+            GameManager.instance.logManager.LogStep($"An Obstacle has been hit!", LogManager.LogText.Warning);
+                
             // Only for obstacle destructible
             if (ObstacleElement.ObstacleType == ObstacleType.Destructible)
             {
                 // increase hit count
                 _hitCount += 1;
             }
+        }
+
+        private void OnRobotBotAttackObstacle(List<ObstacleController> obstacleControllers)
+        {
+            
         }
         
     }
