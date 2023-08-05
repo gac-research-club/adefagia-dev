@@ -118,7 +118,7 @@ namespace Adefagia.UI
                     // Disable if robot has moved
                     if (robotSelected.Robot.HasMove)
                     {
-                        // DisableButton(buttonMove);
+                        DisableButton(buttonMove);
                     }
                     else
                     {
