@@ -7,7 +7,7 @@ public class Sceneload : MonoBehaviour
 {
     public void PlaytoMainMode()
     {
-        SceneManager.LoadScene("ChooseMode");
+        SceneManager.LoadScene("ChooseModeAffa");
     }
 
     public void Play3VS3()
@@ -17,14 +17,14 @@ public class Sceneload : MonoBehaviour
 
     public void LoadMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenuAffa");
     }
 
     public void LoadStore()
     {
         SceneManager.LoadScene("Store");
     }
-    
+
     public void LoadOptions()
     {
         SceneManager.LoadScene("Options");
