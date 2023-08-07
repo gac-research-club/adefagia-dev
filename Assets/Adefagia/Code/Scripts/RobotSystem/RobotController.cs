@@ -106,9 +106,15 @@ namespace Adefagia.RobotSystem
             _teamController = teamController;
         }
 
+        // Set Skill Controller
         public void SetSkill(SkillController skillController)
         {
             _skillController = skillController;
+        }
+
+        // Get Skill Controller
+        public Skill GetSkill(int indexSkill){
+            return SkillController.ChooseSkill(indexSkill);
         }
 
         public void SetPotion(PotionController potionController){
