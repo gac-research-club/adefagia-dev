@@ -26,7 +26,7 @@ namespace Adefagia.PlayerAction
         private List<GameObject> _tempHighlights;
         private List<GameObject> _tempHighlightsImpact;
         private GameObject _quad, _quadBlock, _quadImpact, _quadBlockImpact;
-
+        private List<string> variantPattern = new List<string>();
 
         public static event Action<Grid> RobotOnImpact;
         public static event Action<List<Grid>> RobotOnImpactClear;
@@ -82,9 +82,9 @@ namespace Adefagia.PlayerAction
             SetQuadImpact();
 
             var pattern = 
-                "ooo" +
+                "-o-" +
                 "oro" +
-                "ooo";
+                "-o-";
             var origin = new Vector2Int(1, 1);
             CreateFromPatternImpact(pattern, 3,3, grid.Location, origin);
         }
@@ -428,11 +428,6 @@ namespace Adefagia.PlayerAction
             // GridImpact(grid.X, grid.Y);
         }
 
-        public enum TypePattern
-        {
-            Surround,
-            Diamond,
-        }
     }
 }
 

@@ -28,9 +28,8 @@ namespace Adefagia.PlayerAction
                     return;
                 }
                 
-                var skillController = robotController.SkillController;
-                var skill = skillController.ChooseSkill(skillChoosed);
-            
+                Skill skill = robotController.GetSkill(skillChoosed);
+                
                 // means the robot is considered to move
                 robotController.Robot.HasSkill = true;
                 

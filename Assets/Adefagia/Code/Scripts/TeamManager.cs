@@ -21,8 +21,12 @@ public class TeamManager : MonoBehaviour
 [Serializable]
 public class RobotStat
 {
-    public float maxHealth;
-    public float maxStamina;
+
+    const float MAX_STAMINA = 50;
+    const float MAX_HEALTH = 100;
+
+    public float maxHealth = MAX_HEALTH;
+    public float maxStamina = MAX_STAMINA;
     public float damage;
     public float armor;
 

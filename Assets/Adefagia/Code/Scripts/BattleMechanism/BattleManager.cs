@@ -28,8 +28,8 @@ namespace Adefagia.BattleMechanism
 
         public static TeamController TeamActive { get; set; }
         public static TeamController NextTeam { get; set; }
-
         public static float currentTime = -1;
+        private int countRound = 1;
         private int skillChoosed = 0;
         private int itemChoosed = 0;
 
@@ -274,8 +274,6 @@ namespace Adefagia.BattleMechanism
             {
                 // Hide PlayerActionHUD
                 // GameManager.instance.uiManager.HideBattleUI();
-
-                TeamActive.IncreaseRobotStamina();
                 highlightMovement.CleanHighlight();
             }
             else
@@ -310,7 +308,6 @@ namespace Adefagia.BattleMechanism
             if (highlightMovement.CheckGridOnHighlight(gridController))
             {
                 // run AStar Pathfinding
-                // Debug.Log("test");
 
                 highlightMovement.SetSurroundImpact(gridController.Grid);
             }
@@ -596,15 +593,26 @@ namespace Adefagia.BattleMechanism
             
             // highlight grid attack  by weapon type pattern
             Robot robot = TeamActive.RobotControllerSelected.Robot;
-            
-            highlightMovement.SetDiamondSurroundMove(robot.Location);
+            Skill skill = TeamActive.RobotControllerSelected.GetSkill(indexSkill);
 
+            highlightMovement.SetDiamondSurroundMove(robot.Location);
+            
+            if(skill.PatternAttack == TypePattern.Cross){
+                highlightMovement.SetSmallDiamondMove(robot.Location);
+            }else if(skill.PatternAttack == TypePattern.SmallDiamond){
+                highlightMovement.SetCrossMove(robot.Location);
+            }else if(skill.PatternAttack == TypePattern.Diamond){
+                highlightMovement.SetDiamondSurroundMove(robot.Location);
+            }else{
+                highlightMovement.SetSurroundMove(robot.Location);
+            }
+            
             // change to skill selection robot
             ChangeBattleState(BattleState.SkillSelectionRobot);
             skillChoosed = indexSkill;
+
             // means the robot is considered to move
             // TeamActive.RobotControllerSelected.Robot.HasSkill = true;
-
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Skill Active");
         }
 
@@ -639,14 +647,32 @@ namespace Adefagia.BattleMechanism
             currentTime = startingTime;
 
             TeamActive.ResetRobotSelected();
-
+            TeamActive.HasRound = true;
+            
             // Logging
             GameManager.instance.logManager.LogStep($"{TeamActive.Team.teamName} - End Turn", LogManager.LogText.Info);
+            
+            if(NextTeam.HasRound && TeamActive.HasRound){
+                ChangeRound();
+            }
 
             ChangeTeam();
 
             // change to select robot
             ChangeBattleState(BattleState.SelectRobot);
+        }
+
+        public void ChangeRound(){
+            countRound++;
+            
+            TeamActive.IncreaseRobotStamina();
+            NextTeam.IncreaseRobotStamina();
+            
+            // Logging
+            GameManager.instance.logManager.LogStep($"Round {countRound} !!", LogManager.LogText.Common);
+            
+            NextTeam.HasRound = false;
+            TeamActive.HasRound = false;
         }
 
         public void CancelButtonClick()

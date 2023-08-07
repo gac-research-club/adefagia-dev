@@ -187,8 +187,8 @@ namespace Adefagia.UI
             }
             else
             {
-                // 2 skill
-                for (int i = 0; i < 2 ; i++)
+                // 3 skill
+                for (int i = 0; i < 3 ; i++)
                 {
                     var buttonSkill = listSkill.transform.GetChild(i).GetComponent<Button>();
                     if(buttonSkill == null) return;
@@ -196,7 +196,7 @@ namespace Adefagia.UI
                     var buttonText = buttonSkill.GetComponentInChildren<Text>();
 
                     Skill _skill = robotController.SkillController.ChooseSkill(i);
-                    
+                   
                     // TODO : Change button text;
                     buttonText.text = _skill.Name;
                 }
@@ -221,7 +221,7 @@ namespace Adefagia.UI
             }
             else
             {
-                // 2 skill
+                // 2 item
                 for (int i = 0; i < 2 ; i++)
                 {
                     var buttonSkill = listItem.transform.GetChild(i).GetComponent<Button>();
@@ -264,8 +264,8 @@ namespace Adefagia.UI
                 robotStat.transform.GetChild(0).GetComponent<Text>().text = gridController.RobotController.Robot.Name;
                 robotStat.transform.GetChild(2).GetComponent<Text>().text = "Ini adalah robot";
                 
-                robotStat.transform.GetChild(3).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.CurrentHealth}/{gridController.RobotController.Robot.MaxHealth}";
-                robotStat.transform.GetChild(4).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.CurrentStamina}/{gridController.RobotController.Robot.MaxStamina}";
+                robotStat.transform.GetChild(3).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.CurrentHealth} / {gridController.RobotController.Robot.MaxHealth}";
+                robotStat.transform.GetChild(4).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.CurrentStamina} / {gridController.RobotController.Robot.MaxStamina}";
                 robotStat.transform.GetChild(5).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.Damage}";
                 robotStat.transform.GetChild(6).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.Defend}";
             }

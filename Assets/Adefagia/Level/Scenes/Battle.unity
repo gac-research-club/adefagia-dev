@@ -209,6 +209,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2040995639}
     m_Modifications:
+    - target: {fileID: 430830987290673314, guid: 2a33bb610ad1bee489c8e5e366215db2, type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 430830987290673315, guid: 2a33bb610ad1bee489c8e5e366215db2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 195.1
+      objectReference: {fileID: 0}
     - target: {fileID: 430830987467748416, guid: 2a33bb610ad1bee489c8e5e366215db2, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -296,6 +304,22 @@ PrefabInstance:
     - target: {fileID: 430830987467748417, guid: 2a33bb610ad1bee489c8e5e366215db2, type: 3}
       propertyPath: m_Name
       value: Robot Stat
+      objectReference: {fileID: 0}
+    - target: {fileID: 430830988550886220, guid: 2a33bb610ad1bee489c8e5e366215db2, type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 430830988550886221, guid: 2a33bb610ad1bee489c8e5e366215db2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 195.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 430830988550886221, guid: 2a33bb610ad1bee489c8e5e366215db2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 430830988550886221, guid: 2a33bb610ad1bee489c8e5e366215db2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a33bb610ad1bee489c8e5e366215db2, type: 3}
@@ -6846,6 +6870,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: MoveButtonClick
       objectReference: {fileID: 0}
+    - target: {fileID: 7595253070130601170, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 530493425}
+    - target: {fileID: 7595253070130601170, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SkillChildButtonClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595253070130601170, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7595253070130601173, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6870,6 +6906,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7595253070522975114, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 530493425}
+    - target: {fileID: 7595253070522975114, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SkillChildButtonClick
+      objectReference: {fileID: 0}
     - target: {fileID: 7595253070522975117, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6901,6 +6945,14 @@ PrefabInstance:
     - target: {fileID: 7595253070733466832, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595253070733466833, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 530493425}
+    - target: {fileID: 7595253070733466833, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SkillChildButtonClick
       objectReference: {fileID: 0}
     - target: {fileID: 7595253070797818725, guid: a7f7ca34afb92904fb4ea2a217ae65de, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -9577,7 +9629,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 803771618322690072, guid: b6502d2c367ddbe44a8dee0390c24ead, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 234.12538
+      value: 234.12534
       objectReference: {fileID: 0}
     - target: {fileID: 803771618624276049, guid: b6502d2c367ddbe44a8dee0390c24ead, type: 3}
       propertyPath: m_RootOrder
