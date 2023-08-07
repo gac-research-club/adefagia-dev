@@ -24,8 +24,6 @@ namespace Adefagia.UI
         [SerializeField] private GameObject listItem;
 
         [SerializeField] private GameObject gridInfo;
-        [SerializeField] private GameObject robotStat;
-        [SerializeField] private GameObject currentRobotStat;
 
         public Text timer;
 
@@ -34,8 +32,6 @@ namespace Adefagia.UI
         
 
         public List<Slider> healthBarSliders;
-        public Slider healthSlider;
-        public Slider staminaSlider;
 
         private void Start()
         {
@@ -92,9 +88,6 @@ namespace Adefagia.UI
                         ShowUI(robotNotSelectPanel);
                     }
                     return;
-                }else{
-                    currentRobotStat.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = $"{robotSelected.Robot.Damage}";
-                    currentRobotStat.transform.GetChild(1).GetChild(1).GetComponent<Text>().text = $"{robotSelected.Robot.Defend}";
                 }
                 
                 foreach (var robotSelectPanel in robotSelectPanels)
@@ -187,8 +180,8 @@ namespace Adefagia.UI
             }
             else
             {
-                // 3 skill
-                for (int i = 0; i < 3 ; i++)
+                // 2 skill
+                for (int i = 0; i < 2 ; i++)
                 {
                     var buttonSkill = listSkill.transform.GetChild(i).GetComponent<Button>();
                     if(buttonSkill == null) return;
@@ -196,7 +189,7 @@ namespace Adefagia.UI
                     var buttonText = buttonSkill.GetComponentInChildren<Text>();
 
                     Skill _skill = robotController.SkillController.ChooseSkill(i);
-                   
+                    
                     // TODO : Change button text;
                     buttonText.text = _skill.Name;
                 }
@@ -221,7 +214,7 @@ namespace Adefagia.UI
             }
             else
             {
-                // 2 item
+                // 2 skill
                 for (int i = 0; i < 2 ; i++)
                 {
                     var buttonSkill = listItem.transform.GetChild(i).GetComponent<Button>();
@@ -251,24 +244,6 @@ namespace Adefagia.UI
             
             // Description
             gridInfo.transform.GetChild(2).GetComponent<Text>().text = "Ini adalah grid";
-            
-            if(gridController.RobotController == null){
-                
-                robotStat.SetActive(false); 
-                return;
-
-            }else{
-                
-                robotStat.SetActive(true);
-
-                robotStat.transform.GetChild(0).GetComponent<Text>().text = gridController.RobotController.Robot.Name;
-                robotStat.transform.GetChild(2).GetComponent<Text>().text = "Ini adalah robot";
-                
-                robotStat.transform.GetChild(3).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.CurrentHealth} / {gridController.RobotController.Robot.MaxHealth}";
-                robotStat.transform.GetChild(4).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.CurrentStamina} / {gridController.RobotController.Robot.MaxStamina}";
-                robotStat.transform.GetChild(5).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.Damage}";
-                robotStat.transform.GetChild(6).GetChild(1).GetComponent<Text>().text = $"{gridController.RobotController.Robot.Defend}";
-            }
         }
     }
 }

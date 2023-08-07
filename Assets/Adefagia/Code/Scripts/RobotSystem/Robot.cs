@@ -117,7 +117,7 @@ namespace Adefagia.RobotSystem
                
                GameManager.instance.logManager.AddDeadRobot(this);
             }
-           
+
         }
 
         public void Healing(float heal)
