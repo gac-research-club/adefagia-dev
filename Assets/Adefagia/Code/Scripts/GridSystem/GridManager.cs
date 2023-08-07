@@ -38,6 +38,7 @@ namespace Adefagia.GridSystem
         public static bool DoneGenerate = false;
         public static event Action<GridController> GridHover;
         public static event Action<GridController> GridHoverInfo;
+        public static event Action<GridController, bool> GridRobotHoverInfo;
 
         public static event Action<GridController> SkillHappened; 
 
@@ -239,10 +240,25 @@ namespace Adefagia.GridSystem
             if (objectHit == null)
             {
                 gridQuad.transform.position = new Vector3(99, 99, 99);
+                GridRobotHoverInfo?.Invoke(gridSelect, false);
                 return;
             }
 
             gridSelect = GetGridController();
+            
+            if (BattleManager.gameState == GameState.Battle)
+            {
+                // Hover grid robot
+                if (gridSelect.Grid.Status == GridStatus.Robot)
+                {
+                    Debug.Log("Test");
+                    GridRobotHoverInfo?.Invoke(gridSelect, true);
+                }
+                else
+                {
+                    GridRobotHoverInfo?.Invoke(gridSelect, false);
+                }
+            }
 
             if (gridSelect != gridTemp)
             {
@@ -250,7 +266,7 @@ namespace Adefagia.GridSystem
                 gridTemp = gridSelect;
                 
                 GridHoverInfo?.Invoke(gridSelect);
-                
+
                 // Debug.Log("Current: " + gridSelect);
                 // if (gridSelect != null && BattleManager.battleState == BattleState.AttackRobot)
                 // {

@@ -159,9 +159,11 @@ namespace Adefagia.RobotSystem
 
                     if (dir != Vector3.zero && dir != start)
                     {
+                        yield return new WaitForSeconds(0.2f);
+                        
                         MoveAnimation?.Invoke(id, false);
                         TurnAnimation?.Invoke(id, true);
-                        
+
                         while (elapsedFrames < interpolationFramesCount)
                         {
                             var interpolationRatio = (float)elapsedFrames / interpolationFramesCount;
@@ -169,10 +171,11 @@ namespace Adefagia.RobotSystem
                             yield return null;
                             elapsedFrames += 1;
                         }
-
-                        TurnAnimation?.Invoke(id, false);
                         
+                        TurnAnimation?.Invoke(id, false);
                         transform.forward = dir;
+                        
+                        yield return new WaitForSeconds(0.2f);
                     }
 
                     turn = false;
@@ -180,7 +183,7 @@ namespace Adefagia.RobotSystem
                 }
                 
                 MoveAnimation?.Invoke(id, true);
-                
+
                 var step =  speed * Time.deltaTime; // calculate distance to move
                 transform.position = Vector3.MoveTowards(transform.position, GridManager.CellToWorld(grids[current]), step);
 

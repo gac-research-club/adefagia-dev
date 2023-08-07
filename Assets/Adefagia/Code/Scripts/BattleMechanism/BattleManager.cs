@@ -39,7 +39,9 @@ namespace Adefagia.BattleMechanism
 
         // public static Logging GameManager.instance.logManager;
         
-        public static event Action<RobotController> RobotNotHaveSkill; 
+        public static event Action<RobotController> RobotNotHaveSkill;
+        public static event Action<Robot> SelectRobot;
+        public static event Action<string> ChangeTurn; 
 
         private void Awake()
         {
@@ -405,17 +407,19 @@ namespace Adefagia.BattleMechanism
                 // Select Robot
                 if (battleState == BattleState.SelectRobot)
                 {
-                    if(TeamActive.RobotController){
-                        TeamActive.RobotControllerSelected = TeamActive.RobotController;
+                    TeamActive.RobotControllerSelected = TeamActive.RobotController;
+                    
+                    if (TeamActive.RobotControllerSelected){
+
+                        var robot = TeamActive.RobotControllerSelected.Robot;
                         
                         // Update healthbar slider
-                        var slider = GameManager.instance.uiManager.uiBattleController.healthSlider;
-                        slider.maxValue = TeamActive.RobotControllerSelected.Robot.MaxHealth;
-                        slider.value = TeamActive.RobotControllerSelected.Robot.CurrentHealth;
+                        SelectRobot?.Invoke(robot);
                         
                         // Hide skill button
                         RobotNotHaveSkill?.Invoke(TeamActive.RobotControllerSelected);
                     }   
+                    
                     // Show or Hide Battle UI
                     // if (TeamActive.RobotControllerSelected != null)
                     // {
@@ -645,6 +649,8 @@ namespace Adefagia.BattleMechanism
 
             ChangeTeam();
 
+            ChangeTurn?.Invoke(TeamActive.Team.teamName);
+
             // change to select robot
             ChangeBattleState(BattleState.SelectRobot);
         }
@@ -698,15 +704,19 @@ namespace Adefagia.BattleMechanism
             if (battleState == BattleState.SelectRobot)
             {
                 TeamActive.RobotControllerSelected = TeamActive.robotControllers[TeamActive.count];
+
+                if (TeamActive.RobotControllerSelected){
+
+                    var robot = TeamActive.RobotControllerSelected.Robot;
+                        
+                    // Update healthbar slider
+                    SelectRobot?.Invoke(robot);
+                        
+                    // Hide skill button
+                    RobotNotHaveSkill?.Invoke(TeamActive.RobotControllerSelected);
+                }
+                
                 TeamActive.IncrementCount();
-                    
-                // Update healthbar slider
-                var slider = GameManager.instance.uiManager.uiBattleController.healthSlider;
-                slider.maxValue = TeamActive.RobotControllerSelected.Robot.MaxHealth;
-                slider.value = TeamActive.RobotControllerSelected.Robot.CurrentHealth;
-                    
-                // Hide skill button
-                RobotNotHaveSkill?.Invoke(TeamActive.RobotControllerSelected);
             }
         }
 
