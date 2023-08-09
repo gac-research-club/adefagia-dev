@@ -180,18 +180,25 @@ namespace Adefagia.UI
             }
             else
             {
-                // 2 skill
-                for (int i = 0; i < 2 ; i++)
+                Robot robot = robotController.Robot;
+                // 3 skill
+                for (int i = 0; i < 3 ; i++)
                 {
-                    var buttonSkill = listSkill.transform.GetChild(i).GetComponent<Button>();
+                    Button buttonSkill = listSkill.transform.GetChild(i).GetComponent<Button>();
                     if(buttonSkill == null) return;
                     
-                    var buttonText = buttonSkill.GetComponentInChildren<Text>();
+                    Text buttonText = buttonSkill.GetComponentInChildren<Text>();
 
                     Skill _skill = robotController.SkillController.ChooseSkill(i);
                     
                     // TODO : Change button text;
                     buttonText.text = _skill.Name;
+
+                    if(robot.CurrentStamina < _skill.StaminaRequirement){
+                        buttonSkill.interactable = false;
+                    }else{
+                        buttonSkill.interactable = true;
+                    }
                 }
                 ShowUI(listSkill);
             }

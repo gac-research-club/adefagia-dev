@@ -30,6 +30,8 @@ namespace Adefagia.PlayerAction
                 
                 Skill skill = robotController.GetSkill(skillChoosed);
                 
+                robotController.Robot.DecreaseStamina(skill.StaminaRequirement);
+
                 // means the robot is considered to move
                 robotController.Robot.HasSkill = true;
                 
@@ -63,7 +65,7 @@ namespace Adefagia.PlayerAction
                     return;
                 }
                 
-                robotController.Robot.DecreaseStamina(skill.StaminaRequirement);
+                
 
                 // a robot at other grid attacked by the current robot
                 gridController.RobotController.Robot.TakeDamage(skill.Value);
