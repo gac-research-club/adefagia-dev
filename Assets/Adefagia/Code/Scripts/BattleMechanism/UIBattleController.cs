@@ -47,6 +47,8 @@ namespace Adefagia.UI
             if (BattleManager.gameState == GameState.Battle)
             {
 
+                RobotController robotSelected = BattleManager.TeamActive.RobotControllerSelected;
+                
                 if (BattleManager.battleState == BattleState.MoveRobot ||
                     BattleManager.battleState == BattleState.AttackRobot || 
                     BattleManager.battleState == BattleState.SkillRobot ||
@@ -58,23 +60,12 @@ namespace Adefagia.UI
                     ShowUI(listSkill);
                     ShowUI(listItem);
                     
-                    // if (BattleManager.battleState == BattleState.SkillRobot ||
-                    //     BattleManager.battleState == BattleState.SkillSelectionRobot){
-                    // }
-                    // if (BattleManager.battleState == BattleState.ItemRobot || BattleManager.battleState == BattleState.ItemSelectionRobot){
-                    //     ShowUI(listItem);
-                    // }
                 }
                 else
                 {
                     HideUI(cancelButton);
-                    // HideButton(listSkill);
-                    // HideUI(listItem);
                 }
 
-
-                RobotController robotSelected = BattleManager.TeamActive.RobotControllerSelected;
-                
                 // if Robot haven't selected than return
                 if (robotSelected == null)
                 {
@@ -100,43 +91,28 @@ namespace Adefagia.UI
                     HideUI(robotNotSelectPanel);
                 }
 
-                // robotNameText.text = robotSelected.Robot.ToString();
+                // Disable if robot has moved
+                if (robotSelected.Robot.HasMove)
+                {
+                    DisableButton(buttonMove);
+                }
+                else
+                {
+                    EnableButton(buttonMove);
+                }
                 
-                if(robotSelected.Robot.CurrentStamina <= 0){
-                    // DisableButton(buttonAttack);
-                    // DisableButton(buttonMove);
-                    //DisableButton(buttonSkill);
-                }else{
-                    
-                    // Disable if robot has moved
-                    if (robotSelected.Robot.HasMove)
-                    {
-                        DisableButton(buttonMove);
-                    }
-                    else
-                    {
-                        EnableButton(buttonMove);
-                    }
-                    
-                    // Disable if robot has attacked
-                    if (robotSelected.Robot.HasAttack)
-                    {
-                        DisableButton(buttonAttack);
-                    }
-                    else
-                    {
-                        EnableButton(buttonAttack);
-                    }
+                // Disable if robot has attacked
+                if (robotSelected.Robot.HasAttack)
+                {
+                    DisableButton(buttonAttack);
+                }
+                else
+                {
+                    EnableButton(buttonAttack);
+                }
 
-                    // if (robotSelected.Robot.HasSkill)
-                    // {
-                    //     DisableButton(buttonSkill);
-                    // }
-                    // else
-                    // {
-                    //     EnableButton(buttonSkill);
-                    // }
-                    
+                if (BattleManager.battleState == BattleState.ItemSelectionRobot){
+                    HideItemButton(robotSelected);
                 }
 
             }
@@ -224,14 +200,20 @@ namespace Adefagia.UI
                 // 2 skill
                 for (int i = 0; i < 2 ; i++)
                 {
-                    var buttonSkill = listItem.transform.GetChild(i).GetComponent<Button>();
-                    var buttonText = buttonSkill.GetComponentInChildren<Text>();
+                    Button buttonSkill = listItem.transform.GetChild(i).GetComponent<Button>();
+                    Text buttonText = buttonSkill.GetComponentInChildren<Text>();
 
                     Potion _potion = robotController.PotionController.ChoosePotion(i);
                     if(_potion == null) continue;
                     
                     // TODO : Change button text;
                     buttonText.text = _potion.Name;
+
+                    if(_potion.HasUsed){
+                        buttonSkill.interactable = false;
+                    }else{
+                        buttonSkill.interactable = true;
+                    }
                 }
                 ShowUI(listItem);
             }

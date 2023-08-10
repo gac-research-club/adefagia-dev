@@ -31,7 +31,7 @@ namespace Adefagia.BattleMechanism
         public static float currentTime = -1;
         private int countRound = 1;
         private int skillChoosed = 0;
-        private int itemChoosed = 0;
+        private Potion potionChoosed = null;
 
         private bool moveFinish;
         
@@ -508,6 +508,29 @@ namespace Adefagia.BattleMechanism
                     highlightMovement.CleanHighlightImpact();
                 }
 
+
+                /*---------------------------------------------------------------
+                 * Item Robot
+                 *---------------------------------------------------------------*/
+                if (battleState == BattleState.ItemSelectionRobot)
+                {
+                    
+                    // Click on the grid highlighted
+                    TeamActive.RobotControllerSelected.RobotItem.Item(
+                        robotController: TeamActive.RobotControllerSelected,
+                        potion: potionChoosed
+                    );
+
+                    UpdateSlider();
+                    
+                    // change to selecting state
+                    ChangeBattleState(BattleState.SelectRobot);
+
+                    // Clear highlight
+                    highlightMovement.CleanHighlight();
+                    highlightMovement.CleanHighlightImpact();
+                }
+
                 
             }
         }
@@ -622,26 +645,19 @@ namespace Adefagia.BattleMechanism
 
         public void ItemChildButtonClick(int item)
         {
+            // Get Potion from RobotSelected
+            RobotController robotController = TeamActive.RobotControllerSelected;
+            PotionController potionController = robotController.PotionController;
+            
+            Potion potion = potionController.ChoosePotion(item);
+            potionChoosed = potion;
+
+            potion.HasUsed = true;
 
             // change to skill selection robot
             ChangeBattleState(BattleState.ItemSelectionRobot);
-            itemChoosed = item;
-            /*---------------------------------------------------------------
-            * Item Robot
-            *---------------------------------------------------------------*/
-                
-            // Click on the grid highlighted
-            TeamActive.RobotControllerSelected.RobotItem.Item(
-                robotController: TeamActive.RobotControllerSelected,
-                itemChoosed: itemChoosed
-            );
-                
-            // change to selecting state
-            ChangeBattleState(BattleState.SelectRobot);
-
+ 
             // means the robot is considered to move
-            // TeamActive.RobotControllerSelected.Robot.HasSkill = true;
-
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Item Active");
         }
 
@@ -673,6 +689,9 @@ namespace Adefagia.BattleMechanism
             
             TeamActive.IncreaseRobotStamina();
             NextTeam.IncreaseRobotStamina();
+
+            TeamActive.ResetBuffRobot();
+            NextTeam.ResetBuffRobot();
             
             // Logging
             GameManager.instance.logManager.LogStep($"Round {countRound} !!", LogManager.LogText.Common);
