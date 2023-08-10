@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Adefagia.BattleMechanism;
 using Adefagia.GridSystem;
+using Adefagia.PlayerAction;
 using Adefagia.RobotSystem;
 using TMPro;
 using UnityEngine;
@@ -38,6 +39,7 @@ namespace Adefagia.UI
             BattleManager.RobotNotHaveSkill += HideSkillButton;
             BattleManager.RobotNotHaveSkill += HideItemButton;
             GridManager.GridHoverInfo += OnGridInfo;
+            RobotSkill.LaunchSkillController += HideSkillButton;
         }
 
         

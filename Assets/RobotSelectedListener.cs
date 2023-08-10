@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Adefagia.BattleMechanism;
+using Adefagia.PlayerAction;
 using Adefagia.RobotSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -21,6 +22,7 @@ public class RobotSelectedListener : MonoBehaviour
     private void Start()
     {
         BattleManager.SelectRobot += UpdateStatus;
+        RobotSkill.LaunchSkill += UpdateStatus;
     }
 
     private void UpdateStatus(Robot robot)
