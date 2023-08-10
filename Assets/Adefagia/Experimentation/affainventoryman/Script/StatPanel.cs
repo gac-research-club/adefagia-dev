@@ -155,7 +155,8 @@ public class StatPanel : MonoBehaviour
 
             // Update weapon id
             _teams[countTeam][indexRobot].weaponId = item;
-        } 
+        }
+        
     }
 
     
@@ -179,6 +180,16 @@ public class StatPanel : MonoBehaviour
 
             // Update weapon id
             _teams[countTeam][indexRobot].weaponId = null;
+        } 
+        else if(type == EquipmentType.BuffItem1.ToString()){
+
+            // Update Buff Item 1 id
+            _teams[countTeam][indexRobot].buffItem1 = null;
+            
+        }else if(type == EquipmentType.BuffItem2.ToString()){
+
+            // Update Buff Item 2 id
+            _teams[countTeam][indexRobot].buffItem2 = null;
         }
     }
 
