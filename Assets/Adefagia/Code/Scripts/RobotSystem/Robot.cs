@@ -19,8 +19,8 @@ namespace Adefagia.RobotSystem
 
         #region Constants
 
-        private const float StaminaInitial = 20;
-        private const float StaminaRound = 10;
+        private const float StaminaInitial = 10;
+        private const float StaminaRound = 5;
 
         #endregion
 

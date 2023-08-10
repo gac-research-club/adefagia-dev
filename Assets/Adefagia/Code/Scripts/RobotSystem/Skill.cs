@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-
+using Adefagia.Inventory;
 namespace Adefagia.RobotSystem
 {
     [Serializable]    
@@ -23,13 +23,9 @@ namespace Adefagia.RobotSystem
 
         public SkillType skillType;
 
-        [TextArea(maxLines: 10, minLines:0)]
-        public string patternAttack;
+        public TypePattern PatternAttack;
         
-        [TextArea(maxLines: 10, minLines:0)]
-        public string patternImpact;
-
-        public Vector2Int origin;
+        public TypePattern PatternImpact;
 
         #endregion
 

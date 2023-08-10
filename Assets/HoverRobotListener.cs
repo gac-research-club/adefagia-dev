@@ -14,6 +14,7 @@ public class HoverRobotListener : MonoBehaviour
 
     [SerializeField] private Text robotName;
     [SerializeField] private Image healthBar;
+    [SerializeField] private Image staminaBar;
 
     [SerializeField] private Text staminaText;
     [SerializeField] private Text damageText;
@@ -89,10 +90,11 @@ public class HoverRobotListener : MonoBehaviour
             template = "HP: {0, 10:f2}/{1}";
         }
         text.text = string.Format(template, robot.CurrentHealth, robot.MaxHealth);
-        
+
+        staminaBar.fillAmount = robot.CurrentStamina / robot.MaxStamina;
         // Text Stamina
-        var templateStamina = "Stamina: {0}";
-        staminaText.text = string.Format(templateStamina, robot.CurrentStamina);
+        var templateStamina = "EN: {0}/{1}";
+        staminaText.text = string.Format(templateStamina, robot.CurrentStamina, robot.MaxStamina);
 
         damageText.text = robot.Damage.ToString();
         defendText.text = robot.Defend.ToString();

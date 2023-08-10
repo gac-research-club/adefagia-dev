@@ -25,6 +25,9 @@ namespace Adefagia.BattleMechanism
 
         public int count = 0;
         
+        // Has Round
+        public bool HasRound { get; set; }
+        
         // Index Robot
         private int _index;
 
@@ -181,6 +184,7 @@ namespace Adefagia.BattleMechanism
             {
                 robot.Robot.ResetStepStat();
                 robot.Robot.Normalize();
+                Debug.Log($"Has : {robot.Robot.HasMove}");
             }
         }
 
