@@ -15,7 +15,8 @@ namespace Adefagia.RobotSystem
         public string Name;
 
         public List<UsableItemEffect> Effects;
-
+        
+        public bool HasUsed { get; set; } 
         // public PotionType skillType;
 
         #endregion

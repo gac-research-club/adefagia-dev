@@ -12,9 +12,6 @@ public class StatBuffItemEffect : UsableItemEffect
 
     public override void ExecuteEffect(Robot character)
     {
-        Debug.Log(AttackBuff);
-        
-        Debug.Log(ArmorBuff);
         character.IncreaseDamage(AttackBuff);
         character.IncreaseArmor(ArmorBuff);
     }

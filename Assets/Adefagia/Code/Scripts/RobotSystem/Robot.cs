@@ -129,20 +129,26 @@ namespace Adefagia.RobotSystem
         }
 
         public void IncreaseDamage(float damage){
-            TempDamage = (Damage * damage);
-            Damage = Damage + TempDamage;
-            
+            if(damage > 0){
+                TempDamage = (Damage * damage);
+                Damage = Damage + TempDamage;   
+            }
         }
         
         public void IncreaseArmor(float armor){
-            TempDefend = (Defend * armor);
-            Defend = Defend + TempDefend;
-
+            if(armor > 0){
+                TempDefend = (Defend * armor);
+                Defend = Defend + TempDefend;
+            }
         }
         
         public void Normalize(){
             if(TempDamage > 0){
                 Damage = Damage - TempDamage;
+            }
+
+            if(TempDefend > 0){
+                Defend = Defend - TempDefend;
             }
         }
 
