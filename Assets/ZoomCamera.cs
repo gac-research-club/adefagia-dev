@@ -11,22 +11,32 @@ public class ZoomCamera : MonoBehaviour
     [SerializeField] private Vector3 zoomAmount;
     [SerializeField] private float maxZoom;
     [SerializeField] private float minZoom;
+    [SerializeField] private float distanceWhileZoom;
+    
     [SerializeField] private Vector3 maxZoomPerspective;
     [SerializeField] private Vector3 minZoomPerspective;
+    [SerializeField] private Vector3 offset;
+
+    [SerializeField] private Texture2D cursorZoomTexture;
+
 
     private Vector3 newZoom;
 
     private Camera _camera;
+    private float _timeOut = 3f, _elapsedTime;
 
     public static event Action<float> Zooming;
 
     private bool _isLimitZoom;
+    private Vector3 startZoom;
 
     private void Start()
     {
         _camera = GetComponent<Camera>();
         newZoom = transform.localPosition;
+        startZoom = transform.localPosition;
         
+        _isLimitZoom = false;
     }
 
     private void Update()
@@ -67,20 +77,52 @@ public class ZoomCamera : MonoBehaviour
         
         if (Input.mouseScrollDelta.y != 0)
         {
+            Cursor.SetCursor(cursorZoomTexture, Vector2.zero, CursorMode.Auto);
             newZoom += Input.mouseScrollDelta.y * zoomAmount;
         }
         
-        // MinMaxZoom(newZoom, minZoomPerspective, maxZoomPerspective);
-
-        transform.DOLocalMove(
-            newZoom, 
-            scrollScale);
+        var borderZoom = MinMaxZoom(newZoom, minZoomPerspective, maxZoomPerspective);
         
+        if (Vector3.Distance(transform.localPosition, borderZoom) < distanceWhileZoom)
+        {
+            if (!MoveCamera.IsMove)
+            {
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            } 
+        }
+        
+        if (!_isLimitZoom)
+        {
+            transform.DOLocalMove(
+                borderZoom, 
+                scrollScale);
+        }
+        else
+        {
+            newZoom = borderZoom;
+        }
     }
 
-    private void MinMaxZoom(Vector3 current, Vector3 min, Vector3 max)
+    private Vector3 MinMaxZoom(Vector3 current, Vector3 min, Vector3 max)
     {
-        var direction = current - max;
-        Debug.Log(direction.normalized);
+        
+        // Min
+        if (current.y < min.y)
+        {
+            Debug.Log("Min" + current);
+            _isLimitZoom = true;
+            return min + offset;
+        }
+
+        // Max
+        if (current.y > max.y)
+        {
+            Debug.Log("Max" + current);
+            _isLimitZoom = true;
+            return max - offset;
+        }
+
+        _isLimitZoom = false;
+        return current;
     }
 }
