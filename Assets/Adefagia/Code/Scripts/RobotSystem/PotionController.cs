@@ -13,7 +13,10 @@ namespace Adefagia.RobotSystem
             Potions = new List<Potion>();
         }
         
-        public Potion ChoosePotion(int type){
+        public Potion ChoosePotion(int type)
+        {
+            if (Potions.Count == 0) return null;
+            
             return Potions[type];
         }
 

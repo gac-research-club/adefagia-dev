@@ -33,6 +33,7 @@ namespace Adefagia.RobotSystem
         public Grid Location => _grid;
         public float MaxHealth { get; }
         public float MaxStamina { get; }
+        public Vector2Int Look { get; set; }
 
         
         public float CurrentHealth => _health;
@@ -113,6 +114,8 @@ namespace Adefagia.RobotSystem
             if(_health <= 0){
                IsDead = true;
                Dead?.Invoke();
+               
+               GameManager.instance.logManager.AddDeadRobot(this);
             }
            
         }

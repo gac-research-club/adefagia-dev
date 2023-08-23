@@ -37,7 +37,17 @@ namespace Adefagia.Collections
          *----------------------------------------------------------------*/
         public List<Grid> Move(Grid start, Grid end)
         {
-            if (Pathfinding(start, end))
+            if (Pathfinding(false, start, end))
+            {
+                return Traversal(start, end);
+            }
+
+            return null;
+        }
+        
+        public List<Grid> MoveFull(Grid start, Grid end)
+        {
+            if (Pathfinding(true, start, end))
             {
                 return Traversal(start, end);
             }
@@ -45,7 +55,7 @@ namespace Adefagia.Collections
             return null;
         }
 
-        private bool Pathfinding(Grid start, Grid end)
+        private bool Pathfinding(bool full, Grid start, Grid end)
         {
             // For better choosing path
             var costSoFar = new Dictionary<Grid, float>();
@@ -70,11 +80,17 @@ namespace Adefagia.Collections
                     // Neighbor is must not null
                     if (neighbor == null) continue;
                     
-                    // neighbor is must grid free
-                    if (neighbor.Status != GridStatus.Free) continue;
-                    
-                    // Check if grid out of highlight boundaries
-                    if (!BattleManager.highlightMovement.CheckGridOnHighlight(neighbor)) continue;
+                    if(neighbor.Status == GridStatus.Obstacle) continue;
+
+                    // Fully move without highlight checking
+                    if (!full)
+                    {
+                        // neighbor is must grid free
+                        if (neighbor.Status != GridStatus.Free) continue;
+                        
+                        // Check if grid out of highlight boundaries
+                        if (!BattleManager.highlightMovement.CheckGridOnHighlight(neighbor)) continue;
+                    }
                     
                     // Neighbor have not reached, grid ground and not occupied
                     // GridManager.CheckGround(neighbor) && !Reached.Contains(neighbor) && !neighbor.IsOccupied
