@@ -17,10 +17,6 @@ public class MoveCamera : MonoBehaviour
     [SerializeField] private Vector3 rightBorder;
     [SerializeField] private Vector3 bottomBorder;
 
-    [SerializeField] private GameObject prefab;
-    [SerializeField] private GameObject empty;
-    
-    
     private float _currentX, _currentY;
 
     private float _maxX, _minX, _x;
@@ -37,43 +33,10 @@ public class MoveCamera : MonoBehaviour
 
     public static bool IsMove;
     private bool _isLimitDrag;
-    private List<GameObject> cubes;
-
-    private List<Vector3> _vertices;
-    
-    int[] triangles = {
-        0, 2, 1, //face front
-        0, 3, 2,
-        2, 3, 4, //face top
-        2, 4, 5,
-        1, 2, 5, //face right
-        1, 5, 6,
-        0, 7, 4, //face left
-        0, 4, 3,
-        5, 4, 7, //face back
-        5, 7, 6,
-        0, 6, 7, //face bottom
-        0, 1, 6
-    };
-
-    private Mesh mesh;
-    private MeshCollider meshCollider;
 
     private void Start()
     {
         // ZoomCamera.Zooming += UpdateBorder;
-        cubes = new List<GameObject>();
-        _vertices = new List<Vector3>();
-
-        cubes.Add(Instantiate(prefab));
-        cubes.Add(Instantiate(prefab));
-        cubes.Add(Instantiate(prefab));
-        cubes.Add(Instantiate(prefab));
-
-        for (var i = 0; i < 8; i++)
-        {
-            _vertices.Add(Vector3.zero);
-        }
 
         plane = new Plane(Vector3.up, Vector3.zero);
         _camera = Camera.main;
@@ -81,23 +44,11 @@ public class MoveCamera : MonoBehaviour
         newPosition = transform.position;
 
         _vectorHotspot = new Vector2(cursorTextureHold.width * 0.5f, cursorTextureHold.height * 0.5f);
-        
-        mesh = empty.GetComponent<MeshFilter>().mesh;
-        meshCollider = empty.GetComponent<MeshCollider>();
     }
 
     void Update()
     {
-        BorderHandle();
         HandleMouseInput();
-        
-        mesh.Clear ();
-        mesh.vertices = _vertices.ToArray();
-        mesh.triangles = triangles;
-        mesh.Optimize ();
-        mesh.RecalculateNormals ();
-        
-        meshCollider.sharedMesh = mesh;
     }
 
     private void HandleMouseInput()
@@ -154,54 +105,6 @@ public class MoveCamera : MonoBehaviour
         else
         {
             newPosition = borderDrag;
-        }
-    }
-
-    private void BorderHandle()
-    {
-        Ray rayLeft = _camera.ScreenPointToRay(new Vector2(0, 0));
-        Ray rayTop = _camera.ScreenPointToRay(new Vector2(0, Screen.height));
-        Ray rayRight = _camera.ScreenPointToRay(new Vector2(Screen.width, Screen.height));
-        Ray rayBot = _camera.ScreenPointToRay(new Vector2(Screen.width, 0));
-            
-        if (plane.Raycast(rayLeft, out var enter2))
-        {
-            dragCurrent = rayLeft.GetPoint(enter2);
-            // Debug.Log(dragCurrent);
-
-            cubes[0].transform.position = dragCurrent;
-            _vertices[0] = dragCurrent;
-            _vertices[7] = dragCurrent + Vector3.up;
-        }
-            
-        if (plane.Raycast(rayTop, out var enter3))
-        {
-            dragCurrent = rayTop.GetPoint(enter3);
-            // Debug.Log(dragCurrent);
-
-            cubes[1].transform.position = dragCurrent;
-            _vertices[3] = dragCurrent;
-            _vertices[4] = dragCurrent + Vector3.up;
-        }
-            
-        if (plane.Raycast(rayRight, out var enter4))
-        {
-            dragCurrent = rayRight.GetPoint(enter4);
-            // Debug.Log(dragCurrent);
-
-            cubes[2].transform.position = dragCurrent;
-            _vertices[2] = dragCurrent;
-            _vertices[5] = dragCurrent + Vector3.up;
-        }
-            
-        if (plane.Raycast(rayBot, out var enter5))
-        {
-            dragCurrent = rayBot.GetPoint(enter5);
-            // Debug.Log(dragCurrent);
-
-            cubes[3].transform.position = dragCurrent;
-            _vertices[1] = dragCurrent;
-            _vertices[6] = dragCurrent + Vector3.up;
         }
     }
 

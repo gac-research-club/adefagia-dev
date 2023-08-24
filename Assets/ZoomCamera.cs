@@ -109,7 +109,7 @@ public class ZoomCamera : MonoBehaviour
         // Min
         if (current.y < min.y)
         {
-            Debug.Log("Min" + current);
+            // Debug.Log("Min" + current);
             _isLimitZoom = true;
             return min + offset;
         }
@@ -117,7 +117,7 @@ public class ZoomCamera : MonoBehaviour
         // Max
         if (current.y > max.y)
         {
-            Debug.Log("Max" + current);
+            // Debug.Log("Max" + current);
             _isLimitZoom = true;
             return max - offset;
         }
