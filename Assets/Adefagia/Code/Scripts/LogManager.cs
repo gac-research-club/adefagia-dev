@@ -9,18 +9,19 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LogManager : MonoBehaviour {
+public class LogManager : MonoBehaviour
+{
 
     public int maxLog = 10;
-    [SerializeField] private GameObject logPanel; 
-    [SerializeField] private GameObject textObject;     
+    [SerializeField] private GameObject logPanel;
+    [SerializeField] private GameObject textObject;
     private static string _path;
     private static List<Robot> _listRobot = new List<Robot>();
 
     private Dictionary<string, List<float>> _totalDamage = new Dictionary<string, List<float>>();
 
     private List<Log> logList = new List<Log>();
-    
+
     public enum LogText
     {
         Info,
@@ -41,37 +42,44 @@ public class LogManager : MonoBehaviour {
     public void Start()
     {
         DateTime currentTime = DateTime.Now;
-        
+
         // Create Logs directory
         Directory.CreateDirectory(Path.Combine(Application.dataPath, "Logs"));
-        
+
         // Write log file
         _path = Path.Combine(Application.dataPath, "Logs", currentTime.ToString("ddMMyyyy-hhmmss") + ".txt");
     }
 
-    public Color32 GetColor32(LogText logText){
-        if(logText == LogText.Danger){
-            return new Color32(255,0,0,255);
-        }else if(logText == LogText.Info){
-            return new Color32(255,0,255,255);
-        }else if(logText == LogText.Warning){
-            return new Color32(255,255,0,255);
+    public Color32 GetColor32(LogText logText)
+    {
+        if (logText == LogText.Danger)
+        {
+            return new Color32(255, 0, 0, 255);
         }
-        return new Color32(255,255,255,255);
+        else if (logText == LogText.Info)
+        {
+            return new Color32(255, 0, 255, 255);
+        }
+        else if (logText == LogText.Warning)
+        {
+            return new Color32(255, 255, 0, 255);
+        }
+        return new Color32(255, 255, 255, 255);
     }
-    
+
     public void LogStep(string text, LogText logText = LogText.Common)
-    { 
-        if(logList.Count > maxLog){
+    {
+        if (logList.Count > maxLog)
+        {
             Destroy(logList[0].textObject.gameObject);
             logList.Remove(logList[0]);
         }
-            
+
         Log newLog = new Log();
-        
+
         newLog.text = text;
         GameObject newText = Instantiate(textObject, logPanel.transform.position, Quaternion.identity, logPanel.transform);
-        
+
         TMP_Text newTextComponent = newText.GetComponent<TMP_Text>();
         newTextComponent.text = newLog.text;
         newTextComponent.color = GetColor32(logText);
@@ -82,25 +90,31 @@ public class LogManager : MonoBehaviour {
         using (StreamWriter sw = File.AppendText(_path))
         {
             sw.WriteLine(text);
-        }	   
+        }
     }
 
-    public void AddDeadRobot(Robot robot){
+    public void AddDeadRobot(Robot robot)
+    {
         Color32 redColor = new Color32(255, 0, 0, 255);
         LogStep($"{robot.Name} is Dead", LogText.Danger);
         _listRobot.Add(robot);
     }
 
-    public void ObstacleDestroyed(){
+    public void ObstacleDestroyed()
+    {
 
     }
 
-    public void DamageCalculation(string team, float damage){
-        if (_totalDamage.ContainsKey(team)){
-            
+    public void DamageCalculation(string team, float damage)
+    {
+        if (_totalDamage.ContainsKey(team))
+        {
+
             _totalDamage[team].Add(damage);
-        
-        } else {
+
+        }
+        else
+        {
             List<float> newDamage = new List<float>();
             newDamage.Add(damage);
 
@@ -108,11 +122,13 @@ public class LogManager : MonoBehaviour {
         }
     }
 
-    public Dictionary<string, List<float>> GetDamageCalculation(){
+    public Dictionary<string, List<float>> GetDamageCalculation()
+    {
         return _totalDamage;
     }
 
-    public List<Robot> GetListRobot(){
+    public List<Robot> GetListRobot()
+    {
         return _listRobot;
     }
 
@@ -134,9 +150,9 @@ public class LogManager : MonoBehaviour {
         }
         catch (DirectoryNotFoundException)
         {
-            Debug.LogWarning("File Map not found"); 
+            Debug.LogWarning("File Map not found");
         }
-        
+
         return text;
     }
 }

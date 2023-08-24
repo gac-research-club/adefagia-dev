@@ -26,7 +26,7 @@ namespace Adefagia.GridSystem
         private Select _select;
 
         public static float GridLength;
-        
+
         // Grid state
         public GridController gridSelect;
         public GridController gridTemp;
@@ -40,19 +40,19 @@ namespace Adefagia.GridSystem
         public static event Action<GridController> GridHoverInfo;
         public static event Action<GridController, bool> GridRobotHoverInfo;
 
-        public static event Action<GridController> SkillHappened; 
+        public static event Action<GridController> SkillHappened;
 
         private void Awake()
         {
 
             GridLength = gridLength;
-            
+
             // Set into gameManager
             if (GameManager.instance != null)
             {
                 GameManager.instance.gridManager = this;
             }
-            
+
             StartCoroutine(InitializeGridManager());
             _select = GetComponent<Select>();
         }
@@ -95,7 +95,7 @@ namespace Adefagia.GridSystem
             SetNeighbors();
 
             // BattleManager.ChangeGameState(GameState.Preparation);
-            
+
             // Finish Generate
             DoneGenerate = true;
         }
@@ -137,12 +137,12 @@ namespace Adefagia.GridSystem
                 for (var xi = 0; xi < x; xi++)
                 {
                     var prefab = _gridElements[GridType.Ground].prefab;
-                    
+
                     // Create gameObject of grid
                     var gridObject = Instantiate(prefab, transform);
 
                     gridObject.transform.localScale = UpdateScale(gridObject.transform);
-                    
+
                     gridObject.transform.position = new Vector3(xi * gridLength, 0, yi * gridLength) + offset;
                     gridObject.name = $"Grid ({xi}, {yi})";
 
@@ -245,13 +245,12 @@ namespace Adefagia.GridSystem
             }
 
             gridSelect = GetGridController();
-            
+
             if (BattleManager.gameState == GameState.Battle)
             {
                 // Hover grid robot
                 if (gridSelect.Grid.Status == GridStatus.Robot)
                 {
-                    Debug.Log("Test");
                     GridRobotHoverInfo?.Invoke(gridSelect, true);
                 }
                 else
@@ -264,7 +263,7 @@ namespace Adefagia.GridSystem
             {
                 gridLast = gridTemp;
                 gridTemp = gridSelect;
-                
+
                 GridHoverInfo?.Invoke(gridSelect);
 
                 // Debug.Log("Current: " + gridSelect);
@@ -286,7 +285,7 @@ namespace Adefagia.GridSystem
             //     return;
             // }
 
-            gridQuad.transform.position = objectHit.transform.position - offset + new Vector3(0,0.05f,0);
+            gridQuad.transform.position = objectHit.transform.position - offset + new Vector3(0, 0.05f, 0);
         }
 
         #endregion
@@ -295,15 +294,15 @@ namespace Adefagia.GridSystem
         public static Vector3 UpdateScale(Transform original)
         {
             var defaultScale = original.localScale;
-            
+
             var result = new Vector3(
                 defaultScale.x * GridLength,
-                defaultScale.y * GridLength, 
+                defaultScale.y * GridLength,
                 defaultScale.z * GridLength);
-            
+
             return result;
         }
-        
+
         private void OnDrawGizmos()
         {
             var center = (gridSizeX * gridLength + gridSizeY * gridLength) * 0.5f;

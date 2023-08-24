@@ -12,13 +12,15 @@ namespace Adefagia.PlayerAction
     public class HighlightMovement : MonoBehaviour
     {
         [Header("Prefab highlight with different color")]
-        [SerializeField] private GameObject quadMove, quadAttack;
-        
+        [SerializeField] private GameObject quadMove, quadAttack, quadSupport;
+
         [Header("Prefab highlight block when grid occupied")]
-        [SerializeField] private GameObject quadMoveBlock, quadAttackBlock;
-        
+        [SerializeField] private GameObject quadMoveBlock, quadAttackBlock, quadSupportBlock;
+
         [SerializeField] private GameObject quadImpact;
-        
+
+
+
 
         private List<Grid> _tempGrids;
         private List<Grid> _tempGridsImpact;
@@ -35,7 +37,7 @@ namespace Adefagia.PlayerAction
         {
             _tempHighlights = new List<GameObject>();
             _tempGrids = new List<Grid>();
-            
+
             _tempHighlightsImpact = new List<GameObject>();
             _tempGridsImpact = new List<Grid>();
         }
@@ -57,36 +59,41 @@ namespace Adefagia.PlayerAction
          *    o r o
          *    o o o
          --------------*/
-        public void SetSurroundMove(Grid grid)
+        public void SetSurroundMove(Grid grid, SkillType skillType = SkillType.Damage)
         {
             if (grid == null) return;
 
             CleanHighlight();
 
-            SetQuad();
+            SetQuad(skillType);
 
-            var pattern = 
+            var pattern =
                 "ooo" +
                 "oro" +
                 "ooo";
             var origin = new Vector2Int(1, 1);
-            CreateFromPattern(pattern, 3,3, grid.Location, origin);
+            CreateFromPattern(pattern, 3, 3, grid.Location, origin);
         }
 
+        /*--------------
+         *    o o o
+         *    o r o
+         *    o o o
+         --------------*/
         public void SetSurroundImpact(Grid grid)
         {
             if (grid == null) return;
-            
+
             CleanHighlightImpact();
-            
+
             SetQuadImpact();
 
-            var pattern = 
+            var pattern =
                 "-o-" +
                 "oro" +
                 "-o-";
             var origin = new Vector2Int(1, 1);
-            CreateFromPatternImpact(pattern, 3,3, grid.Location, origin);
+            CreateFromPatternImpact(pattern, 3, 3, grid.Location, origin);
         }
 
         public void CreateHighlight(Grid grid, string pattern, Vector2Int origin)
@@ -97,7 +104,7 @@ namespace Adefagia.PlayerAction
 
             SetQuad();
 
-            CreateFromPattern(pattern, 7,7, grid.Location, origin);
+            CreateFromPattern(pattern, 7, 7, grid.Location, origin);
         }
 
         /*--------------
@@ -150,22 +157,22 @@ namespace Adefagia.PlayerAction
          *    o o o
          *      o
          --------------*/
-        public void SetDiamondSurroundMove(Grid grid)
+        public void SetDiamondSurroundMove(Grid grid, SkillType skillType = SkillType.Damage)
         {
             if (grid == null) return;
 
             CleanHighlight();
 
-            SetQuad();
+            SetQuad(skillType);
 
-            var pattern = 
+            var pattern =
                 "  o  " +
                 " ooo " +
                 "ooroo" +
                 " ooo " +
                 "  o  ";
             var origin = new Vector2Int(2, 2); // character 'r'
-            CreateFromPattern(pattern, 5,5, grid.Location, origin);
+            CreateFromPattern(pattern, 5, 5, grid.Location, origin);
         }
 
         /*--------------
@@ -201,7 +208,7 @@ namespace Adefagia.PlayerAction
             }
 
         }
-        
+
         /*--------------
          *      
          *      o 
@@ -209,20 +216,20 @@ namespace Adefagia.PlayerAction
          *      o 
          *      
          --------------*/
-        public void SetSmallDiamondMove(Grid grid)
+        public void SetSmallDiamondMove(Grid grid, SkillType skillType = SkillType.Damage)
         {
             if (grid == null) return;
 
             CleanHighlight();
 
-            SetQuad();
+            SetQuad(skillType);
 
-            var pattern = 
+            var pattern =
                 " o " +
                 "oro" +
                 " o ";
             var origin = new Vector2Int(1, 1);
-            CreateFromPattern(pattern, 3,3, grid.Location, origin);
+            CreateFromPattern(pattern, 3, 3, grid.Location, origin);
         }
 
         /*--------------
@@ -232,25 +239,25 @@ namespace Adefagia.PlayerAction
          *        o 
          *        o
          --------------*/
-        public void SetCrossMove(Grid grid)
+        public void SetCrossMove(Grid grid, SkillType skillType = SkillType.Damage)
         {
             if (grid == null) return;
 
             CleanHighlight();
 
-            SetQuad();
+            SetQuad(skillType);
 
-            var pattern = 
+            var pattern =
                 "  o  " +
                 "  o  " +
                 "ooroo" +
                 "  o  " +
                 "  o  ";
             var origin = new Vector2Int(2, 2); // character 'r'
-            CreateFromPattern(pattern, 5,5, grid.Location, origin);
+            CreateFromPattern(pattern, 5, 5, grid.Location, origin);
         }
 
-        
+
         private void GridHighlight(int x, int y)
         {
             var grid = GameManager.instance.gridManager.GetGrid(x, y);
@@ -262,7 +269,7 @@ namespace Adefagia.PlayerAction
             {
                 // Debug.Log("Grid Obstacle:" + grid);
                 quadDup = Instantiate(_quadBlock, transform);
-                
+
             }
             else
             {
@@ -276,7 +283,7 @@ namespace Adefagia.PlayerAction
 
             _tempHighlights.Add(quadDup);
         }
-        
+
         private void GridImpact(int x, int y)
         {
             var grid = GameManager.instance.gridManager.GetGrid(x, y);
@@ -288,7 +295,7 @@ namespace Adefagia.PlayerAction
             {
                 // Debug.Log("Grid Obstacle:" + grid);
                 quadDup = Instantiate(_quadBlockImpact, transform);
-                
+
                 RobotOnImpact?.Invoke(grid);
             }
             else
@@ -297,7 +304,7 @@ namespace Adefagia.PlayerAction
             }
 
             _tempGridsImpact.Add(grid);
-            
+
             RobotOnImpactClear?.Invoke(_tempGridsImpact);
 
             quadDup.transform.position = GridManager.CellToWorld(grid);
@@ -305,12 +312,12 @@ namespace Adefagia.PlayerAction
 
             _tempHighlightsImpact.Add(quadDup);
         }
-        
-        
+
+
         //
         // Set grid
         //
-        private void SetQuad()
+        private void SetQuad(SkillType skillType = SkillType.Damage)
         {
             if (BattleManager.battleState == BattleState.MoveRobot)
             {
@@ -320,17 +327,37 @@ namespace Adefagia.PlayerAction
             else if (BattleManager.battleState == BattleState.AttackRobot ||
                      BattleManager.battleState == BattleState.SkillSelectionRobot)
             {
-                _quad = quadAttack;
-                _quadBlock = quadAttackBlock;
+                // Skill
+                if (skillType == SkillType.Damage)
+                {
+                    _quad = quadAttack;
+                    _quadBlock = quadAttackBlock;
+                }
+                else
+                {
+                    _quad = quadSupport;
+                    _quadBlock = quadSupportBlock;
+
+                }
             }
             // Skill
             else
             {
-                _quad = quadAttack;
-                _quadBlock = quadAttackBlock;
+                if (skillType == SkillType.Damage)
+                {
+                    _quad = quadAttack;
+                    _quadBlock = quadAttackBlock;
+                }
+                else
+                {
+                    _quad = quadSupport;
+                    _quadBlock = quadSupportBlock;
+
+                }
+
             }
         }
-        
+
         private void SetQuadImpact()
         {
             _quadImpact = quadImpact;
@@ -348,7 +375,7 @@ namespace Adefagia.PlayerAction
         {
             return _tempGrids.Contains(grid);
         }
-        
+
         public bool CheckGridOnHighlightImpact(GridController gridController)
         {
             return _tempGridsImpact.Contains(gridController.Grid);
@@ -364,7 +391,7 @@ namespace Adefagia.PlayerAction
             _tempHighlights.Clear();
             _tempGrids.Clear();
         }
-        
+
         public void CleanHighlightImpact()
         {
             foreach (var temp in _tempHighlightsImpact)
@@ -379,38 +406,17 @@ namespace Adefagia.PlayerAction
         private void CreateFromPattern(string pattern, int row, int col, Vector2Int position, Vector2Int origin)
         {
             string replacement = Regex.Replace(pattern, @"\t|\n|\r", "");
-            int x = 0, y = row-1;
+            int x = 0, y = row - 1;
             foreach (var character in replacement)
             {
                 // Debug.Log($"({x},{y}): {character}");
                 if (character.Equals('o'))
                 {
-                    GridHighlight(position.x + (x-origin.x), position.y + (y-origin.y));
+                    GridHighlight(position.x + (x - origin.x), position.y + (y - origin.y));
                 }
-                
+
                 x++;
-                if (x > col-1)
-                {
-                    y--;
-                    x = 0;
-                }
-            }
-        }
-        
-        private void CreateFromPatternImpact(string pattern, int row, int col, Vector2Int position, Vector2Int origin)
-        {
-            string replacement = Regex.Replace(pattern, @"\t|\n|\r", "");
-            int x = 0, y = row-1;
-            foreach (var character in replacement)
-            {
-                // Debug.Log($"({x},{y}): {character}");
-                if (character.Equals('o'))
-                {
-                    GridImpact(position.x + (x-origin.x), position.y + (y-origin.y));
-                }
-                
-                x++;
-                if (x > col-1)
+                if (x > col - 1)
                 {
                     y--;
                     x = 0;
@@ -418,8 +424,29 @@ namespace Adefagia.PlayerAction
             }
         }
 
-        
-        
+        private void CreateFromPatternImpact(string pattern, int row, int col, Vector2Int position, Vector2Int origin)
+        {
+            string replacement = Regex.Replace(pattern, @"\t|\n|\r", "");
+            int x = 0, y = row - 1;
+            foreach (var character in replacement)
+            {
+                // Debug.Log($"({x},{y}): {character}");
+                if (character.Equals('o'))
+                {
+                    GridImpact(position.x + (x - origin.x), position.y + (y - origin.y));
+                }
+
+                x++;
+                if (x > col - 1)
+                {
+                    y--;
+                    x = 0;
+                }
+            }
+        }
+
+
+
 
         private void OnSkillHappened(GridController gridController)
         {

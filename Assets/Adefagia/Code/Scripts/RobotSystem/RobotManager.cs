@@ -10,10 +10,10 @@ namespace Adefagia.RobotSystem
 {
     public class RobotManager : MonoBehaviour
     {
-        
+
         [SerializeField] private List<GameObject> robotPrefab;
         [SerializeField] private float speed = 5f;
-        
+
         private TeamController _teamController;
 
         private List<RobotStat> robotSelected;
@@ -28,17 +28,17 @@ namespace Adefagia.RobotSystem
 
             // Initiate Robots
             teamManager = GameManager.instance.gameObject.GetComponent<TeamManager>();
-            
+
             // Change team name
             teamSelected = new Team(teamManager.teamA.teamName);
-            
+
             // Use robot A first
             robotSelected = teamManager.robotsA;
 
             SpawnRobot();
-            
+
             _teamController.ChooseRobot(0);
-            
+
         }
 
         /*--------------------------------------------------------------------------------------
@@ -52,23 +52,23 @@ namespace Adefagia.RobotSystem
             {
                 // after robotA, change to robotB
                 robotSelected = teamManager.robotsB;
-                
+
                 // Change team name
                 teamSelected = new Team(teamManager.teamB.teamName);
             }
-            
+
             // Change team name
             _teamController.Team = teamSelected;
 
             List<RobotController> newRobotControllers = new List<RobotController>();
-            
-            for (int i = _teamController.TotalRobot-1; i >= 0 ; i--)
+
+            for (int i = _teamController.TotalRobot - 1; i >= 0; i--)
             {
                 var dummy = _teamController.GetRobotGameObject(i);
-                
+
                 // If dummy is null then skip to next loop
-                if(dummy == null) continue;
-             
+                if (dummy == null) continue;
+
                 // Create a real robot gameObject
                 var robotObject = Instantiate(robotPrefab[i], transform);
                 robotObject.name = "Robot " + i;
@@ -76,16 +76,16 @@ namespace Adefagia.RobotSystem
 
                 // Add RobotController to attach on robot gameObject
                 var robotController = robotObject.AddComponent<RobotController>();
-                
+
                 // Add SkillController to attach on robot
                 var skillController = robotObject.AddComponent<SkillController>();
 
                 // Add Potion Controller to attach on robot
                 var potionController = robotObject.AddComponent<PotionController>();
-                
+
                 // Find healthBar GameObject
                 var healthBarObject = GameObject.Find($"Robot {i}/Cube/Canvas/HealthBar");
-                
+
                 healthBarObject.name = "HBar Robot " + i;
 
                 // add healthBar GameObject to healthBars List
@@ -96,59 +96,60 @@ namespace Adefagia.RobotSystem
 
                 // Set robot the parent of teamController
                 robotController.SetTeam(_teamController);
-                
+
                 // TODO: Make each robot dynamic edited by user
-                
+
                 // Manual input robot stat
-                
+
                 // Get robot from teamManager
                 var robot = robotSelected[i];
 
                 if (robot == null) return;
+
                 robotController.Robot = new Robot(
                     _teamController.Team.teamName + "-" + robotObject.name,
                     robot.maxHealth,
                     robot.maxStamina,
                     robot.damage,
                     robot.armor);
-                
-                robotController.Robot.ID = _teamController.TotalRobot-1 - i;
+
+                robotController.Robot.ID = _teamController.TotalRobot - 1 - i;
                 robotController.Robot.Speed = speed;
-                
+
                 // If robot hasn't used weapon set to default
                 if (robot.weaponId != null)
                 {
                     robotController.Robot.TypePattern = robot.weaponId.TypePattern;
-                    
+
                     // Skill
                     Skill skill1 = robot.weaponId.WeaponSkill[0];
                     Skill skill2 = robot.weaponId.WeaponSkill[1];
-                
+
                     // Ultimate Skill
                     Skill skill3 = robot.weaponId.WeaponSkill[2];
-                    
+
                     // set skill
-                    skillController.Skills.Add(skill1); 
-                    skillController.Skills.Add(skill2); 
+                    skillController.Skills.Add(skill1);
+                    skillController.Skills.Add(skill2);
                     skillController.Skills.Add(skill3);
-                    
+
                     robotController.SetSkill(skillController);
                 }
                 else
                 {
                     // Debug.Log("Not have weapon");
-                    
+
                     robotController.Robot.TypePattern = TypePattern.Surround;
                 }
 
                 robotController.Robot.healthBar = healthBar;
-                
+
                 // Potion null checker
                 if (robot.buffItem1 != null)
                 {
                     // Add Potion
                     Potion item1 = new Potion(robot.buffItem1.ItemName, robot.buffItem1.Effects);
-                    
+
                     potionController.Potions.Add(item1);
                 }
 
@@ -156,7 +157,7 @@ namespace Adefagia.RobotSystem
                 {
                     // Add Potion
                     Potion item2 = new Potion(robot.buffItem2.ItemName, robot.buffItem2.Effects);
-                    
+
                     potionController.Potions.Add(item2);
                 }
 
@@ -166,12 +167,12 @@ namespace Adefagia.RobotSystem
                 healthBar.health = robotController.Robot.MaxHealth;
                 healthBar.maxHealth = robotController.Robot.MaxHealth;
                 healthBar.damage = robotController.Robot.Damage;
-                
+
 
                 // Edit name
                 // robotController.Robot.Name = robotObject.name;
                 newRobotControllers.Add(robotController);
-                
+
                 // Delete the dummy gameObject
                 Destroy(dummy);
             }
