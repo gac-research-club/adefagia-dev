@@ -11,7 +11,9 @@ namespace Adefagia.PlayerAction
     public class RobotSkill : MonoBehaviour
     {
         public static event Action<GridController> ObstacleHitHappened;
-        
+        public static event Action<Robot> LaunchSkill;  
+        public static event Action<RobotController> LaunchSkillController;  
+
         // robotController = current select
         // gridController = another select robot
         public void Skill(
@@ -20,17 +22,19 @@ namespace Adefagia.PlayerAction
             int skillChoosed,
             Dictionary<Grid, GridController> gridImpacts)
             {
-                
-                
                 if (gridController == null)
                 {
                     Debug.LogWarning("Skill failed");
                     return;
                 }
                 
-                var skillController = robotController.SkillController;
-                var skill = skillController.ChooseSkill(skillChoosed);
-            
+                Skill skill = robotController.GetSkill(skillChoosed);
+                
+                robotController.Robot.DecreaseStamina(skill.StaminaRequirement);
+                
+                // LaunchSkill?.Invoke(robotController.Robot);
+                LaunchSkillController?.Invoke(robotController);
+
                 // means the robot is considered to move
                 robotController.Robot.HasSkill = true;
                 
@@ -53,6 +57,10 @@ namespace Adefagia.PlayerAction
                     {
                         gridCtrl.RobotController.Robot.TakeDamage(skill.Value * 0.5f);
                         gridCtrl.RobotController.Robot.healthBar.UpdateHealthBar(gridCtrl.RobotController.Robot.CurrentHealth);
+                        if (gridCtrl.RobotController == robotController)
+                        {
+                            LaunchSkill?.Invoke(robotController.Robot);
+                        }
                     }
                 }
 
@@ -64,8 +72,6 @@ namespace Adefagia.PlayerAction
                     return;
                 }
                 
-                robotController.Robot.DecreaseStamina(skill.StaminaRequirement);
-
                 // a robot at other grid attacked by the current robot
                 gridController.RobotController.Robot.TakeDamage(skill.Value);
                 gridController.RobotController.Robot.healthBar.UpdateHealthBar(gridController.RobotController.Robot.CurrentHealth);
@@ -83,7 +89,6 @@ namespace Adefagia.PlayerAction
                 GameManager.instance.logManager.DamageCalculation(robotController.TeamController.Team.teamName, skill.Value);
                 
                 Debug.Log($"Skill {skill.Name} launched to {gridController.RobotController.Robot}");
-
             }
 
             public static Skill GetSkill(RobotController robotController, int index)

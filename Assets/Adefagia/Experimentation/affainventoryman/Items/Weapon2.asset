@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1829f165e4d782149a18ec3edbacb0b9, type: 3}
   m_Name: Weapon2
   m_EditorClassIdentifier: 
-  id: 31920198ddf5dc54a8b2c6d2b28f67fa
+  id: 0.3562362
   ItemName: Weapon 2
   Icon: {fileID: 21300000, guid: 9c12454dff77d05429a5a0f8498ea532, type: 3}
   MaximumStacks: 1
@@ -24,42 +24,23 @@ MonoBehaviour:
   TypePattern: 2
   WeaponSkill:
   - Name: Laser Beam
-    StaminaRequirement: 20
-    Value: 50
-    IsUltimate: 0
-    skillType: 0
-    patternAttack: '---o---
-
-      --ooo--
-
-      -ooooo-
-
-      ooorooo
-
-      -ooooo-
-
-      --ooo--
-
-      ---o---'
-    patternImpact: 
-    origin: {x: 3, y: 3}
-  - Name: Necropolish
     StaminaRequirement: 10
-    Value: 50
+    Value: 10
     IsUltimate: 0
     skillType: 0
-    patternAttack: '---o---
-
-      --ooo--
-
-      -ooooo-
-
-      ooorooo
-
-      -ooooo-
-
-      --ooo--
-
-      ---o---'
-    patternImpact: 
-    origin: {x: 3, y: 3}
+    PatternAttack: 2
+    PatternImpact: 2
+  - Name: Incarnation
+    StaminaRequirement: 15
+    Value: 5
+    IsUltimate: 0
+    skillType: 3
+    PatternAttack: 0
+    PatternImpact: 0
+  - Name: Holy Scrap
+    StaminaRequirement: 30
+    Value: 25
+    IsUltimate: 1
+    skillType: 1
+    PatternAttack: 1
+    PatternImpact: 0

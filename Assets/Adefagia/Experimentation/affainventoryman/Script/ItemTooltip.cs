@@ -30,8 +30,11 @@ public class ItemTooltip : MonoBehaviour
         float offsetY = 10;
         Vector2 mousePos = Input.mousePosition;
         
-        if(mousePos.x + tipWindow.sizeDelta.x < Camera.main.pixelWidth) horizontal = 1; else horizontal = 0;  //check your horizontal mouse position
-        if(tipWindow.sizeDelta.y + mousePos.y > Camera.main.pixelHeight) vertical = 1; else vertical = 0; //check your vertical mouse position
+        // Camera.main.pixelWidth == 1920
+        // Camera.main.pixelHeight == 1080
+
+        if(mousePos.x + tipWindow.sizeDelta.x < 1920) horizontal = 1; else horizontal = 0;  //check your horizontal mouse position
+        if(tipWindow.sizeDelta.y + mousePos.y > 1080) vertical = 1; else vertical = 0; //check your vertical mouse position
         if(horizontal == 1)
             offsetX = tipWindow.sizeDelta.x + 10; else offsetX = 10; //if overdraw change side. Could also be changed to pixel values if they are known to align the tooltip to the side without jumping from one side to the other
         if(vertical == 1)

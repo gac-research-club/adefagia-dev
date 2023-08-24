@@ -15,6 +15,8 @@ namespace Adefagia.PlayerAction
         public static event Action<RobotController> ThingHappened;
         public static event Action<GridController> ObstacleHitHappened;
 
+        public static event Action<Robot> RobotDamaged; 
+
         // robotController = current select
         // gridController = another select robot
         public void Attack(RobotController robotController,GridController gridController)
@@ -53,6 +55,7 @@ namespace Adefagia.PlayerAction
 
             // a robot at other grid attacked by the current robot
             gridController.RobotController.Robot.TakeDamage(robotController.Robot.Damage);
+            RobotDamaged?.Invoke(gridController.RobotController.Robot);
             
             // update the attacked robot health bar
             gridController.RobotController.Robot.healthBar.UpdateHealthBar(gridController.RobotController.Robot.CurrentHealth);

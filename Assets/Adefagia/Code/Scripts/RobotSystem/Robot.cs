@@ -19,8 +19,8 @@ namespace Adefagia.RobotSystem
 
         #region Constants
 
-        private const float StaminaInitial = 20;
-        private const float StaminaRound = 10;
+        private const float StaminaInitial = 10;
+        private const float StaminaRound = 5;
 
         #endregion
 
@@ -117,7 +117,7 @@ namespace Adefagia.RobotSystem
                
                GameManager.instance.logManager.AddDeadRobot(this);
             }
-           
+
         }
 
         public void Healing(float heal)
@@ -129,20 +129,26 @@ namespace Adefagia.RobotSystem
         }
 
         public void IncreaseDamage(float damage){
-            TempDamage = (Damage * damage);
-            Damage = Damage + TempDamage;
-            
+            if(damage > 0){
+                TempDamage = (Damage * damage);
+                Damage = Damage + TempDamage;   
+            }
         }
         
         public void IncreaseArmor(float armor){
-            TempDefend = (Defend * armor);
-            Defend = Defend + TempDefend;
-
+            if(armor > 0){
+                TempDefend = (Defend * armor);
+                Defend = Defend + TempDefend;
+            }
         }
         
         public void Normalize(){
             if(TempDamage > 0){
                 Damage = Damage - TempDamage;
+            }
+
+            if(TempDefend > 0){
+                Defend = Defend - TempDefend;
             }
         }
 

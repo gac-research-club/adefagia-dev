@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1829f165e4d782149a18ec3edbacb0b9, type: 3}
   m_Name: Weapon1
   m_EditorClassIdentifier: 
-  id: 27c05251a0b94d741a18974e3a666b45
+  id: 0.2662723
   ItemName: Weapon 1
   Icon: {fileID: 21300000, guid: 10a35779af0730548be866ad091cc00c, type: 3}
   MaximumStacks: 1
@@ -23,27 +23,24 @@ MonoBehaviour:
   EquipmentType: 2
   TypePattern: 0
   WeaponSkill:
-  - Name: Rocket Launcer
+  - Name: Bullet Shot
     StaminaRequirement: 10
-    Value: 50
+    Value: 10
     IsUltimate: 0
     skillType: 0
-    patternAttack: 
-    patternImpact: '--o---
-
-      --o---
-
-      oorooo
-
-      --o---
-
-      --o---'
-    origin: {x: 0, y: 0}
-  - Name: Mabaruka
-    StaminaRequirement: 10
-    Value: 50
+    PatternAttack: 2
+    PatternImpact: 3
+  - Name: Enigma
+    StaminaRequirement: 20
+    Value: 10
     IsUltimate: 0
     skillType: 0
-    patternAttack: 
-    patternImpact: 
-    origin: {x: 0, y: 0}
+    PatternAttack: 1
+    PatternImpact: 0
+  - Name: Execute
+    StaminaRequirement: 30
+    Value: 50
+    IsUltimate: 1
+    skillType: 0
+    PatternAttack: 2
+    PatternImpact: 3

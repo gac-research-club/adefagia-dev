@@ -110,8 +110,11 @@ public class Character : MonoBehaviour
     {
         if (itemSlot.Item is EquippableItem)
         {
-            Unequip((EquippableItem)itemSlot.Item);
-        }
+            Unequip((EquippableItem) itemSlot.Item);
+        }else if(itemSlot.Item is UsableItem){
+
+            Unequip((UsableItem) itemSlot.Item);
+        }        
     }
 
     private void ShowTooltip(BaseItemSlot itemSlot)
@@ -247,6 +250,14 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void Unequip(UsableItem item)
+    {
+        if (equipmentPanel.RemoveItem(item))
+        {
+            statPanel.UnequipId(item.GetItemType());
+        }
+    }
+
     public void UpdateStatValues()
     {
         statPanel.UpdateStatValues();
@@ -353,7 +364,6 @@ public class Character : MonoBehaviour
                 if (inventory.CanAddItem(itemUsable) && equipmentPanel.RemoveItem(itemUsable))
                 {            
                     statPanel.UpdateStatValues();
-                    // inventory.AddItem(item);
                 }
             }
         }
