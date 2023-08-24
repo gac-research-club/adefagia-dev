@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,17 +6,30 @@ using UnityEngine;
 public class HighlightRobot : MonoBehaviour
 {
     [SerializeField] private List<Renderer> partRenderers;
+    [SerializeField] private Material material;
+    [SerializeField] private Color color;
 
-    
-    // Start is called before the first frame update
+    private Color _defaultColor;
+    private Material _newMaterial;
+
     void Start()
     {
+        _newMaterial = new Material(material);
+        _defaultColor = _newMaterial.color;
         
+        foreach (var partRenderer in partRenderers)
+        {
+            partRenderer.material = _newMaterial;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ChangeColor()
     {
-        
+        _newMaterial.color = color;
+    }
+
+    public void ResetColor()
+    {
+        _newMaterial.color = _defaultColor;
     }
 }

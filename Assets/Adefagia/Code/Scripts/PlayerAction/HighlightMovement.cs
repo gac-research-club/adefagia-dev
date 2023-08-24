@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Adefagia.BattleMechanism;
 using Adefagia.GridSystem;
+using Adefagia.ObstacleSystem;
 using Adefagia.RobotSystem;
 using Grid = Adefagia.GridSystem.Grid;
 using UnityEngine;
@@ -30,6 +31,9 @@ namespace Adefagia.PlayerAction
 
         public static event Action<Grid> RobotOnImpact;
         public static event Action<List<Grid>> RobotOnImpactClear;
+        public static event Action<RobotController> AreaHighlight; 
+        public static event Action<ObstacleController> AreaObstacleHighlight; 
+        public static event Action AreaCleanHighlight; 
 
         public void Awake()
         {
@@ -274,6 +278,23 @@ namespace Adefagia.PlayerAction
             quadDup.transform.position = GridManager.CellToWorld(grid);
             quadDup.transform.localScale = GridManager.UpdateScale(quadDup.transform);
 
+
+            if (BattleManager.battleState == BattleState.AttackRobot ||
+                BattleManager.battleState == BattleState.SkillSelectionRobot)
+            {
+                if (grid.Status == GridStatus.Robot)
+                {
+                    var robotController = GameManager.instance.gridManager.GetGridController(grid).RobotController;
+                    AreaHighlight?.Invoke(robotController);
+                }
+
+                if (grid.Status == GridStatus.Obstacle)
+                {
+                    var obstacleController = GameManager.instance.gridManager.GetGridController(grid).ObstacleController;
+                    AreaObstacleHighlight?.Invoke(obstacleController);
+                }
+            }
+
             _tempHighlights.Add(quadDup);
         }
         
@@ -356,6 +377,10 @@ namespace Adefagia.PlayerAction
 
         public void CleanHighlight()
         {
+            
+            // invoke on clean highlight
+            AreaCleanHighlight?.Invoke();
+            
             foreach (var temp in _tempHighlights)
             {
                 Destroy(temp);

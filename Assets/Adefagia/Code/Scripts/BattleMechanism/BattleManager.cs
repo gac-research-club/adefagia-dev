@@ -577,13 +577,19 @@ namespace Adefagia.BattleMechanism
 
                 // highlight grid attack  by weapon type pattern
                 Robot robot = TeamActive.RobotControllerSelected.Robot;
-                if(robot.TypePattern == TypePattern.Cross){
+                
+                if (robot.TypePattern == TypePattern.Cross)
+                {
                     highlightMovement.SetSmallDiamondMove(robot.Location);
-                }else if(robot.TypePattern == TypePattern.SmallDiamond){
+                }
+                else if (robot.TypePattern == TypePattern.SmallDiamond)
+                {
                     highlightMovement.SetCrossMove(robot.Location);
-                }else{
+                }
+                else
+                {
                     highlightMovement.SetSurroundMove(robot.Location);
-                };
+                }
             }
 
             Debug.Log($"{TeamActive.RobotControllerSelected.Robot} Attack");

@@ -12,17 +12,29 @@ namespace Adefagia.ObstacleSystem
         public ObstacleElement ObstacleElement;
         public Obstacle Obstacle { get; set; }
         public Grid Grid { get; set; }
+        
+        public bool isHighlighted;
 
         private int _hitCount = 0;
+        
+        public HighlightRobot HighlightRobot { get; set; }
 
         public static event Action<Vector3> ObstacleDestroyed;
         public static event Action<Vector3> ObstacleHit;
 
         private void Start()
         {
+            HighlightRobot = GetComponent<HighlightRobot>();
+            
             RobotAttack.ObstacleHitHappened += OnObstacleHitHappened;
             RobotSkill.ObstacleHitHappened += OnObstacleHitHappened;
             RobotAttack.RobotBotAttackObstacle += OnRobotBotAttackObstacle;
+        }
+        
+        private void OnEnable()
+        {
+            HighlightMovement.AreaObstacleHighlight += OnHighlighted;
+            HighlightMovement.AreaCleanHighlight += OnCleanHighlighted;
         }
 
         private void Update()
@@ -34,6 +46,12 @@ namespace Adefagia.ObstacleSystem
                 Grid.SetFree();
                 Destroy(gameObject);
             }
+        }
+        
+        private void OnDisable()
+        {
+            HighlightMovement.AreaObstacleHighlight -= OnHighlighted;
+            HighlightMovement.AreaCleanHighlight -= OnCleanHighlighted;
         }
 
         private void OnObstacleHitHappened(GridController gridController)
@@ -55,6 +73,21 @@ namespace Adefagia.ObstacleSystem
         private void OnRobotBotAttackObstacle(List<ObstacleController> obstacleControllers)
         {
             
+        }
+        
+        private void OnHighlighted(ObstacleController obstacleController)
+        {
+            obstacleController.HighlightRobot.ChangeColor();
+            obstacleController.isHighlighted = true;
+        }
+
+        private void OnCleanHighlighted()
+        {
+            if (isHighlighted)
+            {
+                HighlightRobot.ResetColor();
+                isHighlighted = false;
+            }
         }
         
     }
