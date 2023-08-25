@@ -177,8 +177,8 @@ namespace Adefagia.RobotSystem
                     var dir = TurnArround(GridManager.CellToWorld(grids[current]));
                     var start = transform.forward;
                     
-                    Debug.Log("Direction :" + dir);
-                    Debug.Log("Start:" + start);
+                    // Debug.Log("Direction :" + dir);
+                    // Debug.Log("Start:" + start);
 
                     if (dir != Vector3.zero && dir != start)
                     {

@@ -19,8 +19,7 @@ namespace Adefagia.PlayerAction
         public void Skill(
             RobotController robotController, 
             GridController gridController, 
-            int skillChoosed,
-            Dictionary<Grid, GridController> gridImpacts)
+            int skillChoosed)
             {
                 if (gridController == null)
                 {
@@ -44,25 +43,8 @@ namespace Adefagia.PlayerAction
                 ObstacleHitHappened?.Invoke(gridController);
 
                 // Take impact
-                foreach (var gridCtrl in gridImpacts.Values)
-                {
-                    if (gridCtrl == null) return;
-                    
-                    if (gridCtrl.Grid.Status == GridStatus.Obstacle)
-                    {
-                        // Debug.Log("Obstacle Hit: " + gridCtrl.Grid);
-                        ObstacleHitHappened?.Invoke(gridCtrl);
-                    }
-                    else if (gridCtrl.Grid.Status == GridStatus.Robot)
-                    {
-                        gridCtrl.RobotController.Robot.TakeDamage(skill.Value * 0.5f);
-                        gridCtrl.RobotController.Robot.healthBar.UpdateHealthBar(gridCtrl.RobotController.Robot.CurrentHealth);
-                        if (gridCtrl.RobotController == robotController)
-                        {
-                            LaunchSkill?.Invoke(robotController.Robot);
-                        }
-                    }
-                }
+                // Get weapon impact type
+                
 
                 // if grid is not robot then miss
                 if (grid.Status != GridStatus.Robot)

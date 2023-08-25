@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Adefagia.BattleMechanism;
+using Adefagia.Collections;
 using Adefagia.GridSystem;
 using Adefagia.ObstacleSystem;
 using Adefagia.RobotSystem;
@@ -22,15 +23,11 @@ namespace Adefagia.PlayerAction
         
 
         private List<Grid> _tempGrids;
-        private List<Grid> _tempGridsImpact;
-
         private List<GameObject> _tempHighlights;
-        private List<GameObject> _tempHighlightsImpact;
+        
         private GameObject _quad, _quadBlock, _quadImpact, _quadBlockImpact;
         private List<string> variantPattern = new List<string>();
 
-        public static event Action<Grid> RobotOnImpact;
-        public static event Action<List<Grid>> RobotOnImpactClear;
         public static event Action<RobotController> AreaHighlight; 
         public static event Action<ObstacleController> AreaObstacleHighlight; 
         public static event Action AreaCleanHighlight; 
@@ -39,9 +36,6 @@ namespace Adefagia.PlayerAction
         {
             _tempHighlights = new List<GameObject>();
             _tempGrids = new List<Grid>();
-            
-            _tempHighlightsImpact = new List<GameObject>();
-            _tempGridsImpact = new List<Grid>();
         }
 
         private void Start()
@@ -77,75 +71,61 @@ namespace Adefagia.PlayerAction
             CreateFromPattern(pattern, 3,3, grid.Location, origin);
         }
 
-        public void SetSurroundImpact(Grid grid)
-        {
-            if (grid == null) return;
-            
-            CleanHighlightImpact();
-            
-            SetQuadImpact();
-
-            var pattern = 
-                "-o-" +
-                "oro" +
-                "-o-";
-            var origin = new Vector2Int(1, 1);
-            CreateFromPatternImpact(pattern, 3,3, grid.Location, origin);
-        }
-
-        public void CreateHighlight(Grid grid, string pattern, Vector2Int origin)
-        {
-            if (grid == null) return;
-
-            CleanHighlight();
-
-            SetQuad();
-
-            CreateFromPattern(pattern, 7,7, grid.Location, origin);
-        }
+        // [Deprecated]
+        // public void CreateHighlight(Grid grid, string pattern, Vector2Int origin)
+        // {
+        //     if (grid == null) return;
+        //
+        //     CleanHighlight();
+        //
+        //     SetQuad();
+        //
+        //     CreateFromPattern(pattern, 7,7, grid.Location, origin);
+        // }
 
         /*--------------
          *      o
          *    o o o
          *  o o r o o
          --------------*/
-        public void SetTankRow(TeamController teamActive)
-        {
-            var grid = teamActive.RobotControllerSelected.Robot.Location;
-            if (grid == null) return;
-
-            CleanHighlight();
-
-            SetQuad();
-
-            var xGrid = grid.X;
-            var yGrid = grid.Y;
-
-            var whichTeam = teamActive.Team.teamName;
-            if (whichTeam == "DIMOCRAT") // 3 Front Row team biru
-            {
-                GridHighlight(xGrid + 0, yGrid + 1);
-                GridHighlight(xGrid + 0, yGrid + 2);
-                GridHighlight(xGrid + 1, yGrid + 1);
-                GridHighlight(xGrid - 1, yGrid + 1);
-                GridHighlight(xGrid + 1, yGrid + 0);
-                GridHighlight(xGrid + 2, yGrid + 0);
-                GridHighlight(xGrid - 1, yGrid + 0);
-                GridHighlight(xGrid - 2, yGrid + 0);
-
-            }
-            else //highlight kebalik
-            {
-                GridHighlight(xGrid + 0, yGrid - 1);
-                GridHighlight(xGrid + 0, yGrid - 2);
-                GridHighlight(xGrid - 1, yGrid - 1);
-                GridHighlight(xGrid + 1, yGrid - 1);
-                GridHighlight(xGrid - 1, yGrid + 0);
-                GridHighlight(xGrid - 2, yGrid + 0);
-                GridHighlight(xGrid + 1, yGrid + 0);
-                GridHighlight(xGrid + 2, yGrid + 0);
-            }
-        }
+        // [Deprecated]
+        // public void SetTankRow(TeamController teamActive)
+        // {
+        //     var grid = teamActive.RobotControllerSelected.Robot.Location;
+        //     if (grid == null) return;
+        //
+        //     CleanHighlight();
+        //
+        //     SetQuad();
+        //
+        //     var xGrid = grid.X;
+        //     var yGrid = grid.Y;
+        //
+        //     var whichTeam = teamActive.Team.teamName;
+            // if (whichTeam == "DIMOCRAT") // 3 Front Row team biru
+            // {
+            //     GridHighlight(xGrid + 0, yGrid + 1);
+            //     GridHighlight(xGrid + 0, yGrid + 2);
+            //     GridHighlight(xGrid + 1, yGrid + 1);
+            //     GridHighlight(xGrid - 1, yGrid + 1);
+            //     GridHighlight(xGrid + 1, yGrid + 0);
+            //     GridHighlight(xGrid + 2, yGrid + 0);
+            //     GridHighlight(xGrid - 1, yGrid + 0);
+            //     GridHighlight(xGrid - 2, yGrid + 0);
+            //
+            // }
+            // else //highlight kebalik
+            // {
+            //     GridHighlight(xGrid + 0, yGrid - 1);
+            //     GridHighlight(xGrid + 0, yGrid - 2);
+            //     GridHighlight(xGrid - 1, yGrid - 1);
+            //     GridHighlight(xGrid + 1, yGrid - 1);
+            //     GridHighlight(xGrid - 1, yGrid + 0);
+            //     GridHighlight(xGrid - 2, yGrid + 0);
+            //     GridHighlight(xGrid + 1, yGrid + 0);
+            //     GridHighlight(xGrid + 2, yGrid + 0);
+            // }
+        // }
 
         /*--------------
          *      o
@@ -178,33 +158,34 @@ namespace Adefagia.PlayerAction
          *      o
          *      r
          --------------*/
-        public void ThreeFrontRow(TeamController teamActive)
-        {
-            var grid = teamActive.RobotControllerSelected.Robot.Location;
-            if (grid == null) return;
+        // [Deprecated]
+        // public void ThreeFrontRow(TeamController teamActive)
+        // {
+        //     var grid = teamActive.RobotControllerSelected.Robot.Location;
+        //     if (grid == null) return;
+        //
+        //     CleanHighlight();
+        //
+        //     SetQuad();
+        //
+        //     var xGrid = grid.X;
+        //     var yGrid = grid.Y;
+        //
+        //     var whichTeam = teamActive.Team.teamName;
+            // if (whichTeam == "DIMOCRAT") // 3 Front Row team biru
+            // {
+            //     GridHighlight(xGrid + 0, yGrid + 1);
+            //     GridHighlight(xGrid + 0, yGrid + 2);
+            //     GridHighlight(xGrid + 0, yGrid + 3);
+            // }
+            // else //highlight kebalik
+            // {
+            //     GridHighlight(xGrid + 0, yGrid - 1);
+            //     GridHighlight(xGrid + 0, yGrid - 2);
+            //     GridHighlight(xGrid + 0, yGrid - 3);
+            // }
 
-            CleanHighlight();
-
-            SetQuad();
-
-            var xGrid = grid.X;
-            var yGrid = grid.Y;
-
-            var whichTeam = teamActive.Team.teamName;
-            if (whichTeam == "DIMOCRAT") // 3 Front Row team biru
-            {
-                GridHighlight(xGrid + 0, yGrid + 1);
-                GridHighlight(xGrid + 0, yGrid + 2);
-                GridHighlight(xGrid + 0, yGrid + 3);
-            }
-            else //highlight kebalik
-            {
-                GridHighlight(xGrid + 0, yGrid - 1);
-                GridHighlight(xGrid + 0, yGrid - 2);
-                GridHighlight(xGrid + 0, yGrid - 3);
-            }
-
-        }
+        // }
         
         /*--------------
          *      
@@ -255,30 +236,70 @@ namespace Adefagia.PlayerAction
         }
 
         
-        private void GridHighlight(int x, int y)
+        private void AddGridHighlight(Grid grid)
         {
-            var grid = GameManager.instance.gridManager.GetGrid(x, y);
-            if (grid == null) return;
+            _tempGrids.Add(grid);
+        }
+        
 
-            GameObject quadDup;
+        private void CreateHighlightObject(Grid gridRobot, List<Grid> highlightGrids)
+        {
+            var removedGrid = new List<Grid>();
 
-            if (grid.Status != GridStatus.Free)
+            var end = gridRobot;
+            end.SetFree();
+            
+            highlightGrids.Add(end);
+            
+            foreach (var highlightGrid in highlightGrids)
             {
-                // Debug.Log("Grid Obstacle:" + grid);
-                quadDup = Instantiate(_quadBlock, transform);
+                if (highlightGrid == end) continue;
+                
+                var aStar = new AStar();
+                if (!aStar.PathfindingCustomList(highlightGrids, highlightGrid, end))
+                {
+                    removedGrid.Add(highlightGrid);
+                    continue;
+                }
+                
+                ChangeMaterial(highlightGrid);
+                
+                GameObject quadDup;
+                
+                if (highlightGrid.Status != GridStatus.Free)
+                {
+                    // Debug.Log("Grid Obstacle:" + grid);
+                    quadDup = Instantiate(_quadBlock, transform);
+                
+                }
+                else
+                {
+                    quadDup = Instantiate(_quad, transform);
+                }
+                
+                // Transform
+                quadDup.transform.position = GridManager.CellToWorld(highlightGrid);
+                quadDup.transform.localScale = GridManager.UpdateScale(quadDup.transform);
+                
+                _tempHighlights.Add(quadDup);
+                // Debug.Log("Create Highlight Object");
                 
             }
-            else
+            
+            EliminateGridHighlight(removedGrid);
+        }
+
+        private void EliminateGridHighlight(List<Grid> removedGrid)
+        {
+            // Eliminate grids
+            foreach (var grid in removedGrid)
             {
-                quadDup = Instantiate(_quad, transform);
+                _tempGrids.Remove(grid);
             }
+        }
 
-            _tempGrids.Add(grid);
-
-            quadDup.transform.position = GridManager.CellToWorld(grid);
-            quadDup.transform.localScale = GridManager.UpdateScale(quadDup.transform);
-
-
+        private void ChangeMaterial(Grid grid)
+        {
             if (BattleManager.battleState == BattleState.AttackRobot ||
                 BattleManager.battleState == BattleState.SkillSelectionRobot)
             {
@@ -294,40 +315,9 @@ namespace Adefagia.PlayerAction
                     AreaObstacleHighlight?.Invoke(obstacleController);
                 }
             }
-
-            _tempHighlights.Add(quadDup);
         }
-        
-        private void GridImpact(int x, int y)
-        {
-            var grid = GameManager.instance.gridManager.GetGrid(x, y);
-            if (grid == null) return;
 
-            GameObject quadDup;
 
-            if (grid.Status != GridStatus.Free)
-            {
-                // Debug.Log("Grid Obstacle:" + grid);
-                quadDup = Instantiate(_quadBlockImpact, transform);
-                
-                RobotOnImpact?.Invoke(grid);
-            }
-            else
-            {
-                quadDup = Instantiate(_quadImpact, transform);
-            }
-
-            _tempGridsImpact.Add(grid);
-            
-            RobotOnImpactClear?.Invoke(_tempGridsImpact);
-
-            quadDup.transform.position = GridManager.CellToWorld(grid);
-            quadDup.transform.localScale = GridManager.UpdateScale(quadDup.transform);
-
-            _tempHighlightsImpact.Add(quadDup);
-        }
-        
-        
         //
         // Set grid
         //
@@ -369,11 +359,6 @@ namespace Adefagia.PlayerAction
         {
             return _tempGrids.Contains(grid);
         }
-        
-        public bool CheckGridOnHighlightImpact(GridController gridController)
-        {
-            return _tempGridsImpact.Contains(gridController.Grid);
-        }
 
         public void CleanHighlight()
         {
@@ -389,28 +374,28 @@ namespace Adefagia.PlayerAction
             _tempHighlights.Clear();
             _tempGrids.Clear();
         }
-        
-        public void CleanHighlightImpact()
-        {
-            foreach (var temp in _tempHighlightsImpact)
-            {
-                Destroy(temp);
-            }
-
-            _tempHighlightsImpact.Clear();
-            _tempGridsImpact.Clear();
-        }
 
         private void CreateFromPattern(string pattern, int row, int col, Vector2Int position, Vector2Int origin)
         {
+            var gridRobot = GameManager.instance.gridManager.GetGrid(position.x, position.y);
+            if (gridRobot == null) return;
+            
             string replacement = Regex.Replace(pattern, @"\t|\n|\r", "");
+            
             int x = 0, y = row-1;
             foreach (var character in replacement)
             {
                 // Debug.Log($"({x},{y}): {character}");
                 if (character.Equals('o'))
                 {
-                    GridHighlight(position.x + (x-origin.x), position.y + (y-origin.y));
+                    var worldX = position.x + (x - origin.x);
+                    var worldY = position.y + (y - origin.y);
+                    
+                    var grid = GameManager.instance.gridManager.GetGrid(new Vector2Int(worldX, worldY));
+                    if (grid != null)
+                    {
+                        AddGridHighlight(grid);
+                    }
                 }
                 
                 x++;
@@ -420,37 +405,39 @@ namespace Adefagia.PlayerAction
                     x = 0;
                 }
             }
+            
+            CreateHighlightObject(gridRobot, _tempGrids);
         }
         
-        private void CreateFromPatternImpact(string pattern, int row, int col, Vector2Int position, Vector2Int origin)
-        {
-            string replacement = Regex.Replace(pattern, @"\t|\n|\r", "");
-            int x = 0, y = row-1;
-            foreach (var character in replacement)
-            {
-                // Debug.Log($"({x},{y}): {character}");
-                if (character.Equals('o'))
-                {
-                    GridImpact(position.x + (x-origin.x), position.y + (y-origin.y));
-                }
-                
-                x++;
-                if (x > col-1)
-                {
-                    y--;
-                    x = 0;
-                }
-            }
-        }
-
-        
-        
-
         private void OnSkillHappened(GridController gridController)
         {
             var grid = gridController.Grid;
             // Debug.Log(grid);
             // GridImpact(grid.X, grid.Y);
+        }
+
+        private GridDirection CheckDirection(Vector2Int position, Vector2Int coordinate)
+        {
+            var direction = (coordinate - position) / (Heuristic(position, coordinate));
+            if (direction == new Vector2Int(1, 0))
+            {
+                return GridDirection.Right;
+            }
+
+            if (direction == new Vector2Int(-1, 0))
+            {
+                return GridDirection.Left;
+            }
+            if (direction == new Vector2Int(0, 1))
+            {
+                return GridDirection.Up;
+            }
+            return GridDirection.Down;
+        }
+
+        private int Heuristic(Vector2Int position, Vector2Int coordinate)
+        {
+            return coordinate.x - position.x + coordinate.y - position.y;
         }
 
     }
