@@ -12,7 +12,7 @@ namespace Adefagia.UI
             _gridManager = GameManager.instance.gridManager;
         }
 
-        private void OnGUI()
+        private void OnGUIBackup()
         {
             var text = "";
             try
