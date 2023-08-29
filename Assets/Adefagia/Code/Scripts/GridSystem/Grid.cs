@@ -92,6 +92,40 @@ namespace Adefagia.GridSystem
         {
             return $"Grid ({X}, {Y})";
         }
+        
+        public static GridDirection GetDirection(Grid start, Grid destination)
+        {
+            var direction = GetVectorDirection(start, destination);
+            if (direction == new Vector2Int(1, 0))
+            {
+                return GridDirection.Right;
+            }
+
+            if (direction == new Vector2Int(-1, 0))
+            {
+                return GridDirection.Left;
+            }
+            if (direction == new Vector2Int(0, 1))
+            {
+                return GridDirection.Up;
+            }
+            return GridDirection.Down;
+        }
+        
+        public static Vector2Int GetVectorDirection(Grid start, Grid destination)
+        {
+            var result = ((Vector2)destination.Location - start.Location) / (Heuristic(start, destination));
+
+            var x = result.x == 0 ? 0 : result.x / Mathf.Abs(result.x);
+            var y = result.y == 0 ? 0 :result.y / Mathf.Abs(result.y);
+            
+            return new Vector2Int((int)x, (int)y);
+        }
+        
+        public static int Heuristic(Grid start, Grid destination)
+        {
+            return Mathf.Abs(destination.X - start.X) + Mathf.Abs(destination.Y - start.Y);
+        }
     }
 
     public enum GridDirection

@@ -118,6 +118,9 @@ namespace Adefagia.ObstacleSystem
                 obstacleController.Obstacle = new Obstacle(point.x, point.y);
                 obstacleController.Grid = _gridManager.GetGrid(point.x, point.y); 
                 obstacleController.Grid.SetObstacle();
+                
+                // Ref to grid
+                _gridManager.GetGridController(obstacleController.Grid).ObstacleController = obstacleController;
 
                 // Add into List grid Object
                 _listObstacle[point.x, point.y] = obstacleController;

@@ -44,7 +44,7 @@ namespace Adefagia.Collections
 
             return null;
         }
-        
+
         public List<Grid> MoveFull(Grid start, Grid end)
         {
             if (Pathfinding(true, start, end))
@@ -92,6 +92,65 @@ namespace Adefagia.Collections
                         if (!BattleManager.highlightMovement.CheckGridOnHighlight(neighbor)) continue;
                     }
                     
+                    // Neighbor have not reached, grid ground and not occupied
+                    // GridManager.CheckGround(neighbor) && !Reached.Contains(neighbor) && !neighbor.IsOccupied
+                    if (!Reached.Contains(neighbor))
+                    {
+                        var newCost = costSoFar[current] + 1;
+                        costSoFar[neighbor] = newCost;
+                        
+                        // If distance is more closer update _cameFrom
+                        if (newCost > costSoFar[neighbor]) continue;
+                        
+                        neighbor.Priority = newCost + Heuristic(end, neighbor);
+            
+                        _cameFrom[neighbor] = current;
+                        _frontierQueue.Insert(neighbor);
+                    }
+                }
+                
+                // grid Has reached
+                Reached.Add(current);
+            }
+        
+            // Pathfinding failed
+            // DebugListGrid(Reached);
+            return false;
+        }
+        
+        public bool PathfindingCustomList(List<Grid> grids, Grid start, Grid end)
+        {
+            // For better choosing path
+            var costSoFar = new Dictionary<Grid, float>();
+            
+            // Starting point
+            _frontierQueue.Insert(start);
+            costSoFar[start] = 0;
+        
+            while (_frontierQueue.size > 0)
+            {
+                // Enqueue from Queue
+                var current = _frontierQueue.DeleteMin();
+                
+                // If already reaching end. break loop
+                // Pathfinding success
+                if (current.Equals(end)) return true;
+        
+                // Looking Neighbor
+                foreach (var neighbor in current.Neighbors.Values)
+                {
+                    // Set neighbor came from
+                    // Neighbor is must not null
+                    if (neighbor == null) continue;
+                    
+                    if (neighbor.Status != GridStatus.Free) continue;
+
+                    // Fully move without highlight checking
+                    // neighbor is must grid free
+                    
+                    // Check if grid out of highlight boundaries
+                    if (!grids.Contains(neighbor)) continue;
+
                     // Neighbor have not reached, grid ground and not occupied
                     // GridManager.CheckGround(neighbor) && !Reached.Contains(neighbor) && !neighbor.IsOccupied
                     if (!Reached.Contains(neighbor))

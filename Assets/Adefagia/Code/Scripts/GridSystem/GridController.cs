@@ -12,5 +12,7 @@ namespace Adefagia.GridSystem
         public Grid Grid { get; set; }
 
         public RobotController RobotController { get; set; }
+        
+        public ObstacleController ObstacleController { get; set; }
     }
 }

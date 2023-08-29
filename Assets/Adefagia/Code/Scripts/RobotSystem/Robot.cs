@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections;
 using System.Collections.Generic;
 using Adefagia.GridSystem;
@@ -25,9 +25,9 @@ namespace Adefagia.RobotSystem
         #endregion
 
         #region Properties
-
+        
         // Status
-        public HealthBar healthBar { get; set; }
+        public HealthBar healthBar {get; set;}
         public int ID { get; set; }
         public string Name { get; }
         public Grid Location => _grid;
@@ -35,27 +35,29 @@ namespace Adefagia.RobotSystem
         public float MaxStamina { get; }
         public Vector2Int Look { get; set; }
 
-
+        
         public float CurrentHealth => _health;
 
         public float CurrentStamina => _stamina;
 
         public float Damage { get; set; }
-        public float TempDamage { get; set; }
+        public float TempDamage {get; set;}
         public float Speed { get; set; }
         public float Defend { get; set; }
-        public float TempDefend { get; set; }
-
+        public float TempDefend {get; set;}
+        
         public bool IsDead { get; set; }
-
+        
         // Pattern Type
         public TypePattern TypePattern { get; set; }
-
+        
         // Step Status
         public bool HasMove { get; set; }
         public bool HasAttack { get; set; }
         public bool HasSkill { get; set; }
         public bool HasEffect { get; set; }
+        
+        public Skill SkillSelected { get; set; }
 
         #endregion
 
@@ -85,36 +87,40 @@ namespace Adefagia.RobotSystem
             Damage = damage;
             Defend = defend;
             IsDead = false;
-
+            
             //-----------------------
             ResetStepStat();
         }
-
+        
         /*-------------------------------------------------------
          * Robot battle methods
          *-------------------------------------------------------*/
         public void TakeDamage(float damage)
         {
             Damaged?.Invoke();
-
+            
             /* 100 * 0.9 = 90
+
             /* calculation damage */
             float critical = Random.Range(0.8f, 1.0f);
 
             /* 30 * 0.3 - 0.5 = 15 
-            /* calculation absorption */
-            float absorption = Random.Range(0.1f, 0.3f);
+            /* calculation absorption */ 
+            float absorption = Random.Range(0.3f, 0.5f);
             float txt1 = (critical * damage);
             float txt2 = (absorption * Defend);
 
             float TotalDamage = (txt1 - txt2);
             _health -= Math.Abs(TotalDamage);
-
-            if (_health <= 0)
-            {
-                IsDead = true;
-                Dead?.Invoke();
-                GameManager.instance.logManager.AddDeadRobot(this);
+            
+            // TODO: Refresh UI HP
+            healthBar.UpdateHealthBar(_health);
+         
+            if(_health <= 0){
+               IsDead = true;
+               Dead?.Invoke();
+               
+               GameManager.instance.logManager.AddDeadRobot(this);
             }
 
         }
@@ -122,39 +128,31 @@ namespace Adefagia.RobotSystem
         public void Healing(float heal)
         {
             _health += heal;
-            if (_health >= MaxHealth)
-            {
-                _health = MaxHealth;
+            if(_health >= MaxHealth){
+               _health = MaxHealth;
             }
         }
 
-        public void IncreaseDamage(float damage)
-        {
-            if (damage > 0)
-            {
+        public void IncreaseDamage(float damage){
+            if(damage > 0){
                 TempDamage = (Damage * damage);
-                Damage = Damage + TempDamage;
+                Damage = Damage + TempDamage;   
             }
         }
-
-        public void IncreaseArmor(float armor)
-        {
-            if (armor > 0)
-            {
+        
+        public void IncreaseArmor(float armor){
+            if(armor > 0){
                 TempDefend = (Defend * armor);
                 Defend = Defend + TempDefend;
             }
         }
-
-        public void Normalize()
-        {
-            if (TempDamage > 0)
-            {
+        
+        public void Normalize(){
+            if(TempDamage > 0){
                 Damage = Damage - TempDamage;
             }
 
-            if (TempDefend > 0)
-            {
+            if(TempDefend > 0){
                 Defend = Defend - TempDefend;
             }
         }
@@ -162,7 +160,7 @@ namespace Adefagia.RobotSystem
         public void IncreaseStamina()
         {
             _stamina += StaminaRound;
-            if (_stamina > MaxStamina) _stamina = MaxStamina;
+            if(_stamina > MaxStamina) _stamina = MaxStamina;
         }
 
         public void DecreaseStamina(float stamina)
@@ -175,6 +173,7 @@ namespace Adefagia.RobotSystem
          *------------------------------------------------------------------*/
         public void ChangeLocation(Grid grid)
         {
+            // _grid.SetFree();
             _grid = grid;
         }
 
