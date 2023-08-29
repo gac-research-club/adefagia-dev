@@ -36,11 +36,10 @@ namespace Adefagia.GridSystem
         private Grid[,] _listGrid;
 
         public static bool DoneGenerate = false;
-        public static event Action<GridController> GridHover;
         public static event Action<GridController> GridHoverInfo;
         public static event Action<GridController, bool> GridRobotHoverInfo;
 
-        public static event Action<GridController> SkillHappened; 
+        public static event Action<GridController> HoverGridSkillEvent; 
 
         private void Awake()
         {
@@ -205,6 +204,11 @@ namespace Adefagia.GridSystem
         {
             return new Vector3(grid.X * GridLength, 0, grid.Y * GridLength);
         }
+        
+        public static Vector3 CellToWorld(Grid grid, Transform prefab)
+        {
+            return new Vector3(grid.X * GridLength, prefab.position.y, grid.Y * GridLength);
+        }
 
         // Grid hover 
         public Grid GetGrid()
@@ -249,15 +253,7 @@ namespace Adefagia.GridSystem
             if (BattleManager.gameState == GameState.Battle)
             {
                 // Hover grid robot
-                if (gridSelect.Grid.Status == GridStatus.Robot)
-                {
-                    Debug.Log("Test");
-                    GridRobotHoverInfo?.Invoke(gridSelect, true);
-                }
-                else
-                {
-                    GridRobotHoverInfo?.Invoke(gridSelect, false);
-                }
+                GridRobotHoverInfo?.Invoke(gridSelect, gridSelect.Grid.Status == GridStatus.Robot);
             }
 
             if (gridSelect != gridTemp)
@@ -272,12 +268,12 @@ namespace Adefagia.GridSystem
                 // {
                 //     GridHover?.Invoke(gridSelect);
                 // }
-            }
-
-            if (BattleManager.battleState == BattleState.SkillSelectionRobot)
-            {
-                SkillHappened?.Invoke(GetGridController());
-                GridHover?.Invoke(gridSelect);
+                
+                // State after select Skill list
+                if (BattleManager.battleState == BattleState.SkillSelectionRobot)
+                {
+                    HoverGridSkillEvent?.Invoke(GetGridController());
+                }
             }
 
             // var _grid = GetGrid(); 

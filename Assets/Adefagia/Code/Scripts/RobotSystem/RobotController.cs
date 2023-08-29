@@ -8,7 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine.Events;
-using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Adefagia.RobotSystem
 {
@@ -80,6 +80,7 @@ namespace Adefagia.RobotSystem
         {
             HighlightMovement.AreaHighlight += OnHighlighted;
             HighlightMovement.AreaCleanHighlight += OnCleanHighlighted;
+            RobotSkill.SkillImpactEvent += OnSkillImpactEvent;
         }
 
         private void Update()
@@ -92,6 +93,7 @@ namespace Adefagia.RobotSystem
         {
             HighlightMovement.AreaHighlight -= OnHighlighted;
             HighlightMovement.AreaCleanHighlight -= OnCleanHighlighted;
+            RobotSkill.SkillImpactEvent -= OnSkillImpactEvent;
         }
 
         public void OnThingHappened(RobotController robotController)
@@ -252,6 +254,28 @@ namespace Adefagia.RobotSystem
             if(_teamController.Team == team) return;
             
             robotControllers.Add(this);
+        }
+
+        private void OnSkillImpactEvent(RobotController enemy, Grid grid)
+        {
+            if (grid != GridController.Grid) return;
+
+            // TODO: Reduce HP with Balancing
+            var randomize = Random.value * 0.3f;
+            Robot.TakeDamage(enemy.Robot.Damage * randomize);
+        }
+        
+        
+        // Testing KnockBack
+        private void KnockBack(Grid origin, Grid impact)
+        {
+            var direction = Grid.GetVectorDirection(origin, impact);
+            var destination = GameManager.instance.gridManager.GetGrid(impact.Location + direction);
+            
+            Robot.ChangeLocation(destination);
+            impact.SetFree();
+            var newPosition = GridManager.CellToWorld(destination);
+            transform.position = newPosition;
         }
 
         public void MoveWithDoTween(List<Grid> grids)

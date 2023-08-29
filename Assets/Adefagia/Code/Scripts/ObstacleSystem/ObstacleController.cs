@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Adefagia.GridSystem;
 using Adefagia.PlayerAction;
+using Adefagia.RobotSystem;
 using UnityEngine;
 using Grid = Adefagia.GridSystem.Grid;
 
@@ -35,6 +36,7 @@ namespace Adefagia.ObstacleSystem
         {
             HighlightMovement.AreaObstacleHighlight += OnHighlighted;
             HighlightMovement.AreaCleanHighlight += OnCleanHighlighted;
+            RobotSkill.SkillImpactEvent += OnSkillImpactEvent;
         }
 
         private void Update()
@@ -52,6 +54,7 @@ namespace Adefagia.ObstacleSystem
         {
             HighlightMovement.AreaObstacleHighlight -= OnHighlighted;
             HighlightMovement.AreaCleanHighlight -= OnCleanHighlighted;
+            RobotSkill.SkillImpactEvent -= OnSkillImpactEvent;
         }
 
         private void OnObstacleHitHappened(GridController gridController)
@@ -62,6 +65,11 @@ namespace Adefagia.ObstacleSystem
             ObstacleHit?.Invoke(transform.position);
             GameManager.instance.logManager.LogStep($"An Obstacle has been hit!", LogManager.LogText.Warning);
                 
+            IncrementHit();
+        }
+
+        private void IncrementHit()
+        {
             // Only for obstacle destructible
             if (ObstacleElement.ObstacleType == ObstacleType.Destructible)
             {
@@ -88,6 +96,14 @@ namespace Adefagia.ObstacleSystem
                 HighlightRobot.ResetColor();
                 isHighlighted = false;
             }
+        }
+        
+        private void OnSkillImpactEvent(RobotController enemy, Grid grid)
+        {
+            if (grid != Grid) return;
+            
+            // TODO: Count hit
+            IncrementHit();
         }
         
     }

@@ -6,6 +6,7 @@ using Adefagia.Collections;
 using Adefagia.GridSystem;
 using Adefagia.ObstacleSystem;
 using Adefagia.RobotSystem;
+using DG.Tweening;
 using Grid = Adefagia.GridSystem.Grid;
 using UnityEngine;
 
@@ -20,8 +21,11 @@ namespace Adefagia.PlayerAction
         [SerializeField] private GameObject quadMoveBlock, quadAttackBlock;
         
         [SerializeField] private GameObject quadImpact;
-        
 
+        [SerializeField] private GameObject bezier;
+        [SerializeField] private int bezierScale;
+        [SerializeField] private float bezierDuration;
+        
         private List<Grid> _tempGrids;
         private List<GameObject> _tempHighlights;
         
@@ -30,7 +34,9 @@ namespace Adefagia.PlayerAction
 
         public static event Action<RobotController> AreaHighlight; 
         public static event Action<ObstacleController> AreaObstacleHighlight; 
-        public static event Action AreaCleanHighlight; 
+        public static event Action AreaCleanHighlight;
+
+        private BezierCurve _bezierCurve;
 
         public void Awake()
         {
@@ -40,8 +46,19 @@ namespace Adefagia.PlayerAction
 
         private void Start()
         {
+            _bezierCurve = Instantiate(bezier).GetComponent<BezierCurve>();
+        }
+
+        private void OnEnable()
+        {
             RobotAttack.ThingHappened += OnThingHappened;
-            GridManager.SkillHappened += OnSkillHappened;
+            GridManager.HoverGridSkillEvent += OnHoverGridSkillEvent;
+        }
+
+        private void OnDisable()
+        {
+            RobotAttack.ThingHappened -= OnThingHappened;
+            GridManager.HoverGridSkillEvent -= OnHoverGridSkillEvent;
         }
 
         public void OnThingHappened(RobotController robotController)
@@ -246,23 +263,27 @@ namespace Adefagia.PlayerAction
         {
             var removedGrid = new List<Grid>();
 
-            var end = gridRobot;
-            end.SetFree();
+            gridRobot.SetFree();
             
-            highlightGrids.Add(end);
+            highlightGrids.Add(gridRobot);
             
             foreach (var highlightGrid in highlightGrids)
             {
-                if (highlightGrid == end) continue;
+                if (highlightGrid == gridRobot)
+                {
+                    removedGrid.Add(gridRobot);
+                    continue;
+                }
                 
                 var aStar = new AStar();
-                if (!aStar.PathfindingCustomList(highlightGrids, highlightGrid, end))
+                if (!aStar.PathfindingCustomList(highlightGrids, highlightGrid, gridRobot))
                 {
                     removedGrid.Add(highlightGrid);
                     continue;
                 }
                 
-                ChangeMaterial(highlightGrid);
+                // Robot & Obstacle masking
+                ChangeObjectMaterial(highlightGrid);
                 
                 GameObject quadDup;
                 
@@ -286,6 +307,7 @@ namespace Adefagia.PlayerAction
                 
             }
             
+            gridRobot.SetOccupied();
             EliminateGridHighlight(removedGrid);
         }
 
@@ -298,7 +320,7 @@ namespace Adefagia.PlayerAction
             }
         }
 
-        private void ChangeMaterial(Grid grid)
+        private void ChangeObjectMaterial(Grid grid)
         {
             if (BattleManager.battleState == BattleState.AttackRobot ||
                 BattleManager.battleState == BattleState.SkillSelectionRobot)
@@ -408,38 +430,125 @@ namespace Adefagia.PlayerAction
             
             CreateHighlightObject(gridRobot, _tempGrids);
         }
+
+        private void InstantiateHighlight(
+            List<Grid> grids, 
+            HighlightType highlightType, 
+            List<GameObject> highlightObject)
+        {
+            foreach (var grid in grids)
+            {
+                var prefab = GetHighlightPrefab(highlightType);
+
+                var quad = Instantiate(prefab, transform);
+                // Transform
+                quad.transform.position = GridManager.CellToWorld(grid, prefab.transform);
+                quad.transform.localScale = GridManager.UpdateScale(quad.transform);
+                
+                highlightObject.Add(quad);
+            }
+        }
+
+        private GameObject GetHighlightPrefab(HighlightType highlightType)
+        {
+            switch (highlightType)
+            {
+                case HighlightType.Impact:
+                    return quadImpact;
+            }
+
+            return null;
+        }
+
+        private void DestroyHighlight(List<GameObject> highlightObject)
+        {
+            for (int i = highlightObject.Count-1; i >= 0; i--)
+            {
+                Destroy(highlightObject[i]);
+            }
+        }
         
-        private void OnSkillHappened(GridController gridController)
+        public static List<Grid> GetGridImpact(Skill skill, RobotController playerRobot, Grid select)
         {
-            var grid = gridController.Grid;
-            // Debug.Log(grid);
-            // GridImpact(grid.X, grid.Y);
+            var gridsImpact = new List<Grid>();
+            
+            // Get direction
+            var origin = playerRobot.GridController.Grid;
+            var direction = Grid.GetVectorDirection(origin, select);
+
+            var gridManager = GameManager.instance.gridManager;
+            
+            // Get weapon impact type
+            for (int i = 1; i <= 2; i++)
+            {
+                var gridImpact = gridManager.GetGrid(select.Location + direction*i);
+                
+                if(gridImpact == null) continue;
+                
+                // Debug.Log("Grid Impact: " + gridImpact + " Dir:" + direction);
+                gridsImpact.Add(gridImpact);
+            }
+
+            // var count = 1;
+            // var gridImpact = gridManager.GetGrid(select.Location + direction* count);
+            // while (gridImpact != null)
+            // {
+            //     gridsImpact.Add(gridImpact);
+            //     
+            //     gridImpact = gridManager.GetGrid(select.Location + direction* count);
+            //     count++;
+            // }
+
+            return gridsImpact;
         }
 
-        private GridDirection CheckDirection(Vector2Int position, Vector2Int coordinate)
+        private readonly List<GameObject> _impactList = new List<GameObject>();
+        private void OnHoverGridSkillEvent(GridController gridController)
         {
-            var direction = (coordinate - position) / (Heuristic(position, coordinate));
-            if (direction == new Vector2Int(1, 0))
+            // Clear highlight first
+            DestroyHighlight(_impactList);
+            
+            if (!CheckGridOnHighlight(gridController))
             {
-                return GridDirection.Right;
+                _bezierCurve.Hide();
+                return;
             }
+            var end = gridController.Grid;
+            
+            _bezierCurve.Show();
 
-            if (direction == new Vector2Int(-1, 0))
-            {
-                return GridDirection.Left;
-            }
-            if (direction == new Vector2Int(0, 1))
-            {
-                return GridDirection.Up;
-            }
-            return GridDirection.Down;
+            // Selected Robot
+            var playerRobot = BattleManager.TeamActive.RobotControllerSelected;
+            var skill = playerRobot.Robot.SkillSelected;
+
+            var start = playerRobot.GridController.Grid;
+
+            var amount = Grid.Heuristic(start, end) * bezierScale;
+            _bezierCurve.ChangeAmount(amount);
+
+            _bezierCurve.start.position = GridManager.CellToWorld(start);
+            _bezierCurve.end.DOMove(GridManager.CellToWorld(end), bezierDuration);
+
+            // Get grids
+            var gridsImpact = GetGridImpact(skill, playerRobot, end);
+            
+            // Set highlight
+            InstantiateHighlight(gridsImpact, HighlightType.Impact, _impactList);
         }
 
-        private int Heuristic(Vector2Int position, Vector2Int coordinate)
+        public void DestroyAllHighlight()
         {
-            return coordinate.x - position.x + coordinate.y - position.y;
+            _bezierCurve.Hide();
+            DestroyHighlight(_impactList);
         }
 
     }
 }
 
+public enum HighlightType
+{
+    Move,
+    Attack,
+    Skill,
+    Impact,
+}

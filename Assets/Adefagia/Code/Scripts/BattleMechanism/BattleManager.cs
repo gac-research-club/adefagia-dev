@@ -29,7 +29,6 @@ namespace Adefagia.BattleMechanism
         public static TeamController NextTeam { get; set; }
         public static float currentTime = -1;
         private int countRound = 1;
-        private int skillChoosed = 0;
         private Potion potionChoosed = null;
 
         private bool moveFinish;
@@ -485,11 +484,13 @@ namespace Adefagia.BattleMechanism
                     var gridController = GameManager.instance.gridManager.GetGridController();
 
                     // Click on the grid highlighted
-                    TeamActive.RobotControllerSelected.RobotSkill.Skill(
-                        robotController: TeamActive.RobotControllerSelected,
-                        gridController: gridController,
-                        skillChoosed: skillChoosed
-                    );
+                    if (highlightMovement.CheckGridOnHighlight(gridController))
+                    {
+                        TeamActive.RobotControllerSelected.RobotSkill.Skill(
+                            robotController: TeamActive.RobotControllerSelected,
+                            gridController: gridController
+                        );
+                    }
 
                     UpdateSlider();
                     
@@ -498,6 +499,7 @@ namespace Adefagia.BattleMechanism
 
                     // Clear highlight
                     highlightMovement.CleanHighlight();
+                    highlightMovement.DestroyAllHighlight();
                 }
 
 
@@ -615,7 +617,11 @@ namespace Adefagia.BattleMechanism
             // highlight grid attack  by weapon type pattern
             Robot robot = TeamActive.RobotControllerSelected.Robot;
             Skill skill = TeamActive.RobotControllerSelected.GetSkill(indexSkill);
+            
+            // Set skill
+            robot.SkillSelected = skill;
 
+            // Pattern skill highlight
             if (skill.PatternAttack == TypePattern.Cross)
             {
                 highlightMovement.SetSmallDiamondMove(robot.Location);
@@ -628,8 +634,6 @@ namespace Adefagia.BattleMechanism
             } else {
                 highlightMovement.SetSurroundMove(robot.Location);
             }
-            
-            skillChoosed = indexSkill;
 
             // means the robot is considered to move
             // TeamActive.RobotControllerSelected.Robot.HasSkill = true;
