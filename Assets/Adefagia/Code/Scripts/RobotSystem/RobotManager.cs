@@ -62,6 +62,7 @@ namespace Adefagia.RobotSystem
 
             List<RobotController> newRobotControllers = new List<RobotController>();
 
+            var index = 0;
             for (int i = _teamController.TotalRobot - 1; i >= 0; i--)
             {
                 var dummy = _teamController.GetRobotGameObject(i);
@@ -70,8 +71,10 @@ namespace Adefagia.RobotSystem
                 if (dummy == null) continue;
 
                 // Create a real robot gameObject
-                var robotObject = Instantiate(robotPrefab[i], transform);
-                robotObject.name = "Robot " + i;
+                var robotObject = Instantiate(robotPrefab[index], transform);
+                
+                robotObject.name = robotSelected[index].name == "" ? "Robot " + index : robotSelected[index].name;
+                
                 robotObject.transform.position = dummy.transform.position;
 
                 // Add RobotController to attach on robot gameObject
@@ -84,7 +87,7 @@ namespace Adefagia.RobotSystem
                 var potionController = robotObject.AddComponent<PotionController>();
 
                 // Find healthBar GameObject
-                var healthBarObject = GameObject.Find($"Robot {i}/Cube/Canvas/HealthBar");
+                var healthBarObject = GameObject.Find($"{robotObject.name}/Cube/Canvas/HealthBar");
 
                 healthBarObject.name = "HBar Robot " + i;
 
@@ -102,7 +105,7 @@ namespace Adefagia.RobotSystem
                 // Manual input robot stat
 
                 // Get robot from teamManager
-                var robot = robotSelected[i];
+                var robot = robotSelected[index];
 
                 if (robot == null) return;
 
@@ -113,7 +116,7 @@ namespace Adefagia.RobotSystem
                     robot.damage,
                     robot.armor);
 
-                robotController.Robot.ID = _teamController.TotalRobot - 1 - i;
+                robotController.Robot.ID = index;
                 robotController.Robot.Speed = speed;
 
                 // If robot hasn't used weapon set to default
@@ -175,6 +178,8 @@ namespace Adefagia.RobotSystem
 
                 // Delete the dummy gameObject
                 Destroy(dummy);
+
+                index++;
             }
 
             _teamController.ChangeRobotController(newRobotControllers);

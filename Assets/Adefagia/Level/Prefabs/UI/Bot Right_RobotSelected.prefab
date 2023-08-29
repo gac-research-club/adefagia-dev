@@ -532,6 +532,7 @@ GameObject:
   - component: {fileID: 1844841109566192041}
   - component: {fileID: 1844841109566192040}
   - component: {fileID: 1844841109566192038}
+  - component: {fileID: 412008432}
   m_Layer: 5
   m_Name: Btn_Attack
   m_TagString: Untagged
@@ -641,19 +642,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1844841109566192040}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
-        m_MethodName: AttackButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &412008432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841108121503006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daeee1f38ad421e499c5117776f1e190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickType: 1
 --- !u!1 &1844841108164877616
 GameObject:
   m_ObjectHideFlags: 0
@@ -1041,6 +1043,9 @@ GameObject:
   - component: {fileID: 1844841108545025087}
   - component: {fileID: 1844841108545025086}
   - component: {fileID: 1844841108545025085}
+  - component: {fileID: 788276595}
+  - component: {fileID: 788276596}
+  - component: {fileID: 1557322705037782066}
   m_Layer: 5
   m_Name: Btn_Skill2
   m_TagString: Untagged
@@ -1150,19 +1155,46 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1844841108545025086}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
-        m_MethodName: SkillChildButtonClick
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!225 &788276595
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841108545025083}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &788276596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841108545025083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91875879801751640b8ed87d149ea90d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillIndex: 1
+  skillText: {fileID: 1844841108191892318}
+--- !u!114 &1557322705037782066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841108545025083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daeee1f38ad421e499c5117776f1e190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickType: 5
 --- !u!1 &1844841108570046803
 GameObject:
   m_ObjectHideFlags: 0
@@ -1255,6 +1287,9 @@ GameObject:
   - component: {fileID: 1844841108619188665}
   - component: {fileID: 1844841108619188664}
   - component: {fileID: 1844841108619188663}
+  - component: {fileID: 226557003}
+  - component: {fileID: 226557004}
+  - component: {fileID: 476150173004947372}
   m_Layer: 5
   m_Name: Btn_Skill1
   m_TagString: Untagged
@@ -1365,9 +1400,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
-        m_MethodName: SkillChildButtonClick
+      - m_Target: {fileID: 226557004}
+        m_TargetAssemblyTypeName: ButtonClickListener, Assembly-CSharp
+        m_MethodName: 
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1377,6 +1412,45 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!225 &226557003
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841108619188661}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &226557004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841108619188661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91875879801751640b8ed87d149ea90d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillIndex: 0
+  skillText: {fileID: 1844841108164877618}
+--- !u!114 &476150173004947372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841108619188661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daeee1f38ad421e499c5117776f1e190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickType: 5
 --- !u!1 &1844841108675747966
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,6 +1463,7 @@ GameObject:
   - component: {fileID: 1844841108675747937}
   - component: {fileID: 1844841108675747936}
   - component: {fileID: 1844841108951800068}
+  - component: {fileID: 1468406209}
   m_Layer: 5
   m_Name: Btn_EndTurn
   m_TagString: Untagged
@@ -1498,31 +1573,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1844841108675747936}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
-        m_MethodName: EndTurnButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ModularMotion.UIMotion, ModularMotion
-        m_MethodName: PlayFromStartTillEnd
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &1468406209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841108675747966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daeee1f38ad421e499c5117776f1e190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickType: 2
 --- !u!1 &1844841108840902210
 GameObject:
   m_ObjectHideFlags: 0
@@ -1681,6 +1745,7 @@ GameObject:
   - component: {fileID: 1844841108892820137}
   - component: {fileID: 1844841108892820136}
   - component: {fileID: 1844841107938681152}
+  - component: {fileID: 1772681254}
   m_Layer: 5
   m_Name: Btn_Cancel
   m_TagString: Untagged
@@ -1790,19 +1855,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1844841108892820136}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
-        m_MethodName: CancelButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &1772681254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841108892820134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daeee1f38ad421e499c5117776f1e190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickType: 3
 --- !u!1 &1844841109039529620
 GameObject:
   m_ObjectHideFlags: 0
@@ -2281,6 +2347,7 @@ GameObject:
   - component: {fileID: 1844841109107671047}
   - component: {fileID: 1844841109107671046}
   - component: {fileID: 1844841108455319735}
+  - component: {fileID: 91498085}
   m_Layer: 5
   m_Name: Btn_Move
   m_TagString: Untagged
@@ -2390,19 +2457,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1844841109107671046}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
-        m_MethodName: MoveButtonClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &91498085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841109107671044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daeee1f38ad421e499c5117776f1e190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickType: 0
 --- !u!1 &1844841109205432550
 GameObject:
   m_ObjectHideFlags: 0
@@ -2494,6 +2562,7 @@ GameObject:
   - component: {fileID: 1844841109213543001}
   - component: {fileID: 1844841109213543000}
   - component: {fileID: 1844841109213542999}
+  - component: {fileID: 800618258}
   m_Layer: 5
   m_Name: Btn_Item1
   m_TagString: Untagged
@@ -2604,9 +2673,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
-        m_MethodName: ItemChildButtonClick
+      - m_Target: {fileID: 800618258}
+        m_TargetAssemblyTypeName: ButtonClickListener, Assembly-CSharp
+        m_MethodName: Item
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2616,6 +2685,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &800618258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841109213542997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daeee1f38ad421e499c5117776f1e190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickType: 5
 --- !u!1 &1844841109216199363
 GameObject:
   m_ObjectHideFlags: 0
@@ -2628,6 +2710,9 @@ GameObject:
   - component: {fileID: 1844841109216199367}
   - component: {fileID: 1844841109216199366}
   - component: {fileID: 1844841109216199365}
+  - component: {fileID: 508055927}
+  - component: {fileID: 508055928}
+  - component: {fileID: 1273734366043329806}
   m_Layer: 5
   m_Name: Btn_Skill3
   m_TagString: Untagged
@@ -2737,19 +2822,46 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1844841109216199366}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
-        m_MethodName: SkillChildButtonClick
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!225 &508055927
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841109216199363}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &508055928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841109216199363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91875879801751640b8ed87d149ea90d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillIndex: 2
+  skillText: {fileID: 1844841109039529622}
+--- !u!114 &1273734366043329806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841109216199363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daeee1f38ad421e499c5117776f1e190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickType: 5
 --- !u!1 &1844841109241161147
 GameObject:
   m_ObjectHideFlags: 0
@@ -2842,6 +2954,7 @@ GameObject:
   - component: {fileID: 1844841109310076458}
   - component: {fileID: 1844841109310076457}
   - component: {fileID: 1844841109310076456}
+  - component: {fileID: 1441799551}
   m_Layer: 5
   m_Name: Btn_Item2
   m_TagString: Untagged
@@ -2952,9 +3065,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Adefagia.BattleMechanism.BattleManager, Assembly-CSharp
-        m_MethodName: ItemChildButtonClick
+      - m_Target: {fileID: 1441799551}
+        m_TargetAssemblyTypeName: ButtonClickListener, Assembly-CSharp
+        m_MethodName: Item
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2964,6 +3077,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1441799551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844841109310076454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daeee1f38ad421e499c5117776f1e190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickType: 0
 --- !u!1 &1844841109399111455
 GameObject:
   m_ObjectHideFlags: 0
