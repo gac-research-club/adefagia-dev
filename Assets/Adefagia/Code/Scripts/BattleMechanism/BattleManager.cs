@@ -33,7 +33,6 @@ namespace Adefagia.BattleMechanism
         private Grid gridTemp, gridLast;
 
         private bool moveFinish;
-        private bool _cardDeploy;
 
         // public static Logging GameManager.instance.logManager;
         
@@ -106,21 +105,14 @@ namespace Adefagia.BattleMechanism
                 preparationState == PreparationState.DeploySelect)
             {
                 // Deploy - Set robot card info
-                if (!_cardDeploy)
+                for (int i = 0; i < TeamActive.robotControllers.Count; i++)
                 {
-                    for (int i = 0; i < TeamActive.robotControllers.Count; i++)
-                    {
-                        UpdateDeploy?.Invoke(i, TeamActive.robotControllers[i].Robot);
-                    }
-
-                    _cardDeploy = true;
+                    UpdateDeploy?.Invoke(i, TeamActive.robotControllers[i].Robot);
                 }
                 
                 // Change Team Activate if has deployed all the robot
                 if (TeamActive.IsHasFinishDeploy())
                 {
-                    _cardDeploy = false;
-                    
                     // Reset team active robot selected
                     TeamActive.ResetRobotSelected();
                     TeamActive.SetPreparationArea(0, 0, 9, 9); // full area
