@@ -57,8 +57,8 @@ namespace Adefagia.PlayerAction
             gridController.RobotController.Robot.TakeDamage(robotController.Robot.Damage);
             RobotDamaged?.Invoke(gridController.RobotController.Robot);
             
-            // update the attacked robot health bar
-            gridController.RobotController.Robot.healthBar.UpdateHealthBar(gridController.RobotController.Robot.CurrentHealth);
+            // update the attacked robot health bar (Move to class Robot)
+            // gridController.RobotController.Robot.healthBar.UpdateHealthBar(gridController.RobotController.Robot.CurrentHealth);
             
             // if grid is robot ally then friendly fire
             var teamController = gridController.RobotController.TeamController;
