@@ -6,17 +6,24 @@ using System.ComponentModel;
 using Adefagia.Inventory;
 namespace Adefagia.RobotSystem
 {
-    [Serializable]    
+    public enum SkillType
+    {
+        Damage,
+        Heal,
+        AttackBuff,
+        DeffendBuff,
+    }
+    [Serializable]
     public class Skill
     {
-       
+
         #region Properties
-        
+
         // Status
         public string Name;
-        
+
         public float StaminaRequirement;
-        
+
         public float Value;
 
         public bool IsUltimate;
@@ -24,18 +31,13 @@ namespace Adefagia.RobotSystem
         public SkillType skillType;
 
         public TypePattern PatternAttack;
-        
+
         public TypePattern PatternImpact;
 
         #endregion
 
-        public enum SkillType{
-            Damage,
-            Heal,
-            AttackBuff,
-            DeffendBuff,
-        }
 
-        
+
+
     }
 }
