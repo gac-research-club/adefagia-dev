@@ -56,6 +56,7 @@ namespace Adefagia.RobotSystem
         public bool HasAttack { get; set; }
         public bool HasSkill { get; set; }
         public bool HasEffect { get; set; }
+        public bool HasDeploy { get; set; }
         
         public Skill SkillSelected { get; set; }
 

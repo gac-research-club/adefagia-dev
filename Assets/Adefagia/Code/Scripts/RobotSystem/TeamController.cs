@@ -82,30 +82,19 @@ namespace Adefagia.BattleMechanism
             var teamActive = BattleManager.TeamActive;
             if (this != teamActive) return;
 
-            var last = RobotController;
-            
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                if (!IsHasDeployed(Robot))
-                {
-                    last.ResetPosition();
-                }
+                CancelDeploy();
                 ChooseRobot(0);
             } 
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                if (!IsHasDeployed(Robot))
-                {
-                    last.ResetPosition();
-                }
+                CancelDeploy();
                 ChooseRobot(1);
             } 
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                if (!IsHasDeployed(Robot))
-                {
-                    last.ResetPosition();
-                }
+                CancelDeploy();
                 ChooseRobot(2);
             }
         }
@@ -155,9 +144,49 @@ namespace Adefagia.BattleMechanism
             
             // Disable button select
             GameManager.instance.uiManager.DisableButtonSelect(_index);
+
+            RobotController.Robot.HasDeploy = true;
+            
+            // set robot to grid
+            GridController.RobotController = RobotController;
+
+            // set grid to robot
+            GridController.RobotController.GridController = GridController;
+
+            // Occupied the grid
+            Robot.Location.SetOccupied();
+
+            GameManager.instance.logManager.LogStep($"{Team.teamName} - {RobotController.Robot} - Deploy to {GridController.Grid}", LogManager.LogText.Info);
+
+            // change to the next robot index
+            IncrementIndex();
+            ChooseRobot();
             
             // Show ui character select
             GameManager.instance.uiManager.ShowCharacterSelectCanvas();
+        }
+
+        public void Deploying(Grid gridHover)
+        {
+            RobotController.gameObject.SetActive(true);
+            RobotController.MovePosition(gridHover);
+            Robot.ChangeLocation(gridHover);
+        }
+
+        public void CancelDeploy()
+        {
+            ResetDeploy();
+            GameManager.instance.uiManager.ShowCharacterSelectCanvas();
+        }
+
+        public void ResetDeploy()
+        {
+            // Reset position
+            // RobotController.ResetPosition();
+            RobotController.gameObject.SetActive(false);
+
+            // make grid controller null
+            GridController = null;
         }
 
         public bool IsHasDeployed(Robot robot)

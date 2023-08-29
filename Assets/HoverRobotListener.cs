@@ -19,11 +19,11 @@ public class HoverRobotListener : MonoBehaviour
     [SerializeField] private Text staminaText;
     [SerializeField] private Text damageText;
     [SerializeField] private Text defendText;
-    
+
 
     private float _deltaAlpha;
     private bool _show;
-    
+
     private void OnEnable()
     {
         GridManager.GridRobotHoverInfo += OnHoverRobot;
@@ -46,20 +46,20 @@ public class HoverRobotListener : MonoBehaviour
                 _deltaAlpha -= Time.deltaTime * speed;
             }
         }
-        
+
         robotStat.alpha = _deltaAlpha;
     }
 
     private void OnHoverRobot(GridController gridController, bool show)
     {
         _show = show;
-        
+
         var robotController = gridController.RobotController;
-        
-        if(robotController == null) return;
-        
+
+        if (robotController == null) return;
+
         var robot = robotController.Robot;
-        
+
         UpdateName(robot);
         UpdateStat(robot);
     }
@@ -77,13 +77,13 @@ public class HoverRobotListener : MonoBehaviour
     private void UpdateStat(Robot robot)
     {
         // Image
-        var image = healthBar.transform.GetChild(1).GetComponent<Image>();
+        var image = healthBar.transform.GetChild(2).GetComponent<Image>();
 
         // Text
-        var text = healthBar.transform.GetChild(2).GetComponent<Text>();
+        var text = healthBar.transform.GetChild(3).GetComponent<Text>();
 
         image.fillAmount = robot.CurrentHealth / robot.MaxHealth;
-        
+
         var template = "HP: {0}/{1}";
         if (robot.CurrentHealth % 1 > 0)
         {

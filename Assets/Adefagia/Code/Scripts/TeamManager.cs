@@ -25,6 +25,8 @@ public class RobotStat
     const float MAX_STAMINA = 50;
     const float MAX_HEALTH = 100;
 
+    public string name;
+
     public float maxHealth = MAX_HEALTH;
     public float maxStamina = MAX_STAMINA;
     public float damage;

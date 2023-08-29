@@ -22,7 +22,6 @@ namespace Adefagia.RobotSystem
         [SerializeField] private float healthPoint;
         [SerializeField] private float staminaPoint;
 
-        private Vector3 _startPosition;
         private TeamController _teamController;
         
         private SkillController _skillController;
@@ -32,7 +31,7 @@ namespace Adefagia.RobotSystem
         private RobotAttack _robotAttack;
         private RobotSkill _robotSkill;
         private RobotItem _robotItem;
-        
+
         public bool isHighlighted;
         public Robot Robot { get; set; }
         
@@ -46,7 +45,6 @@ namespace Adefagia.RobotSystem
         public RobotItem RobotItem => _robotItem;
         public GridController GridController { get; set; }
         public HighlightRobot HighlightRobot { get; set; }
-
         public static event Action<Vector3> TakeDamageHappened; 
         public static event UnityAction<int, bool> TurnAnimation;
         public static event UnityAction<int, bool> MoveAnimation;
@@ -56,14 +54,12 @@ namespace Adefagia.RobotSystem
             _robotAttack   = GetComponent<RobotAttack>();
             _robotSkill    = GetComponent<RobotSkill>();
             _robotItem     = GetComponent<RobotItem>();
-            
-            _startPosition = transform.position;
         }
 
         private void Start()
         {
             HighlightRobot = GetComponent<HighlightRobot>();
-                
+
             RobotAttack.ThingHappened += OnThingHappened;
             RobotMovement.RobotBotMove += OnRobotBotMove;
             RobotAttack.RobotBotAttack += OnRobotBotAttack;
@@ -142,9 +138,13 @@ namespace Adefagia.RobotSystem
 
         public void MovePosition(Grid grid)
         {
-            var position = new Vector3(grid.X * GridManager.GridLength, 0, grid.Y * GridManager.GridLength);
-            transform.position = position;
             
+            var position = new Vector3(grid.X * GridManager.GridLength, 0, grid.Y * GridManager.GridLength);
+            
+            // move to position with some transition
+            // transform.DOMove(position, 0.2f);
+            transform.position = position;
+
             // Y angle is 0 & 180
             // Look at center grid (4,4)
             var center = new Vector3(grid.X * GridManager.GridLength,0,4 * GridManager.GridLength);
@@ -152,10 +152,6 @@ namespace Adefagia.RobotSystem
 
             var fixAngle = Math.Clamp(transform.eulerAngles.y, 0, 180);
             transform.eulerAngles = new Vector3(0, fixAngle, 0);
-
-
-            // TODO: move to position with some transition
-            // move with lerp
         }
 
         /*--------------------------------------------------------------------------------------
@@ -310,11 +306,6 @@ namespace Adefagia.RobotSystem
                 HighlightRobot.ResetColor();
                 isHighlighted = false;
             }
-        }
-
-        public void ResetPosition()
-        {
-            transform.position = _startPosition;
         }
 
         public override string ToString()

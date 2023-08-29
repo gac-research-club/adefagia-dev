@@ -6,7 +6,7 @@ namespace Adefagia.UI
 {
     public class GUIBattleManager : MonoBehaviour
     {
-        private void OnGUI()
+        private void OnGUIBackup()
         {
             var robotActive = "";
             try
