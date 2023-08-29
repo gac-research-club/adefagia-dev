@@ -20,10 +20,10 @@ public class UIFinishController : MonoBehaviour
     [SerializeField] private CanvasGroup canvasFinish;
 
     [SerializeField] private float lifespan;
-    
+
     [SerializeField] private bool fadeIn;
     [SerializeField] private float scaleSpeed = 1;
-    
+
     private void Start()
     {
         // Fade in
@@ -41,7 +41,7 @@ public class UIFinishController : MonoBehaviour
                 if (canvasFinish.alpha >= 1)
                 {
                     fadeIn = false;
-                    
+
                     // 3 second
                     Invoke("ChangeScene", lifespan);
                 }
@@ -69,11 +69,15 @@ public class UIFinishController : MonoBehaviour
         textRobotDead.text = $"Robot Dead : \n \n {robotDead} Win";
     }
 
-    public void ChangeTotalDamage(float totalDamage, string nameTeam, int index){
-        if(index == 0){
+    public void ChangeTotalDamage(float totalDamage, string nameTeam, int index)
+    {
+        if (index == 0)
+        {
             textTotalDamage1.text = $"Total Damage : {totalDamage}";
             textTeam1.text = $"{nameTeam}";
-        }else{
+        }
+        else
+        {
             textTotalDamage2.text = $"Total Damage : {totalDamage}";
             textTeam2.text = $"{nameTeam}";
         }

@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3972525840184253735}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.02, z: 0}
+  m_LocalPosition: {x: 0, y: 0.015, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 63f3d262f061dee499ecac6ef6ddbd3f, type: 2}
+  - {fileID: 2100000, guid: e1e98f820fe65ea478cb0aa806f80dae, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,19 +108,19 @@ PrefabInstance:
     - target: {fileID: 260662374119750857, guid: 63c4d04071406ca4386d8879c33e18a9, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 63f3d262f061dee499ecac6ef6ddbd3f, type: 2}
+      objectReference: {fileID: 2100000, guid: e75f9b2dd624f05439491410764706aa, type: 2}
     - target: {fileID: 1347088686787041538, guid: 63c4d04071406ca4386d8879c33e18a9, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 63f3d262f061dee499ecac6ef6ddbd3f, type: 2}
+      objectReference: {fileID: 2100000, guid: e75f9b2dd624f05439491410764706aa, type: 2}
     - target: {fileID: 4124082047826555477, guid: 63c4d04071406ca4386d8879c33e18a9, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 63f3d262f061dee499ecac6ef6ddbd3f, type: 2}
+      objectReference: {fileID: 2100000, guid: e75f9b2dd624f05439491410764706aa, type: 2}
     - target: {fileID: 4765222294188974369, guid: 63c4d04071406ca4386d8879c33e18a9, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 63f3d262f061dee499ecac6ef6ddbd3f, type: 2}
+      objectReference: {fileID: 2100000, guid: e75f9b2dd624f05439491410764706aa, type: 2}
     - target: {fileID: 5140545394329960907, guid: 63c4d04071406ca4386d8879c33e18a9, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.018
@@ -163,19 +163,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6598133820550378696, guid: 63c4d04071406ca4386d8879c33e18a9, type: 3}
       propertyPath: m_Name
-      value: GridQuadImpact
+      value: GridQuadSupportBlock
       objectReference: {fileID: 0}
     - target: {fileID: 6598133820550378697, guid: 63c4d04071406ca4386d8879c33e18a9, type: 3}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598133820550378697, guid: 63c4d04071406ca4386d8879c33e18a9, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598133820550378697, guid: 63c4d04071406ca4386d8879c33e18a9, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 6598133820550378697, guid: 63c4d04071406ca4386d8879c33e18a9, type: 3}
       propertyPath: m_LocalPosition.x
