@@ -461,6 +461,8 @@ GameObject:
   - component: {fileID: 3032487053445097320}
   - component: {fileID: 3032487053445097321}
   - component: {fileID: 3032487053445097326}
+  - component: {fileID: 929585710}
+  - component: {fileID: 929585711}
   m_Layer: 5
   m_Name: PrevRobotButton
   m_TagString: Untagged
@@ -569,7 +571,44 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3032487053445097321}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3032487054792503001}
+        m_TargetAssemblyTypeName: Character, Assembly-CSharp
+        m_MethodName: PreviousRobot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!225 &929585710
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3032487053445097324}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &929585711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3032487053445097324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca1773bdf2cbd6e4ab7f1c7e435540ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
 --- !u!1 &3032487053469119811
 GameObject:
   m_ObjectHideFlags: 0
@@ -782,7 +821,7 @@ MonoBehaviour:
   Attack:
     BaseValue: 10
   Armor:
-    BaseValue: 10
+    BaseValue: 1
   inventory: {fileID: 3032487054292369856}
   equipmentPanel: {fileID: 3032487055331870580}
   craftingWindow: {fileID: 0}
@@ -1987,7 +2026,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3032487054393462027}
+      - m_Target: {fileID: 936641151323972975}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -1997,7 +2036,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &3032487053754369087
 GameObject:
@@ -2847,6 +2886,8 @@ GameObject:
   - component: {fileID: 3032487054051426320}
   - component: {fileID: 3032487054051426321}
   - component: {fileID: 3032487054051426326}
+  - component: {fileID: 147040903}
+  - component: {fileID: 147040904}
   m_Layer: 5
   m_Name: NextRobotButton
   m_TagString: Untagged
@@ -2955,7 +2996,44 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3032487054051426321}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3032487054792503001}
+        m_TargetAssemblyTypeName: Character, Assembly-CSharp
+        m_MethodName: NextRobot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!225 &147040903
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3032487054051426324}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &147040904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3032487054051426324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca1773bdf2cbd6e4ab7f1c7e435540ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
 --- !u!1 &3032487054054302043
 GameObject:
   m_ObjectHideFlags: 0
@@ -7463,7 +7541,6 @@ GameObject:
   - component: {fileID: 3032487055331870581}
   - component: {fileID: 3032487055331870580}
   - component: {fileID: 3032487055331870582}
-  - component: {fileID: 3032487055331870583}
   m_Layer: 5
   m_Name: EquipmentPanel
   m_TagString: Untagged
@@ -7524,36 +7601,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3032487055331870602}
   m_CullTransparentMesh: 1
---- !u!114 &3032487055331870583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3032487055331870602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9e9007f2444bbd449a78203574ea00fa, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &3032487055335106454
 GameObject:
   m_ObjectHideFlags: 0
@@ -7989,7 +8036,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3032487054393462027}
+      - m_Target: {fileID: 936641151323972975}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -7999,5 +8046,5 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2

@@ -55,7 +55,7 @@ public class UIFinishController : MonoBehaviour
 
     private void ChangeScene()
     {
-        SceneManager.LoadScene("PostBattle");
+        SceneManager.LoadScene("MainMenuAffaOpsi2");
     }
 
 

@@ -19,7 +19,6 @@ namespace Adefagia.UI
         [SerializeField] private Button buttonMove;
         [SerializeField] private Button buttonAttack;
         [SerializeField] private Button buttonSkill;
-        [SerializeField] private Button cancelButton;
         
         [SerializeField] private GameObject listSkill;
         [SerializeField] private GameObject listItem;
@@ -45,7 +44,6 @@ namespace Adefagia.UI
             BattleManager.RobotNotHaveSkill += HideItemButton;
             GridManager.GridHoverInfo += OnGridInfo;
             BattleManager.SelectRobotUI += ShowSelectUI;
-            ButtonClickListener.ClickEvent += ShowCancel;
         }
 
         private void OnDisable()
@@ -54,14 +52,12 @@ namespace Adefagia.UI
             GridManager.GridHoverInfo -= OnGridInfo;
             // RobotSkill.LaunchSkillController += HideSkillButton;
             BattleManager.SelectRobotUI -= ShowSelectUI;
-            ButtonClickListener.ClickEvent -= ShowCancel;
         }
 
         private void ShowSelectUI(RobotController robotController)
         {
             if (robotController == null)
             {
-                HideUI(cancelButton);
                 foreach (var robotSelectPanel in robotSelectPanels)
                 {
                     HideUI(robotSelectPanel);
@@ -82,19 +78,6 @@ namespace Adefagia.UI
             foreach (var robotNotSelectPanel in robotNotSelectPanels)  
             {
                 HideUI(robotNotSelectPanel);
-            }
-        }
-
-        private void ShowCancel(ClickType clickType)
-        {
-            if (clickType == ClickType.Attack || clickType == ClickType.Move || clickType == ClickType.Skill)
-            {
-                ShowUI(cancelButton);
-            }
-
-            if (clickType == ClickType.Cancel)
-            {
-                HideUI(cancelButton);
             }
         }
 

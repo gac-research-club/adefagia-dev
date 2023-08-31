@@ -12,7 +12,6 @@ namespace Adefagia.PlayerAction
 {
     public class RobotMovement : MonoBehaviour
     {
-
         public static event Action<List<RobotController>, Team> RobotBotMove; 
 
         public void Move(
@@ -20,6 +19,12 @@ namespace Adefagia.PlayerAction
             GridController gridController, 
             float speed)
         {
+            if (robotController.Robot.HasMove)
+            {
+                Debug.Log("Robot has move- only move 1 per robot");
+                return;
+            }
+            
             if (gridController == null)
             {
                 Debug.LogWarning("Pathfinding failed grid null");
@@ -33,6 +38,8 @@ namespace Adefagia.PlayerAction
                 Debug.LogWarning("Pathfinding failed Grid not Free");
                 return;
             }
+
+            BattleManager.TeamActive.Busy = true;
 
             // Move
             var start = BattleManager.TeamActive.RobotControllerSelected.Robot.Location;

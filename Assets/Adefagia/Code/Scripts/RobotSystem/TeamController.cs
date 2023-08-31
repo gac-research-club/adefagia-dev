@@ -27,6 +27,7 @@ namespace Adefagia.BattleMechanism
         
         // Has Round
         public bool HasRound { get; set; }
+        public bool Busy { get; set; }
         
         // Index Robot
         private int _index;
@@ -207,7 +208,7 @@ namespace Adefagia.BattleMechanism
         public void ResetRobotSelected()
         {
             robotControllerSelect = null;
-            
+
             // Reset step status each robot
             foreach (var robot in robotControllers)
             {

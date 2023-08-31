@@ -25,10 +25,14 @@ public class Character : MonoBehaviour
     [SerializeField] ItemTooltip itemTooltip;
     [SerializeField] Image draggableItem;
 
+    public static event Action<int> PrevNextEvent; 
+
     private List<EquippableItem> listItem;
     private List<UsableItem> listUsableItem;
 
     private BaseItemSlot dragItemSlot;
+    private int _currentIndex;
+    
 
     // Editor-only function that Unity calls when the script is loaded or a value changes in the Inspector.
     protected void OnValidate()
@@ -413,7 +417,19 @@ public class Character : MonoBehaviour
             equipmentPanel.AddItem(itemCur);
             statPanel.UpdateStatValues();          
         }
+    }
 
-         
+    public void NextRobot()
+    {
+        _currentIndex++;
+        ChangeRobotIndex(_currentIndex);
+        PrevNextEvent?.Invoke(_currentIndex);
+    }
+
+    public void PreviousRobot()
+    {
+        _currentIndex--;
+        ChangeRobotIndex(_currentIndex);
+        PrevNextEvent?.Invoke(_currentIndex);
     }
 }
