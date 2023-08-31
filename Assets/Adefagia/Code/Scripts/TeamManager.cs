@@ -20,6 +20,25 @@ public class TeamManager : MonoBehaviour
     public List<RobotStat> robotsB;
 
     public Team currentTeam;
+
+    public List<RobotStat> robots = new List<RobotStat>();
+
+    public void SaveToJson()
+    {
+        string jsonTeamManager = JsonUtility.ToJson(this);
+        Debug.Log(jsonTeamManager);
+        System.IO.File.WriteAllText(Application.persistentDataPath + "/TeamManager.json", jsonTeamManager);
+    }
+
+    public List<RobotStat> GetRobots(Team team)
+    {
+        if (team == teamA)
+        {
+            return robotsA;
+        }
+
+        return robotsB;
+    }
 }
 
 [Serializable]

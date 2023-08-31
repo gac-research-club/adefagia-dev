@@ -22,7 +22,7 @@ public class SkillButton : MonoBehaviour
         _button = GetComponent<Button>();
         _canvasGroup = GetComponent<CanvasGroup>();
         _button.onClick.AddListener(Skill);
-        Debug.Log("Start");
+        // Debug.Log("Start");
     }
 
     private void OnEnable()

@@ -30,14 +30,6 @@ public class LoadAddressableScene : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        ButtonScene.ButtonActionLoad += LoadAsyncScene;
-        ButtonScene.ButtonActionUnLoad += UnloadAsyncScene;
-        
-        
-    }
-
     private void Update()
     {
         if (!_handle.IsDone)

@@ -17,6 +17,7 @@ namespace Adefagia
         public GridManager gridManager;
         public UIManager uiManager;
         public LogManager logManager;
+        public TeamManager teamManager;
 
         private void Awake()
         {

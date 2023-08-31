@@ -71,8 +71,6 @@ namespace Adefagia.BattleMechanism
             // Initialize current Time
             currentTime = startingTime;
             
-            
-
             StartCoroutine(PreparationBattle());
         }
 
@@ -101,94 +99,95 @@ namespace Adefagia.BattleMechanism
         {
             #region Preparation
 
-            if (gameState == GameState.Preparation &&
-                preparationState == PreparationState.DeploySelect)
+            if (gameState == GameState.Preparation)
             {
-                // Deploy - Set robot card info
-                for (int i = 0; i < TeamActive.robotControllers.Count; i++)
+                if (preparationState == PreparationState.DeploySelect)
                 {
-                    UpdateDeploy?.Invoke(i, TeamActive.robotControllers[i].Robot);
-                }
-                
-                // Change Team Activate if has deployed all the robot
-                if (TeamActive.IsHasFinishDeploy())
-                {
-                    // Reset team active robot selected
-                    TeamActive.ResetRobotSelected();
-                    TeamActive.SetPreparationArea(0, 0, 9, 9); // full area
-
-                    // Change team Active
-                    ChangeTeam();
+                    // Deploy - Set robot card info
+                    for (int i = 0; i < TeamActive.robotControllers.Count; i++)
+                    {
+                        UpdateDeploy?.Invoke(i, TeamActive.robotControllers[i].Robot);
+                    }
                     
-                    // If 2 team has finishing deploy
+                    // Change Team Activate if has deployed all the robot
                     if (TeamActive.IsHasFinishDeploy())
                     {
-                        /* State:
-                         * Preparation => Nothing
-                         * ---------------------
-                         * Game => Battle
-                         * Battle => SelectRobot
-                         */
-                        ChangePreparationState(PreparationState.Nothing);
-                        ChangeGameState(GameState.Battle);
-                        ChangeBattleState(BattleState.SelectRobot);
+                        // Reset team active robot selected
+                        TeamActive.ResetRobotSelected();
+                        TeamActive.SetPreparationArea(0, 0, 9, 9); // full area
+
+                        // Change team Active
+                        ChangeTeam();
                         
-                        
-                        GameManager.instance.uiManager.HideCharacterSelectCanvas();
-                        GameManager.instance.uiManager.ShowBattleUI();
-                        
-                        // Enable healthbars when both teams deployed
-                        GameManager.instance.uiManager.EnableHealthBars(TeamActive.IsHasFinishDeploy());
+                        // If 2 team has finishing deploy
+                        if (TeamActive.IsHasFinishDeploy())
+                        {
+                            /* State:
+                             * Preparation => Nothing
+                             * ---------------------
+                             * Game => Battle
+                             * Battle => SelectRobot
+                             */
+                            ChangePreparationState(PreparationState.Nothing);
+                            ChangeGameState(GameState.Battle);
+                            ChangeBattleState(BattleState.SelectRobot);
+                            
+                            
+                            GameManager.instance.uiManager.HideCharacterSelectCanvas();
+                            GameManager.instance.uiManager.ShowBattleUI();
+                            
+                            // Enable healthbars when both teams deployed
+                            GameManager.instance.uiManager.EnableHealthBars(TeamActive.IsHasFinishDeploy());
+                        }
                     }
                 }
-            }
 
-            // Deploying robot
-            if (gameState == GameState.Preparation && 
-                preparationState == PreparationState.DeployRobot)
-            {
-
-                /*---------------------------------------------------------------
-                 * Move robot location & position
-                 *---------------------------------------------------------------*/
-                
-                // Cancel
-                if (Input.GetKeyDown(KeyCode.Escape))
+                // Deploying robot
+                if (preparationState == PreparationState.DeployRobot)
                 {
-                    TeamActive.CancelDeploy();
-                    return;
-                }
 
-                // if have been deployed, cannot change location and position
-                if (TeamActive.IsHasDeployed(TeamActive.Robot)) return;
-
-                // Get grid controller active
-                TeamActive.GridController = GameManager.instance.gridManager.GetGridController();
-
-                try
-                {
-                    var gridHover = TeamActive.GridController.Grid;
-
-                    // gridHover only in team active Area
-                    // & if grid has been occupied by other robot
-                    if (!TeamActive.IsGridInPreparationArea(gridHover) || Grid.IsOccupied(gridHover) || gridHover.Status == GridStatus.Obstacle)
+                    /*---------------------------------------------------------------
+                     * Move robot location & position
+                     *---------------------------------------------------------------*/
+                    
+                    // Cancel
+                    if (Input.GetKeyDown(KeyCode.Escape))
                     {
-                        throw new NullReferenceException();
+                        TeamActive.CancelDeploy();
+                        return;
                     }
 
-                    // run only if change grid
-                    if (CheckGrid(gridHover))
+                    // if have been deployed, cannot change location and position
+                    if (TeamActive.IsHasDeployed(TeamActive.Robot)) return;
+
+                    // Get grid controller active
+                    TeamActive.GridController = GameManager.instance.gridManager.GetGridController();
+
+                    try
                     {
-                        // Set grid reference to robot
-                        TeamActive.Deploying(gridHover);
+                        var gridHover = TeamActive.GridController.Grid;
+
+                        // gridHover only in team active Area
+                        // & if grid has been occupied by other robot
+                        if (!TeamActive.IsGridInPreparationArea(gridHover) || Grid.IsOccupied(gridHover) || gridHover.Status == GridStatus.Obstacle)
+                        {
+                            throw new NullReferenceException();
+                        }
+
+                        // run only if change grid
+                        if (CheckGrid(gridHover))
+                        {
+                            // Set grid reference to robot
+                            TeamActive.Deploying(gridHover);
+                        }
                     }
-                }
-                catch (NullReferenceException)
-                {
-                    // run only if change grid
-                    if (CheckGrid(null))
+                    catch (NullReferenceException)
                     {
-                        TeamActive.ResetDeploy();
+                        // run only if change grid
+                        if (CheckGrid(null))
+                        {
+                            TeamActive.ResetDeploy();
+                        }
                     }
                 }
             }
