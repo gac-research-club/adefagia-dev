@@ -22,11 +22,13 @@ public class ButtonPrevNextListener : MonoBehaviour
     private void OnEnable()
     {
         Character.PrevNextEvent += UpdateButton;
+        Character.ChangeTeamEvent += UpdateButton;
     }
 
     private void OnDisable()
     {
         Character.PrevNextEvent -= UpdateButton;
+        Character.ChangeTeamEvent -= UpdateButton;
     }
 
     void UpdateButton(int index)

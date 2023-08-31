@@ -27,13 +27,31 @@ namespace Adefagia.RobotSystem
             _teamController = GetComponent<TeamController>();
 
             // Initiate Robots
-            teamManager = GameManager.instance.gameObject.GetComponent<TeamManager>();
+            teamManager = GameManager.instance.teamManager;
+
+            try
+            {
+                string jsonTeamManager =
+                    System.IO.File.ReadAllText(Application.persistentDataPath + "/TeamManager.json");
+
+                JsonUtility.FromJsonOverwrite(jsonTeamManager, teamManager);
+
+            }
+            catch (Exception)
+            {
+                teamManager = GameManager.instance.gameObject.GetComponent<TeamManager>();
+            }
 
             // Change team name
-            teamSelected = new Team(teamManager.teamA.teamName);
+            teamSelected = teamManager.teamA;
 
             // Use robot A first
             robotSelected = teamManager.robotsA;
+
+            foreach (var robot in robotSelected)
+            {
+                Debug.Log("Damage:" + robot.damage);
+            }
 
             SpawnRobot();
 
@@ -47,14 +65,13 @@ namespace Adefagia.RobotSystem
          *--------------------------------------------------------------------------------------*/
         private void SpawnRobot()
         {
-
             if (count > 0)
             {
                 // after robotA, change to robotB
                 robotSelected = teamManager.robotsB;
 
                 // Change team name
-                teamSelected = new Team(teamManager.teamB.teamName);
+                teamSelected = teamManager.teamB;
             }
 
             // Change team name
