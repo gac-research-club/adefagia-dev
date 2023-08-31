@@ -9,6 +9,8 @@ using UnityEngine;
 
 public class TeamManager : MonoBehaviour
 {
+    public int totalRobot;
+    
     // TeamA
     public Team teamA;
     public List<RobotStat> robotsA;
@@ -16,6 +18,8 @@ public class TeamManager : MonoBehaviour
     // TeamB
     public Team teamB;
     public List<RobotStat> robotsB;
+
+    public Team currentTeam;
 }
 
 [Serializable]

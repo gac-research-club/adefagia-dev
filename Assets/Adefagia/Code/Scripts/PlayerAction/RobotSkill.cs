@@ -27,7 +27,7 @@ namespace Adefagia.PlayerAction
                 Debug.LogWarning("Skill failed");
                 return;
             }
-            
+
             // Set skill from robot skillSelected
             Skill skill = robotController.Robot.SkillSelected;
 

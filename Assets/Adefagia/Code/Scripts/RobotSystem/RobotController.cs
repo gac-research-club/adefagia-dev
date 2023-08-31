@@ -222,6 +222,9 @@ namespace Adefagia.RobotSystem
             transform.position = GridManager.CellToWorld(grids[^1]);
             
             MoveAnimation?.Invoke(id, false);
+
+            // not busy
+            BattleManager.TeamActive.Busy = false;
         }
 
         private Vector3 TurnArround(Vector3 targetPosition)

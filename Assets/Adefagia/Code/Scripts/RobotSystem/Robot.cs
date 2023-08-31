@@ -53,6 +53,7 @@ namespace Adefagia.RobotSystem
         
         // Step Status
         public bool HasMove { get; set; }
+
         public bool HasAttack { get; set; }
         public bool HasSkill { get; set; }
         public bool HasEffect { get; set; }

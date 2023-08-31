@@ -21,6 +21,12 @@ namespace Adefagia.PlayerAction
         // gridController = another select robot
         public void Attack(RobotController robotController,GridController gridController)
         {
+            if (robotController.Robot.HasAttack)
+            {
+                Debug.Log("Robot has attack- only attack 1 per robot");
+                return;
+            }
+            
             ThingHappened?.Invoke(robotController);
             ObstacleHitHappened?.Invoke(gridController);
             
@@ -30,7 +36,7 @@ namespace Adefagia.PlayerAction
                 GameManager.instance.logManager.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} - Attack failed");
                 return;
             }
-            
+
             // means the robot is considered to move
             robotController.Robot.HasAttack = true;
 
