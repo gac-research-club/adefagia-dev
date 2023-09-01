@@ -8,7 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine.Events;
-using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Adefagia.RobotSystem
 {
@@ -22,7 +22,6 @@ namespace Adefagia.RobotSystem
         [SerializeField] private float healthPoint;
         [SerializeField] private float staminaPoint;
 
-        private Vector3 _startPosition;
         private TeamController _teamController;
         
         private SkillController _skillController;
@@ -32,6 +31,8 @@ namespace Adefagia.RobotSystem
         private RobotAttack _robotAttack;
         private RobotSkill _robotSkill;
         private RobotItem _robotItem;
+
+        public bool isHighlighted;
         public Robot Robot { get; set; }
         
         public TeamController TeamController => _teamController;
@@ -43,7 +44,7 @@ namespace Adefagia.RobotSystem
         public RobotSkill RobotSkill => _robotSkill;
         public RobotItem RobotItem => _robotItem;
         public GridController GridController { get; set; }
-
+        public HighlightRobot HighlightRobot { get; set; }
         public static event Action<Vector3> TakeDamageHappened; 
         public static event UnityAction<int, bool> TurnAnimation;
         public static event UnityAction<int, bool> MoveAnimation;
@@ -53,12 +54,12 @@ namespace Adefagia.RobotSystem
             _robotAttack   = GetComponent<RobotAttack>();
             _robotSkill    = GetComponent<RobotSkill>();
             _robotItem     = GetComponent<RobotItem>();
-            
-            _startPosition = transform.position;
         }
 
         private void Start()
         {
+            HighlightRobot = GetComponent<HighlightRobot>();
+
             RobotAttack.ThingHappened += OnThingHappened;
             RobotMovement.RobotBotMove += OnRobotBotMove;
             RobotAttack.RobotBotAttack += OnRobotBotAttack;
@@ -71,10 +72,24 @@ namespace Adefagia.RobotSystem
 
         }
 
+        private void OnEnable()
+        {
+            HighlightMovement.AreaHighlight += OnHighlighted;
+            HighlightMovement.AreaCleanHighlight += OnCleanHighlighted;
+            RobotSkill.SkillImpactEvent += OnSkillImpactEvent;
+        }
+
         private void Update()
         {
             healthPoint = Robot.CurrentHealth;
             staminaPoint = Robot.CurrentStamina;
+        }
+
+        private void OnDisable()
+        {
+            HighlightMovement.AreaHighlight -= OnHighlighted;
+            HighlightMovement.AreaCleanHighlight -= OnCleanHighlighted;
+            RobotSkill.SkillImpactEvent -= OnSkillImpactEvent;
         }
 
         public void OnThingHappened(RobotController robotController)
@@ -123,9 +138,13 @@ namespace Adefagia.RobotSystem
 
         public void MovePosition(Grid grid)
         {
-            var position = new Vector3(grid.X * GridManager.GridLength, 0, grid.Y * GridManager.GridLength);
-            transform.position = position;
             
+            var position = new Vector3(grid.X * GridManager.GridLength, 0, grid.Y * GridManager.GridLength);
+            
+            // move to position with some transition
+            // transform.DOMove(position, 0.2f);
+            transform.position = position;
+
             // Y angle is 0 & 180
             // Look at center grid (4,4)
             var center = new Vector3(grid.X * GridManager.GridLength,0,4 * GridManager.GridLength);
@@ -133,10 +152,6 @@ namespace Adefagia.RobotSystem
 
             var fixAngle = Math.Clamp(transform.eulerAngles.y, 0, 180);
             transform.eulerAngles = new Vector3(0, fixAngle, 0);
-
-
-            // TODO: move to position with some transition
-            // move with lerp
         }
 
         /*--------------------------------------------------------------------------------------
@@ -160,8 +175,8 @@ namespace Adefagia.RobotSystem
                     var dir = TurnArround(GridManager.CellToWorld(grids[current]));
                     var start = transform.forward;
                     
-                    Debug.Log("Direction :" + dir);
-                    Debug.Log("Start:" + start);
+                    // Debug.Log("Direction :" + dir);
+                    // Debug.Log("Start:" + start);
 
                     if (dir != Vector3.zero && dir != start)
                     {
@@ -207,6 +222,9 @@ namespace Adefagia.RobotSystem
             transform.position = GridManager.CellToWorld(grids[^1]);
             
             MoveAnimation?.Invoke(id, false);
+
+            // not busy
+            BattleManager.TeamActive.Busy = false;
         }
 
         private Vector3 TurnArround(Vector3 targetPosition)
@@ -237,6 +255,28 @@ namespace Adefagia.RobotSystem
             robotControllers.Add(this);
         }
 
+        private void OnSkillImpactEvent(RobotController enemy, Grid grid)
+        {
+            if (grid != GridController.Grid) return;
+
+            // TODO: Reduce HP with Balancing
+            var randomize = Random.value * 0.3f;
+            Robot.TakeDamage(enemy.Robot.Damage * randomize);
+        }
+        
+        
+        // Testing KnockBack
+        private void KnockBack(Grid origin, Grid impact)
+        {
+            var direction = Grid.GetVectorDirection(origin, impact);
+            var destination = GameManager.instance.gridManager.GetGrid(impact.Location + direction);
+            
+            Robot.ChangeLocation(destination);
+            impact.SetFree();
+            var newPosition = GridManager.CellToWorld(destination);
+            transform.position = newPosition;
+        }
+
         public void MoveWithDoTween(List<Grid> grids)
         {
             // move to position with some transition
@@ -256,9 +296,19 @@ namespace Adefagia.RobotSystem
             );
         }
 
-        public void ResetPosition()
+        private void OnHighlighted(RobotController robotController)
         {
-            transform.position = _startPosition;
+            robotController.HighlightRobot.ChangeColor();
+            robotController.isHighlighted = true;
+        }
+
+        private void OnCleanHighlighted()
+        {
+            if (isHighlighted)
+            {
+                HighlightRobot.ResetColor();
+                isHighlighted = false;
+            }
         }
 
         public override string ToString()

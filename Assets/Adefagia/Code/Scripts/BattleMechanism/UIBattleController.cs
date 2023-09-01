@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using Adefagia.BattleMechanism;
 using Adefagia.GridSystem;
@@ -19,7 +19,6 @@ namespace Adefagia.UI
         [SerializeField] private Button buttonMove;
         [SerializeField] private Button buttonAttack;
         [SerializeField] private Button buttonSkill;
-        [SerializeField] private Button cancelButton;
         
         [SerializeField] private GameObject listSkill;
         [SerializeField] private GameObject listItem;
@@ -36,87 +35,49 @@ namespace Adefagia.UI
 
         private void Start()
         {
-            BattleManager.RobotNotHaveSkill += HideSkillButton;
-            BattleManager.RobotNotHaveSkill += HideItemButton;
-            GridManager.GridHoverInfo += OnGridInfo;
-            RobotSkill.LaunchSkillController += HideSkillButton;
+            // BattleManager.RobotNotHaveSkill += HideSkillButton;
+            ShowSelectUI(null);
         }
 
-        
-        // TODO: disable button Move
-        private void Update()
+        private void OnEnable()
         {
-            if (BattleManager.gameState == GameState.Battle)
+            BattleManager.RobotNotHaveSkill += HideItemButton;
+            GridManager.GridHoverInfo += OnGridInfo;
+            BattleManager.SelectRobotUI += ShowSelectUI;
+        }
+
+        private void OnDisable()
+        {
+            BattleManager.RobotNotHaveSkill -= HideItemButton;
+            GridManager.GridHoverInfo -= OnGridInfo;
+            // RobotSkill.LaunchSkillController += HideSkillButton;
+            BattleManager.SelectRobotUI -= ShowSelectUI;
+        }
+
+        private void ShowSelectUI(RobotController robotController)
+        {
+            if (robotController == null)
             {
-
-                RobotController robotSelected = BattleManager.TeamActive.RobotControllerSelected;
-                
-                if (BattleManager.battleState == BattleState.MoveRobot ||
-                    BattleManager.battleState == BattleState.AttackRobot || 
-                    BattleManager.battleState == BattleState.SkillRobot ||
-                    BattleManager.battleState == BattleState.SkillSelectionRobot ||
-                    BattleManager.battleState == BattleState.ItemRobot ||
-                    BattleManager.battleState == BattleState.ItemSelectionRobot)
-                {
-                    ShowUI(cancelButton);
-                    ShowUI(listSkill);
-                    ShowUI(listItem);
-                    
-                }
-                else
-                {
-                    HideUI(cancelButton);
-                }
-
-                // if Robot haven't selected than return
-                if (robotSelected == null)
-                {
-                    foreach (var robotSelectPanel in robotSelectPanels)
-                    {
-                        HideUI(robotSelectPanel);
-                    }
-                    
-                    foreach (var robotNotSelectPanel in robotNotSelectPanels)
-                    {
-                        ShowUI(robotNotSelectPanel);
-                    }
-                    return;
-                }
-                
                 foreach (var robotSelectPanel in robotSelectPanels)
                 {
-                    ShowUI(robotSelectPanel);
-                }
-                    
-                foreach (var robotNotSelectPanel in robotNotSelectPanels)
-                {
-                    HideUI(robotNotSelectPanel);
+                    HideUI(robotSelectPanel);
                 }
 
-                // Disable if robot has moved
-                if (robotSelected.Robot.HasMove)
+                foreach (var robotNotSelectPanel in robotNotSelectPanels)  
                 {
-                    DisableButton(buttonMove);
+                    ShowUI(robotNotSelectPanel);
                 }
-                else
-                {
-                    EnableButton(buttonMove);
-                }
-                
-                // Disable if robot has attacked
-                if (robotSelected.Robot.HasAttack)
-                {
-                    DisableButton(buttonAttack);
-                }
-                else
-                {
-                    EnableButton(buttonAttack);
-                }
-
-                if (BattleManager.battleState == BattleState.ItemSelectionRobot){
-                    HideItemButton(robotSelected);
-                }
-
+                return;
+            }
+            
+            foreach (var robotSelectPanel in robotSelectPanels)
+            {
+                ShowUI(robotSelectPanel);
+            }
+            
+            foreach (var robotNotSelectPanel in robotNotSelectPanels)  
+            {
+                HideUI(robotNotSelectPanel);
             }
         }
 
@@ -146,41 +107,41 @@ namespace Adefagia.UI
             button.gameObject.SetActive(false);
         }
 
-        public void HideSkillButton(RobotController robotController)
-        {
-            if (robotController == null) return;
-            
-            // Check if robot has weapon
-            if (robotController.SkillController == null)
-            {
-                // Debug.Log("Hide button");
-                HideUI(listSkill);
-            }
-            else
-            {
-                Robot robot = robotController.Robot;
-                // 3 skill
-                for (int i = 0; i < 3 ; i++)
-                {
-                    Button buttonSkill = listSkill.transform.GetChild(i).GetComponent<Button>();
-                    if(buttonSkill == null) return;
-                    
-                    Text buttonText = buttonSkill.GetComponentInChildren<Text>();
-
-                    Skill _skill = robotController.SkillController.ChooseSkill(i);
-                    
-                    // TODO : Change button text;
-                    buttonText.text = _skill.Name;
-
-                    if(robot.CurrentStamina < _skill.StaminaRequirement){
-                        buttonSkill.interactable = false;
-                    }else{
-                        buttonSkill.interactable = true;
-                    }
-                }
-                ShowUI(listSkill);
-            }
-        }
+        // public void HideSkillButton(RobotController robotController)
+        // {
+        //     if (robotController == null) return;
+        //     
+        //     // Check if robot has weapon
+        //     if (robotController.SkillController == null)
+        //     {
+        //         // Debug.Log("Hide button");
+        //         HideUI(listSkill);
+        //     }
+        //     else
+        //     {
+        //         Robot robot = robotController.Robot;
+        //         // 3 skill
+        //         for (int i = 0; i < 3 ; i++)
+        //         {
+        //             Button buttonSkill = listSkill.transform.GetChild(i).GetComponent<Button>();
+        //             if(buttonSkill == null) return;
+        //             
+        //             Text buttonText = buttonSkill.GetComponentInChildren<Text>();
+        //
+        //             Skill _skill = robotController.SkillController.ChooseSkill(i);
+        //             
+        //             // TODO : Change button text;
+        //             buttonText.text = _skill.Name;
+        //
+        //             if(robot.CurrentStamina < _skill.StaminaRequirement){
+        //                 buttonSkill.interactable = false;
+        //             }else{
+        //                 buttonSkill.interactable = true;
+        //             }
+        //         }
+        //         ShowUI(listSkill);
+        //     }
+        // }
 
         private void ShowUI(GameObject buttonList)
         {

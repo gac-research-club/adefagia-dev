@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections;
 using System.Collections.Generic;
 using Adefagia.GridSystem;
@@ -53,9 +53,13 @@ namespace Adefagia.RobotSystem
         
         // Step Status
         public bool HasMove { get; set; }
+
         public bool HasAttack { get; set; }
         public bool HasSkill { get; set; }
         public bool HasEffect { get; set; }
+        public bool HasDeploy { get; set; }
+        
+        public Skill SkillSelected { get; set; }
 
         #endregion
 
@@ -110,6 +114,9 @@ namespace Adefagia.RobotSystem
 
             float TotalDamage = (txt1 - txt2);
             _health -= Math.Abs(TotalDamage);
+            
+            // TODO: Refresh UI HP
+            healthBar.UpdateHealthBar(_health);
          
             if(_health <= 0){
                IsDead = true;
@@ -168,6 +175,7 @@ namespace Adefagia.RobotSystem
          *------------------------------------------------------------------*/
         public void ChangeLocation(Grid grid)
         {
+            // _grid.SetFree();
             _grid = grid;
         }
 

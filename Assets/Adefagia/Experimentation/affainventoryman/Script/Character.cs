@@ -25,10 +25,17 @@ public class Character : MonoBehaviour
     [SerializeField] ItemTooltip itemTooltip;
     [SerializeField] Image draggableItem;
 
+    public static event Action<int> PrevNextEvent;
+    public static event Action<int> ChangeTeamEvent;
+
     private List<EquippableItem> listItem;
     private List<UsableItem> listUsableItem;
 
     private BaseItemSlot dragItemSlot;
+    private int _currentIndex;
+
+    private TeamManager _teamManager;
+    
 
     // Editor-only function that Unity calls when the script is loaded or a value changes in the Inspector.
     protected void OnValidate()
@@ -71,16 +78,16 @@ public class Character : MonoBehaviour
         equipmentPanel.OnDropEvent += Drop;
 
         // Starting robot maxHealth value
-        var teamManager = GameManager.instance.GetComponent<TeamManager>();
+        _teamManager = GameManager.instance.teamManager;
 
         // Robots A
-        foreach (var robot in teamManager.robotsA)
+        foreach (var robot in _teamManager.robotsA)
         {
             robot.maxHealth = Health;
         }
 
         // Robots B
-        foreach (var robot in teamManager.robotsB)
+        foreach (var robot in _teamManager.robotsB)
         {
             robot.maxHealth = Health;
         }
@@ -265,10 +272,13 @@ public class Character : MonoBehaviour
 
     public void ChangeTeam()
     {
-        int countTeam = statPanel.GetCurrentTeam();
+        _currentIndex = 0;
+        ChangeTeamEvent?.Invoke(0);
+        
+        Team team = statPanel.GetCurrentTeam();
 
-        List<Dictionary<String, EquippableItem>> listEquipRobot = statPanel.GetDetailEquipmentTeam(countTeam);
-        List<Dictionary<String, UsableItem>> listUsableItem = statPanel.GetDetailItemTeam(countTeam);
+        List<Dictionary<String, EquippableItem>> listEquipRobot = statPanel.GetDetailEquipmentTeam(team);
+        List<Dictionary<String, UsableItem>> listUsableItem = statPanel.GetDetailItemTeam(team);
 
         statPanel.ChangeTeam();
 
@@ -326,7 +336,8 @@ public class Character : MonoBehaviour
             }
 
         }
-            
+
+        _teamManager.SaveToJson();
     }
 
 
@@ -413,7 +424,19 @@ public class Character : MonoBehaviour
             equipmentPanel.AddItem(itemCur);
             statPanel.UpdateStatValues();          
         }
+    }
 
-         
+    public void NextRobot()
+    {
+        _currentIndex++;
+        ChangeRobotIndex(_currentIndex);
+        PrevNextEvent?.Invoke(_currentIndex);
+    }
+
+    public void PreviousRobot()
+    {
+        _currentIndex--;
+        ChangeRobotIndex(_currentIndex);
+        PrevNextEvent?.Invoke(_currentIndex);
     }
 }
