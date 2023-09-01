@@ -10,6 +10,7 @@ namespace Adefagia.ObstacleSystem
         public ObstacleType ObstacleType;
         public int MaxHitCount;
         public GameObject Prefab;
+        public TileType TileType;
     }
     
     public enum ObstacleType {

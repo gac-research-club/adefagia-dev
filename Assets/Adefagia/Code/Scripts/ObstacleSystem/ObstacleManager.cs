@@ -45,11 +45,19 @@ namespace Adefagia.ObstacleSystem
                 yield return null;
             }
             
+            _gridManager  = GameManager.instance.gridManager;
             // Init gridElements
-            CreateObstacleElements();
-            
-            // Generate Grids
-            GenerateObstacles();
+            if (MapLoader.successLoad)
+            {
+                GenerateMapObstacles();
+            }
+            else
+            {
+                CreateObstacleElements();
+                
+                // Generate Grids
+                GenerateObstacles();
+            }
             
             BattleManager.ChangeGameState(GameState.Preparation);
         }
@@ -82,7 +90,6 @@ namespace Adefagia.ObstacleSystem
          *---------------------------------------------------------------------------------*/
         private void GenerateObstacles(int x, int y)
         {
-            _gridManager  = GameManager.instance.gridManager;
             _listObstacle = new ObstacleController[x , y];
             
             int numPoints = 12; // change this to the number of points you want to generate
@@ -107,28 +114,61 @@ namespace Adefagia.ObstacleSystem
             {
                 var index = Random.Range(0, listObstacleObjects.Count);
                 
-                // Create gameObject of grid
-                var obstacleObject = Instantiate(_obstacleElements[index].Prefab, transform);
-                obstacleObject.transform.position = new Vector3(point.x * GridManager.GridLength, 0f , point.y * GridManager.GridLength) + offset;
-                obstacleObject.name = $"Obstacle ({point.x}, {point.y})";
-                
-                // Add Obstacle Controller
-                var obstacleController = obstacleObject.AddComponent<ObstacleController>();
-                obstacleController.ObstacleElement = _obstacleElements[index];
-                obstacleController.Obstacle = new Obstacle(point.x, point.y);
-                obstacleController.Grid = _gridManager.GetGrid(point.x, point.y); 
-                obstacleController.Grid.SetObstacle();
-                
-                // Ref to grid
-                _gridManager.GetGridController(obstacleController.Grid).ObstacleController = obstacleController;
-
-                // Add into List grid Object
-                _listObstacle[point.x, point.y] = obstacleController;
+                CreateObstacleObject(_obstacleElements[index], point);
             }
         }
         private void GenerateObstacles(Vector2 gridSize) => GenerateObstacles((int)gridSize.x, (int)gridSize.y);
         private void GenerateObstacles() => GenerateObstacles(gridSizeX, gridSizeY);
-        
+
+
+        void CreateObstacleObject(ObstacleElement obstacleElement, Vector2Int point)
+        {
+            _listObstacle = new ObstacleController[gridSizeX , gridSizeY];
+            
+            // Create gameObject of grid
+            var obstacleObject = Instantiate(obstacleElement.Prefab, transform);
+            obstacleObject.transform.position = new Vector3(point.x * GridManager.GridLength, 0f , point.y * GridManager.GridLength) + offset;
+            obstacleObject.name = $"Obstacle ({point.x}, {point.y})";
+                
+            // Add Obstacle Controller
+            var obstacleController = obstacleObject.AddComponent<ObstacleController>();
+            obstacleController.ObstacleElement = obstacleElement;
+            obstacleController.Obstacle = new Obstacle(point.x, point.y);
+            obstacleController.Grid = _gridManager.GetGrid(point.x, point.y); 
+            obstacleController.Grid.SetObstacle();
+                
+            // Ref to grid
+            _gridManager.GetGridController(obstacleController.Grid).ObstacleController = obstacleController;
+
+            // Add into List grid Object
+            _listObstacle[point.x, point.y] = obstacleController;
+        }
+
+        private void GenerateMapObstacles()
+        {
+            var map = _gridManager.map;
+            foreach (var row in map.mapTiles)
+            {
+                foreach (var col in row.row)
+                {
+                    var obstacle = GetObstacleElement(col.tile);
+                    if (obstacle)
+                    {
+                        CreateObstacleObject(obstacle, col.position);
+                    }
+                }
+            }
+        }
+
+        ObstacleElement GetObstacleElement(TileType tileType)
+        {
+            foreach (var obstacle in listObstacleObjects)
+            {
+                if (obstacle.TileType == tileType) return obstacle;
+            }
+
+            return null;
+        }
         
         /*----------------------------------------------------------------------------------
          * Menyambungkan 1 grid dengan 4 grid di sebelahnya,
