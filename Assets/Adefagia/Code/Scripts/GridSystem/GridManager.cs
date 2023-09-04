@@ -25,8 +25,10 @@ namespace Adefagia.GridSystem
 
         private Select _select;
 
+        public Map map;
+
         public static float GridLength;
-        
+
         // Grid state
         public GridController gridSelect;
         public GridController gridTemp;
@@ -54,6 +56,11 @@ namespace Adefagia.GridSystem
             
             StartCoroutine(InitializeGridManager());
             _select = GetComponent<Select>();
+        }
+
+        private void Start()
+        {
+            map = GetComponent<Map>();
         }
 
         private void Update()
