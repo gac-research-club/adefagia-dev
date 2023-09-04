@@ -42,7 +42,7 @@ public class MapSelect : MonoBehaviour
     private void OnGUI()
     {
         GUILayout.BeginArea(new Rect(10,10,200,200));
-        if (GUILayout.Button("Back")) SceneManager.LoadScene("MainMenuAffaOpsi2");
+        if (GUILayout.Button("Back")) SceneManager.LoadScene("MainMenuAffaUtama");
         GUILayout.EndArea();
     }
 }

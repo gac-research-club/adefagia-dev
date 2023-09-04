@@ -87,7 +87,7 @@ public class MapEditor : MonoBehaviour
     {
         GUILayout.BeginArea(new Rect(10,10,200,200));
         if (GUILayout.Button("Save")) map.SaveMap(mapName);
-        if (GUILayout.Button("Back")) SceneManager.LoadScene("MainMenuAffaOpsi2");
+        if (GUILayout.Button("Back")) SceneManager.LoadScene("MapEditorSelect");
         GUILayout.EndArea();
     }
 
