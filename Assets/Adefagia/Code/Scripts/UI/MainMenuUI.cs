@@ -15,7 +15,7 @@ public class MainMenuUI : MonoBehaviour
     public void LoadBattle()
     {
         GameManager.instance.teamManager.SaveToJson();
-        SceneManager.LoadScene("Battle");
+        SceneManager.LoadScene("MapBattleSelect");
     }
     
     public void Exit()

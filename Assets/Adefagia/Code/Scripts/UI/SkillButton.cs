@@ -43,11 +43,19 @@ public class SkillButton : MonoBehaviour
     private void SkillUpdate(RobotController robotController)
     {
         var robot = robotController.Robot;
+        if (robotController.SkillController == null)
+        {
+            _button.interactable = false;
+            _canvasGroup.alpha = 0;
+            return;   
+        }
+        
         var skill = robotController.SkillController.ChooseSkill(skillIndex);
 
         if (skill == null)
         {
-            gameObject.SetActive(false);
+            _button.interactable = false;
+            _canvasGroup.alpha = 0;
             return;
         }
 
