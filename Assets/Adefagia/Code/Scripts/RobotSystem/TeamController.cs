@@ -11,29 +11,33 @@ namespace Adefagia.BattleMechanism
     public class TeamController : MonoBehaviour
     {
         [SerializeField] private Team team;
-        
+
         // Must be not SerializedField
         // But for debugging, this is important to show in inspector
         public List<RobotController> robotControllers;
         [SerializeField] private RobotController robotControllerActive;
         [SerializeField] private RobotController robotControllerSelect;
-        
+
         [SerializeField] private List<int> _robotDeployed;
 
         // Bound Area
         private Vector2 _startArea, _endArea;
 
         public int count = 0;
-        
+
         // Has Round
         public bool HasRound { get; set; }
         public bool Busy { get; set; }
-        
+        public bool HasAreaHighlight { get; set; }
+        public Vector2 StartArea => _startArea;
+        public Vector2 EndArea => _endArea;
+
         // Index Robot
         private int _index;
 
         #region Properties
-        public Team Team { 
+        public Team Team
+        {
             get => team;
             set => team = value;
         }
@@ -41,9 +45,10 @@ namespace Adefagia.BattleMechanism
         public Robot Robot => robotControllerActive.Robot;
         public RobotController RobotController => robotControllerActive;
         public GridController GridController { get; set; }
-        
+
         // Robot Selected in Battle State
-        public RobotController RobotControllerSelected { 
+        public RobotController RobotControllerSelected
+        {
             get => robotControllerSelect;
             set => robotControllerSelect = value;
         }
@@ -57,23 +62,24 @@ namespace Adefagia.BattleMechanism
                 SelectingRobot();
             }
         }
-        
+
         /*----------------------------------------------------------------------
          * Area Selecting while preparation mode
          *----------------------------------------------------------------------*/
         public void SetPreparationArea(int ax, int ay, int bx, int by)
         {
+            HasAreaHighlight = true;
+
             _startArea = new Vector2(ax, ay);
-            _endArea   = new Vector2(bx, by);
+            _endArea = new Vector2(bx, by);
         }
-        
+
         public bool IsGridInPreparationArea(Grid grid)
         {
-            
             return (grid.X >= _startArea.x &&
                     grid.Y >= _startArea.y &&
-                    grid.X <= _endArea.x   &&
-                    grid.Y <= _endArea.y     );
+                    grid.X <= _endArea.x &&
+                    grid.Y <= _endArea.y);
         }
 
         // TODO: Team controller can change what robot is selected by UI user
@@ -87,19 +93,19 @@ namespace Adefagia.BattleMechanism
             {
                 CancelDeploy();
                 ChooseRobot(0);
-            } 
+            }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 CancelDeploy();
                 ChooseRobot(1);
-            } 
+            }
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 CancelDeploy();
                 ChooseRobot(2);
             }
         }
-        
+
         /*--------------------------------------------------------------
          * Increment index robots
          *--------------------------------------------------------------*/
@@ -138,16 +144,16 @@ namespace Adefagia.BattleMechanism
         {
             robotControllerActive = robotController;
         }
-        
+
         public void DeployRobot()
         {
             _robotDeployed.Add(_index);
-            
+
             // Disable button select
             GameManager.instance.uiManager.DisableButtonSelect(_index);
 
             RobotController.Robot.HasDeploy = true;
-            
+
             // set robot to grid
             GridController.RobotController = RobotController;
 
@@ -162,7 +168,7 @@ namespace Adefagia.BattleMechanism
             // change to the next robot index
             IncrementIndex();
             ChooseRobot();
-            
+
             // Show ui character select
             GameManager.instance.uiManager.ShowCharacterSelectCanvas();
         }
@@ -216,7 +222,8 @@ namespace Adefagia.BattleMechanism
             }
         }
 
-        public void ResetBuffRobot(){
+        public void ResetBuffRobot()
+        {
             // Reset step status each robot
             foreach (var robot in robotControllers)
             {
@@ -227,7 +234,7 @@ namespace Adefagia.BattleMechanism
         public void IncreaseRobotStamina()
         {
             robotControllerSelect = null;
-            
+
             // Reset step status each robot
             foreach (var robot in robotControllers)
             {
@@ -239,8 +246,8 @@ namespace Adefagia.BattleMechanism
         {
             robotControllers.Remove(inputRobotController);
         }
-        
-        
+
+
         /*-----------------------------------------------------------------------
          * Change Team Robot Controllers
          *----------------------------------------------------------------------*/
@@ -248,7 +255,7 @@ namespace Adefagia.BattleMechanism
         {
             robotControllers = newRobotControllers;
         }
-        
+
         /*-----------------------------------------------------------------------
          * get reference from dummy gameObject
          *----------------------------------------------------------------------*/
