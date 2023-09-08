@@ -26,7 +26,7 @@ public class TeamManager : MonoBehaviour
     public void SaveToJson()
     {
         string jsonTeamManager = JsonUtility.ToJson(this);
-        Debug.Log(jsonTeamManager);
+        // Debug.Log(jsonTeamManager);
         System.IO.File.WriteAllText(Application.persistentDataPath + "/TeamManager.json", jsonTeamManager);
     }
 
