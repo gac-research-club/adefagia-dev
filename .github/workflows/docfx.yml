@@ -6,6 +6,9 @@ run-name: ${{ github.actor }} is Publishing
 on:
   workflow_dispatch: {}
 
+permissions:
+  pages: write
+
 # Job
 jobs:
   publish-docs:
