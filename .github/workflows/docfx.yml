@@ -6,13 +6,10 @@ run-name: ${{ github.actor }} is Publishing
 on:
   workflow_dispatch: {}
 
-permissions:
-  pages: write
-  pull-requests: write
-
 # Job
 jobs:
   publish-docs:
+    permissions: write-all
    # Runner
     runs-on: ubuntu-latest
 
