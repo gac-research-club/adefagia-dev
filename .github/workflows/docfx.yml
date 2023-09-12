@@ -29,6 +29,7 @@ jobs:
       # Create docset
       # use Script
       - run: dotnet tool update -g docfx
+      - run: docfx init --quiet
       - run: docfx docfx_project/docfx.json
 
       # deploy docset to github page
