@@ -19,6 +19,7 @@ namespace Adefagia.PlayerAction
             GridController gridController, 
             float speed)
         {
+            Debug.Log(gridController);
             if (robotController.Robot.HasMove)
             {
                 Debug.Log("Robot has move- only move 1 per robot");
@@ -45,6 +46,7 @@ namespace Adefagia.PlayerAction
             var start = BattleManager.TeamActive.RobotControllerSelected.Robot.Location;
 
             var directions = new AStar().Move(start, grid);
+            Debug.Log(grid);
         
             if (directions == null)
             {

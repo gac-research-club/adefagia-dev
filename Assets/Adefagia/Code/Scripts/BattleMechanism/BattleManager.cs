@@ -465,6 +465,8 @@ namespace Adefagia.BattleMechanism
                             );
                     }
                     
+                    Debug.Log(gridController);
+
                     SelectRobot?.Invoke(TeamActive.RobotControllerSelected.Robot);
 
                     // change to selecting state
