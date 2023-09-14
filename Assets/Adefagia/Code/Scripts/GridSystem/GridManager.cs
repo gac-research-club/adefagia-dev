@@ -29,6 +29,10 @@ namespace Adefagia.GridSystem
 
         public static float GridLength;
 
+        // Grid Implementation
+        public int GridSizeX => gridSizeX;
+        public int GridSizeY => gridSizeY;
+
         // Grid state
         public GridController gridSelect;
         public GridController gridTemp;
@@ -41,19 +45,19 @@ namespace Adefagia.GridSystem
         public static event Action<GridController> GridHoverInfo;
         public static event Action<GridController, bool> GridRobotHoverInfo;
 
-        public static event Action<GridController> HoverGridSkillEvent; 
+        public static event Action<GridController> HoverGridSkillEvent;
 
         private void Awake()
         {
 
             GridLength = gridLength;
-            
+
             // Set into gameManager
             if (GameManager.instance != null)
             {
                 GameManager.instance.gridManager = this;
             }
-            
+
             StartCoroutine(InitializeGridManager());
             _select = GetComponent<Select>();
         }
@@ -101,7 +105,7 @@ namespace Adefagia.GridSystem
             SetNeighbors();
 
             // BattleManager.ChangeGameState(GameState.Preparation);
-            
+
             // Finish Generate
             DoneGenerate = true;
         }
@@ -143,12 +147,12 @@ namespace Adefagia.GridSystem
                 for (var xi = 0; xi < x; xi++)
                 {
                     var prefab = _gridElements[GridType.Ground].prefab;
-                    
+
                     // Create gameObject of grid
                     var gridObject = Instantiate(prefab, transform);
 
                     gridObject.transform.localScale = UpdateScale(gridObject.transform);
-                    
+
                     gridObject.transform.position = new Vector3(xi * gridLength, 0, yi * gridLength) + offset;
                     gridObject.name = $"Grid ({xi}, {yi})";
 
@@ -211,7 +215,7 @@ namespace Adefagia.GridSystem
         {
             return new Vector3(grid.X * GridLength, 0, grid.Y * GridLength);
         }
-        
+
         public static Vector3 CellToWorld(Grid grid, Transform prefab)
         {
             return new Vector3(grid.X * GridLength, prefab.position.y, grid.Y * GridLength);
@@ -256,7 +260,7 @@ namespace Adefagia.GridSystem
             }
 
             gridSelect = GetGridController();
-            
+
             if (BattleManager.gameState == GameState.Battle)
             {
                 // Hover grid robot
@@ -267,7 +271,7 @@ namespace Adefagia.GridSystem
             {
                 gridLast = gridTemp;
                 gridTemp = gridSelect;
-                
+
                 GridHoverInfo?.Invoke(gridSelect);
 
                 // Debug.Log("Current: " + gridSelect);
@@ -275,7 +279,7 @@ namespace Adefagia.GridSystem
                 // {
                 //     GridHover?.Invoke(gridSelect);
                 // }
-                
+
                 // State after select Skill list
                 if (BattleManager.battleState == BattleState.SkillSelectionRobot)
                 {
@@ -289,7 +293,7 @@ namespace Adefagia.GridSystem
             //     return;
             // }
 
-            gridQuad.transform.position = objectHit.transform.position - offset + new Vector3(0,0.05f,0);
+            gridQuad.transform.position = objectHit.transform.position - offset + new Vector3(0, 0.05f, 0);
         }
 
         #endregion
@@ -298,15 +302,15 @@ namespace Adefagia.GridSystem
         public static Vector3 UpdateScale(Transform original)
         {
             var defaultScale = original.localScale;
-            
+
             var result = new Vector3(
                 defaultScale.x * GridLength,
-                defaultScale.y * GridLength, 
+                defaultScale.y * GridLength,
                 defaultScale.z * GridLength);
-            
+
             return result;
         }
-        
+
         private void OnDrawGizmos()
         {
             var center = (gridSizeX * gridLength + gridSizeY * gridLength) * 0.5f;

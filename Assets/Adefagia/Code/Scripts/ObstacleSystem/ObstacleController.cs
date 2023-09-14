@@ -13,11 +13,11 @@ namespace Adefagia.ObstacleSystem
         public ObstacleElement ObstacleElement;
         public Obstacle Obstacle { get; set; }
         public Grid Grid { get; set; }
-        
+
         public bool isHighlighted;
 
         private int _hitCount = 0;
-        
+
         public HighlightRobot HighlightRobot { get; set; }
 
         public static event Action<Vector3> ObstacleDestroyed;
@@ -26,12 +26,12 @@ namespace Adefagia.ObstacleSystem
         private void Start()
         {
             HighlightRobot = GetComponent<HighlightRobot>();
-            
+
             RobotAttack.ObstacleHitHappened += OnObstacleHitHappened;
             RobotSkill.ObstacleHitHappened += OnObstacleHitHappened;
             RobotAttack.RobotBotAttackObstacle += OnRobotBotAttackObstacle;
         }
-        
+
         private void OnEnable()
         {
             HighlightMovement.AreaObstacleHighlight += OnHighlighted;
@@ -49,7 +49,7 @@ namespace Adefagia.ObstacleSystem
                 Destroy(gameObject);
             }
         }
-        
+
         private void OnDisable()
         {
             HighlightMovement.AreaObstacleHighlight -= OnHighlighted;
@@ -63,8 +63,8 @@ namespace Adefagia.ObstacleSystem
             if (gridController.Grid != Grid) return;
 
             ObstacleHit?.Invoke(transform.position);
-            GameManager.instance.logManager.LogStep($"An Obstacle has been hit!", LogManager.LogText.Warning);
-                
+            GameManager.instance.logManager.LogStep($"An Obstacle has been hit on Grid (${Grid.X}, ${Grid.Y})! ", LogManager.LogText.Warning);
+
             IncrementHit();
         }
 
@@ -80,9 +80,9 @@ namespace Adefagia.ObstacleSystem
 
         private void OnRobotBotAttackObstacle(List<ObstacleController> obstacleControllers)
         {
-            
+
         }
-        
+
         private void OnHighlighted(ObstacleController obstacleController)
         {
             obstacleController.HighlightRobot.ChangeColor();
@@ -97,14 +97,14 @@ namespace Adefagia.ObstacleSystem
                 isHighlighted = false;
             }
         }
-        
+
         private void OnSkillImpactEvent(RobotController enemy, Grid grid)
         {
             if (grid != Grid) return;
-            
+
             // TODO: Count hit
             IncrementHit();
         }
-        
+
     }
 }
