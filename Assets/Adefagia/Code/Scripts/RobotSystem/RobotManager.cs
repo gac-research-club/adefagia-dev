@@ -89,9 +89,9 @@ namespace Adefagia.RobotSystem
 
                 // Create a real robot gameObject
                 var robotObject = Instantiate(robotPrefab[index], transform);
-                
+
                 robotObject.name = robotSelected[index].name == "" ? "Robot " + index : robotSelected[index].name;
-                
+
                 robotObject.transform.position = dummy.transform.position;
 
                 // Add RobotController to attach on robot gameObject
