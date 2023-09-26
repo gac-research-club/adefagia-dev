@@ -38,11 +38,11 @@ namespace Adefagia
             {
                 Destroy(this);
             }
-            
+
             // Can access from any scene
             DontDestroyOnLoad(instance);
         }
-        
-        
+
+
     }
 }

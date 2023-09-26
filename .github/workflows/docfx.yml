@@ -1,0 +1,43 @@
+# Description
+name: Publish docfx of this project to github page
+run-name: ${{ github.actor }} is Publishing
+
+# Events
+on:
+  workflow_dispatch: {}
+
+# Job
+jobs:
+  publish-docs:
+    permissions: write-all
+   # Runner
+    runs-on: ubuntu-latest
+
+    # Steps
+    steps:
+      # Copy project to runner ubuntu-latest
+      # use Action - checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      # Install dotnet
+      # use Action - setup-dotnet@v3
+      - name: Dotnet Setup
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.x
+
+      # Create docset
+      # use Script
+      - run: dotnet tool update -g docfx
+      - run: docfx init --quiet
+      - run: docfx docfx_project/docfx.json
+
+      # deploy docset to github page
+      # user Action - actions-gh-pages@v3
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/_site
+
