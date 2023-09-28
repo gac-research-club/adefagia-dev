@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Threading.Tasks;
+using Adefagia.DataManager;
+using Adefagia.Authentication;
 
 namespace Michsky.UI.Shift
 {
@@ -14,17 +17,29 @@ namespace Michsky.UI.Shift
         [Header("Timer Event")]
         public UnityEvent timerAction;
 
+        public ProjectInboxManager projectInboxManager;
+
+        private AuthController authController;
+
         void Start()
         {
             if(enableAtStart == true)
             {
                 StartCoroutine("TimedEventStart");
             }
+            authController = GetComponent<AuthController>();
         }
 
         IEnumerator TimedEventStart()
         {
+            authController.SignInMethod();
             yield return new WaitForSeconds(timer);
+            timerAction.Invoke();
+        }
+
+        public async void LoginEventStart(){
+            await authController.SignInMethod();
+            await projectInboxManager.InitializeStart();
             timerAction.Invoke();
         }
 

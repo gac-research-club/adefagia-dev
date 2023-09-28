@@ -15,15 +15,12 @@ namespace Adefagia.Authentication
 {
     public class AuthController : MonoBehaviour
     {
-        [SerializeField] private TMP_InputField usernameTxt;
-        [SerializeField] private TMP_InputField passwordTxt;
-        [SerializeField] private GameObject loadingGif;
-
-        private string _sceneName;
+        [SerializeField] private TMP_InputField  usernameTxt;
+        [SerializeField] private TMP_InputField  passwordTxt;
 
         private async void Start()
         {
-            _sceneName = SceneManager.GetActiveScene().name;
+            
             // UnityServices.InitializeAsync() will initialize all service that subscribed to core
             try
             {
@@ -46,17 +43,6 @@ namespace Adefagia.Authentication
             }
         }
 
-        private void Update()
-        {
-            if (AuthenticationService.Instance.IsSignedIn)
-            {
-                if (_sceneName == "LoginForm" || _sceneName == "SignUpForm")
-                {
-                    SceneManager.LoadScene("MainMenuAffaUtama");
-                    loadingGif.SetActive(false);
-                }
-            }
-        }
 
         public void SetupEvents()
         {
@@ -81,30 +67,19 @@ namespace Adefagia.Authentication
         }
 
 
-
-        public async void SignInClick()
+        public async Task SignInMethod()
         {
             string username = usernameTxt.text.ToString();
             string password = passwordTxt.text.ToString();
-            loadingGif.SetActive(true);
 
+            // username = "adexe123";
+            // password = "@Dexe123";
             await AuthenticationService.Instance.SignInWithUsernamePasswordAsync(username, password);
-
-        }
-
-        public async void SignUpClick()
-        {
-            string username = usernameTxt.text.ToString();
-            string password = passwordTxt.text.ToString();
-            loadingGif.SetActive(true);
-
-            await AuthenticationService.Instance.SignUpWithUsernamePasswordAsync(username, password);
-
+            await Task.Delay(1000);
         }
 
         public async void AnonSignInClick()
         {
-            loadingGif.SetActive(true);
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
 
