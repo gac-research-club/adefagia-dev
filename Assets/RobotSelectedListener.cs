@@ -17,8 +17,8 @@ public class RobotSelectedListener : MonoBehaviour
     [SerializeField] private Text staminaText;
     [SerializeField] private Text damageText;
     [SerializeField] private Text defendText;
-    
-    
+
+
     private void Start()
     {
         BattleManager.SelectRobot += UpdateStatus;
@@ -32,19 +32,19 @@ public class RobotSelectedListener : MonoBehaviour
         hpSlider.maxValue = robot.MaxHealth;
         hpSlider.value = robot.CurrentHealth;
         // Text
-        var templateHP = "HP: {0}/{1}";
+        var templateHP = "HP: {0} / {1}";
         if (robot.CurrentHealth % 1 > 0)
         {
-            templateHP = "HP: {0, 10:f2}/{1}";
+            templateHP = "HP: {0, 10:f2} / {1}";
         }
         hpText.text = string.Format(templateHP, robot.CurrentHealth, robot.MaxHealth);
-        
+
         //==== Stamina ====
         // Slider
         staminaSlider.maxValue = robot.MaxStamina;
         staminaSlider.value = robot.CurrentStamina;
         // Text
-        var templateStamina = "EN: {0}/{1}";
+        var templateStamina = "EN: {0} / {1}";
         staminaText.text = string.Format(templateStamina, robot.CurrentStamina, robot.MaxStamina);
 
         //==== Damage & Defend ====

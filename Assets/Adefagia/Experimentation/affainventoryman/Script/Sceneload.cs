@@ -30,6 +30,11 @@ public class Sceneload : MonoBehaviour
         SceneManager.LoadScene("Options");
     }
 
+    public void LogiScene()
+    {
+        SceneManager.LoadScene("LoginForm");
+    }
+
     public void ExitApplication()
     {
         Application.Quit();
