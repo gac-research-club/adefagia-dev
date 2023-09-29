@@ -72,8 +72,6 @@ namespace Adefagia.Authentication
             string username = usernameTxt.text.ToString();
             string password = passwordTxt.text.ToString();
 
-            // username = "adexe123";
-            // password = "@Dexe123";
             await AuthenticationService.Instance.SignInWithUsernamePasswordAsync(username, password);
             await Task.Delay(1000);
         }

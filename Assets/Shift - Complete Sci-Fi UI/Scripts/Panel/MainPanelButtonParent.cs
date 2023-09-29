@@ -9,8 +9,17 @@ namespace Michsky.UI.Shift
 
         void Awake()
         {
-            foreach (Transform child in transform) { mainButtons.Add(child.GetComponent<Animator>()); }
-            for (int i = 0; i < mainButtons.Count; ++i) { mainButtons[i].Play("Normal to Dissolve"); }
+            foreach (Transform child in transform)
+            {
+                if (child.GetComponent<Animator>() != null)
+                {
+                    mainButtons.Add(child.GetComponent<Animator>());
+                }
+            }
+            for (int i = 0; i < mainButtons.Count; ++i)
+            {
+                mainButtons[i].Play("Normal to Dissolve");
+            }
 
             Canvas _canvas = gameObject.AddComponent<Canvas>();
             _canvas.overrideSorting = true;

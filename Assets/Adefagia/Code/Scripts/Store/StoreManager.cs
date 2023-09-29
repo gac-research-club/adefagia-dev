@@ -17,7 +17,7 @@ namespace Adefagia.Store
         public StoreView virtualShopSampleView;
         public Sprite defaultSprite;
 
-        async void Start()
+        public async Task InitializeStart()
         {
             try
             {
