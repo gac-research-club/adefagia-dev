@@ -15,7 +15,7 @@ namespace Adefagia.DataManager
 
         DateTime m_InboxLastCheckedTime;
 
-        async void Start()
+        public async Task InitializeStart()
         {
             try
             {

@@ -52,20 +52,24 @@ namespace Michsky.UI.Shift
             else if (firstTime == false && currentPanelAnimator != null && currentPanelAnimator.gameObject.activeInHierarchy)
             {
                 currentPanelAnimator.Play(panelFadeIn);
-                currentButtonAnimator.Play(buttonFadeIn);
+                // currentButtonAnimator.Play(buttonFadeIn);
             }
         }
 
         void Awake()
         {
             currentButton = panels[currentPanelIndex].buttonObject;
-            currentButtonAnimator = currentButton.GetComponent<Animator>();
-            currentButtonAnimator.Play(buttonFadeIn);
+            if(currentButton){
+                currentButtonAnimator = currentButton.GetComponent<Animator>();
+                currentButtonAnimator.Play(buttonFadeIn);
+            }
 
             currentPanel = panels[currentPanelIndex].panelObject;
-            currentPanelAnimator = currentPanel.GetComponent<Animator>();
-            currentPanelAnimator.Play(panelFadeIn);
-
+            if(currentPanel){
+                currentPanelAnimator = currentPanel.GetComponent<Animator>();
+                currentPanelAnimator.Play(panelFadeIn);
+            }
+            
             firstTime = false;
 
             if (useCulling == false)
@@ -77,6 +81,7 @@ namespace Michsky.UI.Shift
         public void OpenFirstTab()
         {
             if (currentPanelIndex != 0)
+                // Debug.Log(panels[0].panelName);
                 OpenPanel(panels[0].panelName);
         }
 

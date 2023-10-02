@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Threading.Tasks;
+using Adefagia.DataManager;
+using Adefagia.Authentication;
+using Adefagia.Store;
 
 namespace Michsky.UI.Shift
 {
@@ -14,26 +18,41 @@ namespace Michsky.UI.Shift
         [Header("Timer Event")]
         public UnityEvent timerAction;
 
+        public ProjectInboxManager projectInboxManager;
+        public StoreManager storeManager;
+
+        private AuthController authController;
+
         void Start()
         {
-            if(enableAtStart == true)
+            if (enableAtStart == true)
             {
                 StartCoroutine("TimedEventStart");
             }
+            authController = GetComponent<AuthController>();
         }
 
         IEnumerator TimedEventStart()
         {
+            authController.SignInMethod();
             yield return new WaitForSeconds(timer);
             timerAction.Invoke();
         }
 
-        public void StartIEnumerator ()
+        public async void LoginEventStart()
+        {
+            await authController.SignInMethod();
+            await projectInboxManager.InitializeStart();
+            await storeManager.InitializeStart();
+            timerAction.Invoke();
+        }
+
+        public void StartIEnumerator()
         {
             StartCoroutine("TimedEventStart");
         }
 
-        public void StopIEnumerator ()
+        public void StopIEnumerator()
         {
             StopCoroutine("TimedEventStart");
         }
