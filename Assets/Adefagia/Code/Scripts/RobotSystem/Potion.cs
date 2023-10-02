@@ -22,7 +22,7 @@ namespace Adefagia.RobotSystem
         #endregion
 
         public Potion(string name, List<UsableItemEffect> effects)
-        {
+        {            
             Name = name;
             Effects = effects;
            
