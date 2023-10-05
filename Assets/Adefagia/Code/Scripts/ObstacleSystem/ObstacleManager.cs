@@ -158,26 +158,33 @@ namespace Adefagia.ObstacleSystem
 
         private void GenerateMapObstacles()
         {
-            var map = _gridManager.map;
-            foreach (var row in map.mapTiles)
+            int[][] map = _gridManager.generateMap.PositionObstacle;
+            for (int row = 0; row < map.Length - 1; row++)
             {
-                foreach (var col in row.row)
+                for (int col = 0; col < map[0].Length - 1; col++)
                 {
-                    var obstacle = GetObstacleElement(col.tile);
+                    var obstacle = GetObstacleElement(map[row][col]);
+                    Vector2Int position = new Vector2Int(col, row);
                     if (obstacle)
                     {
-                        CreateObstacleObject(obstacle, col.position);
+                        CreateObstacleObject(obstacle, position);
                     }
                 }
             }
         }
 
-        ObstacleElement GetObstacleElement(TileType tileType)
+        ObstacleElement GetObstacleElement(int index)
         {
-            foreach (var obstacle in listObstacleObjects)
+            // foreach (var obstacle in listObstacleObjects)
+            // {
+            //     if (obstacle.TileType == tileType)
+            //         return obstacle;
+            // }
+
+            if (index > 0)
             {
-                if (obstacle.TileType == tileType)
-                    return obstacle;
+                int positionObs = index - 1;
+                return listObstacleObjects[positionObs];
             }
 
             return null;

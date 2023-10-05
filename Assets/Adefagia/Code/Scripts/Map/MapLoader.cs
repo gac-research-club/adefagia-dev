@@ -15,7 +15,7 @@ namespace Adefagia.MapBase
 
         public static bool successLoad;
 
-        private void OnEnable()
+        private void Awake()
         {
             // mapName = PlayerPrefs.GetString("Map");
             // mapName = "adexe123123";

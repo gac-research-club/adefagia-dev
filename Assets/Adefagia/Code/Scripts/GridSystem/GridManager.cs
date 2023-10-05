@@ -8,6 +8,7 @@ using Adefagia.BattleMechanism;
 using Adefagia.Collections;
 using Adefagia.SelectObject;
 using Adefagia.MapBase;
+using Adefagia.WaveFunctionCollapse;
 
 namespace Adefagia.GridSystem
 {
@@ -37,6 +38,8 @@ namespace Adefagia.GridSystem
         private Select _select;
 
         public Map map;
+
+        public GenerateMap generateMap;
 
         public static float GridLength;
 
@@ -75,6 +78,7 @@ namespace Adefagia.GridSystem
         private void Start()
         {
             map = GetComponent<Map>();
+            generateMap = GetComponent<GenerateMap>();
         }
 
         private void Update()

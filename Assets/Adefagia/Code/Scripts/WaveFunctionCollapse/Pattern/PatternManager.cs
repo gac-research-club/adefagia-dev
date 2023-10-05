@@ -25,12 +25,17 @@ namespace Adefagia.WaveFunctionCollapse
         public void ProcessGrid<T>(
             ValuesManager<T> valuesManager,
             bool equalWeights,
-            string strategyName = "neighboursstrategysize1default"
+            string strategyName = "neighboursstrategysize2andmore"
         )
         {
             /*
                 NeighbourStrategyFactory load all existing
                 strategies with the IFindNeighbors interface
+
+                Currently Just Two
+                - neighboursstrategysize1default
+                - neighboursstrategysize2andmore,
+                
             */
             NeighbourStrategyFactory strategyFactory = new NeighbourStrategyFactory();
             strategy = strategyFactory.CreateInstance(
@@ -71,7 +76,6 @@ namespace Adefagia.WaveFunctionCollapse
         {
             patternPossibleNeighboursDictionary =
                 PatternFinder.FindPossibleNeighboursForAllPatterns(strategy, patternFinderResult);
-            Debug.Log($"{string.Join(" ", patternPossibleNeighboursDictionary)}");
         }
 
         public PatternData GetPatternDataFromIndex(int index)
