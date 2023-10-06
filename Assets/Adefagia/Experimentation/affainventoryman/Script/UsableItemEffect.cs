@@ -5,7 +5,7 @@ using Adefagia.RobotSystem;
 
 public abstract class UsableItemEffect : ScriptableObject
 {
-    public abstract void ExecuteEffect(Robot character);
+    public abstract void ExecuteEffect(RobotController character);
 
     public abstract string GetDescription();
 }

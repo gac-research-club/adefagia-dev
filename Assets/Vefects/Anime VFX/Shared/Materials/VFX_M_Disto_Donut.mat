@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: VFX_M_Disto_Donut
+  m_Shader: {fileID: 4800000, guid: 09989483303aedb459298959b2024af2, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 2
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DissolveMask:
+        m_Texture: {fileID: 2800000, guid: f5aba2dfe976c11499558e7dfdf6d7ef, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DistortionNoiseTexture:
+        m_Texture: {fileID: 2800000, guid: 0edc0e2061fe1194db0a041d7ca9391a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ExtraNoiseTexture:
+        m_Texture: {fileID: 2800000, guid: 4d08458960492e243b81bac8c3bd08e1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture:
+        m_Texture: {fileID: 2800000, guid: f5aba2dfe976c11499558e7dfdf6d7ef, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample0:
+        m_Texture: {fileID: 2800000, guid: 4d08458960492e243b81bac8c3bd08e1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaCutoff: 0.5
+    - _CameraDirPush: -40
+    - _CoreIntensity: 0
+    - _CorePower: 1
+    - _Cull: 2
+    - _CustomPanSwitch: 0
+    - _Debug: 0
+    - _DissolveMaskInvert: 0
+    - _DissolveMaskRotation: 0
+    - _DistortionStrength: 0.13
+    - _Dst: 10
+    - _ExtraNoiseLerp: 1
+    - _Float0: 0
+    - _GlowIntensity: 1
+    - _Src: 5
+    - _StrDisto: 0.5
+    - _StrDisto1: 52.3
+    - _TextureRotation: 0
+    - _ZTest: 2
+    - _ZWrite: 0
+    - __dirty: 0
+    m_Colors:
+    - _DissolveMaskChannel: {r: 0, g: 1, b: 0, a: 0}
+    - _DissolveMaskPanSpeed: {r: 0, g: 0, b: 0, a: 0}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _TextureChannel: {r: 0, g: 1, b: 0, a: 0}
+  m_BuildTextureStacks: []

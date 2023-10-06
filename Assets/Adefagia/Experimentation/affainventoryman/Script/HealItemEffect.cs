@@ -8,10 +8,12 @@ public class HealItemEffect : UsableItemEffect
 {
     public float HealthAmount;
 
-    public override void ExecuteEffect(Robot character)
+    public override void ExecuteEffect(RobotController character)
     {
-        character.Healing(HealthAmount);
-        character.healthBar.UpdateHealthBar(character.CurrentHealth);
+        character.Robot.Healing(HealthAmount);
+        character.Robot.healthBar.UpdateHealthBar(character.Robot.CurrentHealth);
+
+        VFXController.Instance.PlayDebuffLoopVFX(character.gameObject.transform);
     }
 
     public override string GetDescription()

@@ -16,7 +16,7 @@ namespace Adefagia.PlayerAction
 
             foreach (UsableItemEffect effect in potion.Effects)
             {   
-                effect.ExecuteEffect(robotController.Robot);
+                effect.ExecuteEffect(robotController);
             }
 
             GameManager.instance.logManager.LogStep($"{robotController.TeamController.Team.teamName} - {robotController.Robot.Name} - Use {potion.Name}");

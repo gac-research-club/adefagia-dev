@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using Adefagia.CharacterStats;
 using Adefagia.RobotSystem;
+using System;
 
 [CreateAssetMenu(menuName = "Item Effects/Stat Buff")]
 public class StatBuffItemEffect : UsableItemEffect
@@ -10,10 +11,13 @@ public class StatBuffItemEffect : UsableItemEffect
     public float ArmorBuff;
     public float Duration;
 
-    public override void ExecuteEffect(Robot character)
+
+    public override void ExecuteEffect(RobotController character)
     {
-        character.IncreaseDamage(AttackBuff);
-        character.IncreaseArmor(ArmorBuff);
+        character.Robot.IncreaseDamage(AttackBuff);
+        character.Robot.IncreaseArmor(ArmorBuff);
+        
+        VFXController.Instance.PlayBuffLoopVFX(character.gameObject.transform);
     }
 
     public override string GetDescription()

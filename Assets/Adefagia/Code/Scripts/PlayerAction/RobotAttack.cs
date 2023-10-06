@@ -17,6 +17,8 @@ namespace Adefagia.PlayerAction
 
         public static event Action<Robot> RobotDamaged; 
 
+        public float durationConstantPerGrid;
+
         // robotController = current select
         // gridController = another select robot
         public void Attack(RobotController robotController,GridController gridController)
@@ -26,9 +28,14 @@ namespace Adefagia.PlayerAction
                 Debug.Log("Robot has attack- only attack 1 per robot");
                 return;
             }
-            
+
             ThingHappened?.Invoke(robotController);
             ObstacleHitHappened?.Invoke(gridController);
+            
+            Vector3 offset = new Vector3(0, 10f, 0);
+            VFXController.Instance.PlayFireBallFiringVFX(robotController.transform, gridController.gameObject.transform.position);
+            VFXController.Instance.SpawnProjectile(robotController.transform, gridController.gameObject.transform.position, durationConstantPerGrid);
+            VFXController.Instance.PlayFireBallImpactVFX(gridController.gameObject.transform);
             
             if (gridController == null)
             {
