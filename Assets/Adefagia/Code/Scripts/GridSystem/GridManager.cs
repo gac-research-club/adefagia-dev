@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,26 +7,39 @@ using System.Collections.Generic;
 using Adefagia.BattleMechanism;
 using Adefagia.Collections;
 using Adefagia.SelectObject;
+using Adefagia.MapBase;
+using Adefagia.WaveFunctionCollapse;
 
 namespace Adefagia.GridSystem
 {
     public class GridManager : MonoBehaviour
     {
-        [SerializeField] private GameObject gridQuad;
-        [SerializeField] private GameObject gridQuadSelect;
+        [SerializeField]
+        private GameObject gridQuad;
 
-        [SerializeField] private float gridLength = 1;
-        [SerializeField] private int gridSizeX, gridSizeY;
+        [SerializeField]
+        private GameObject gridQuadSelect;
 
-        [SerializeField] private List<GridElement> listGridPrefab;
+        [SerializeField]
+        private float gridLength = 1;
 
-        [SerializeField] private Vector3 offset;
+        [SerializeField]
+        private int gridSizeX,
+            gridSizeY;
+
+        [SerializeField]
+        private List<GridElement> listGridPrefab;
+
+        [SerializeField]
+        private Vector3 offset;
 
         private Dictionary<GridType, GridElement> _gridElements;
 
         private Select _select;
 
         public Map map;
+
+        public GenerateMap generateMap;
 
         public static float GridLength;
 
@@ -49,7 +63,6 @@ namespace Adefagia.GridSystem
 
         private void Awake()
         {
-
             GridLength = gridLength;
 
             // Set into gameManager
@@ -65,6 +78,7 @@ namespace Adefagia.GridSystem
         private void Start()
         {
             map = GetComponent<Map>();
+            generateMap = GetComponent<GenerateMap>();
         }
 
         private void Update()
@@ -74,7 +88,9 @@ namespace Adefagia.GridSystem
                 var robotControllerSelected = BattleManager.TeamActive.RobotControllerSelected;
                 if (robotControllerSelected != null)
                 {
-                    gridQuadSelect.transform.position = CellToWorld(robotControllerSelected.Robot.Location);
+                    gridQuadSelect.transform.position = CellToWorld(
+                        robotControllerSelected.Robot.Location
+                    );
                 }
                 else
                 {
@@ -85,7 +101,7 @@ namespace Adefagia.GridSystem
         }
 
         /*----------------------------------------------------------------------
-         * Initialize Grid, their Neighbor 
+         * Initialize Grid, their Neighbor
          *----------------------------------------------------------------------*/
         private IEnumerator InitializeGridManager()
         {
@@ -101,7 +117,7 @@ namespace Adefagia.GridSystem
             // Generate Grids
             GenerateGrids();
 
-            // Set grid neighbor 
+            // Set grid neighbor
             SetNeighbors();
 
             // BattleManager.ChangeGameState(GameState.Preparation);
@@ -118,7 +134,8 @@ namespace Adefagia.GridSystem
             {
                 try
                 {
-                    if (_gridElements.ContainsKey(gridElement.gridType)) throw new DictionaryDuplicate();
+                    if (_gridElements.ContainsKey(gridElement.gridType))
+                        throw new DictionaryDuplicate();
                     _gridElements.Add(gridElement.gridType, gridElement);
                 }
                 catch (DictionaryDuplicate)
@@ -128,7 +145,8 @@ namespace Adefagia.GridSystem
             }
 
             // duplicate error message
-            if (duplicateCount > 0) Debug.LogWarning($"Duplicate {duplicateCount} Item.");
+            if (duplicateCount > 0)
+                Debug.LogWarning($"Duplicate {duplicateCount} Item.");
         }
 
         /*----------------------------------------------------------------------------------
@@ -153,7 +171,8 @@ namespace Adefagia.GridSystem
 
                     gridObject.transform.localScale = UpdateScale(gridObject.transform);
 
-                    gridObject.transform.position = new Vector3(xi * gridLength, 0, yi * gridLength) + offset;
+                    gridObject.transform.position =
+                        new Vector3(xi * gridLength, 0, yi * gridLength) + offset;
                     gridObject.name = $"Grid ({xi}, {yi})";
 
                     // Add Grid Controller
@@ -165,9 +184,11 @@ namespace Adefagia.GridSystem
                 }
             }
         }
-        private void GenerateGrids(Vector2 gridSize) => GenerateGrids((int)gridSize.x, (int)gridSize.y);
-        private void GenerateGrids() => GenerateGrids(gridSizeX, gridSizeY);
 
+        private void GenerateGrids(Vector2 gridSize) =>
+            GenerateGrids((int)gridSize.x, (int)gridSize.y);
+
+        private void GenerateGrids() => GenerateGrids(gridSizeX, gridSizeY);
 
         /*----------------------------------------------------------------------------------
          * Menyambungkan 1 grid dengan 4 grid di sebelahnya,
@@ -201,10 +222,12 @@ namespace Adefagia.GridSystem
             }
             catch (IndexOutOfRangeException error)
             {
-                if (debugMessage) Debug.LogWarning(error.Message);
+                if (debugMessage)
+                    Debug.LogWarning(error.Message);
                 return null;
             }
         }
+
         public Grid GetGrid(Vector2Int location, bool debugMessage = false)
         {
             return GetGrid(location.x, location.y, debugMessage);
@@ -221,7 +244,7 @@ namespace Adefagia.GridSystem
             return new Vector3(grid.X * GridLength, prefab.position.y, grid.Y * GridLength);
         }
 
-        // Grid hover 
+        // Grid hover
         public Grid GetGrid()
         {
             return GetGridController()?.Grid;
@@ -287,13 +310,14 @@ namespace Adefagia.GridSystem
                 }
             }
 
-            // var _grid = GetGrid(); 
+            // var _grid = GetGrid();
             // if(_grid.Status == GridStatus.Obstacle){
             //     gridQuad.transform.position = new Vector3(99, 99, 99);
             //     return;
             // }
 
-            gridQuad.transform.position = objectHit.transform.position - offset + new Vector3(0, 0.05f, 0);
+            gridQuad.transform.position =
+                objectHit.transform.position - offset + new Vector3(0, 0.05f, 0);
         }
 
         #endregion
@@ -306,7 +330,8 @@ namespace Adefagia.GridSystem
             var result = new Vector3(
                 defaultScale.x * GridLength,
                 defaultScale.y * GridLength,
-                defaultScale.z * GridLength);
+                defaultScale.z * GridLength
+            );
 
             return result;
         }
@@ -314,8 +339,10 @@ namespace Adefagia.GridSystem
         private void OnDrawGizmos()
         {
             var center = (gridSizeX * gridLength + gridSizeY * gridLength) * 0.5f;
-            Gizmos.DrawWireCube(transform.position + new Vector3(center * 0.5f - 0.5f, 0, center * 0.5f - 0.5f), new Vector3(center, 1, center));
+            Gizmos.DrawWireCube(
+                transform.position + new Vector3(center * 0.5f - 0.5f, 0, center * 0.5f - 0.5f),
+                new Vector3(center, 1, center)
+            );
         }
     }
 }
-
