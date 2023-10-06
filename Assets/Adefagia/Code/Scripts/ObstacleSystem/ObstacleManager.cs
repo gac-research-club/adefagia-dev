@@ -184,6 +184,7 @@ namespace Adefagia.ObstacleSystem
             if (index > 0)
             {
                 int positionObs = index - 1;
+                Debug.Log(positionObs);
                 return listObstacleObjects[positionObs];
             }
 
